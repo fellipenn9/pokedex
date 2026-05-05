@@ -3403,9 +3403,6 @@ function renderBinderDetail() {
       <div class="detail-row"><span class="dl">Raridade</span><span class="dv">${escHtml(card.rarity) || '-'}</span></div>
       ${card.artist ? `<div class="detail-row"><span class="dl">Artista</span><span class="dv">${escHtml(card.artist)}</span></div>` : ''}
       ${priceStr ? `<div class="detail-row"><span class="dl">Pre\u00e7o</span><span class="dv" style="color:var(--green)">${priceStr}</span></div>` : ''}
-      <div style="margin-top:12px;text-align:center">
-        <a href="${card.liga_pokemon_url || buildLigaUrl(card)}" target="_blank" class="btn-liga">Ver na Liga Pok\u00e9mon</a>
-      </div>
     </div>
   `;
 }
