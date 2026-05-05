@@ -1,0 +1,9753 @@
+[
+  {
+    "number": 1,
+    "name": "bulbasaur",
+    "types": [
+      "Grama",
+      "Veneno"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 2,
+    "name": "ivysaur",
+    "types": [
+      "Grama",
+      "Veneno"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 3,
+    "name": "venusaur",
+    "types": [
+      "Grama",
+      "Veneno"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 4,
+    "name": "charmander",
+    "types": [
+      "Fogo"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 5,
+    "name": "charmeleon",
+    "types": [
+      "Fogo"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 6,
+    "name": "charizard",
+    "types": [
+      "Fogo",
+      "Voador"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 7,
+    "name": "squirtle",
+    "types": [
+      "Água"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 8,
+    "name": "wartortle",
+    "types": [
+      "Água"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 9,
+    "name": "blastoise",
+    "types": [
+      "Água"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 10,
+    "name": "caterpie",
+    "types": [
+      "Inseto"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 11,
+    "name": "metapod",
+    "types": [
+      "Inseto"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 12,
+    "name": "butterfree",
+    "types": [
+      "Inseto",
+      "Voador"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 13,
+    "name": "weedle",
+    "types": [
+      "Inseto",
+      "Veneno"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 14,
+    "name": "kakuna",
+    "types": [
+      "Inseto",
+      "Veneno"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 15,
+    "name": "beedrill",
+    "types": [
+      "Inseto",
+      "Veneno"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 16,
+    "name": "pidgey",
+    "types": [
+      "Normal",
+      "Voador"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 17,
+    "name": "pidgeotto",
+    "types": [
+      "Normal",
+      "Voador"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 18,
+    "name": "pidgeot",
+    "types": [
+      "Normal",
+      "Voador"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 19,
+    "name": "rattata",
+    "types": [
+      "Normal"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 20,
+    "name": "raticate",
+    "types": [
+      "Normal"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 21,
+    "name": "spearow",
+    "types": [
+      "Normal",
+      "Voador"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 22,
+    "name": "fearow",
+    "types": [
+      "Normal",
+      "Voador"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 23,
+    "name": "ekans",
+    "types": [
+      "Veneno"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 24,
+    "name": "arbok",
+    "types": [
+      "Veneno"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 25,
+    "name": "pikachu",
+    "types": [
+      "Elétrico"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 26,
+    "name": "raichu",
+    "types": [
+      "Elétrico"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 27,
+    "name": "sandshrew",
+    "types": [
+      "Terra"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 28,
+    "name": "sandslash",
+    "types": [
+      "Terra"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 29,
+    "name": "nidoran-f",
+    "types": [
+      "Veneno"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 30,
+    "name": "nidorina",
+    "types": [
+      "Veneno"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 31,
+    "name": "nidoqueen",
+    "types": [
+      "Veneno",
+      "Terra"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 32,
+    "name": "nidoran-m",
+    "types": [
+      "Veneno"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 33,
+    "name": "nidorino",
+    "types": [
+      "Veneno"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 34,
+    "name": "nidoking",
+    "types": [
+      "Veneno",
+      "Terra"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 35,
+    "name": "clefairy",
+    "types": [
+      "Fada"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 36,
+    "name": "clefable",
+    "types": [
+      "Fada"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 37,
+    "name": "vulpix",
+    "types": [
+      "Fogo"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 38,
+    "name": "ninetales",
+    "types": [
+      "Fogo"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 39,
+    "name": "jigglypuff",
+    "types": [
+      "Normal",
+      "Fada"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 40,
+    "name": "wigglytuff",
+    "types": [
+      "Normal",
+      "Fada"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 41,
+    "name": "zubat",
+    "types": [
+      "Veneno",
+      "Voador"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 42,
+    "name": "golbat",
+    "types": [
+      "Veneno",
+      "Voador"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 43,
+    "name": "oddish",
+    "types": [
+      "Grama",
+      "Veneno"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 44,
+    "name": "gloom",
+    "types": [
+      "Grama",
+      "Veneno"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 45,
+    "name": "vileplume",
+    "types": [
+      "Grama",
+      "Veneno"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 46,
+    "name": "paras",
+    "types": [
+      "Inseto",
+      "Grama"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 47,
+    "name": "parasect",
+    "types": [
+      "Inseto",
+      "Grama"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 48,
+    "name": "venonat",
+    "types": [
+      "Inseto",
+      "Veneno"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 49,
+    "name": "venomoth",
+    "types": [
+      "Inseto",
+      "Veneno"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 50,
+    "name": "diglett",
+    "types": [
+      "Terra"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 51,
+    "name": "dugtrio",
+    "types": [
+      "Terra"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 52,
+    "name": "meowth",
+    "types": [
+      "Normal"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 53,
+    "name": "persian",
+    "types": [
+      "Normal"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 54,
+    "name": "psyduck",
+    "types": [
+      "Água"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 55,
+    "name": "golduck",
+    "types": [
+      "Água"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 56,
+    "name": "mankey",
+    "types": [
+      "Lutador"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 57,
+    "name": "primeape",
+    "types": [
+      "Lutador"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 58,
+    "name": "growlithe",
+    "types": [
+      "Fogo"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 59,
+    "name": "arcanine",
+    "types": [
+      "Fogo"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 60,
+    "name": "poliwag",
+    "types": [
+      "Água"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 61,
+    "name": "poliwhirl",
+    "types": [
+      "Água"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 62,
+    "name": "poliwrath",
+    "types": [
+      "Água",
+      "Lutador"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 63,
+    "name": "abra",
+    "types": [
+      "Psíquico"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 64,
+    "name": "kadabra",
+    "types": [
+      "Psíquico"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 65,
+    "name": "alakazam",
+    "types": [
+      "Psíquico"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 66,
+    "name": "machop",
+    "types": [
+      "Lutador"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 67,
+    "name": "machoke",
+    "types": [
+      "Lutador"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 68,
+    "name": "machamp",
+    "types": [
+      "Lutador"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 69,
+    "name": "bellsprout",
+    "types": [
+      "Grama",
+      "Veneno"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 70,
+    "name": "weepinbell",
+    "types": [
+      "Grama",
+      "Veneno"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 71,
+    "name": "victreebel",
+    "types": [
+      "Grama",
+      "Veneno"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 72,
+    "name": "tentacool",
+    "types": [
+      "Água",
+      "Veneno"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 73,
+    "name": "tentacruel",
+    "types": [
+      "Água",
+      "Veneno"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 74,
+    "name": "geodude",
+    "types": [
+      "Pedra",
+      "Terra"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 75,
+    "name": "graveler",
+    "types": [
+      "Pedra",
+      "Terra"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 76,
+    "name": "golem",
+    "types": [
+      "Pedra",
+      "Terra"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 77,
+    "name": "ponyta",
+    "types": [
+      "Fogo"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 78,
+    "name": "rapidash",
+    "types": [
+      "Fogo"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 79,
+    "name": "slowpoke",
+    "types": [
+      "Água",
+      "Psíquico"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 80,
+    "name": "slowbro",
+    "types": [
+      "Água",
+      "Psíquico"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 81,
+    "name": "magnemite",
+    "types": [
+      "Elétrico",
+      "Ferro"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 82,
+    "name": "magneton",
+    "types": [
+      "Elétrico",
+      "Ferro"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 83,
+    "name": "farfetchd",
+    "types": [
+      "Normal",
+      "Voador"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 84,
+    "name": "doduo",
+    "types": [
+      "Normal",
+      "Voador"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 85,
+    "name": "dodrio",
+    "types": [
+      "Normal",
+      "Voador"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 86,
+    "name": "seel",
+    "types": [
+      "Água"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 87,
+    "name": "dewgong",
+    "types": [
+      "Água",
+      "Gelo"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 88,
+    "name": "grimer",
+    "types": [
+      "Veneno"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 89,
+    "name": "muk",
+    "types": [
+      "Veneno"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 90,
+    "name": "shellder",
+    "types": [
+      "Água"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 91,
+    "name": "cloyster",
+    "types": [
+      "Água",
+      "Gelo"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 92,
+    "name": "gastly",
+    "types": [
+      "Fantasma",
+      "Veneno"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 93,
+    "name": "haunter",
+    "types": [
+      "Fantasma",
+      "Veneno"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 94,
+    "name": "gengar",
+    "types": [
+      "Fantasma",
+      "Veneno"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 95,
+    "name": "onix",
+    "types": [
+      "Pedra",
+      "Terra"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 96,
+    "name": "drowzee",
+    "types": [
+      "Psíquico"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 97,
+    "name": "hypno",
+    "types": [
+      "Psíquico"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 98,
+    "name": "krabby",
+    "types": [
+      "Água"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 99,
+    "name": "kingler",
+    "types": [
+      "Água"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 100,
+    "name": "voltorb",
+    "types": [
+      "Elétrico"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 101,
+    "name": "electrode",
+    "types": [
+      "Elétrico"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 102,
+    "name": "exeggcute",
+    "types": [
+      "Grama",
+      "Psíquico"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 103,
+    "name": "exeggutor",
+    "types": [
+      "Grama",
+      "Psíquico"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 104,
+    "name": "cubone",
+    "types": [
+      "Terra"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 105,
+    "name": "marowak",
+    "types": [
+      "Terra"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 106,
+    "name": "hitmonlee",
+    "types": [
+      "Lutador"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 107,
+    "name": "hitmonchan",
+    "types": [
+      "Lutador"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 108,
+    "name": "lickitung",
+    "types": [
+      "Normal"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 109,
+    "name": "koffing",
+    "types": [
+      "Veneno"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 110,
+    "name": "weezing",
+    "types": [
+      "Veneno"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 111,
+    "name": "rhyhorn",
+    "types": [
+      "Terra",
+      "Pedra"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 112,
+    "name": "rhydon",
+    "types": [
+      "Terra",
+      "Pedra"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 113,
+    "name": "chansey",
+    "types": [
+      "Normal"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 114,
+    "name": "tangela",
+    "types": [
+      "Grama"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 115,
+    "name": "kangaskhan",
+    "types": [
+      "Normal"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 116,
+    "name": "horsea",
+    "types": [
+      "Água"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 117,
+    "name": "seadra",
+    "types": [
+      "Água"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 118,
+    "name": "goldeen",
+    "types": [
+      "Água"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 119,
+    "name": "seaking",
+    "types": [
+      "Água"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 120,
+    "name": "staryu",
+    "types": [
+      "Água"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 121,
+    "name": "starmie",
+    "types": [
+      "Água",
+      "Psíquico"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 122,
+    "name": "mr-mime",
+    "types": [
+      "Psíquico",
+      "Fada"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 123,
+    "name": "scyther",
+    "types": [
+      "Inseto",
+      "Voador"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 124,
+    "name": "jynx",
+    "types": [
+      "Gelo",
+      "Psíquico"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 125,
+    "name": "electabuzz",
+    "types": [
+      "Elétrico"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 126,
+    "name": "magmar",
+    "types": [
+      "Fogo"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 127,
+    "name": "pinsir",
+    "types": [
+      "Inseto"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 128,
+    "name": "tauros",
+    "types": [
+      "Normal"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 129,
+    "name": "magikarp",
+    "types": [
+      "Água"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 130,
+    "name": "gyarados",
+    "types": [
+      "Água",
+      "Voador"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 131,
+    "name": "lapras",
+    "types": [
+      "Água",
+      "Gelo"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 132,
+    "name": "ditto",
+    "types": [
+      "Normal"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 133,
+    "name": "eevee",
+    "types": [
+      "Normal"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 134,
+    "name": "vaporeon",
+    "types": [
+      "Água"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 135,
+    "name": "jolteon",
+    "types": [
+      "Elétrico"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 136,
+    "name": "flareon",
+    "types": [
+      "Fogo"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 137,
+    "name": "porygon",
+    "types": [
+      "Normal"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 138,
+    "name": "omanyte",
+    "types": [
+      "Pedra",
+      "Água"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 139,
+    "name": "omastar",
+    "types": [
+      "Pedra",
+      "Água"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 140,
+    "name": "kabuto",
+    "types": [
+      "Pedra",
+      "Água"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 141,
+    "name": "kabutops",
+    "types": [
+      "Pedra",
+      "Água"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 142,
+    "name": "aerodactyl",
+    "types": [
+      "Pedra",
+      "Voador"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 143,
+    "name": "snorlax",
+    "types": [
+      "Normal"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 144,
+    "name": "articuno",
+    "types": [
+      "Gelo",
+      "Voador"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 145,
+    "name": "zapdos",
+    "types": [
+      "Elétrico",
+      "Voador"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 146,
+    "name": "moltres",
+    "types": [
+      "Fogo",
+      "Voador"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 147,
+    "name": "dratini",
+    "types": [
+      "Dragão"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 148,
+    "name": "dragonair",
+    "types": [
+      "Dragão"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 149,
+    "name": "dragonite",
+    "types": [
+      "Dragão",
+      "Voador"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 150,
+    "name": "mewtwo",
+    "types": [
+      "Psíquico"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 151,
+    "name": "mew",
+    "types": [
+      "Psíquico"
+    ],
+    "generation": 1,
+    "region": "Kanto"
+  },
+  {
+    "number": 152,
+    "name": "chikorita",
+    "types": [
+      "Grama"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 153,
+    "name": "bayleef",
+    "types": [
+      "Grama"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 154,
+    "name": "meganium",
+    "types": [
+      "Grama"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 155,
+    "name": "cyndaquil",
+    "types": [
+      "Fogo"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 156,
+    "name": "quilava",
+    "types": [
+      "Fogo"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 157,
+    "name": "typhlosion",
+    "types": [
+      "Fogo"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 158,
+    "name": "totodile",
+    "types": [
+      "Água"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 159,
+    "name": "croconaw",
+    "types": [
+      "Água"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 160,
+    "name": "feraligatr",
+    "types": [
+      "Água"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 161,
+    "name": "sentret",
+    "types": [
+      "Normal"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 162,
+    "name": "furret",
+    "types": [
+      "Normal"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 163,
+    "name": "hoothoot",
+    "types": [
+      "Normal",
+      "Voador"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 164,
+    "name": "noctowl",
+    "types": [
+      "Normal",
+      "Voador"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 165,
+    "name": "ledyba",
+    "types": [
+      "Inseto",
+      "Voador"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 166,
+    "name": "ledian",
+    "types": [
+      "Inseto",
+      "Voador"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 167,
+    "name": "spinarak",
+    "types": [
+      "Inseto",
+      "Veneno"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 168,
+    "name": "ariados",
+    "types": [
+      "Inseto",
+      "Veneno"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 169,
+    "name": "crobat",
+    "types": [
+      "Veneno",
+      "Voador"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 170,
+    "name": "chinchou",
+    "types": [
+      "Água",
+      "Elétrico"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 171,
+    "name": "lanturn",
+    "types": [
+      "Água",
+      "Elétrico"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 172,
+    "name": "pichu",
+    "types": [
+      "Elétrico"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 173,
+    "name": "cleffa",
+    "types": [
+      "Fada"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 174,
+    "name": "igglybuff",
+    "types": [
+      "Normal",
+      "Fada"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 175,
+    "name": "togepi",
+    "types": [
+      "Fada"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 176,
+    "name": "togetic",
+    "types": [
+      "Fada",
+      "Voador"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 177,
+    "name": "natu",
+    "types": [
+      "Psíquico",
+      "Voador"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 178,
+    "name": "xatu",
+    "types": [
+      "Psíquico",
+      "Voador"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 179,
+    "name": "mareep",
+    "types": [
+      "Elétrico"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 180,
+    "name": "flaaffy",
+    "types": [
+      "Elétrico"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 181,
+    "name": "ampharos",
+    "types": [
+      "Elétrico"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 182,
+    "name": "bellossom",
+    "types": [
+      "Grama"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 183,
+    "name": "marill",
+    "types": [
+      "Água",
+      "Fada"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 184,
+    "name": "azumarill",
+    "types": [
+      "Água",
+      "Fada"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 185,
+    "name": "sudowoodo",
+    "types": [
+      "Pedra"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 186,
+    "name": "politoed",
+    "types": [
+      "Água"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 187,
+    "name": "hoppip",
+    "types": [
+      "Grama",
+      "Voador"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 188,
+    "name": "skiploom",
+    "types": [
+      "Grama",
+      "Voador"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 189,
+    "name": "jumpluff",
+    "types": [
+      "Grama",
+      "Voador"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 190,
+    "name": "aipom",
+    "types": [
+      "Normal"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 191,
+    "name": "sunkern",
+    "types": [
+      "Grama"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 192,
+    "name": "sunflora",
+    "types": [
+      "Grama"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 193,
+    "name": "yanma",
+    "types": [
+      "Inseto",
+      "Voador"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 194,
+    "name": "wooper",
+    "types": [
+      "Água",
+      "Terra"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 195,
+    "name": "quagsire",
+    "types": [
+      "Água",
+      "Terra"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 196,
+    "name": "espeon",
+    "types": [
+      "Psíquico"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 197,
+    "name": "umbreon",
+    "types": [
+      "Sombrio"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 198,
+    "name": "murkrow",
+    "types": [
+      "Sombrio",
+      "Voador"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 199,
+    "name": "slowking",
+    "types": [
+      "Água",
+      "Psíquico"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 200,
+    "name": "misdreavus",
+    "types": [
+      "Fantasma"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 201,
+    "name": "unown",
+    "types": [
+      "Psíquico"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 202,
+    "name": "wobbuffet",
+    "types": [
+      "Psíquico"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 203,
+    "name": "girafarig",
+    "types": [
+      "Normal",
+      "Psíquico"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 204,
+    "name": "pineco",
+    "types": [
+      "Inseto"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 205,
+    "name": "forretress",
+    "types": [
+      "Inseto",
+      "Ferro"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 206,
+    "name": "dunsparce",
+    "types": [
+      "Normal"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 207,
+    "name": "gligar",
+    "types": [
+      "Terra",
+      "Voador"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 208,
+    "name": "steelix",
+    "types": [
+      "Ferro",
+      "Terra"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 209,
+    "name": "snubbull",
+    "types": [
+      "Fada"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 210,
+    "name": "granbull",
+    "types": [
+      "Fada"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 211,
+    "name": "qwilfish",
+    "types": [
+      "Água",
+      "Veneno"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 212,
+    "name": "scizor",
+    "types": [
+      "Inseto",
+      "Ferro"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 213,
+    "name": "shuckle",
+    "types": [
+      "Inseto",
+      "Pedra"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 214,
+    "name": "heracross",
+    "types": [
+      "Inseto",
+      "Lutador"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 215,
+    "name": "sneasel",
+    "types": [
+      "Sombrio",
+      "Gelo"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 216,
+    "name": "teddiursa",
+    "types": [
+      "Normal"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 217,
+    "name": "ursaring",
+    "types": [
+      "Normal"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 218,
+    "name": "slugma",
+    "types": [
+      "Fogo"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 219,
+    "name": "magcargo",
+    "types": [
+      "Fogo",
+      "Pedra"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 220,
+    "name": "swinub",
+    "types": [
+      "Gelo",
+      "Terra"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 221,
+    "name": "piloswine",
+    "types": [
+      "Gelo",
+      "Terra"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 222,
+    "name": "corsola",
+    "types": [
+      "Água",
+      "Pedra"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 223,
+    "name": "remoraid",
+    "types": [
+      "Água"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 224,
+    "name": "octillery",
+    "types": [
+      "Água"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 225,
+    "name": "delibird",
+    "types": [
+      "Gelo",
+      "Voador"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 226,
+    "name": "mantine",
+    "types": [
+      "Água",
+      "Voador"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 227,
+    "name": "skarmory",
+    "types": [
+      "Ferro",
+      "Voador"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 228,
+    "name": "houndour",
+    "types": [
+      "Sombrio",
+      "Fogo"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 229,
+    "name": "houndoom",
+    "types": [
+      "Sombrio",
+      "Fogo"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 230,
+    "name": "kingdra",
+    "types": [
+      "Água",
+      "Dragão"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 231,
+    "name": "phanpy",
+    "types": [
+      "Terra"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 232,
+    "name": "donphan",
+    "types": [
+      "Terra"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 233,
+    "name": "porygon2",
+    "types": [
+      "Normal"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 234,
+    "name": "stantler",
+    "types": [
+      "Normal"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 235,
+    "name": "smeargle",
+    "types": [
+      "Normal"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 236,
+    "name": "tyrogue",
+    "types": [
+      "Lutador"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 237,
+    "name": "hitmontop",
+    "types": [
+      "Lutador"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 238,
+    "name": "smoochum",
+    "types": [
+      "Gelo",
+      "Psíquico"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 239,
+    "name": "elekid",
+    "types": [
+      "Elétrico"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 240,
+    "name": "magby",
+    "types": [
+      "Fogo"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 241,
+    "name": "miltank",
+    "types": [
+      "Normal"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 242,
+    "name": "blissey",
+    "types": [
+      "Normal"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 243,
+    "name": "raikou",
+    "types": [
+      "Elétrico"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 244,
+    "name": "entei",
+    "types": [
+      "Fogo"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 245,
+    "name": "suicune",
+    "types": [
+      "Água"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 246,
+    "name": "larvitar",
+    "types": [
+      "Pedra",
+      "Terra"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 247,
+    "name": "pupitar",
+    "types": [
+      "Pedra",
+      "Terra"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 248,
+    "name": "tyranitar",
+    "types": [
+      "Pedra",
+      "Sombrio"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 249,
+    "name": "lugia",
+    "types": [
+      "Psíquico",
+      "Voador"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 250,
+    "name": "ho-oh",
+    "types": [
+      "Fogo",
+      "Voador"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 251,
+    "name": "celebi",
+    "types": [
+      "Psíquico",
+      "Grama"
+    ],
+    "generation": 2,
+    "region": "Johto"
+  },
+  {
+    "number": 252,
+    "name": "treecko",
+    "types": [
+      "Grama"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 253,
+    "name": "grovyle",
+    "types": [
+      "Grama"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 254,
+    "name": "sceptile",
+    "types": [
+      "Grama"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 255,
+    "name": "torchic",
+    "types": [
+      "Fogo"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 256,
+    "name": "combusken",
+    "types": [
+      "Fogo",
+      "Lutador"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 257,
+    "name": "blaziken",
+    "types": [
+      "Fogo",
+      "Lutador"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 258,
+    "name": "mudkip",
+    "types": [
+      "Água"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 259,
+    "name": "marshtomp",
+    "types": [
+      "Água",
+      "Terra"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 260,
+    "name": "swampert",
+    "types": [
+      "Água",
+      "Terra"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 261,
+    "name": "poochyena",
+    "types": [
+      "Sombrio"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 262,
+    "name": "mightyena",
+    "types": [
+      "Sombrio"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 263,
+    "name": "zigzagoon",
+    "types": [
+      "Normal"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 264,
+    "name": "linoone",
+    "types": [
+      "Normal"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 265,
+    "name": "wurmple",
+    "types": [
+      "Inseto"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 266,
+    "name": "silcoon",
+    "types": [
+      "Inseto"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 267,
+    "name": "beautifly",
+    "types": [
+      "Inseto",
+      "Voador"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 268,
+    "name": "cascoon",
+    "types": [
+      "Inseto"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 269,
+    "name": "dustox",
+    "types": [
+      "Inseto",
+      "Veneno"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 270,
+    "name": "lotad",
+    "types": [
+      "Água",
+      "Grama"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 271,
+    "name": "lombre",
+    "types": [
+      "Água",
+      "Grama"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 272,
+    "name": "ludicolo",
+    "types": [
+      "Água",
+      "Grama"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 273,
+    "name": "seedot",
+    "types": [
+      "Grama"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 274,
+    "name": "nuzleaf",
+    "types": [
+      "Grama",
+      "Sombrio"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 275,
+    "name": "shiftry",
+    "types": [
+      "Grama",
+      "Sombrio"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 276,
+    "name": "taillow",
+    "types": [
+      "Normal",
+      "Voador"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 277,
+    "name": "swellow",
+    "types": [
+      "Normal",
+      "Voador"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 278,
+    "name": "wingull",
+    "types": [
+      "Água",
+      "Voador"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 279,
+    "name": "pelipper",
+    "types": [
+      "Água",
+      "Voador"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 280,
+    "name": "ralts",
+    "types": [
+      "Psíquico",
+      "Fada"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 281,
+    "name": "kirlia",
+    "types": [
+      "Psíquico",
+      "Fada"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 282,
+    "name": "gardevoir",
+    "types": [
+      "Psíquico",
+      "Fada"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 283,
+    "name": "surskit",
+    "types": [
+      "Inseto",
+      "Água"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 284,
+    "name": "masquerain",
+    "types": [
+      "Inseto",
+      "Voador"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 285,
+    "name": "shroomish",
+    "types": [
+      "Grama"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 286,
+    "name": "breloom",
+    "types": [
+      "Grama",
+      "Lutador"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 287,
+    "name": "slakoth",
+    "types": [
+      "Normal"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 288,
+    "name": "vigoroth",
+    "types": [
+      "Normal"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 289,
+    "name": "slaking",
+    "types": [
+      "Normal"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 290,
+    "name": "nincada",
+    "types": [
+      "Inseto",
+      "Terra"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 291,
+    "name": "ninjask",
+    "types": [
+      "Inseto",
+      "Voador"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 292,
+    "name": "shedinja",
+    "types": [
+      "Inseto",
+      "Fantasma"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 293,
+    "name": "whismur",
+    "types": [
+      "Normal"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 294,
+    "name": "loudred",
+    "types": [
+      "Normal"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 295,
+    "name": "exploud",
+    "types": [
+      "Normal"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 296,
+    "name": "makuhita",
+    "types": [
+      "Lutador"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 297,
+    "name": "hariyama",
+    "types": [
+      "Lutador"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 298,
+    "name": "azurill",
+    "types": [
+      "Normal",
+      "Fada"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 299,
+    "name": "nosepass",
+    "types": [
+      "Pedra"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 300,
+    "name": "skitty",
+    "types": [
+      "Normal"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 301,
+    "name": "delcatty",
+    "types": [
+      "Normal"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 302,
+    "name": "sableye",
+    "types": [
+      "Sombrio",
+      "Fantasma"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 303,
+    "name": "mawile",
+    "types": [
+      "Ferro",
+      "Fada"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 304,
+    "name": "aron",
+    "types": [
+      "Ferro",
+      "Pedra"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 305,
+    "name": "lairon",
+    "types": [
+      "Ferro",
+      "Pedra"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 306,
+    "name": "aggron",
+    "types": [
+      "Ferro",
+      "Pedra"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 307,
+    "name": "meditite",
+    "types": [
+      "Lutador",
+      "Psíquico"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 308,
+    "name": "medicham",
+    "types": [
+      "Lutador",
+      "Psíquico"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 309,
+    "name": "electrike",
+    "types": [
+      "Elétrico"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 310,
+    "name": "manectric",
+    "types": [
+      "Elétrico"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 311,
+    "name": "plusle",
+    "types": [
+      "Elétrico"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 312,
+    "name": "minun",
+    "types": [
+      "Elétrico"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 313,
+    "name": "volbeat",
+    "types": [
+      "Inseto"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 314,
+    "name": "illumise",
+    "types": [
+      "Inseto"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 315,
+    "name": "roselia",
+    "types": [
+      "Grama",
+      "Veneno"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 316,
+    "name": "gulpin",
+    "types": [
+      "Veneno"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 317,
+    "name": "swalot",
+    "types": [
+      "Veneno"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 318,
+    "name": "carvanha",
+    "types": [
+      "Água",
+      "Sombrio"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 319,
+    "name": "sharpedo",
+    "types": [
+      "Água",
+      "Sombrio"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 320,
+    "name": "wailmer",
+    "types": [
+      "Água"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 321,
+    "name": "wailord",
+    "types": [
+      "Água"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 322,
+    "name": "numel",
+    "types": [
+      "Fogo",
+      "Terra"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 323,
+    "name": "camerupt",
+    "types": [
+      "Fogo",
+      "Terra"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 324,
+    "name": "torkoal",
+    "types": [
+      "Fogo"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 325,
+    "name": "spoink",
+    "types": [
+      "Psíquico"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 326,
+    "name": "grumpig",
+    "types": [
+      "Psíquico"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 327,
+    "name": "spinda",
+    "types": [
+      "Normal"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 328,
+    "name": "trapinch",
+    "types": [
+      "Terra"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 329,
+    "name": "vibrava",
+    "types": [
+      "Terra",
+      "Dragão"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 330,
+    "name": "flygon",
+    "types": [
+      "Terra",
+      "Dragão"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 331,
+    "name": "cacnea",
+    "types": [
+      "Grama"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 332,
+    "name": "cacturne",
+    "types": [
+      "Grama",
+      "Sombrio"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 333,
+    "name": "swablu",
+    "types": [
+      "Normal",
+      "Voador"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 334,
+    "name": "altaria",
+    "types": [
+      "Dragão",
+      "Voador"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 335,
+    "name": "zangoose",
+    "types": [
+      "Normal"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 336,
+    "name": "seviper",
+    "types": [
+      "Veneno"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 337,
+    "name": "lunatone",
+    "types": [
+      "Pedra",
+      "Psíquico"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 338,
+    "name": "solrock",
+    "types": [
+      "Pedra",
+      "Psíquico"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 339,
+    "name": "barboach",
+    "types": [
+      "Água",
+      "Terra"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 340,
+    "name": "whiscash",
+    "types": [
+      "Água",
+      "Terra"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 341,
+    "name": "corphish",
+    "types": [
+      "Água"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 342,
+    "name": "crawdaunt",
+    "types": [
+      "Água",
+      "Sombrio"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 343,
+    "name": "baltoy",
+    "types": [
+      "Terra",
+      "Psíquico"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 344,
+    "name": "claydol",
+    "types": [
+      "Terra",
+      "Psíquico"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 345,
+    "name": "lileep",
+    "types": [
+      "Pedra",
+      "Grama"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 346,
+    "name": "cradily",
+    "types": [
+      "Pedra",
+      "Grama"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 347,
+    "name": "anorith",
+    "types": [
+      "Pedra",
+      "Inseto"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 348,
+    "name": "armaldo",
+    "types": [
+      "Pedra",
+      "Inseto"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 349,
+    "name": "feebas",
+    "types": [
+      "Água"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 350,
+    "name": "milotic",
+    "types": [
+      "Água"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 351,
+    "name": "castform",
+    "types": [
+      "Normal"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 352,
+    "name": "kecleon",
+    "types": [
+      "Normal"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 353,
+    "name": "shuppet",
+    "types": [
+      "Fantasma"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 354,
+    "name": "banette",
+    "types": [
+      "Fantasma"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 355,
+    "name": "duskull",
+    "types": [
+      "Fantasma"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 356,
+    "name": "dusclops",
+    "types": [
+      "Fantasma"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 357,
+    "name": "tropius",
+    "types": [
+      "Grama",
+      "Voador"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 358,
+    "name": "chimecho",
+    "types": [
+      "Psíquico"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 359,
+    "name": "absol",
+    "types": [
+      "Sombrio"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 360,
+    "name": "wynaut",
+    "types": [
+      "Psíquico"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 361,
+    "name": "snorunt",
+    "types": [
+      "Gelo"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 362,
+    "name": "glalie",
+    "types": [
+      "Gelo"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 363,
+    "name": "spheal",
+    "types": [
+      "Gelo",
+      "Água"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 364,
+    "name": "sealeo",
+    "types": [
+      "Gelo",
+      "Água"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 365,
+    "name": "walrein",
+    "types": [
+      "Gelo",
+      "Água"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 366,
+    "name": "clamperl",
+    "types": [
+      "Água"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 367,
+    "name": "huntail",
+    "types": [
+      "Água"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 368,
+    "name": "gorebyss",
+    "types": [
+      "Água"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 369,
+    "name": "relicanth",
+    "types": [
+      "Água",
+      "Pedra"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 370,
+    "name": "luvdisc",
+    "types": [
+      "Água"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 371,
+    "name": "bagon",
+    "types": [
+      "Dragão"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 372,
+    "name": "shelgon",
+    "types": [
+      "Dragão"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 373,
+    "name": "salamence",
+    "types": [
+      "Dragão",
+      "Voador"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 374,
+    "name": "beldum",
+    "types": [
+      "Ferro",
+      "Psíquico"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 375,
+    "name": "metang",
+    "types": [
+      "Ferro",
+      "Psíquico"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 376,
+    "name": "metagross",
+    "types": [
+      "Ferro",
+      "Psíquico"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 377,
+    "name": "regirock",
+    "types": [
+      "Pedra"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 378,
+    "name": "regice",
+    "types": [
+      "Gelo"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 379,
+    "name": "registeel",
+    "types": [
+      "Ferro"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 380,
+    "name": "latias",
+    "types": [
+      "Dragão",
+      "Psíquico"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 381,
+    "name": "latios",
+    "types": [
+      "Dragão",
+      "Psíquico"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 382,
+    "name": "kyogre",
+    "types": [
+      "Água"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 383,
+    "name": "groudon",
+    "types": [
+      "Terra"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 384,
+    "name": "rayquaza",
+    "types": [
+      "Dragão",
+      "Voador"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 385,
+    "name": "jirachi",
+    "types": [
+      "Ferro",
+      "Psíquico"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 386,
+    "name": "deoxys-normal",
+    "types": [
+      "Psíquico"
+    ],
+    "generation": 3,
+    "region": "Hoenn"
+  },
+  {
+    "number": 387,
+    "name": "turtwig",
+    "types": [
+      "Grama"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 388,
+    "name": "grotle",
+    "types": [
+      "Grama"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 389,
+    "name": "torterra",
+    "types": [
+      "Grama",
+      "Terra"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 390,
+    "name": "chimchar",
+    "types": [
+      "Fogo"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 391,
+    "name": "monferno",
+    "types": [
+      "Fogo",
+      "Lutador"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 392,
+    "name": "infernape",
+    "types": [
+      "Fogo",
+      "Lutador"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 393,
+    "name": "piplup",
+    "types": [
+      "Água"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 394,
+    "name": "prinplup",
+    "types": [
+      "Água"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 395,
+    "name": "empoleon",
+    "types": [
+      "Água",
+      "Ferro"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 396,
+    "name": "starly",
+    "types": [
+      "Normal",
+      "Voador"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 397,
+    "name": "staravia",
+    "types": [
+      "Normal",
+      "Voador"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 398,
+    "name": "staraptor",
+    "types": [
+      "Normal",
+      "Voador"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 399,
+    "name": "bidoof",
+    "types": [
+      "Normal"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 400,
+    "name": "bibarel",
+    "types": [
+      "Normal",
+      "Água"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 401,
+    "name": "kricketot",
+    "types": [
+      "Inseto"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 402,
+    "name": "kricketune",
+    "types": [
+      "Inseto"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 403,
+    "name": "shinx",
+    "types": [
+      "Elétrico"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 404,
+    "name": "luxio",
+    "types": [
+      "Elétrico"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 405,
+    "name": "luxray",
+    "types": [
+      "Elétrico"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 406,
+    "name": "budew",
+    "types": [
+      "Grama",
+      "Veneno"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 407,
+    "name": "roserade",
+    "types": [
+      "Grama",
+      "Veneno"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 408,
+    "name": "cranidos",
+    "types": [
+      "Pedra"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 409,
+    "name": "rampardos",
+    "types": [
+      "Pedra"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 410,
+    "name": "shieldon",
+    "types": [
+      "Pedra",
+      "Ferro"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 411,
+    "name": "bastiodon",
+    "types": [
+      "Pedra",
+      "Ferro"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 412,
+    "name": "burmy",
+    "types": [
+      "Inseto"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 413,
+    "name": "wormadam-plant",
+    "types": [
+      "Inseto",
+      "Grama"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 414,
+    "name": "mothim",
+    "types": [
+      "Inseto",
+      "Voador"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 415,
+    "name": "combee",
+    "types": [
+      "Inseto",
+      "Voador"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 416,
+    "name": "vespiquen",
+    "types": [
+      "Inseto",
+      "Voador"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 417,
+    "name": "pachirisu",
+    "types": [
+      "Elétrico"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 418,
+    "name": "buizel",
+    "types": [
+      "Água"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 419,
+    "name": "floatzel",
+    "types": [
+      "Água"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 420,
+    "name": "cherubi",
+    "types": [
+      "Grama"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 421,
+    "name": "cherrim",
+    "types": [
+      "Grama"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 422,
+    "name": "shellos",
+    "types": [
+      "Água"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 423,
+    "name": "gastrodon",
+    "types": [
+      "Água",
+      "Terra"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 424,
+    "name": "ambipom",
+    "types": [
+      "Normal"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 425,
+    "name": "drifloon",
+    "types": [
+      "Fantasma",
+      "Voador"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 426,
+    "name": "drifblim",
+    "types": [
+      "Fantasma",
+      "Voador"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 427,
+    "name": "buneary",
+    "types": [
+      "Normal"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 428,
+    "name": "lopunny",
+    "types": [
+      "Normal"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 429,
+    "name": "mismagius",
+    "types": [
+      "Fantasma"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 430,
+    "name": "honchkrow",
+    "types": [
+      "Sombrio",
+      "Voador"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 431,
+    "name": "glameow",
+    "types": [
+      "Normal"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 432,
+    "name": "purugly",
+    "types": [
+      "Normal"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 433,
+    "name": "chingling",
+    "types": [
+      "Psíquico"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 434,
+    "name": "stunky",
+    "types": [
+      "Veneno",
+      "Sombrio"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 435,
+    "name": "skuntank",
+    "types": [
+      "Veneno",
+      "Sombrio"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 436,
+    "name": "bronzor",
+    "types": [
+      "Ferro",
+      "Psíquico"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 437,
+    "name": "bronzong",
+    "types": [
+      "Ferro",
+      "Psíquico"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 438,
+    "name": "bonsly",
+    "types": [
+      "Pedra"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 439,
+    "name": "mime-jr",
+    "types": [
+      "Psíquico",
+      "Fada"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 440,
+    "name": "happiny",
+    "types": [
+      "Normal"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 441,
+    "name": "chatot",
+    "types": [
+      "Normal",
+      "Voador"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 442,
+    "name": "spiritomb",
+    "types": [
+      "Fantasma",
+      "Sombrio"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 443,
+    "name": "gible",
+    "types": [
+      "Dragão",
+      "Terra"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 444,
+    "name": "gabite",
+    "types": [
+      "Dragão",
+      "Terra"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 445,
+    "name": "garchomp",
+    "types": [
+      "Dragão",
+      "Terra"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 446,
+    "name": "munchlax",
+    "types": [
+      "Normal"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 447,
+    "name": "riolu",
+    "types": [
+      "Lutador"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 448,
+    "name": "lucario",
+    "types": [
+      "Lutador",
+      "Ferro"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 449,
+    "name": "hippopotas",
+    "types": [
+      "Terra"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 450,
+    "name": "hippowdon",
+    "types": [
+      "Terra"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 451,
+    "name": "skorupi",
+    "types": [
+      "Veneno",
+      "Inseto"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 452,
+    "name": "drapion",
+    "types": [
+      "Veneno",
+      "Sombrio"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 453,
+    "name": "croagunk",
+    "types": [
+      "Veneno",
+      "Lutador"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 454,
+    "name": "toxicroak",
+    "types": [
+      "Veneno",
+      "Lutador"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 455,
+    "name": "carnivine",
+    "types": [
+      "Grama"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 456,
+    "name": "finneon",
+    "types": [
+      "Água"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 457,
+    "name": "lumineon",
+    "types": [
+      "Água"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 458,
+    "name": "mantyke",
+    "types": [
+      "Água",
+      "Voador"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 459,
+    "name": "snover",
+    "types": [
+      "Grama",
+      "Gelo"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 460,
+    "name": "abomasnow",
+    "types": [
+      "Grama",
+      "Gelo"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 461,
+    "name": "weavile",
+    "types": [
+      "Sombrio",
+      "Gelo"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 462,
+    "name": "magnezone",
+    "types": [
+      "Elétrico",
+      "Ferro"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 463,
+    "name": "lickilicky",
+    "types": [
+      "Normal"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 464,
+    "name": "rhyperior",
+    "types": [
+      "Terra",
+      "Pedra"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 465,
+    "name": "tangrowth",
+    "types": [
+      "Grama"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 466,
+    "name": "electivire",
+    "types": [
+      "Elétrico"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 467,
+    "name": "magmortar",
+    "types": [
+      "Fogo"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 468,
+    "name": "togekiss",
+    "types": [
+      "Fada",
+      "Voador"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 469,
+    "name": "yanmega",
+    "types": [
+      "Inseto",
+      "Voador"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 470,
+    "name": "leafeon",
+    "types": [
+      "Grama"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 471,
+    "name": "glaceon",
+    "types": [
+      "Gelo"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 472,
+    "name": "gliscor",
+    "types": [
+      "Terra",
+      "Voador"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 473,
+    "name": "mamoswine",
+    "types": [
+      "Gelo",
+      "Terra"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 474,
+    "name": "porygon-z",
+    "types": [
+      "Normal"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 475,
+    "name": "gallade",
+    "types": [
+      "Psíquico",
+      "Lutador"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 476,
+    "name": "probopass",
+    "types": [
+      "Pedra",
+      "Ferro"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 477,
+    "name": "dusknoir",
+    "types": [
+      "Fantasma"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 478,
+    "name": "froslass",
+    "types": [
+      "Gelo",
+      "Fantasma"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 479,
+    "name": "rotom",
+    "types": [
+      "Elétrico",
+      "Fantasma"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 480,
+    "name": "uxie",
+    "types": [
+      "Psíquico"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 481,
+    "name": "mesprit",
+    "types": [
+      "Psíquico"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 482,
+    "name": "azelf",
+    "types": [
+      "Psíquico"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 483,
+    "name": "dialga",
+    "types": [
+      "Ferro",
+      "Dragão"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 484,
+    "name": "palkia",
+    "types": [
+      "Água",
+      "Dragão"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 485,
+    "name": "heatran",
+    "types": [
+      "Fogo",
+      "Ferro"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 486,
+    "name": "regigigas",
+    "types": [
+      "Normal"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 487,
+    "name": "giratina-altered",
+    "types": [
+      "Fantasma",
+      "Dragão"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 488,
+    "name": "cresselia",
+    "types": [
+      "Psíquico"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 489,
+    "name": "phione",
+    "types": [
+      "Água"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 490,
+    "name": "manaphy",
+    "types": [
+      "Água"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 491,
+    "name": "darkrai",
+    "types": [
+      "Sombrio"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 492,
+    "name": "shaymin-land",
+    "types": [
+      "Grama"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 493,
+    "name": "arceus",
+    "types": [
+      "Normal"
+    ],
+    "generation": 4,
+    "region": "Sinnoh"
+  },
+  {
+    "number": 494,
+    "name": "victini",
+    "types": [
+      "Psíquico",
+      "Fogo"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 495,
+    "name": "snivy",
+    "types": [
+      "Grama"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 496,
+    "name": "servine",
+    "types": [
+      "Grama"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 497,
+    "name": "serperior",
+    "types": [
+      "Grama"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 498,
+    "name": "tepig",
+    "types": [
+      "Fogo"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 499,
+    "name": "pignite",
+    "types": [
+      "Fogo",
+      "Lutador"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 500,
+    "name": "emboar",
+    "types": [
+      "Fogo",
+      "Lutador"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 501,
+    "name": "oshawott",
+    "types": [
+      "Água"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 502,
+    "name": "dewott",
+    "types": [
+      "Água"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 503,
+    "name": "samurott",
+    "types": [
+      "Água"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 504,
+    "name": "patrat",
+    "types": [
+      "Normal"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 505,
+    "name": "watchog",
+    "types": [
+      "Normal"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 506,
+    "name": "lillipup",
+    "types": [
+      "Normal"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 507,
+    "name": "herdier",
+    "types": [
+      "Normal"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 508,
+    "name": "stoutland",
+    "types": [
+      "Normal"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 509,
+    "name": "purrloin",
+    "types": [
+      "Sombrio"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 510,
+    "name": "liepard",
+    "types": [
+      "Sombrio"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 511,
+    "name": "pansage",
+    "types": [
+      "Grama"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 512,
+    "name": "simisage",
+    "types": [
+      "Grama"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 513,
+    "name": "pansear",
+    "types": [
+      "Fogo"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 514,
+    "name": "simisear",
+    "types": [
+      "Fogo"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 515,
+    "name": "panpour",
+    "types": [
+      "Água"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 516,
+    "name": "simipour",
+    "types": [
+      "Água"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 517,
+    "name": "munna",
+    "types": [
+      "Psíquico"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 518,
+    "name": "musharna",
+    "types": [
+      "Psíquico"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 519,
+    "name": "pidove",
+    "types": [
+      "Normal",
+      "Voador"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 520,
+    "name": "tranquill",
+    "types": [
+      "Normal",
+      "Voador"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 521,
+    "name": "unfezant",
+    "types": [
+      "Normal",
+      "Voador"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 522,
+    "name": "blitzle",
+    "types": [
+      "Elétrico"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 523,
+    "name": "zebstrika",
+    "types": [
+      "Elétrico"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 524,
+    "name": "roggenrola",
+    "types": [
+      "Pedra"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 525,
+    "name": "boldore",
+    "types": [
+      "Pedra"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 526,
+    "name": "gigalith",
+    "types": [
+      "Pedra"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 527,
+    "name": "woobat",
+    "types": [
+      "Psíquico",
+      "Voador"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 528,
+    "name": "swoobat",
+    "types": [
+      "Psíquico",
+      "Voador"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 529,
+    "name": "drilbur",
+    "types": [
+      "Terra"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 530,
+    "name": "excadrill",
+    "types": [
+      "Terra",
+      "Ferro"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 531,
+    "name": "audino",
+    "types": [
+      "Normal"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 532,
+    "name": "timburr",
+    "types": [
+      "Lutador"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 533,
+    "name": "gurdurr",
+    "types": [
+      "Lutador"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 534,
+    "name": "conkeldurr",
+    "types": [
+      "Lutador"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 535,
+    "name": "tympole",
+    "types": [
+      "Água"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 536,
+    "name": "palpitoad",
+    "types": [
+      "Água",
+      "Terra"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 537,
+    "name": "seismitoad",
+    "types": [
+      "Água",
+      "Terra"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 538,
+    "name": "throh",
+    "types": [
+      "Lutador"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 539,
+    "name": "sawk",
+    "types": [
+      "Lutador"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 540,
+    "name": "sewaddle",
+    "types": [
+      "Inseto",
+      "Grama"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 541,
+    "name": "swadloon",
+    "types": [
+      "Inseto",
+      "Grama"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 542,
+    "name": "leavanny",
+    "types": [
+      "Inseto",
+      "Grama"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 543,
+    "name": "venipede",
+    "types": [
+      "Inseto",
+      "Veneno"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 544,
+    "name": "whirlipede",
+    "types": [
+      "Inseto",
+      "Veneno"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 545,
+    "name": "scolipede",
+    "types": [
+      "Inseto",
+      "Veneno"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 546,
+    "name": "cottonee",
+    "types": [
+      "Grama",
+      "Fada"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 547,
+    "name": "whimsicott",
+    "types": [
+      "Grama",
+      "Fada"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 548,
+    "name": "petilil",
+    "types": [
+      "Grama"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 549,
+    "name": "lilligant",
+    "types": [
+      "Grama"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 550,
+    "name": "basculin-red-striped",
+    "types": [
+      "Água"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 551,
+    "name": "sandile",
+    "types": [
+      "Terra",
+      "Sombrio"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 552,
+    "name": "krokorok",
+    "types": [
+      "Terra",
+      "Sombrio"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 553,
+    "name": "krookodile",
+    "types": [
+      "Terra",
+      "Sombrio"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 554,
+    "name": "darumaka",
+    "types": [
+      "Fogo"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 555,
+    "name": "darmanitan-standard",
+    "types": [
+      "Fogo"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 556,
+    "name": "maractus",
+    "types": [
+      "Grama"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 557,
+    "name": "dwebble",
+    "types": [
+      "Inseto",
+      "Pedra"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 558,
+    "name": "crustle",
+    "types": [
+      "Inseto",
+      "Pedra"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 559,
+    "name": "scraggy",
+    "types": [
+      "Sombrio",
+      "Lutador"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 560,
+    "name": "scrafty",
+    "types": [
+      "Sombrio",
+      "Lutador"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 561,
+    "name": "sigilyph",
+    "types": [
+      "Psíquico",
+      "Voador"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 562,
+    "name": "yamask",
+    "types": [
+      "Fantasma"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 563,
+    "name": "cofagrigus",
+    "types": [
+      "Fantasma"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 564,
+    "name": "tirtouga",
+    "types": [
+      "Água",
+      "Pedra"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 565,
+    "name": "carracosta",
+    "types": [
+      "Água",
+      "Pedra"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 566,
+    "name": "archen",
+    "types": [
+      "Pedra",
+      "Voador"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 567,
+    "name": "archeops",
+    "types": [
+      "Pedra",
+      "Voador"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 568,
+    "name": "trubbish",
+    "types": [
+      "Veneno"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 569,
+    "name": "garbodor",
+    "types": [
+      "Veneno"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 570,
+    "name": "zorua",
+    "types": [
+      "Sombrio"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 571,
+    "name": "zoroark",
+    "types": [
+      "Sombrio"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 572,
+    "name": "minccino",
+    "types": [
+      "Normal"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 573,
+    "name": "cinccino",
+    "types": [
+      "Normal"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 574,
+    "name": "gothita",
+    "types": [
+      "Psíquico"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 575,
+    "name": "gothorita",
+    "types": [
+      "Psíquico"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 576,
+    "name": "gothitelle",
+    "types": [
+      "Psíquico"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 577,
+    "name": "solosis",
+    "types": [
+      "Psíquico"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 578,
+    "name": "duosion",
+    "types": [
+      "Psíquico"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 579,
+    "name": "reuniclus",
+    "types": [
+      "Psíquico"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 580,
+    "name": "ducklett",
+    "types": [
+      "Água",
+      "Voador"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 581,
+    "name": "swanna",
+    "types": [
+      "Água",
+      "Voador"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 582,
+    "name": "vanillite",
+    "types": [
+      "Gelo"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 583,
+    "name": "vanillish",
+    "types": [
+      "Gelo"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 584,
+    "name": "vanilluxe",
+    "types": [
+      "Gelo"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 585,
+    "name": "deerling",
+    "types": [
+      "Normal",
+      "Grama"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 586,
+    "name": "sawsbuck",
+    "types": [
+      "Normal",
+      "Grama"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 587,
+    "name": "emolga",
+    "types": [
+      "Elétrico",
+      "Voador"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 588,
+    "name": "karrablast",
+    "types": [
+      "Inseto"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 589,
+    "name": "escavalier",
+    "types": [
+      "Inseto",
+      "Ferro"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 590,
+    "name": "foongus",
+    "types": [
+      "Grama",
+      "Veneno"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 591,
+    "name": "amoonguss",
+    "types": [
+      "Grama",
+      "Veneno"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 592,
+    "name": "frillish",
+    "types": [
+      "Água",
+      "Fantasma"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 593,
+    "name": "jellicent",
+    "types": [
+      "Água",
+      "Fantasma"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 594,
+    "name": "alomomola",
+    "types": [
+      "Água"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 595,
+    "name": "joltik",
+    "types": [
+      "Inseto",
+      "Elétrico"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 596,
+    "name": "galvantula",
+    "types": [
+      "Inseto",
+      "Elétrico"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 597,
+    "name": "ferroseed",
+    "types": [
+      "Grama",
+      "Ferro"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 598,
+    "name": "ferrothorn",
+    "types": [
+      "Grama",
+      "Ferro"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 599,
+    "name": "klink",
+    "types": [
+      "Ferro"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 600,
+    "name": "klang",
+    "types": [
+      "Ferro"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 601,
+    "name": "klinklang",
+    "types": [
+      "Ferro"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 602,
+    "name": "tynamo",
+    "types": [
+      "Elétrico"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 603,
+    "name": "eelektrik",
+    "types": [
+      "Elétrico"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 604,
+    "name": "eelektross",
+    "types": [
+      "Elétrico"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 605,
+    "name": "elgyem",
+    "types": [
+      "Psíquico"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 606,
+    "name": "beheeyem",
+    "types": [
+      "Psíquico"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 607,
+    "name": "litwick",
+    "types": [
+      "Fantasma",
+      "Fogo"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 608,
+    "name": "lampent",
+    "types": [
+      "Fantasma",
+      "Fogo"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 609,
+    "name": "chandelure",
+    "types": [
+      "Fantasma",
+      "Fogo"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 610,
+    "name": "axew",
+    "types": [
+      "Dragão"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 611,
+    "name": "fraxure",
+    "types": [
+      "Dragão"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 612,
+    "name": "haxorus",
+    "types": [
+      "Dragão"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 613,
+    "name": "cubchoo",
+    "types": [
+      "Gelo"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 614,
+    "name": "beartic",
+    "types": [
+      "Gelo"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 615,
+    "name": "cryogonal",
+    "types": [
+      "Gelo"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 616,
+    "name": "shelmet",
+    "types": [
+      "Inseto"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 617,
+    "name": "accelgor",
+    "types": [
+      "Inseto"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 618,
+    "name": "stunfisk",
+    "types": [
+      "Terra",
+      "Elétrico"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 619,
+    "name": "mienfoo",
+    "types": [
+      "Lutador"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 620,
+    "name": "mienshao",
+    "types": [
+      "Lutador"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 621,
+    "name": "druddigon",
+    "types": [
+      "Dragão"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 622,
+    "name": "golett",
+    "types": [
+      "Terra",
+      "Fantasma"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 623,
+    "name": "golurk",
+    "types": [
+      "Terra",
+      "Fantasma"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 624,
+    "name": "pawniard",
+    "types": [
+      "Sombrio",
+      "Ferro"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 625,
+    "name": "bisharp",
+    "types": [
+      "Sombrio",
+      "Ferro"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 626,
+    "name": "bouffalant",
+    "types": [
+      "Normal"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 627,
+    "name": "rufflet",
+    "types": [
+      "Normal",
+      "Voador"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 628,
+    "name": "braviary",
+    "types": [
+      "Normal",
+      "Voador"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 629,
+    "name": "vullaby",
+    "types": [
+      "Sombrio",
+      "Voador"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 630,
+    "name": "mandibuzz",
+    "types": [
+      "Sombrio",
+      "Voador"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 631,
+    "name": "heatmor",
+    "types": [
+      "Fogo"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 632,
+    "name": "durant",
+    "types": [
+      "Inseto",
+      "Ferro"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 633,
+    "name": "deino",
+    "types": [
+      "Sombrio",
+      "Dragão"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 634,
+    "name": "zweilous",
+    "types": [
+      "Sombrio",
+      "Dragão"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 635,
+    "name": "hydreigon",
+    "types": [
+      "Sombrio",
+      "Dragão"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 636,
+    "name": "larvesta",
+    "types": [
+      "Inseto",
+      "Fogo"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 637,
+    "name": "volcarona",
+    "types": [
+      "Inseto",
+      "Fogo"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 638,
+    "name": "cobalion",
+    "types": [
+      "Ferro",
+      "Lutador"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 639,
+    "name": "terrakion",
+    "types": [
+      "Pedra",
+      "Lutador"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 640,
+    "name": "virizion",
+    "types": [
+      "Grama",
+      "Lutador"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 641,
+    "name": "tornadus-incarnate",
+    "types": [
+      "Voador"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 642,
+    "name": "thundurus-incarnate",
+    "types": [
+      "Elétrico",
+      "Voador"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 643,
+    "name": "reshiram",
+    "types": [
+      "Dragão",
+      "Fogo"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 644,
+    "name": "zekrom",
+    "types": [
+      "Dragão",
+      "Elétrico"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 645,
+    "name": "landorus-incarnate",
+    "types": [
+      "Terra",
+      "Voador"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 646,
+    "name": "kyurem",
+    "types": [
+      "Dragão",
+      "Gelo"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 647,
+    "name": "keldeo-ordinary",
+    "types": [
+      "Água",
+      "Lutador"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 648,
+    "name": "meloetta-aria",
+    "types": [
+      "Normal",
+      "Psíquico"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 649,
+    "name": "genesect",
+    "types": [
+      "Inseto",
+      "Ferro"
+    ],
+    "generation": 5,
+    "region": "Unova"
+  },
+  {
+    "number": 650,
+    "name": "chespin",
+    "types": [
+      "Grama"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 651,
+    "name": "quilladin",
+    "types": [
+      "Grama"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 652,
+    "name": "chesnaught",
+    "types": [
+      "Grama",
+      "Lutador"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 653,
+    "name": "fennekin",
+    "types": [
+      "Fogo"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 654,
+    "name": "braixen",
+    "types": [
+      "Fogo"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 655,
+    "name": "delphox",
+    "types": [
+      "Fogo",
+      "Psíquico"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 656,
+    "name": "froakie",
+    "types": [
+      "Água"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 657,
+    "name": "frogadier",
+    "types": [
+      "Água"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 658,
+    "name": "greninja",
+    "types": [
+      "Água",
+      "Sombrio"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 659,
+    "name": "bunnelby",
+    "types": [
+      "Normal"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 660,
+    "name": "diggersby",
+    "types": [
+      "Normal",
+      "Terra"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 661,
+    "name": "fletchling",
+    "types": [
+      "Normal",
+      "Voador"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 662,
+    "name": "fletchinder",
+    "types": [
+      "Fogo",
+      "Voador"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 663,
+    "name": "talonflame",
+    "types": [
+      "Fogo",
+      "Voador"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 664,
+    "name": "scatterbug",
+    "types": [
+      "Inseto"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 665,
+    "name": "spewpa",
+    "types": [
+      "Inseto"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 666,
+    "name": "vivillon",
+    "types": [
+      "Inseto",
+      "Voador"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 667,
+    "name": "litleo",
+    "types": [
+      "Fogo",
+      "Normal"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 668,
+    "name": "pyroar",
+    "types": [
+      "Fogo",
+      "Normal"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 669,
+    "name": "flabebe",
+    "types": [
+      "Fada"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 670,
+    "name": "floette",
+    "types": [
+      "Fada"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 671,
+    "name": "florges",
+    "types": [
+      "Fada"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 672,
+    "name": "skiddo",
+    "types": [
+      "Grama"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 673,
+    "name": "gogoat",
+    "types": [
+      "Grama"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 674,
+    "name": "pancham",
+    "types": [
+      "Lutador"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 675,
+    "name": "pangoro",
+    "types": [
+      "Lutador",
+      "Sombrio"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 676,
+    "name": "furfrou",
+    "types": [
+      "Normal"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 677,
+    "name": "espurr",
+    "types": [
+      "Psíquico"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 678,
+    "name": "meowstic-male",
+    "types": [
+      "Psíquico"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 679,
+    "name": "honedge",
+    "types": [
+      "Ferro",
+      "Fantasma"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 680,
+    "name": "doublade",
+    "types": [
+      "Ferro",
+      "Fantasma"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 681,
+    "name": "aegislash-shield",
+    "types": [
+      "Ferro",
+      "Fantasma"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 682,
+    "name": "spritzee",
+    "types": [
+      "Fada"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 683,
+    "name": "aromatisse",
+    "types": [
+      "Fada"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 684,
+    "name": "swirlix",
+    "types": [
+      "Fada"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 685,
+    "name": "slurpuff",
+    "types": [
+      "Fada"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 686,
+    "name": "inkay",
+    "types": [
+      "Sombrio",
+      "Psíquico"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 687,
+    "name": "malamar",
+    "types": [
+      "Sombrio",
+      "Psíquico"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 688,
+    "name": "binacle",
+    "types": [
+      "Pedra",
+      "Água"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 689,
+    "name": "barbaracle",
+    "types": [
+      "Pedra",
+      "Água"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 690,
+    "name": "skrelp",
+    "types": [
+      "Veneno",
+      "Água"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 691,
+    "name": "dragalge",
+    "types": [
+      "Veneno",
+      "Dragão"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 692,
+    "name": "clauncher",
+    "types": [
+      "Água"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 693,
+    "name": "clawitzer",
+    "types": [
+      "Água"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 694,
+    "name": "helioptile",
+    "types": [
+      "Elétrico",
+      "Normal"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 695,
+    "name": "heliolisk",
+    "types": [
+      "Elétrico",
+      "Normal"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 696,
+    "name": "tyrunt",
+    "types": [
+      "Pedra",
+      "Dragão"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 697,
+    "name": "tyrantrum",
+    "types": [
+      "Pedra",
+      "Dragão"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 698,
+    "name": "amaura",
+    "types": [
+      "Pedra",
+      "Gelo"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 699,
+    "name": "aurorus",
+    "types": [
+      "Pedra",
+      "Gelo"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 700,
+    "name": "sylveon",
+    "types": [
+      "Fada"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 701,
+    "name": "hawlucha",
+    "types": [
+      "Lutador",
+      "Voador"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 702,
+    "name": "dedenne",
+    "types": [
+      "Elétrico",
+      "Fada"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 703,
+    "name": "carbink",
+    "types": [
+      "Pedra",
+      "Fada"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 704,
+    "name": "goomy",
+    "types": [
+      "Dragão"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 705,
+    "name": "sliggoo",
+    "types": [
+      "Dragão"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 706,
+    "name": "goodra",
+    "types": [
+      "Dragão"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 707,
+    "name": "klefki",
+    "types": [
+      "Ferro",
+      "Fada"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 708,
+    "name": "phantump",
+    "types": [
+      "Fantasma",
+      "Grama"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 709,
+    "name": "trevenant",
+    "types": [
+      "Fantasma",
+      "Grama"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 710,
+    "name": "pumpkaboo-average",
+    "types": [
+      "Fantasma",
+      "Grama"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 711,
+    "name": "gourgeist-average",
+    "types": [
+      "Fantasma",
+      "Grama"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 712,
+    "name": "bergmite",
+    "types": [
+      "Gelo"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 713,
+    "name": "avalugg",
+    "types": [
+      "Gelo"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 714,
+    "name": "noibat",
+    "types": [
+      "Voador",
+      "Dragão"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 715,
+    "name": "noivern",
+    "types": [
+      "Voador",
+      "Dragão"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 716,
+    "name": "xerneas",
+    "types": [
+      "Fada"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 717,
+    "name": "yveltal",
+    "types": [
+      "Sombrio",
+      "Voador"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 718,
+    "name": "zygarde-50",
+    "types": [
+      "Dragão",
+      "Terra"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 719,
+    "name": "diancie",
+    "types": [
+      "Pedra",
+      "Fada"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 720,
+    "name": "hoopa",
+    "types": [
+      "Psíquico",
+      "Fantasma"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 721,
+    "name": "volcanion",
+    "types": [
+      "Fogo",
+      "Água"
+    ],
+    "generation": 6,
+    "region": "Kalos"
+  },
+  {
+    "number": 722,
+    "name": "rowlet",
+    "types": [
+      "Grama",
+      "Voador"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 723,
+    "name": "dartrix",
+    "types": [
+      "Grama",
+      "Voador"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 724,
+    "name": "decidueye",
+    "types": [
+      "Grama",
+      "Fantasma"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 725,
+    "name": "litten",
+    "types": [
+      "Fogo"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 726,
+    "name": "torracat",
+    "types": [
+      "Fogo"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 727,
+    "name": "incineroar",
+    "types": [
+      "Fogo",
+      "Sombrio"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 728,
+    "name": "popplio",
+    "types": [
+      "Água"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 729,
+    "name": "brionne",
+    "types": [
+      "Água"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 730,
+    "name": "primarina",
+    "types": [
+      "Água",
+      "Fada"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 731,
+    "name": "pikipek",
+    "types": [
+      "Normal",
+      "Voador"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 732,
+    "name": "trumbeak",
+    "types": [
+      "Normal",
+      "Voador"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 733,
+    "name": "toucannon",
+    "types": [
+      "Normal",
+      "Voador"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 734,
+    "name": "yungoos",
+    "types": [
+      "Normal"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 735,
+    "name": "gumshoos",
+    "types": [
+      "Normal"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 736,
+    "name": "grubbin",
+    "types": [
+      "Inseto"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 737,
+    "name": "charjabug",
+    "types": [
+      "Inseto",
+      "Elétrico"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 738,
+    "name": "vikavolt",
+    "types": [
+      "Inseto",
+      "Elétrico"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 739,
+    "name": "crabrawler",
+    "types": [
+      "Lutador"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 740,
+    "name": "crabominable",
+    "types": [
+      "Lutador",
+      "Gelo"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 741,
+    "name": "oricorio-baile",
+    "types": [
+      "Fogo",
+      "Voador"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 742,
+    "name": "cutiefly",
+    "types": [
+      "Inseto",
+      "Fada"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 743,
+    "name": "ribombee",
+    "types": [
+      "Inseto",
+      "Fada"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 744,
+    "name": "rockruff",
+    "types": [
+      "Pedra"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 745,
+    "name": "lycanroc-midday",
+    "types": [
+      "Pedra"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 746,
+    "name": "wishiwashi-solo",
+    "types": [
+      "Água"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 747,
+    "name": "mareanie",
+    "types": [
+      "Veneno",
+      "Água"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 748,
+    "name": "toxapex",
+    "types": [
+      "Veneno",
+      "Água"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 749,
+    "name": "mudbray",
+    "types": [
+      "Terra"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 750,
+    "name": "mudsdale",
+    "types": [
+      "Terra"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 751,
+    "name": "dewpider",
+    "types": [
+      "Água",
+      "Inseto"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 752,
+    "name": "araquanid",
+    "types": [
+      "Água",
+      "Inseto"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 753,
+    "name": "fomantis",
+    "types": [
+      "Grama"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 754,
+    "name": "lurantis",
+    "types": [
+      "Grama"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 755,
+    "name": "morelull",
+    "types": [
+      "Grama",
+      "Fada"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 756,
+    "name": "shiinotic",
+    "types": [
+      "Grama",
+      "Fada"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 757,
+    "name": "salandit",
+    "types": [
+      "Veneno",
+      "Fogo"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 758,
+    "name": "salazzle",
+    "types": [
+      "Veneno",
+      "Fogo"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 759,
+    "name": "stufful",
+    "types": [
+      "Normal",
+      "Lutador"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 760,
+    "name": "bewear",
+    "types": [
+      "Normal",
+      "Lutador"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 761,
+    "name": "bounsweet",
+    "types": [
+      "Grama"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 762,
+    "name": "steenee",
+    "types": [
+      "Grama"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 763,
+    "name": "tsareena",
+    "types": [
+      "Grama"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 764,
+    "name": "comfey",
+    "types": [
+      "Fada"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 765,
+    "name": "oranguru",
+    "types": [
+      "Normal",
+      "Psíquico"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 766,
+    "name": "passimian",
+    "types": [
+      "Lutador"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 767,
+    "name": "wimpod",
+    "types": [
+      "Inseto",
+      "Água"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 768,
+    "name": "golisopod",
+    "types": [
+      "Inseto",
+      "Água"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 769,
+    "name": "sandygast",
+    "types": [
+      "Fantasma",
+      "Terra"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 770,
+    "name": "palossand",
+    "types": [
+      "Fantasma",
+      "Terra"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 771,
+    "name": "pyukumuku",
+    "types": [
+      "Água"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 772,
+    "name": "type-null",
+    "types": [
+      "Normal"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 773,
+    "name": "silvally",
+    "types": [
+      "Normal"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 774,
+    "name": "minior-red-meteor",
+    "types": [
+      "Pedra",
+      "Voador"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 775,
+    "name": "komala",
+    "types": [
+      "Normal"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 776,
+    "name": "turtonator",
+    "types": [
+      "Fogo",
+      "Dragão"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 777,
+    "name": "togedemaru",
+    "types": [
+      "Elétrico",
+      "Ferro"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 778,
+    "name": "mimikyu-disguised",
+    "types": [
+      "Fantasma",
+      "Fada"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 779,
+    "name": "bruxish",
+    "types": [
+      "Água",
+      "Psíquico"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 780,
+    "name": "drampa",
+    "types": [
+      "Normal",
+      "Dragão"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 781,
+    "name": "dhelmise",
+    "types": [
+      "Fantasma",
+      "Grama"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 782,
+    "name": "jangmo-o",
+    "types": [
+      "Dragão"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 783,
+    "name": "hakamo-o",
+    "types": [
+      "Dragão",
+      "Lutador"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 784,
+    "name": "kommo-o",
+    "types": [
+      "Dragão",
+      "Lutador"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 785,
+    "name": "tapu-koko",
+    "types": [
+      "Elétrico",
+      "Fada"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 786,
+    "name": "tapu-lele",
+    "types": [
+      "Psíquico",
+      "Fada"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 787,
+    "name": "tapu-bulu",
+    "types": [
+      "Grama",
+      "Fada"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 788,
+    "name": "tapu-fini",
+    "types": [
+      "Água",
+      "Fada"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 789,
+    "name": "cosmog",
+    "types": [
+      "Psíquico"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 790,
+    "name": "cosmoem",
+    "types": [
+      "Psíquico"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 791,
+    "name": "solgaleo",
+    "types": [
+      "Psíquico",
+      "Ferro"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 792,
+    "name": "lunala",
+    "types": [
+      "Psíquico",
+      "Fantasma"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 793,
+    "name": "nihilego",
+    "types": [
+      "Pedra",
+      "Veneno"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 794,
+    "name": "buzzwole",
+    "types": [
+      "Inseto",
+      "Lutador"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 795,
+    "name": "pheromosa",
+    "types": [
+      "Inseto",
+      "Lutador"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 796,
+    "name": "xurkitree",
+    "types": [
+      "Elétrico"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 797,
+    "name": "celesteela",
+    "types": [
+      "Ferro",
+      "Voador"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 798,
+    "name": "kartana",
+    "types": [
+      "Grama",
+      "Ferro"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 799,
+    "name": "guzzlord",
+    "types": [
+      "Sombrio",
+      "Dragão"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 800,
+    "name": "necrozma",
+    "types": [
+      "Psíquico"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 801,
+    "name": "magearna",
+    "types": [
+      "Ferro",
+      "Fada"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 802,
+    "name": "marshadow",
+    "types": [
+      "Lutador",
+      "Fantasma"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 803,
+    "name": "poipole",
+    "types": [
+      "Veneno"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 804,
+    "name": "naganadel",
+    "types": [
+      "Veneno",
+      "Dragão"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 805,
+    "name": "stakataka",
+    "types": [
+      "Pedra",
+      "Ferro"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 806,
+    "name": "blacephalon",
+    "types": [
+      "Fogo",
+      "Fantasma"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 807,
+    "name": "zeraora",
+    "types": [
+      "Elétrico"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 808,
+    "name": "meltan",
+    "types": [
+      "Ferro"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 809,
+    "name": "melmetal",
+    "types": [
+      "Ferro"
+    ],
+    "generation": 7,
+    "region": "Alola"
+  },
+  {
+    "number": 810,
+    "name": "grookey",
+    "types": [
+      "Grama"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 811,
+    "name": "thwackey",
+    "types": [
+      "Grama"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 812,
+    "name": "rillaboom",
+    "types": [
+      "Grama"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 813,
+    "name": "scorbunny",
+    "types": [
+      "Fogo"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 814,
+    "name": "raboot",
+    "types": [
+      "Fogo"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 815,
+    "name": "cinderace",
+    "types": [
+      "Fogo"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 816,
+    "name": "sobble",
+    "types": [
+      "Água"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 817,
+    "name": "drizzile",
+    "types": [
+      "Água"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 818,
+    "name": "inteleon",
+    "types": [
+      "Água"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 819,
+    "name": "skwovet",
+    "types": [
+      "Normal"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 820,
+    "name": "greedent",
+    "types": [
+      "Normal"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 821,
+    "name": "rookidee",
+    "types": [
+      "Voador"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 822,
+    "name": "corvisquire",
+    "types": [
+      "Voador"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 823,
+    "name": "corviknight",
+    "types": [
+      "Voador",
+      "Ferro"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 824,
+    "name": "blipbug",
+    "types": [
+      "Inseto"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 825,
+    "name": "dottler",
+    "types": [
+      "Inseto",
+      "Psíquico"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 826,
+    "name": "orbeetle",
+    "types": [
+      "Inseto",
+      "Psíquico"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 827,
+    "name": "nickit",
+    "types": [
+      "Sombrio"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 828,
+    "name": "thievul",
+    "types": [
+      "Sombrio"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 829,
+    "name": "gossifleur",
+    "types": [
+      "Grama"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 830,
+    "name": "eldegoss",
+    "types": [
+      "Grama"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 831,
+    "name": "wooloo",
+    "types": [
+      "Normal"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 832,
+    "name": "dubwool",
+    "types": [
+      "Normal"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 833,
+    "name": "chewtle",
+    "types": [
+      "Água"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 834,
+    "name": "drednaw",
+    "types": [
+      "Água",
+      "Pedra"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 835,
+    "name": "yamper",
+    "types": [
+      "Elétrico"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 836,
+    "name": "boltund",
+    "types": [
+      "Elétrico"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 837,
+    "name": "rolycoly",
+    "types": [
+      "Pedra"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 838,
+    "name": "carkol",
+    "types": [
+      "Pedra",
+      "Fogo"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 839,
+    "name": "coalossal",
+    "types": [
+      "Pedra",
+      "Fogo"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 840,
+    "name": "applin",
+    "types": [
+      "Grama",
+      "Dragão"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 841,
+    "name": "flapple",
+    "types": [
+      "Grama",
+      "Dragão"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 842,
+    "name": "appletun",
+    "types": [
+      "Grama",
+      "Dragão"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 843,
+    "name": "silicobra",
+    "types": [
+      "Terra"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 844,
+    "name": "sandaconda",
+    "types": [
+      "Terra"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 845,
+    "name": "cramorant",
+    "types": [
+      "Voador",
+      "Água"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 846,
+    "name": "arrokuda",
+    "types": [
+      "Água"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 847,
+    "name": "barraskewda",
+    "types": [
+      "Água"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 848,
+    "name": "toxel",
+    "types": [
+      "Elétrico",
+      "Veneno"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 849,
+    "name": "toxtricity-amped",
+    "types": [
+      "Elétrico",
+      "Veneno"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 850,
+    "name": "sizzlipede",
+    "types": [
+      "Fogo",
+      "Inseto"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 851,
+    "name": "centiskorch",
+    "types": [
+      "Fogo",
+      "Inseto"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 852,
+    "name": "clobbopus",
+    "types": [
+      "Lutador"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 853,
+    "name": "grapploct",
+    "types": [
+      "Lutador"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 854,
+    "name": "sinistea",
+    "types": [
+      "Fantasma"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 855,
+    "name": "polteageist",
+    "types": [
+      "Fantasma"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 856,
+    "name": "hatenna",
+    "types": [
+      "Psíquico"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 857,
+    "name": "hattrem",
+    "types": [
+      "Psíquico"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 858,
+    "name": "hatterene",
+    "types": [
+      "Psíquico",
+      "Fada"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 859,
+    "name": "impidimp",
+    "types": [
+      "Sombrio",
+      "Fada"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 860,
+    "name": "morgrem",
+    "types": [
+      "Sombrio",
+      "Fada"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 861,
+    "name": "grimmsnarl",
+    "types": [
+      "Sombrio",
+      "Fada"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 862,
+    "name": "obstagoon",
+    "types": [
+      "Sombrio",
+      "Normal"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 863,
+    "name": "perrserker",
+    "types": [
+      "Ferro"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 864,
+    "name": "cursola",
+    "types": [
+      "Fantasma"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 865,
+    "name": "sirfetchd",
+    "types": [
+      "Lutador"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 866,
+    "name": "mr-rime",
+    "types": [
+      "Gelo",
+      "Psíquico"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 867,
+    "name": "runerigus",
+    "types": [
+      "Terra",
+      "Fantasma"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 868,
+    "name": "milcery",
+    "types": [
+      "Fada"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 869,
+    "name": "alcremie",
+    "types": [
+      "Fada"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 870,
+    "name": "falinks",
+    "types": [
+      "Lutador"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 871,
+    "name": "pincurchin",
+    "types": [
+      "Elétrico"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 872,
+    "name": "snom",
+    "types": [
+      "Gelo",
+      "Inseto"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 873,
+    "name": "frosmoth",
+    "types": [
+      "Gelo",
+      "Inseto"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 874,
+    "name": "stonjourner",
+    "types": [
+      "Pedra"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 875,
+    "name": "eiscue-ice",
+    "types": [
+      "Gelo"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 876,
+    "name": "indeedee-male",
+    "types": [
+      "Psíquico",
+      "Normal"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 877,
+    "name": "morpeko-full-belly",
+    "types": [
+      "Elétrico",
+      "Sombrio"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 878,
+    "name": "cufant",
+    "types": [
+      "Ferro"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 879,
+    "name": "copperajah",
+    "types": [
+      "Ferro"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 880,
+    "name": "dracozolt",
+    "types": [
+      "Elétrico",
+      "Dragão"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 881,
+    "name": "arctozolt",
+    "types": [
+      "Elétrico",
+      "Gelo"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 882,
+    "name": "dracovish",
+    "types": [
+      "Água",
+      "Dragão"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 883,
+    "name": "arctovish",
+    "types": [
+      "Água",
+      "Gelo"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 884,
+    "name": "duraludon",
+    "types": [
+      "Ferro",
+      "Dragão"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 885,
+    "name": "dreepy",
+    "types": [
+      "Dragão",
+      "Fantasma"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 886,
+    "name": "drakloak",
+    "types": [
+      "Dragão",
+      "Fantasma"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 887,
+    "name": "dragapult",
+    "types": [
+      "Dragão",
+      "Fantasma"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 888,
+    "name": "zacian",
+    "types": [
+      "Fada"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 889,
+    "name": "zamazenta",
+    "types": [
+      "Lutador"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 890,
+    "name": "eternatus",
+    "types": [
+      "Veneno",
+      "Dragão"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 891,
+    "name": "kubfu",
+    "types": [
+      "Lutador"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 892,
+    "name": "urshifu-single-strike",
+    "types": [
+      "Lutador",
+      "Sombrio"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 893,
+    "name": "zarude",
+    "types": [
+      "Sombrio",
+      "Grama"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 894,
+    "name": "regieleki",
+    "types": [
+      "Elétrico"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 895,
+    "name": "regidrago",
+    "types": [
+      "Dragão"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 896,
+    "name": "glastrier",
+    "types": [
+      "Gelo"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 897,
+    "name": "spectrier",
+    "types": [
+      "Fantasma"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 898,
+    "name": "calyrex",
+    "types": [
+      "Psíquico",
+      "Grama"
+    ],
+    "generation": 8,
+    "region": "Galar"
+  },
+  {
+    "number": 899,
+    "name": "wyrdeer",
+    "types": [
+      "Normal",
+      "Psíquico"
+    ],
+    "generation": 8,
+    "region": "Hisui"
+  },
+  {
+    "number": 900,
+    "name": "kleavor",
+    "types": [
+      "Inseto",
+      "Pedra"
+    ],
+    "generation": 8,
+    "region": "Hisui"
+  },
+  {
+    "number": 901,
+    "name": "ursaluna",
+    "types": [
+      "Terra",
+      "Normal"
+    ],
+    "generation": 8,
+    "region": "Hisui"
+  },
+  {
+    "number": 902,
+    "name": "basculegion-male",
+    "types": [
+      "Água",
+      "Fantasma"
+    ],
+    "generation": 8,
+    "region": "Hisui"
+  },
+  {
+    "number": 903,
+    "name": "sneasler",
+    "types": [
+      "Lutador",
+      "Veneno"
+    ],
+    "generation": 8,
+    "region": "Hisui"
+  },
+  {
+    "number": 904,
+    "name": "overqwil",
+    "types": [
+      "Sombrio",
+      "Veneno"
+    ],
+    "generation": 8,
+    "region": "Hisui"
+  },
+  {
+    "number": 905,
+    "name": "enamorus-incarnate",
+    "types": [
+      "Fada",
+      "Voador"
+    ],
+    "generation": 8,
+    "region": "Hisui"
+  },
+  {
+    "number": 906,
+    "name": "sprigatito",
+    "types": [
+      "Grama"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 907,
+    "name": "floragato",
+    "types": [
+      "Grama"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 908,
+    "name": "meowscarada",
+    "types": [
+      "Grama",
+      "Sombrio"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 909,
+    "name": "fuecoco",
+    "types": [
+      "Fogo"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 910,
+    "name": "crocalor",
+    "types": [
+      "Fogo"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 911,
+    "name": "skeledirge",
+    "types": [
+      "Fogo",
+      "Fantasma"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 912,
+    "name": "quaxly",
+    "types": [
+      "Água"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 913,
+    "name": "quaxwell",
+    "types": [
+      "Água"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 914,
+    "name": "quaquaval",
+    "types": [
+      "Água",
+      "Lutador"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 915,
+    "name": "lechonk",
+    "types": [
+      "Normal"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 916,
+    "name": "oinkologne",
+    "types": [
+      "Normal"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 917,
+    "name": "tarountula",
+    "types": [
+      "Inseto"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 918,
+    "name": "spidops",
+    "types": [
+      "Inseto"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 919,
+    "name": "nymble",
+    "types": [
+      "Inseto"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 920,
+    "name": "lokix",
+    "types": [
+      "Inseto",
+      "Sombrio"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 921,
+    "name": "pawmi",
+    "types": [
+      "Elétrico"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 922,
+    "name": "pawmo",
+    "types": [
+      "Elétrico",
+      "Lutador"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 923,
+    "name": "pawmot",
+    "types": [
+      "Elétrico",
+      "Lutador"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 924,
+    "name": "tandemaus",
+    "types": [
+      "Normal"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 925,
+    "name": "maushold",
+    "types": [
+      "Normal"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 926,
+    "name": "fidough",
+    "types": [
+      "Fada"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 927,
+    "name": "dachsbun",
+    "types": [
+      "Fada"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 928,
+    "name": "smoliv",
+    "types": [
+      "Grama",
+      "Normal"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 929,
+    "name": "dolliv",
+    "types": [
+      "Grama",
+      "Normal"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 930,
+    "name": "arboliva",
+    "types": [
+      "Grama",
+      "Normal"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 931,
+    "name": "squawkabilly",
+    "types": [
+      "Normal",
+      "Voador"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 932,
+    "name": "nacli",
+    "types": [
+      "Pedra"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 933,
+    "name": "naclstack",
+    "types": [
+      "Pedra"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 934,
+    "name": "garganacl",
+    "types": [
+      "Pedra"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 935,
+    "name": "charcadet",
+    "types": [
+      "Fogo"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 936,
+    "name": "armarouge",
+    "types": [
+      "Fogo",
+      "Psíquico"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 937,
+    "name": "ceruledge",
+    "types": [
+      "Fogo",
+      "Fantasma"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 938,
+    "name": "tadbulb",
+    "types": [
+      "Elétrico"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 939,
+    "name": "bellibolt",
+    "types": [
+      "Elétrico"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 940,
+    "name": "wattrel",
+    "types": [
+      "Elétrico",
+      "Voador"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 941,
+    "name": "kilowattrel",
+    "types": [
+      "Elétrico",
+      "Voador"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 942,
+    "name": "maschiff",
+    "types": [
+      "Sombrio"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 943,
+    "name": "mabosstiff",
+    "types": [
+      "Sombrio"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 944,
+    "name": "shroodle",
+    "types": [
+      "Veneno",
+      "Normal"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 945,
+    "name": "grafaiai",
+    "types": [
+      "Veneno",
+      "Normal"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 946,
+    "name": "bramblin",
+    "types": [
+      "Grama",
+      "Fantasma"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 947,
+    "name": "brambleghast",
+    "types": [
+      "Grama",
+      "Fantasma"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 948,
+    "name": "toedscool",
+    "types": [
+      "Terra",
+      "Grama"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 949,
+    "name": "toedscruel",
+    "types": [
+      "Terra",
+      "Grama"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 950,
+    "name": "klawf",
+    "types": [
+      "Pedra"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 951,
+    "name": "capsakid",
+    "types": [
+      "Grama"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 952,
+    "name": "scovillain",
+    "types": [
+      "Grama",
+      "Fogo"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 953,
+    "name": "rellor",
+    "types": [
+      "Inseto"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 954,
+    "name": "rabsca",
+    "types": [
+      "Inseto",
+      "Psíquico"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 955,
+    "name": "flittle",
+    "types": [
+      "Psíquico"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 956,
+    "name": "espathra",
+    "types": [
+      "Psíquico"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 957,
+    "name": "tinkatink",
+    "types": [
+      "Fada",
+      "Ferro"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 958,
+    "name": "tinkatuff",
+    "types": [
+      "Fada",
+      "Ferro"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 959,
+    "name": "tinkaton",
+    "types": [
+      "Fada",
+      "Ferro"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 960,
+    "name": "wiglett",
+    "types": [
+      "Água"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 961,
+    "name": "wugtrio",
+    "types": [
+      "Água"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 962,
+    "name": "bombirdier",
+    "types": [
+      "Voador",
+      "Sombrio"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 963,
+    "name": "finizen",
+    "types": [
+      "Água"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 964,
+    "name": "palafin",
+    "types": [
+      "Água"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 965,
+    "name": "varoom",
+    "types": [
+      "Ferro",
+      "Veneno"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 966,
+    "name": "revavroom",
+    "types": [
+      "Ferro",
+      "Veneno"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 967,
+    "name": "cyclizar",
+    "types": [
+      "Dragão",
+      "Normal"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 968,
+    "name": "orthworm",
+    "types": [
+      "Ferro"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 969,
+    "name": "glimmet",
+    "types": [
+      "Pedra",
+      "Veneno"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 970,
+    "name": "glimmora",
+    "types": [
+      "Pedra",
+      "Veneno"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 971,
+    "name": "greavard",
+    "types": [
+      "Fantasma"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 972,
+    "name": "houndstone",
+    "types": [
+      "Fantasma"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 973,
+    "name": "flamigo",
+    "types": [
+      "Voador",
+      "Lutador"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 974,
+    "name": "cetoddle",
+    "types": [
+      "Gelo"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 975,
+    "name": "cetitan",
+    "types": [
+      "Gelo"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 976,
+    "name": "veluza",
+    "types": [
+      "Água",
+      "Psíquico"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 977,
+    "name": "dondozo",
+    "types": [
+      "Água"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 978,
+    "name": "tatsugiri",
+    "types": [
+      "Dragão",
+      "Água"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 979,
+    "name": "annihilape",
+    "types": [
+      "Lutador",
+      "Fantasma"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 980,
+    "name": "clodsire",
+    "types": [
+      "Veneno",
+      "Terra"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 981,
+    "name": "farigiraf",
+    "types": [
+      "Normal",
+      "Psíquico"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 982,
+    "name": "dudunsparce",
+    "types": [
+      "Normal"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 983,
+    "name": "kingambit",
+    "types": [
+      "Sombrio",
+      "Ferro"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 984,
+    "name": "great-tusk",
+    "types": [
+      "Terra",
+      "Lutador"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 985,
+    "name": "scream-tail",
+    "types": [
+      "Fada",
+      "Psíquico"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 986,
+    "name": "brute-bonnet",
+    "types": [
+      "Grama",
+      "Sombrio"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 987,
+    "name": "flutter-mane",
+    "types": [
+      "Fantasma",
+      "Fada"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 988,
+    "name": "slither-wing",
+    "types": [
+      "Inseto",
+      "Lutador"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 989,
+    "name": "sandy-shocks",
+    "types": [
+      "Elétrico",
+      "Terra"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 990,
+    "name": "iron-treads",
+    "types": [
+      "Terra",
+      "Ferro"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 991,
+    "name": "iron-bundle",
+    "types": [
+      "Gelo",
+      "Água"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 992,
+    "name": "iron-hands",
+    "types": [
+      "Lutador",
+      "Elétrico"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 993,
+    "name": "iron-jugulis",
+    "types": [
+      "Sombrio",
+      "Voador"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 994,
+    "name": "iron-moth",
+    "types": [
+      "Fogo",
+      "Veneno"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 995,
+    "name": "iron-thorns",
+    "types": [
+      "Pedra",
+      "Elétrico"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 996,
+    "name": "frigibax",
+    "types": [
+      "Dragão",
+      "Gelo"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 997,
+    "name": "arctibax",
+    "types": [
+      "Dragão",
+      "Gelo"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 998,
+    "name": "baxcalibur",
+    "types": [
+      "Dragão",
+      "Gelo"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 999,
+    "name": "gimmighoul",
+    "types": [
+      "Fantasma"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 1000,
+    "name": "gholdengo",
+    "types": [
+      "Ferro",
+      "Fantasma"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 1001,
+    "name": "wo-chien",
+    "types": [
+      "Sombrio",
+      "Grama"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 1002,
+    "name": "chien-pao",
+    "types": [
+      "Sombrio",
+      "Gelo"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 1003,
+    "name": "ting-lu",
+    "types": [
+      "Sombrio",
+      "Terra"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 1004,
+    "name": "chi-yu",
+    "types": [
+      "Sombrio",
+      "Fogo"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 1005,
+    "name": "roaring-moon",
+    "types": [
+      "Dragão",
+      "Sombrio"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 1006,
+    "name": "iron-valiant",
+    "types": [
+      "Fada",
+      "Lutador"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 1007,
+    "name": "koraidon",
+    "types": [
+      "Lutador",
+      "Dragão"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 1008,
+    "name": "miraidon",
+    "types": [
+      "Elétrico",
+      "Dragão"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 1009,
+    "name": "walking-wake",
+    "types": [
+      "Água",
+      "Dragão"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 1010,
+    "name": "iron-leaves",
+    "types": [
+      "Grama",
+      "Psíquico"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 1011,
+    "name": "dipplin",
+    "types": [
+      "Grama",
+      "Dragão"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 1012,
+    "name": "poltchageist",
+    "types": [
+      "Grama",
+      "Fantasma"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 1013,
+    "name": "sinistcha",
+    "types": [
+      "Grama",
+      "Fantasma"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 1014,
+    "name": "okidogi",
+    "types": [
+      "Veneno",
+      "Lutador"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 1015,
+    "name": "munkidori",
+    "types": [
+      "Veneno",
+      "Psíquico"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 1016,
+    "name": "fezandipiti",
+    "types": [
+      "Veneno",
+      "Fada"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 1017,
+    "name": "ogerpon",
+    "types": [
+      "Grama"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 1018,
+    "name": "archaludon",
+    "types": [
+      "Ferro",
+      "Dragão"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 1019,
+    "name": "hydrapple",
+    "types": [
+      "Grama",
+      "Dragão"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 1020,
+    "name": "gouging-fire",
+    "types": [
+      "Fogo",
+      "Dragão"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 1021,
+    "name": "raging-bolt",
+    "types": [
+      "Elétrico",
+      "Dragão"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 1022,
+    "name": "iron-boulder",
+    "types": [
+      "Pedra",
+      "Psíquico"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 1023,
+    "name": "iron-crown",
+    "types": [
+      "Ferro",
+      "Psíquico"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 1024,
+    "name": "terapagos",
+    "types": [
+      "Normal"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  },
+  {
+    "number": 1025,
+    "name": "pecharunt",
+    "types": [
+      "Veneno",
+      "Fantasma"
+    ],
+    "generation": 9,
+    "region": "Paldea"
+  }
+]
