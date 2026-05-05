@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Full Art Pokédex - Tracker de Coleção</title>
+<title>PokéDex Collector - Sua coleção Full Art</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -1022,17 +1022,263 @@ body {
   border-color: var(--text);
   color: var(--text);
 }
+
+/* Login overlay */
+.login-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: var(--bg-dark);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+}
+
+.login-overlay.hidden { display: none; }
+
+.login-logo {
+  text-align: center;
+}
+
+.login-logo h1 {
+  font-size: 2.2rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, #e94560, #ffd700);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 8px;
+}
+
+.login-logo p {
+  color: var(--text-dim);
+  font-size: 0.95rem;
+}
+
+.login-pokedex-img {
+  margin-bottom: 8px;
+}
+
+.login-pokedex-img svg {
+  width: 130px;
+  height: 174px;
+  filter: drop-shadow(0 6px 24px rgba(233, 69, 96, 0.5));
+}
+
+.login-roulette {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  height: 100px;
+  overflow: hidden;
+  margin-top: 16px;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 18%, black 82%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 18%, black 82%, transparent 100%);
+}
+
+.login-roulette-track {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  will-change: transform;
+}
+
+.login-roulette-track img {
+  width: 64px;
+  height: 64px;
+  margin: 0 4px;
+  flex-shrink: 0;
+  image-rendering: pixelated;
+  will-change: transform, filter;
+}
+
+.login-roulette-highlight {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 88px;
+  height: 100%;
+  background: radial-gradient(ellipse at center, rgba(255,215,0,0.18) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.login-footer {
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 0.7rem;
+  padding: 0 24px;
+  opacity: 0.6;
+}
+
+.btn-google {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 32px;
+  background: #fff;
+  color: #333;
+  border: none;
+  border-radius: var(--radius);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.btn-google:hover {
+  transform: scale(1.03);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+}
+
+.btn-google:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-google svg {
+  width: 20px;
+  height: 20px;
+}
+
+.login-error {
+  color: var(--accent);
+  font-size: 0.85rem;
+  max-width: 300px;
+  text-align: center;
+  min-height: 1.2em;
+}
+
+.login-loading {
+  color: var(--text-dim);
+  font-size: 0.9rem;
+}
+
+/* User info in header */
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.3);
+}
+
+.user-name {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.85);
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.btn-logout {
+  padding: 4px 10px;
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.7);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.7rem;
+  transition: all 0.2s;
+}
+
+.btn-logout:hover {
+  background: rgba(233, 69, 96, 0.3);
+  border-color: var(--accent);
+  color: white;
+}
+
+/* App wrapper — hidden until login */
+.app-wrapper { display: none; }
+.app-wrapper.visible { display: block; }
+
+@media (max-width: 768px) {
+  .user-name { display: none; }
+  .login-logo h1 { font-size: 1.6rem; }
+}
 </style>
+
+<!-- Firebase SDK (compat) -->
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
 </head>
 <body>
 
+<!-- Login Overlay -->
+<div class="login-overlay" id="login-overlay">
+  <div class="login-logo">
+    <div class="login-pokedex-img">
+      <svg viewBox="0 0 120 160" xmlns="http://www.w3.org/2000/svg">
+        <rect x="4" y="4" width="112" height="152" rx="12" fill="#e94560" stroke="#c0392b" stroke-width="2"/>
+        <rect x="4" y="4" width="112" height="36" rx="12" fill="#d63851"/>
+        <rect x="4" y="28" width="112" height="12" fill="#d63851"/>
+        <line x1="4" y1="38" x2="116" y2="38" stroke="#c0392b" stroke-width="2"/>
+        <circle cx="32" cy="20" r="14" fill="#1a3a5c" stroke="#0f2840" stroke-width="2"/>
+        <circle cx="32" cy="20" r="10" fill="#448aff"/>
+        <circle cx="28" cy="16" r="3" fill="rgba(255,255,255,0.5)"/>
+        <circle cx="62" cy="16" r="3.5" fill="#e94560" stroke="#c0392b" stroke-width="1"/>
+        <circle cx="74" cy="16" r="2.5" fill="#ffd700"/>
+        <circle cx="84" cy="16" r="2.5" fill="#00c853"/>
+        <rect x="16" y="48" width="88" height="60" rx="4" fill="#0f2840" stroke="#0a1e30" stroke-width="1.5"/>
+        <rect x="20" y="52" width="80" height="52" rx="2" fill="#1a3a5c"/>
+        <rect x="20" y="52" width="80" height="52" rx="2" fill="url(#screenGlow)"/>
+        <defs><radialGradient id="screenGlow" cx="50%" cy="40%" r="60%"><stop offset="0%" stop-color="rgba(68,138,255,0.15)"/><stop offset="100%" stop-color="transparent"/></radialGradient></defs>
+        <rect x="40" y="118" width="40" height="8" rx="4" fill="#c0392b"/>
+        <rect x="56" y="116" width="8" height="12" rx="4" fill="#c0392b"/>
+        <circle cx="30" cy="136" r="5" fill="#c0392b" stroke="#a93226" stroke-width="1"/>
+        <rect x="70" y="132" width="24" height="3" rx="1.5" fill="#c0392b"/>
+        <rect x="70" y="138" width="18" height="3" rx="1.5" fill="#c0392b"/>
+      </svg>
+    </div>
+    <h1>PokéDex Collector</h1>
+    <p>Sua coleção Full Art</p>
+    <div class="login-roulette">
+      <div class="login-roulette-track" id="roulette-track"></div>
+      <div class="login-roulette-highlight"></div>
+    </div>
+  </div>
+  <button class="btn-google" id="btn-google-login" onclick="loginWithGoogle()">
+    <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+    Entrar com Google
+  </button>
+  <div class="login-error" id="login-error"></div>
+  <div class="login-footer">
+    PokéDex Collector &copy; 2026 Fellipe Santos. Dados de cartas via pokemontcg.io.<br>
+    Pokémon e marcas relacionadas são propriedade da Nintendo/Game Freak/The Pokémon Company.
+  </div>
+</div>
+
+<!-- App (hidden until login) -->
+<div class="app-wrapper" id="app-wrapper">
+
 <div class="header">
-  <h1>Full Art Pokédex</h1>
+  <h1>PokéDex Collector</h1>
   <div class="header-actions">
     <div class="collection-actions">
       <button class="btn-small" onclick="exportCollection()">Exportar Coleção</button>
       <button class="btn-small" onclick="importCollection()">Importar Coleção</button>
       <button class="btn-small" onclick="clearCollection()">Limpar Coleção</button>
+    </div>
+    <div class="user-info" id="user-info">
+      <img class="user-avatar" id="user-avatar" src="" alt="">
+      <span class="user-name" id="user-name"></span>
+      <button class="btn-logout" onclick="logout()">Sair</button>
     </div>
   </div>
 </div>
@@ -1144,6 +1390,25 @@ body {
 
 <script>
 // =============================================
+// FIREBASE CONFIG
+// =============================================
+// IMPORTANTE: Substitua com as credenciais do seu projeto Firebase
+// https://console.firebase.google.com/ → Configurações do projeto → Apps Web
+const firebaseConfig = {
+  apiKey: 'AIzaSyCofvOU_VGgvYuNMVMdGXFnrZPuBsUBd7k',
+  authDomain: 'pokedex-82ba8.firebaseapp.com',
+  projectId: 'pokedex-82ba8',
+  storageBucket: 'pokedex-82ba8.firebasestorage.app',
+  messagingSenderId: '783841506180',
+  appId: '1:783841506180:web:36a300cf04811ba93be3d1'
+};
+
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+const googleProvider = new firebase.auth.GoogleAuthProvider();
+
+// =============================================
 // DATA
 // =============================================
 let POKEDEX_DATA = [];
@@ -1154,14 +1419,84 @@ let FULLART_DATA = { metadata: {}, by_pokedex: {} };
 // collection = { "25": true, "6": true } — chave = numero pokedex
 // =============================================
 let collection = {};
+let currentUser = null;
 let sorteioHistory = [];
 let sortearAnimId = null;
 
 // =============================================
+// AUTH — Login com Google
+// =============================================
+auth.onAuthStateChanged(async (user) => {
+  if (user) {
+    currentUser = user;
+    showApp(user);
+    await initApp();
+  } else {
+    currentUser = null;
+    showLogin();
+  }
+});
+
+async function loginWithGoogle() {
+  const btn = document.getElementById('btn-google-login');
+  const errorEl = document.getElementById('login-error');
+  btn.disabled = true;
+  errorEl.textContent = '';
+
+  try {
+    await auth.signInWithPopup(googleProvider);
+    // onAuthStateChanged vai cuidar do resto
+  } catch (err) {
+    console.error('Erro no login:', err);
+    if (err.code === 'auth/popup-closed-by-user') {
+      errorEl.textContent = 'Login cancelado.';
+    } else if (err.code === 'auth/network-request-failed') {
+      errorEl.textContent = 'Erro de conexão. Verifique sua internet.';
+    } else {
+      errorEl.textContent = 'Erro ao fazer login. Tente novamente.';
+    }
+    btn.disabled = false;
+  }
+}
+
+async function logout() {
+  if (confirm('Deseja sair da sua conta?')) {
+    await auth.signOut();
+  }
+}
+
+function showLogin() {
+  document.getElementById('login-overlay').classList.remove('hidden');
+  document.getElementById('app-wrapper').classList.remove('visible');
+  document.getElementById('btn-google-login').disabled = false;
+}
+
+function showApp(user) {
+  document.getElementById('login-overlay').classList.add('hidden');
+  document.getElementById('app-wrapper').classList.add('visible');
+
+  // Atualizar info do usuario no header
+  const avatar = document.getElementById('user-avatar');
+  const nameEl = document.getElementById('user-name');
+  avatar.src = user.photoURL || '';
+  avatar.alt = user.displayName || '';
+  nameEl.textContent = user.displayName || user.email || '';
+}
+
+// =============================================
 // INIT
 // =============================================
-async function init() {
-  loadCollection();
+let appInitialized = false;
+
+async function initApp() {
+  if (appInitialized) {
+    // Se ja inicializou, so recarrega a colecao (ex: login de outro usuario)
+    await loadCollection();
+    renderGrid();
+    return;
+  }
+
+  await loadCollection();
 
   try {
     const cacheBust = '?v=' + Date.now();
@@ -1190,33 +1525,92 @@ async function init() {
   setupTabs();
   setupFilters();
   setupKeyboard();
+  appInitialized = true;
 }
 
 let pokedexLookup = {};
 
 // =============================================
-// COLLECTION (localStorage)
+// COLLECTION (Firestore + localStorage cache)
 // Chave = numero do pokedex (string)
 // =============================================
-function loadCollection() {
+async function loadCollection() {
+  if (!currentUser) {
+    collection = {};
+    return;
+  }
+
   try {
-    const saved = localStorage.getItem('fullart_collection_v2');
-    if (saved) collection = JSON.parse(saved);
-  } catch (e) { collection = {}; }
+    const doc = await db.collection('users').doc(currentUser.uid).get();
+    if (doc.exists) {
+      const cloudData = doc.data().collection || {};
+      // Merge com localStorage na primeira vez
+      const localRaw = localStorage.getItem('fullart_collection_v2');
+      if (localRaw) {
+        const localData = JSON.parse(localRaw);
+        const localKeys = Object.keys(localData);
+        if (localKeys.length > 0) {
+          // Uniao: tudo que esta em qualquer um dos dois
+          collection = { ...cloudData, ...localData };
+          // Salvar merge no Firestore e limpar localStorage
+          await db.collection('users').doc(currentUser.uid).set({
+            collection: collection,
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+          localStorage.removeItem('fullart_collection_v2');
+          return;
+        }
+      }
+      collection = cloudData;
+    } else {
+      // Primeiro acesso — verificar se tem localStorage para migrar
+      const localRaw = localStorage.getItem('fullart_collection_v2');
+      if (localRaw) {
+        collection = JSON.parse(localRaw);
+        await db.collection('users').doc(currentUser.uid).set({
+          collection: collection,
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        localStorage.removeItem('fullart_collection_v2');
+      } else {
+        collection = {};
+      }
+    }
+  } catch (err) {
+    console.error('Erro ao carregar coleção:', err);
+    // Fallback: tentar localStorage
+    try {
+      const saved = localStorage.getItem('fullart_collection_v2');
+      if (saved) collection = JSON.parse(saved);
+      else collection = {};
+    } catch (e) { collection = {}; }
+  }
 }
 
-function saveCollection() {
-  localStorage.setItem('fullart_collection_v2', JSON.stringify(collection));
+async function saveCollection() {
+  if (!currentUser) return;
+
+  // Cache local para acesso rapido
+  localStorage.setItem('fullart_collection_cache_' + currentUser.uid, JSON.stringify(collection));
+
+  try {
+    await db.collection('users').doc(currentUser.uid).set({
+      collection: collection,
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+  } catch (err) {
+    console.error('Erro ao salvar coleção:', err);
+  }
 }
 
-function toggleRegistered(pokeNum) {
+async function toggleRegistered(pokeNum) {
   const key = String(pokeNum);
   if (collection[key]) {
     delete collection[key];
   } else {
     collection[key] = true;
   }
-  saveCollection();
+  await saveCollection();
 }
 
 function isRegistered(pokeNum) {
@@ -1229,7 +1623,7 @@ function exportCollection() {
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = 'fullart_collection_backup.json';
+  a.download = 'pokedex_collector_backup.json';
   a.click();
   URL.revokeObjectURL(url);
 }
@@ -1242,11 +1636,11 @@ function importCollection() {
     const file = e.target.files[0];
     if (!file) return;
     const reader = new FileReader();
-    reader.onload = (ev) => {
+    reader.onload = async (ev) => {
       try {
         const data = JSON.parse(ev.target.result);
         collection = data;
-        saveCollection();
+        await saveCollection();
         renderGrid();
         alert('Coleção importada com sucesso!');
       } catch (err) {
@@ -1258,10 +1652,10 @@ function importCollection() {
   input.click();
 }
 
-function clearCollection() {
+async function clearCollection() {
   if (confirm('Tem certeza que deseja limpar toda a coleção?')) {
     collection = {};
-    saveCollection();
+    await saveCollection();
     renderGrid();
   }
 }
@@ -1596,8 +1990,8 @@ function closeModal() {
   document.getElementById('modal-overlay').classList.remove('open');
 }
 
-function handleToggleRegister(pokeNum) {
-  toggleRegistered(pokeNum);
+async function handleToggleRegister(pokeNum) {
+  await toggleRegistered(pokeNum);
   openModal(pokeNum); // Re-render modal
   renderGrid(); // Update grid colors
 }
@@ -1874,9 +2268,67 @@ document.getElementById('modal-overlay').addEventListener('click', (e) => {
 });
 
 // =============================================
-// START
+// LOGIN ROULETTE — sprites com destaque central animado
 // =============================================
-init();
+(function() {
+  const ROULETTE_POKEMON = [
+    1, 4, 6, 9, 25, 39, 94, 130, 131, 143, 149, 150, 151, 196,
+    245, 249, 250, 282, 384, 445, 448, 658, 700, 812, 849, 887,
+    898, 1007, 25, 6
+  ];
+  const track = document.getElementById('roulette-track');
+  if (!track) return;
+  const fragment = document.createDocumentFragment();
+  for (let copy = 0; copy < 2; copy++) {
+    for (const num of ROULETTE_POKEMON) {
+      const img = document.createElement('img');
+      img.src = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/' + num + '.png';
+      img.alt = '#' + num;
+      img.width = 64;
+      img.height = 64;
+      fragment.appendChild(img);
+    }
+  }
+  track.appendChild(fragment);
+
+  const SLOT = 72; // 64px img + 8px margin
+  const SET_WIDTH = ROULETTE_POKEMON.length * SLOT;
+  const SPEED = 0.35; // px por frame (~21px/s)
+  let scrollPos = 0;
+  const imgs = track.querySelectorAll('img');
+
+  function animate() {
+    scrollPos += SPEED;
+    if (scrollPos >= SET_WIDTH) scrollPos -= SET_WIDTH;
+    track.style.transform = 'translateX(-' + scrollPos + 'px)';
+
+    const containerW = track.parentElement.clientWidth;
+    const centerX = containerW / 2;
+    const reach = containerW * 0.45;
+
+    for (let i = 0; i < imgs.length; i++) {
+      const imgCenter = (i * SLOT + SLOT / 2) - scrollPos;
+      const dist = Math.abs(imgCenter - centerX);
+      if (dist > reach + 80) continue; // fora da tela, pular
+
+      const t = Math.max(0, 1 - dist / reach); // 1 no centro, 0 na borda
+      const tEased = t * t; // ease-in para transicao mais suave
+
+      const scale = 1 + tEased * 0.45;
+      const brightness = 0.3 + tEased * 0.9;
+      const saturate = 0.15 + tEased * 1.05;
+      const drop = tEased > 0.7
+        ? 'drop-shadow(0 0 8px rgba(255,215,0,' + (tEased * 0.6).toFixed(2) + '))'
+        : '';
+
+      imgs[i].style.transform = 'scale(' + scale.toFixed(3) + ')';
+      imgs[i].style.filter = 'brightness(' + brightness.toFixed(2) + ') saturate(' + saturate.toFixed(2) + ') ' + drop;
+      imgs[i].style.zIndex = Math.round(tEased * 10);
+    }
+    requestAnimationFrame(animate);
+  }
+  requestAnimationFrame(animate);
+})();
 </script>
 
 <div class="scroll-nav">
@@ -1885,7 +2337,9 @@ init();
 </div>
 
 <footer style="text-align:center;padding:24px;color:var(--text-dim);font-size:0.75rem;border-top:1px solid rgba(255,255,255,0.05);margin-top:32px;">
-  Full Art Pokédex &copy; 2026 Fellipe Santos. Dados de cartas via pokemontcg.io. Pokémon e marcas relacionadas são propriedade da Nintendo/Game Freak/The Pokémon Company.
+  PokéDex Collector &copy; 2026 Fellipe Santos. Dados de cartas via pokemontcg.io. Pokémon e marcas relacionadas são propriedade da Nintendo/Game Freak/The Pokémon Company.
 </footer>
+
+</div><!-- /app-wrapper -->
 </body>
 </html>
