@@ -303,37 +303,130 @@ body {
   display: flex;
   align-items: center;
   gap: 16px;
-  padding: 20px 24px;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
+  padding: 16px 24px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
   position: sticky;
   top: 0;
   background: var(--bg-card);
-  z-index: 1;
+  z-index: 10;
 }
 
 .modal-header img {
-  width: 64px;
-  height: 64px;
+  width: 56px;
+  height: 56px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 50%;
+  padding: 4px;
 }
 
 .modal-header h2 {
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   text-transform: capitalize;
+  margin: 0;
+  line-height: 1.2;
 }
 
 .modal-header .close-btn {
   margin-left: auto;
-  background: none;
+  background: rgba(255,255,255,0.06);
   border: none;
   color: var(--text-dim);
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   cursor: pointer;
-  padding: 4px 8px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  transition: background 0.2s, color 0.2s;
 }
 
-.modal-header .close-btn:hover { color: var(--accent); }
+.modal-header .close-btn:hover { color: #fff; background: rgba(255,100,100,0.2); }
 
 .modal-body { padding: 20px 24px; }
+
+/* Current card preview in modal */
+.current-card-preview {
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+  background: rgba(255,215,0,0.06);
+  border: 1px solid rgba(255,215,0,0.2);
+  border-radius: 10px;
+  margin-bottom: 16px;
+  align-items: center;
+}
+
+.current-card-preview img {
+  width: 80px;
+  border-radius: 6px;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+
+.current-card-preview .preview-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.current-card-preview .preview-name {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.current-card-preview .preview-set {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  margin-bottom: 2px;
+}
+
+.current-card-preview .preview-rarity {
+  font-size: 0.72rem;
+  color: var(--gold);
+}
+
+.current-card-preview .preview-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.current-card-preview .preview-actions a,
+.current-card-preview .preview-actions button {
+  font-size: 0.75rem;
+  padding: 6px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  border: none;
+  font-weight: 600;
+}
+
+/* Search section in modal */
+.modal-search-section {
+  text-align: center;
+  padding: 20px 0 8px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+.modal-search-section .search-hint {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  margin-bottom: 12px;
+}
+
+/* Results count badge */
+.results-count {
+  display: inline-block;
+  padding: 6px 16px;
+  background: rgba(68,138,255,0.1);
+  border: 1px solid rgba(68,138,255,0.25);
+  border-radius: 20px;
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.8);
+  margin-bottom: 14px;
+}
 
 .no-cards-msg {
   text-align: center;
@@ -364,6 +457,47 @@ body {
 .btn-liga-pokedex:hover {
   transform: scale(1.05);
   box-shadow: 0 4px 16px rgba(233, 69, 96, 0.5);
+}
+
+/* Buscar cartas via API */
+.btn-search-api {
+  padding: 10px 24px;
+  background: linear-gradient(135deg, #448aff, #1565c0);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-search-api:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 16px rgba(68, 138, 255, 0.5);
+}
+
+.api-loading {
+  text-align: center;
+  padding: 32px 16px;
+  color: var(--text-dim);
+  font-size: 0.95rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255,255,255,0.03);
+  border-radius: var(--radius);
+  margin-top: 12px;
+}
+
+.loading-psyduck {
+  width: 100px;
+  height: auto;
+  border-radius: 12px;
+  background: var(--bg-card);
+  padding: 6px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.3);
 }
 
 /* Botao de registro no modal */
@@ -409,18 +543,25 @@ body {
 
 .cards-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-  max-width: 780px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 14px;
 }
 
 .card-item {
+  position: relative;
   background: var(--bg-dark);
-  border-radius: var(--radius);
+  border-radius: 10px;
   overflow: hidden;
-  border: 2px solid transparent;
+  border: 2px solid rgba(255,255,255,0.06);
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
   display: flex;
   flex-direction: column;
+}
+
+.card-item:hover {
+  border-color: rgba(255,255,255,0.15);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
 }
 
 .card-item .card-info {
@@ -436,7 +577,7 @@ body {
 }
 
 .card-info {
-  padding: 10px;
+  padding: 10px 12px;
   display: flex;
   flex-direction: column;
 }
@@ -479,10 +620,14 @@ body {
 
 .card-prices-section {
   margin-top: auto;
-  padding: 8px 10px;
+  padding: 10px 10px 8px;
   background: rgba(255,255,255,0.05);
   border-radius: 6px;
   border: 1px solid rgba(255,255,255,0.08);
+}
+
+.card-detail-row + .card-prices-section {
+  margin-top: 10px;
 }
 
 .card-prices-section .prices-header {
@@ -546,14 +691,15 @@ body {
 .card-actions {
   display: flex;
   gap: 6px;
-  padding: 0 10px 10px;
+  padding: 8px 12px 10px;
+  margin-top: auto;
 }
 
 .card-actions a {
   flex: 1;
-  padding: 6px;
-  border-radius: 4px;
-  font-size: 0.75rem;
+  padding: 7px 10px;
+  border-radius: 6px;
+  font-size: 0.73rem;
   cursor: pointer;
   text-align: center;
   text-decoration: none;
@@ -977,6 +1123,499 @@ body {
   color: var(--gold);
 }
 
+/* Binder */
+.binder-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 12px 0;
+  font-size: 0.9rem;
+}
+
+.binder-nav button {
+  padding: 6px 14px;
+  border: 1px solid var(--gray);
+  background: var(--bg-card);
+  color: var(--text);
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.binder-nav button:hover:not(:disabled) {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.binder-nav button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.binder-nav .page-label {
+  min-width: 140px;
+  text-align: center;
+  font-weight: 600;
+  color: var(--text-dim);
+}
+
+/* Binder filters */
+.binder-filters {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.binder-filters input[type="text"] {
+  padding: 7px 12px;
+  border: 1px solid var(--gray);
+  border-radius: var(--radius);
+  background: var(--bg-card);
+  color: var(--text);
+  font-size: 0.85rem;
+  width: 220px;
+}
+
+.binder-filters input[type="text"]::placeholder {
+  color: var(--text-dim);
+}
+
+.btn-clear-filters {
+  padding: 6px 14px;
+  background: rgba(255,255,255,0.1);
+  color: #f66;
+  border: 1px solid rgba(255,100,100,0.4);
+  border-radius: var(--radius);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+  white-space: nowrap;
+}
+
+.btn-clear-filters:hover {
+  background: rgba(255,100,100,0.15);
+  border-color: #f66;
+}
+
+.binder-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  user-select: none;
+}
+
+.binder-toggle .toggle-track {
+  width: 40px;
+  height: 22px;
+  border-radius: 11px;
+  background: var(--gray);
+  position: relative;
+  transition: background 0.2s;
+  flex-shrink: 0;
+}
+
+.binder-toggle .toggle-track::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: white;
+  transition: transform 0.2s;
+}
+
+.binder-toggle.active .toggle-track {
+  background: var(--gold);
+}
+
+.binder-toggle.active .toggle-track::after {
+  transform: translateX(18px);
+}
+
+.binder-toggle.active {
+  color: var(--gold);
+}
+
+.binder-search-result {
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  padding: 4px 0;
+}
+
+/* Book layout */
+.binder-book {
+  position: relative;
+  max-width: 1500px;
+  margin: 0 auto;
+  perspective: 2000px;
+}
+
+.binder-spread {
+  display: flex;
+  justify-content: center;
+  gap: 0;
+}
+
+.binder-half {
+  flex: 1;
+  max-width: 780px;
+  display: flex;
+  flex-direction: column;
+}
+
+.binder-left .binder-page {
+  border-radius: 12px 0 0 12px;
+  border-right: none;
+}
+
+.binder-right .binder-page {
+  border-radius: 0 12px 12px 0;
+  border-left: none;
+}
+
+.binder-spine {
+  width: 6px;
+  background: linear-gradient(to right, #111, #2a2a3a, #111);
+  align-self: stretch;
+  flex-shrink: 0;
+  box-shadow: inset 0 0 4px rgba(0,0,0,0.8);
+}
+
+.binder-page {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  padding: 16px;
+  background: rgba(0,0,0,0.2);
+  border: 2px solid rgba(255,255,255,0.05);
+  flex: 1;
+}
+
+.page-num {
+  text-align: center;
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  padding: 6px 0 2px;
+  opacity: 0.6;
+}
+
+.binder-slot {
+  aspect-ratio: 0.715;
+  border-radius: 4px;
+  border: 1px solid #333;
+  background: var(--bg-card);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
+}
+
+.binder-slot.empty {
+  opacity: 0.6;
+  border-style: dashed;
+}
+
+.binder-slot.empty .slot-num {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: rgba(255,255,255,0.85);
+}
+
+.binder-slot.empty .slot-name {
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.7);
+  text-transform: capitalize;
+  text-align: center;
+  padding: 0 4px;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-top: 3px;
+}
+
+.binder-slot.filled {
+  cursor: pointer;
+  border-color: var(--gold);
+}
+
+.binder-slot.filled:hover {
+  transform: scale(1.08);
+  box-shadow: 0 4px 16px rgba(255, 215, 0, 0.3);
+  z-index: 10;
+}
+
+.binder-slot.filled img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.binder-slot.sprite-only {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-color: var(--gold);
+  border-style: solid;
+  background: rgba(255,215,0,0.08);
+}
+
+.binder-slot.sprite-only img.slot-sprite {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+.binder-slot.sprite-only .slot-num {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--gold);
+  margin-top: 2px;
+}
+
+.binder-slot.sprite-only .slot-name {
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.7);
+  text-transform: capitalize;
+  text-align: center;
+}
+
+.binder-slot.past-end {
+  visibility: hidden;
+}
+
+/* Page turn animation */
+.binder-half.turning-out {
+  animation: page-turn-out 0.3s ease-in forwards;
+  transform-origin: left center;
+}
+
+.binder-half.turning-in {
+  animation: page-turn-in 0.3s ease-out forwards;
+  transform-origin: left center;
+}
+
+.binder-left.turning-out {
+  transform-origin: right center;
+}
+
+.binder-left.turning-in {
+  transform-origin: right center;
+}
+
+@keyframes page-turn-out {
+  0% { transform: perspective(1500px) rotateY(0deg); opacity: 1; }
+  100% { transform: perspective(1500px) rotateY(-90deg); opacity: 0; }
+}
+
+@keyframes page-turn-in {
+  0% { transform: perspective(1500px) rotateY(90deg); opacity: 0; }
+  100% { transform: perspective(1500px) rotateY(0deg); opacity: 1; }
+}
+
+/* Card selection in modal */
+.card-select-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 0;
+  padding-top: 140%; /* match card image aspect */
+  cursor: pointer;
+  z-index: 4;
+}
+
+.card-select-check {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 3px solid rgba(255,255,255,0.8);
+  background: rgba(0,0,0,0.55);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+  transition: all 0.2s;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: transparent;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+}
+
+.card-select-check:hover {
+  border-color: var(--gold);
+  background: rgba(0,0,0,0.75);
+  transform: scale(1.1);
+}
+
+.card-select-check.checked {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: #111;
+  box-shadow: 0 0 12px rgba(255, 215, 0, 0.5);
+}
+
+.card-item.selected {
+  border-color: var(--gold);
+  box-shadow: 0 0 16px rgba(255, 215, 0, 0.3);
+}
+
+.card-item.selected::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  border: 2px solid var(--gold);
+  border-radius: var(--radius);
+  pointer-events: none;
+  z-index: 3;
+}
+
+.card-select-bar {
+  position: sticky;
+  bottom: 0;
+  background: var(--bg-card);
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding: 14px 24px;
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  z-index: 5;
+}
+
+.card-select-bar .select-count {
+  font-size: 0.9rem;
+  color: var(--text-dim);
+}
+
+.card-select-bar .select-count strong {
+  color: var(--gold);
+}
+
+.btn-confirm-selection {
+  padding: 10px 28px;
+  border: none;
+  border-radius: var(--radius);
+  background: var(--gold);
+  color: #111;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+
+.btn-confirm-selection:hover { transform: scale(1.03); }
+.btn-confirm-selection:active { transform: scale(0.97); }
+
+/* Binder detail overlay */
+.binder-detail-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.85);
+  z-index: 300;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.binder-detail-overlay.open {
+  display: flex;
+}
+
+.binder-detail {
+  background: var(--bg-card);
+  border-radius: 12px;
+  max-width: 480px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+  position: relative;
+}
+
+.binder-detail .detail-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: var(--accent);
+  border: none;
+  color: white;
+  font-size: 1.4rem;
+  font-weight: 700;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+  transition: transform 0.15s, box-shadow 0.2s;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+}
+
+.binder-detail .detail-close:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 16px rgba(233, 69, 96, 0.5);
+}
+
+.binder-detail .detail-img {
+  width: 100%;
+  aspect-ratio: 0.715;
+  object-fit: cover;
+  display: block;
+  border-radius: 12px 12px 0 0;
+  background: #111;
+}
+
+.binder-detail .detail-body {
+  padding: 16px 20px;
+}
+
+.binder-detail .detail-body h3 {
+  font-size: 1.1rem;
+  margin-bottom: 12px;
+  color: var(--gold);
+}
+
+.binder-detail .detail-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  font-size: 0.85rem;
+}
+
+.binder-detail .detail-row:last-child { border-bottom: none; }
+.binder-detail .detail-row .dl { color: var(--text-dim); }
+.binder-detail .detail-row .dv { font-weight: 600; }
+
+.binder-detail .detail-body:last-child {
+  padding-bottom: 20px;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .pokemon-grid {
@@ -990,9 +1629,28 @@ body {
   .header h1 { font-size: 1rem; }
   .filters input { width: 150px; }
   .cards-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  }
+  .current-card-preview {
+    flex-direction: column;
+    text-align: center;
+  }
+  .current-card-preview .preview-actions {
+    flex-direction: row;
+    justify-content: center;
   }
   .sorteador-display { font-size: 4rem; }
+  .binder-spread { flex-direction: column; align-items: center; }
+  .binder-half { max-width: 100%; }
+  .binder-spine { display: none; }
+  .binder-left .binder-page { border-radius: 12px 12px 0 0; border-right: 2px solid rgba(255,255,255,0.05); border-bottom: none; }
+  .binder-right .binder-page { border-radius: 0 0 12px 12px; border-left: 2px solid rgba(255,255,255,0.05); border-top: none; }
+  .binder-filters input[type="text"] { width: 160px; }
+  .binder-page { gap: 4px; padding: 8px; }
+  .binder-nav { gap: 8px; font-size: 0.8rem; }
+  .binder-nav button { padding: 4px 10px; font-size: 0.8rem; }
+  .binder-nav .page-label { min-width: 100px; }
+  .binder-detail { max-width: 95vw; }
 }
 
 /* Scrollbar */
@@ -1287,6 +1945,7 @@ body {
   <button class="tab-btn active" data-tab="grid">Pokédex</button>
   <button class="tab-btn" data-tab="sorteador">Sorteador</button>
   <button class="tab-btn" data-tab="stats">Estatísticas</button>
+  <button class="tab-btn" data-tab="binder">Fichário</button>
 </div>
 
 <div class="main-content">
@@ -1319,6 +1978,7 @@ body {
       <select id="type-filter">
         <option value="">Todos tipos</option>
       </select>
+      <button class="btn-clear-filters" id="btn-clear-grid-filters" onclick="clearGridFilters()" style="display:none">Limpar filtros</button>
       <div class="filter-legend">
         <span class="legend-item"><span class="legend-dot" style="background:#2a2a3a;border:1px solid #333"></span> Não registrado</span>
         <span class="legend-item"><span class="legend-dot" style="background:#1a3a5c;border:1px solid #2a5a8c"></span> Não registrado (com full art)</span>
@@ -1371,6 +2031,33 @@ body {
   <div class="tab-panel" id="tab-stats">
     <div class="stats-grid" id="stats-container"></div>
   </div>
+
+  <!-- Binder Tab -->
+  <div class="tab-panel" id="tab-binder">
+    <div class="binder-filters">
+      <input type="text" id="binder-search" placeholder="Buscar por nome ou número...">
+      <div class="binder-toggle" id="binder-toggle-registered" onclick="toggleBinderRegistered()">
+        <div class="toggle-track"></div>
+        <span>Só registrados</span>
+      </div>
+      <button class="btn-clear-filters" id="btn-clear-filters" onclick="clearBinderFilters()" style="display:none">Limpar filtros</button>
+    </div>
+    <div class="binder-search-result" id="binder-search-result"></div>
+    <div class="binder-nav" id="binder-nav"></div>
+    <div class="binder-book">
+      <div class="binder-spread" id="binder-spread">
+        <div class="binder-half binder-left" id="binder-half-left">
+          <div class="binder-page" id="binder-page-left"></div>
+          <div class="page-num" id="page-num-left"></div>
+        </div>
+        <div class="binder-spine"></div>
+        <div class="binder-half binder-right" id="binder-half-right">
+          <div class="binder-page" id="binder-page-right"></div>
+          <div class="page-num" id="page-num-right"></div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- Modal -->
@@ -1386,6 +2073,11 @@ body {
     </div>
     <div class="modal-body" id="modal-body"></div>
   </div>
+</div>
+
+<!-- Binder Detail Overlay -->
+<div class="binder-detail-overlay" id="binder-detail-overlay">
+  <div class="binder-detail" id="binder-detail"></div>
 </div>
 
 <script>
@@ -1525,6 +2217,7 @@ async function initApp() {
   setupTabs();
   setupFilters();
   setupKeyboard();
+  setupBinderSearch();
   appInitialized = true;
 }
 
@@ -1615,6 +2308,28 @@ async function toggleRegistered(pokeNum) {
 
 function isRegistered(pokeNum) {
   return !!collection[String(pokeNum)];
+}
+
+function getSelectedCards(pokeNum) {
+  const entry = collection[String(pokeNum)];
+  if (entry && typeof entry === 'object' && entry.cards) return entry.cards;
+  return [];
+}
+
+function hasCardInBinder(pokeNum) {
+  return getSelectedCards(pokeNum).length > 0;
+}
+
+function findCardById(pokeNum, cardId) {
+  const entry = FULLART_DATA.by_pokedex[String(pokeNum)];
+  if (entry && entry.cards) {
+    const found = entry.cards.find(c => c.id === cardId);
+    if (found) return found;
+  }
+  // Check custom card saved from API search
+  const col = collection[String(pokeNum)];
+  if (col && col.cardData && col.cardData.id === cardId) return col.cardData;
+  return null;
 }
 
 function exportCollection() {
@@ -1851,6 +2566,19 @@ function formatBRL(val) {
   return 'R$ ' + val.toFixed(2).replace('.', ',');
 }
 
+function escHtml(str) {
+  if (!str) return '';
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+function buildLigaUrl(card) {
+  const name = card.name || '';
+  const num = card.number || '';
+  const total = card.set_total || '';
+  const ed = card.ed_code || '';
+  return `https://www.ligapokemon.com.br/?view=cards%2Fcard&card=${encodeURIComponent(name + ' (' + num + '/' + total + ')')}&ed=${encodeURIComponent(ed)}&num=${encodeURIComponent(num)}`;
+}
+
 function buildPricesHtml(card) {
   const ligaPrices = card.liga_prices || {};
   const ligaDetails = card.liga_details || {};
@@ -1900,12 +2628,18 @@ function buildPricesHtml(card) {
 }
 
 // =============================================
-// MODAL
+// MODAL — Single card selection
 // =============================================
+let modalSelectedCard = null; // single card ID
+let modalCurrentPokeNum = null;
+let modalApiCards = null; // { cardId: cardData } from API search
+
 function openModal(pokeNum) {
   const poke = pokedexLookup[pokeNum];
   if (!poke) return;
 
+  modalCurrentPokeNum = pokeNum;
+  modalApiCards = null;
   const overlay = document.getElementById('modal-overlay');
   const sprite = document.getElementById('modal-sprite');
   const nameEl = document.getElementById('modal-name');
@@ -1916,74 +2650,207 @@ function openModal(pokeNum) {
   nameEl.textContent = `#${pokeNum} ${poke.name}`;
   infoEl.textContent = `${poke.types ? poke.types.join(', ') : ''} | Gen ${poke.generation} | ${poke.region || ''}`;
 
-  const entry = FULLART_DATA.by_pokedex[String(pokeNum)];
-  const registered = isRegistered(pokeNum);
-  const hasCards = entry && entry.cards && entry.cards.length > 0;
   let html = '';
+  const registered = isRegistered(pokeNum);
+  const existing = getSelectedCards(pokeNum);
+  modalSelectedCard = existing.length > 0 ? existing[0] : null;
 
-  // Botao de registro — sempre visivel para todos os Pokemon
-  if (registered) {
-    html += `<div class="register-section registered">
-      <div style="margin-bottom:8px;font-size:0.9rem;color:var(--gold);font-weight:700">Registrado na Pokédex!</div>
+  // Show current selection if any
+  if (modalSelectedCard) {
+    const card = findCardById(pokeNum, modalSelectedCard);
+    if (card) {
+      const setLine = [card.set_name, card.ed_code, card.set_year].filter(Boolean).join(' - ');
+      const ligaUrl = card.liga_pokemon_url || buildLigaUrl(card);
+      html += `<div class="current-card-preview">
+        <img src="${card.image_small}" alt="${escHtml(card.name)}" loading="lazy">
+        <div class="preview-info">
+          <div class="preview-name">${escHtml(card.name)} (${card.number}/${card.set_total || '?'})</div>
+          <div class="preview-set">${escHtml(setLine)}</div>
+          <div class="preview-rarity">${escHtml(card.rarity || '')}</div>
+        </div>
+        <div class="preview-actions">
+          <a href="${ligaUrl}" target="_blank" class="btn-liga" style="font-size:0.72rem;padding:6px 12px;border-radius:6px">Liga Pok\u00e9mon</a>
+          <button class="btn-register unregister" style="font-size:0.72rem;padding:6px 12px" onclick="handleRemoveCustomCard(${pokeNum})">Remover</button>
+        </div>
+      </div>`;
+    }
+  } else if (registered) {
+    html += `<div class="register-section registered" style="margin-bottom:16px">
+      <div style="margin-bottom:8px;font-size:0.9rem;color:var(--gold);font-weight:700">Registrado na Pok\u00e9dex (sem carta)</div>
       <button class="btn-register unregister" onclick="handleToggleRegister(${pokeNum})">Remover registro</button>
-    </div>`;
-  } else {
-    html += `<div class="register-section not-registered">
-      <div style="margin-bottom:8px;font-size:0.9rem;color:var(--text-dim)">Registre este Pokémon na sua Pokédex</div>
-      <button class="btn-register register" onclick="handleToggleRegister(${pokeNum})">Registrar na Pokédex!</button>
     </div>`;
   }
 
-  // Cartas full art — so mostra se existirem
-  if (hasCards) {
-    html += `<div style="margin-bottom:12px;font-size:0.85rem;color:var(--text-dim)">${entry.cards.length} carta(s) full art disponível(is) como referência</div>`;
+  // Always show search button
+  html += `<div class="modal-search-section">
+    <div class="search-hint">${modalSelectedCard ? 'Quer trocar? Busque e selecione outra carta.' : 'Busque todas as cartas dispon\u00edveis para este Pok\u00e9mon.'}</div>
+    <button class="btn-search-api" onclick="searchPokemonCards(${pokeNum})">${modalSelectedCard ? 'Trocar carta' : 'Buscar cartas'}</button>
+  </div>`;
+  html += '<div id="api-search-results"></div>';
+
+  body.innerHTML = html;
+  overlay.classList.add('open');
+}
+
+function toggleCardSelection(cardId) {
+  // Single-select: toggle off if same, otherwise select new
+  const prevSelected = modalSelectedCard;
+  if (modalSelectedCard === cardId) {
+    modalSelectedCard = null;
+  } else {
+    modalSelectedCard = cardId;
+  }
+
+  // Update all checkboxes and card borders
+  document.querySelectorAll('.card-item[data-card-id]').forEach(item => {
+    const id = item.dataset.cardId;
+    const check = item.querySelector('.card-select-check');
+    if (id === modalSelectedCard) {
+      item.classList.add('selected');
+      check.classList.add('checked');
+    } else {
+      item.classList.remove('selected');
+      check.classList.remove('checked');
+    }
+  });
+
+  document.getElementById('select-count-text').textContent =
+    modalSelectedCard ? '1 carta selecionada' : 'Nenhuma carta selecionada';
+}
+
+async function confirmCardSelection() {
+  const pokeNum = modalCurrentPokeNum;
+  const key = String(pokeNum);
+
+  if (modalSelectedCard) {
+    const entry = { cards: [modalSelectedCard] };
+    // If card is from API search, save its data so binder can render it
+    if (modalApiCards && modalApiCards[modalSelectedCard]) {
+      entry.cardData = modalApiCards[modalSelectedCard];
+    }
+    collection[key] = entry;
+  } else {
+    delete collection[key];
+  }
+
+  await saveCollection();
+  openModal(pokeNum);
+  renderGrid();
+  if (document.getElementById('tab-binder').classList.contains('active')) {
+    renderBinder();
+  }
+}
+
+async function handleRemoveCustomCard(pokeNum) {
+  delete collection[String(pokeNum)];
+  await saveCollection();
+  openModal(pokeNum);
+  renderGrid();
+  if (document.getElementById('tab-binder').classList.contains('active')) renderBinder();
+}
+
+async function searchPokemonCards(pokeNum) {
+  const container = document.getElementById('api-search-results');
+  if (!container) return;
+  container.innerHTML = `<div class="api-loading">
+    <img src="${PSYDUCK_LOADING_GIF}" alt="Psyduck buscando..." class="loading-psyduck">
+    <div>Buscando cartas...</div>
+  </div>`;
+
+  try {
+    const url = `https://api.pokemontcg.io/v2/cards?q=nationalPokedexNumbers:${pokeNum}&select=id,name,number,set,images,rarity,artist,supertype,subtypes&orderBy=-set.releaseDate&pageSize=100`;
+    const resp = await fetch(url);
+    if (!resp.ok) throw new Error('API retornou ' + resp.status);
+    const json = await resp.json();
+    const apiCards = json.data || [];
+
+    if (apiCards.length === 0) {
+      container.innerHTML = '<div class="api-loading">Nenhuma carta encontrada para este Pok\u00e9mon.</div>';
+      return;
+    }
+
+    // Local fullart data for enrichment
+    const localEntry = FULLART_DATA.by_pokedex[String(pokeNum)];
+    const localMap = {};
+    if (localEntry && localEntry.cards) {
+      for (const lc of localEntry.cards) { localMap[lc.id] = lc; }
+    }
+
+    // Build card map for later saving
+    modalApiCards = {};
+    const existing = getSelectedCards(pokeNum);
+    modalSelectedCard = existing.length > 0 ? existing[0] : null;
+
+    let html = `<div style="text-align:center;margin:16px 0 12px"><span class="results-count">${apiCards.length} carta${apiCards.length !== 1 ? 's' : ''} encontrada${apiCards.length !== 1 ? 's' : ''} \u2014 selecione uma</span></div>`;
     html += '<div class="cards-grid">';
 
-    for (const card of entry.cards) {
-      const setTotal = card.set_total || '?';
-      const edCode = card.ed_code || '';
-      const setYear = card.set_year || '';
-      const artist = card.artist || '';
-      const supertype = card.supertype || '';
-      const subtypes = (card.subtypes || []).join(', ');
-      const typeStr = subtypes ? `${supertype} \u2013 ${subtypes}` : supertype;
+    for (const c of apiCards) {
+      // Base card data from API
+      const cardData = {
+        id: c.id,
+        name: c.name,
+        image_small: c.images ? c.images.small : '',
+        image_large: c.images ? c.images.large : '',
+        set_name: c.set ? c.set.name : '',
+        ed_code: c.set ? (c.set.ptcgoCode || c.set.id) : '',
+        set_year: c.set ? (c.set.releaseDate || '').substring(0, 4) : '',
+        set_total: c.set ? (c.set.printedTotal || c.set.total) : '',
+        number: c.number || '',
+        rarity: c.rarity || '',
+        artist: c.artist || '',
+        supertype: c.supertype || '',
+        subtypes: c.subtypes || []
+      };
 
-      // Linha de edicao: "Dragon - DR - 2003"
-      let setLine = card.set_name;
-      if (edCode) setLine += ` - ${edCode}`;
-      if (setYear) setLine += ` - ${setYear}`;
+      // Enrich with local fullart data (prices, liga_url, etc.)
+      const local = localMap[c.id];
+      if (local) {
+        cardData.liga_pokemon_url = local.liga_pokemon_url;
+        cardData.liga_prices = local.liga_prices;
+        cardData.liga_details = local.liga_details;
+        cardData.liga_scraped_at = local.liga_scraped_at;
+        if (local.image_small) cardData.image_small = local.image_small;
+        if (local.image_large) cardData.image_large = local.image_large;
+      }
 
-      // Precos
-      let pricesHtml = buildPricesHtml(card);
+      modalApiCards[c.id] = cardData;
 
-      html += `<div class="card-item">
-        <img src="${card.image_small}" alt="${card.name}" loading="lazy" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 245 342%22><rect fill=%22%23222%22 width=%22245%22 height=%22342%22/><text fill=%22%23666%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 font-size=%2214%22>Imagem indisponível</text></svg>'">
+      const isSelected = modalSelectedCard === c.id;
+      const setLine = [cardData.set_name, cardData.ed_code, cardData.set_year].filter(Boolean).join(' - ');
+      const artist = cardData.artist;
+      const subtypes = (cardData.subtypes || []).join(', ');
+      const typeStr = subtypes ? `${cardData.supertype} \u2013 ${subtypes}` : cardData.supertype;
+      const pricesHtml = local ? buildPricesHtml(cardData) : '';
+      const ligaUrl = cardData.liga_pokemon_url || buildLigaUrl(cardData);
+
+      html += `<div class="card-item ${isSelected ? 'selected' : ''}" data-card-id="${c.id}">
+        <div class="card-select-overlay" onclick="toggleCardSelection('${c.id}')"></div>
+        <div class="card-select-check ${isSelected ? 'checked' : ''}" onclick="toggleCardSelection('${c.id}')">\u2713</div>
+        <img src="${cardData.image_small}" alt="${escHtml(c.name)}" loading="lazy" onerror="this.style.display='none'">
         <div class="card-info">
-          <div class="card-name">${card.name} (${card.number}/${setTotal})</div>
-          <div class="card-set">${setLine}</div>
-          <div class="card-rarity">${card.rarity}</div>
-          ${artist ? `<div class="card-detail-row"><span class="detail-label">Artista</span><span class="detail-value">${artist}</span></div>` : ''}
-          ${typeStr ? `<div class="card-detail-row"><span class="detail-label">Tipo</span><span class="detail-value">${typeStr}</span></div>` : ''}
+          <div class="card-name">${escHtml(c.name)} (${c.number}/${cardData.set_total})</div>
+          <div class="card-set">${escHtml(setLine)}</div>
+          <div class="card-rarity">${escHtml(cardData.rarity)}</div>
+          ${artist ? `<div class="card-detail-row"><span class="detail-label">Artista</span><span class="detail-value">${escHtml(artist)}</span></div>` : ''}
+          ${typeStr ? `<div class="card-detail-row"><span class="detail-label">Tipo</span><span class="detail-value">${escHtml(typeStr)}</span></div>` : ''}
           ${pricesHtml}
         </div>
         <div class="card-actions">
-          <a href="${card.liga_pokemon_url}" target="_blank" class="btn-liga">Ver na Liga Pokémon</a>
+          <a href="${ligaUrl}" target="_blank" class="btn-liga">Ver na Liga Pok\u00e9mon</a>
         </div>
       </div>`;
     }
 
     html += '</div>';
-  } else {
-    const ligaUrl = `https://www.ligapokemon.com.br/?view=pokedex/pokemon&id=${pokeNum}`;
-    html += `<div class="no-cards-msg">
-      Este Pokémon não possui cartas Full Art no TCG.
-      <a href="${ligaUrl}" target="_blank" class="btn-liga-pokedex">Ver na Pokédex da Liga Pokémon</a>
+    html += `<div class="card-select-bar" id="card-select-bar">
+      <span class="select-count" id="select-count-text">${modalSelectedCard ? '1 carta selecionada' : 'Nenhuma carta selecionada'}</span>
+      <button class="btn-confirm-selection" onclick="confirmCardSelection()">Confirmar sele\u00e7\u00e3o</button>
     </div>`;
+
+    container.innerHTML = html;
+  } catch (err) {
+    container.innerHTML = `<div class="api-loading" style="color:#f66">Erro ao buscar: ${escHtml(err.message)}</div>`;
   }
-
-  body.innerHTML = html;
-
-  overlay.classList.add('open');
 }
 
 function closeModal() {
@@ -1992,8 +2859,11 @@ function closeModal() {
 
 async function handleToggleRegister(pokeNum) {
   await toggleRegistered(pokeNum);
-  openModal(pokeNum); // Re-render modal
-  renderGrid(); // Update grid colors
+  openModal(pokeNum);
+  renderGrid();
+  if (document.getElementById('tab-binder').classList.contains('active')) {
+    renderBinder();
+  }
 }
 
 // =============================================
@@ -2008,6 +2878,7 @@ function setupTabs() {
       document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
 
       if (btn.dataset.tab === 'stats') renderStats();
+      if (btn.dataset.tab === 'binder') renderBinder();
     });
   });
 }
@@ -2015,16 +2886,38 @@ function setupTabs() {
 // =============================================
 // FILTERS
 // =============================================
+function updateClearGridFiltersBtn() {
+  const search = (document.getElementById('search-input') || {}).value || '';
+  const gen = (document.getElementById('gen-filter') || {}).value || '';
+  const status = (document.getElementById('status-filter') || {}).value || '';
+  const fullart = (document.getElementById('fullart-filter') || {}).value || '';
+  const type = (document.getElementById('type-filter') || {}).value || '';
+  const hasFilter = search.trim().length > 0 || gen || status || fullart || type;
+  const btn = document.getElementById('btn-clear-grid-filters');
+  if (btn) btn.style.display = hasFilter ? 'inline-block' : 'none';
+}
+
+function clearGridFilters() {
+  document.getElementById('search-input').value = '';
+  document.getElementById('gen-filter').value = '';
+  document.getElementById('status-filter').value = '';
+  document.getElementById('fullart-filter').value = '';
+  document.getElementById('type-filter').value = '';
+  updateClearGridFiltersBtn();
+  renderGrid();
+}
+
 function setupFilters() {
   let debounce;
+  const onFilterChange = () => { updateClearGridFiltersBtn(); renderGrid(); };
   document.getElementById('search-input').addEventListener('input', () => {
     clearTimeout(debounce);
-    debounce = setTimeout(renderGrid, 200);
+    debounce = setTimeout(onFilterChange, 200);
   });
-  document.getElementById('gen-filter').addEventListener('change', renderGrid);
-  document.getElementById('status-filter').addEventListener('change', renderGrid);
-  document.getElementById('fullart-filter').addEventListener('change', renderGrid);
-  document.getElementById('type-filter').addEventListener('change', renderGrid);
+  document.getElementById('gen-filter').addEventListener('change', onFilterChange);
+  document.getElementById('status-filter').addEventListener('change', onFilterChange);
+  document.getElementById('fullart-filter').addEventListener('change', onFilterChange);
+  document.getElementById('type-filter').addEventListener('change', onFilterChange);
 }
 
 // =============================================
@@ -2032,7 +2925,21 @@ function setupFilters() {
 // =============================================
 function setupKeyboard() {
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeModal();
+    if (e.key === 'Escape') {
+      if (document.getElementById('binder-detail-overlay').classList.contains('open')) {
+        closeBinderDetail();
+      } else {
+        closeModal();
+      }
+    }
+    // Binder arrow key navigation (skip when typing in search)
+    const binderTab = document.getElementById('tab-binder');
+    if (binderTab && binderTab.classList.contains('active') &&
+        !document.getElementById('binder-detail-overlay').classList.contains('open') &&
+        document.activeElement?.tagName !== 'INPUT') {
+      if (e.key === 'ArrowLeft') binderPrev();
+      if (e.key === 'ArrowRight') binderNext();
+    }
   });
 }
 
@@ -2108,9 +3015,9 @@ function sortear() {
         setTimeout(() => {
           pokeDiv.classList.add('reveal');
           pokeDiv.innerHTML = `
-            <img src="${spriteUrl(chosen.number)}" alt="${chosen.name}">
+            <img src="${spriteUrl(chosen.number)}" alt="${escHtml(chosen.name)}">
             <div>
-              <div class="name">${chosen.name}</div>
+              <div class="name">${escHtml(chosen.name)}</div>
               <div style="color:var(--text-dim);font-size:0.95rem">${chosen.types ? chosen.types.join(', ') : ''} | Gen ${chosen.generation}</div>
               <div style="margin-top:10px">
                 <button class="btn btn-primary" onclick="openModal(${chosen.number})" style="font-size:0.9rem;padding:8px 20px">Ver Cartas</button>
@@ -2153,9 +3060,354 @@ function updateSorteioHistory() {
   let html = `<div style="margin-bottom:8px">Registrados: ${registrados} | Restantes: ${restantes}</div>`;
   html += sorteioHistory.map(n => {
     const p = pokedexLookup[n];
-    return `<span onclick="openModal(${n})" style="cursor:pointer" title="${p ? p.name : ''}">#${n}</span>`;
+    return `<span onclick="openModal(${n})" style="cursor:pointer" title="${p ? escHtml(p.name) : ''}">#${n}</span>`;
   }).join(' ');
   el.innerHTML = html;
+}
+
+// =============================================
+// BINDER — Fichário dupla página (5x4 x2)
+// =============================================
+let binderOpening = 0;
+const SLOTS_PER_PAGE = 20;
+const TOTAL_POKEMON = 1025;
+const PSYDUCK_LOADING_GIF = 'https://gifdb.com/images/high/psyduck-walking-confused-2lm01y84dnh68nox.gif';
+let binderAnimating = false;
+let binderOnlyRegistered = false;
+let binderFilteredList = null; // null = no filter (fixed positions), array = filtered pokemon numbers
+
+function getBinderList() {
+  const search = (document.getElementById('binder-search') || {}).value || '';
+  const searchTerm = search.toLowerCase().trim();
+
+  if (!binderOnlyRegistered && !searchTerm) {
+    binderFilteredList = null; // normal mode: fixed positions 1-1025
+    return;
+  }
+
+  // Build filtered list
+  binderFilteredList = [];
+  for (let num = 1; num <= TOTAL_POKEMON; num++) {
+    if (binderOnlyRegistered && !isRegistered(num)) continue;
+    if (searchTerm) {
+      const poke = pokedexLookup[num];
+      const matchName = poke && poke.name.toLowerCase().includes(searchTerm);
+      const matchNum = String(num).includes(searchTerm);
+      if (!matchName && !matchNum) continue;
+    }
+    binderFilteredList.push(num);
+  }
+}
+
+function getBinderTotalPages() {
+  if (!binderFilteredList) return Math.ceil(TOTAL_POKEMON / SLOTS_PER_PAGE);
+  return Math.max(1, Math.ceil(binderFilteredList.length / SLOTS_PER_PAGE));
+}
+
+function getBinderTotalOpenings() {
+  return Math.max(1, Math.ceil(getBinderTotalPages() / 2));
+}
+
+function buildSlotEl(pokeNum) {
+  const slotEl = document.createElement('div');
+  const selectedCards = getSelectedCards(pokeNum);
+  const poke = pokedexLookup[pokeNum];
+  const registered = isRegistered(pokeNum);
+
+  if (selectedCards.length > 0) {
+    // Has full art card selected
+    slotEl.className = 'binder-slot filled';
+    const card = findCardById(pokeNum, selectedCards[0]);
+    if (card) {
+      const img = document.createElement('img');
+      img.src = card.image_small;
+      img.alt = poke ? poke.name : '#' + pokeNum;
+      img.loading = 'lazy';
+      slotEl.appendChild(img);
+    }
+    slotEl.onclick = () => openBinderDetail(pokeNum);
+  } else if (registered) {
+    // Registered without full art card — show sprite
+    slotEl.className = 'binder-slot filled sprite-only';
+    const img = document.createElement('img');
+    img.src = spriteUrl(pokeNum);
+    img.alt = poke ? poke.name : '#' + pokeNum;
+    img.loading = 'lazy';
+    img.className = 'slot-sprite';
+    slotEl.appendChild(img);
+    const numEl = document.createElement('div');
+    numEl.className = 'slot-num';
+    numEl.textContent = '#' + pokeNum;
+    slotEl.appendChild(numEl);
+    if (poke) {
+      const nameEl = document.createElement('div');
+      nameEl.className = 'slot-name';
+      nameEl.textContent = poke.name;
+      slotEl.appendChild(nameEl);
+    }
+    slotEl.onclick = () => openModal(pokeNum);
+  } else {
+    // Empty — not registered
+    slotEl.className = 'binder-slot empty';
+    const numEl = document.createElement('div');
+    numEl.className = 'slot-num';
+    numEl.textContent = '#' + pokeNum;
+    slotEl.appendChild(numEl);
+    if (poke) {
+      const nameEl = document.createElement('div');
+      nameEl.className = 'slot-name';
+      nameEl.textContent = poke.name;
+      slotEl.appendChild(nameEl);
+    }
+  }
+  return slotEl;
+}
+
+function buildPageSlots(pageIndex) {
+  const fragment = document.createDocumentFragment();
+
+  if (!binderFilteredList) {
+    // Normal mode: fixed positions
+    for (let slot = 0; slot < SLOTS_PER_PAGE; slot++) {
+      const pokeNum = pageIndex * SLOTS_PER_PAGE + slot + 1;
+      if (pokeNum > TOTAL_POKEMON) {
+        const empty = document.createElement('div');
+        empty.className = 'binder-slot past-end';
+        fragment.appendChild(empty);
+        continue;
+      }
+      fragment.appendChild(buildSlotEl(pokeNum));
+    }
+  } else {
+    // Filtered mode: show from filtered list
+    const start = pageIndex * SLOTS_PER_PAGE;
+    for (let slot = 0; slot < SLOTS_PER_PAGE; slot++) {
+      const idx = start + slot;
+      if (idx >= binderFilteredList.length) {
+        const empty = document.createElement('div');
+        empty.className = 'binder-slot past-end';
+        fragment.appendChild(empty);
+        continue;
+      }
+      fragment.appendChild(buildSlotEl(binderFilteredList[idx]));
+    }
+  }
+  return fragment;
+}
+
+function renderBinder() {
+  getBinderList();
+  updateClearFiltersBtn();
+
+  const nav = document.getElementById('binder-nav');
+  const leftPage = document.getElementById('binder-page-left');
+  const rightPage = document.getElementById('binder-page-right');
+  const leftNum = document.getElementById('page-num-left');
+  const rightNum = document.getElementById('page-num-right');
+  const searchResult = document.getElementById('binder-search-result');
+
+  const totalPages = getBinderTotalPages();
+  const totalOpenings = getBinderTotalOpenings();
+
+  // Clamp opening
+  if (binderOpening >= totalOpenings) binderOpening = totalOpenings - 1;
+  if (binderOpening < 0) binderOpening = 0;
+
+  const leftPageIdx = binderOpening * 2;
+  const rightPageIdx = binderOpening * 2 + 1;
+
+  // Search result text
+  if (binderFilteredList) {
+    const total = binderFilteredList.length;
+    searchResult.textContent = total === 0
+      ? 'Nenhum Pok\u00e9mon encontrado'
+      : total + ' Pok\u00e9mon encontrado(s)';
+  } else {
+    searchResult.textContent = '';
+  }
+
+  // Nav
+  const isFirst = binderOpening === 0;
+  const isLast = binderOpening >= totalOpenings - 1;
+  nav.innerHTML = `
+    <button onclick="binderGoTo(0)" ${isFirst ? 'disabled' : ''}>\u25C0\u25C0</button>
+    <button onclick="binderPrev()" ${isFirst ? 'disabled' : ''}>\u25C0</button>
+    <span class="page-label">P\u00e1g. ${leftPageIdx + 1}\u2013${Math.min(rightPageIdx + 1, totalPages)} / ${totalPages}</span>
+    <button onclick="binderNext()" ${isLast ? 'disabled' : ''}>\u25B6</button>
+    <button onclick="binderGoTo(${totalOpenings - 1})" ${isLast ? 'disabled' : ''}>\u25B6\u25B6</button>
+  `;
+
+  // Left page
+  leftPage.innerHTML = '';
+  leftPage.appendChild(buildPageSlots(leftPageIdx));
+  leftNum.textContent = 'P\u00e1gina ' + (leftPageIdx + 1);
+
+  // Right page
+  rightPage.innerHTML = '';
+  if (rightPageIdx < totalPages) {
+    rightPage.appendChild(buildPageSlots(rightPageIdx));
+    rightNum.textContent = 'P\u00e1gina ' + (rightPageIdx + 1);
+  } else {
+    rightNum.textContent = '';
+  }
+}
+
+function toggleBinderRegistered() {
+  binderOnlyRegistered = !binderOnlyRegistered;
+  const toggle = document.getElementById('binder-toggle-registered');
+  toggle.classList.toggle('active', binderOnlyRegistered);
+  binderOpening = 0;
+  updateClearFiltersBtn();
+  renderBinder();
+}
+
+function updateClearFiltersBtn() {
+  const searchVal = (document.getElementById('binder-search') || {}).value || '';
+  const hasFilter = binderOnlyRegistered || searchVal.trim().length > 0;
+  const btn = document.getElementById('btn-clear-filters');
+  if (btn) btn.style.display = hasFilter ? 'inline-block' : 'none';
+}
+
+function clearBinderFilters() {
+  const input = document.getElementById('binder-search');
+  if (input) input.value = '';
+  binderOnlyRegistered = false;
+  const toggle = document.getElementById('binder-toggle-registered');
+  if (toggle) toggle.classList.remove('active');
+  binderOpening = 0;
+  updateClearFiltersBtn();
+  renderBinder();
+}
+
+function setupBinderSearch() {
+  let debounce;
+  const input = document.getElementById('binder-search');
+  if (!input) return;
+  input.addEventListener('input', () => {
+    clearTimeout(debounce);
+    debounce = setTimeout(() => {
+      binderOpening = 0;
+      updateClearFiltersBtn();
+      renderBinder();
+    }, 250);
+  });
+}
+
+function animatePageTurn(direction, callback) {
+  if (binderAnimating) return;
+  binderAnimating = true;
+
+  const leftHalf = document.getElementById('binder-half-left');
+  const rightHalf = document.getElementById('binder-half-right');
+
+  const turningEl = direction === 'forward' ? rightHalf : leftHalf;
+  turningEl.classList.add('turning-out');
+
+  turningEl.addEventListener('animationend', function onOut() {
+    turningEl.removeEventListener('animationend', onOut);
+    turningEl.classList.remove('turning-out');
+
+    callback();
+
+    turningEl.classList.add('turning-in');
+    turningEl.addEventListener('animationend', function onIn() {
+      turningEl.removeEventListener('animationend', onIn);
+      turningEl.classList.remove('turning-in');
+      binderAnimating = false;
+    }, { once: true });
+  }, { once: true });
+}
+
+function binderPrev() {
+  if (binderOpening <= 0 || binderAnimating) return;
+  animatePageTurn('backward', () => {
+    binderOpening--;
+    renderBinder();
+  });
+}
+
+function binderNext() {
+  const totalOpenings = getBinderTotalOpenings();
+  if (binderOpening >= totalOpenings - 1 || binderAnimating) return;
+  animatePageTurn('forward', () => {
+    binderOpening++;
+    renderBinder();
+  });
+}
+
+function binderGoTo(opening) {
+  if (binderAnimating) return;
+  const totalOpenings = getBinderTotalOpenings();
+  const target = Math.max(0, Math.min(opening, totalOpenings - 1));
+  if (target === binderOpening) return;
+  const dir = target > binderOpening ? 'forward' : 'backward';
+  animatePageTurn(dir, () => {
+    binderOpening = target;
+    renderBinder();
+  });
+}
+
+// =============================================
+// BINDER DETAIL — Popup ao clicar em slot
+// =============================================
+let binderDetailPokeNum = null;
+
+function openBinderDetail(pokeNum) {
+  binderDetailPokeNum = pokeNum;
+  renderBinderDetail();
+  document.getElementById('binder-detail-overlay').classList.add('open');
+}
+
+function closeBinderDetail() {
+  document.getElementById('binder-detail-overlay').classList.remove('open');
+}
+
+function renderBinderDetail() {
+  const pokeNum = binderDetailPokeNum;
+  const selectedCards = getSelectedCards(pokeNum);
+  if (selectedCards.length === 0) { closeBinderDetail(); return; }
+
+  const cardId = selectedCards[0];
+  const card = findCardById(pokeNum, cardId);
+  if (!card) { closeBinderDetail(); return; }
+
+  const poke = pokedexLookup[pokeNum];
+  const container = document.getElementById('binder-detail');
+
+  const setTotal = card.set_total || '?';
+  const edCode = card.ed_code || '';
+  const setYear = card.set_year || '';
+  let setLine = card.set_name;
+  if (edCode) setLine += ' - ' + edCode;
+  if (setYear) setLine += ' - ' + setYear;
+
+  // Price (first BRL low > 0)
+  let priceStr = '';
+  const ligaPrices = card.liga_prices || {};
+  for (const vals of Object.values(ligaPrices)) {
+    if (vals && typeof vals === 'object' && vals.low > 0) {
+      priceStr = formatBRL(vals.low);
+      break;
+    }
+  }
+
+  container.innerHTML = `
+    <button class="detail-close" onclick="closeBinderDetail()">\u00d7</button>
+    <img class="detail-img" src="${card.image_large || card.image_small}" alt="${escHtml(card.name)}"
+         onerror="if(this.src!=='${card.image_small}')this.src='${card.image_small}'">
+    <div class="detail-body">
+      <h3>${escHtml(card.name)}</h3>
+      <div class="detail-row"><span class="dl">Pok\u00e9mon</span><span class="dv">#${pokeNum} ${poke ? escHtml(poke.name) : ''}</span></div>
+      <div class="detail-row"><span class="dl">Edi\u00e7\u00e3o</span><span class="dv">${escHtml(setLine)}</span></div>
+      <div class="detail-row"><span class="dl">N\u00famero</span><span class="dv">${card.number} / ${setTotal}</span></div>
+      <div class="detail-row"><span class="dl">Raridade</span><span class="dv">${escHtml(card.rarity) || '-'}</span></div>
+      ${card.artist ? `<div class="detail-row"><span class="dl">Artista</span><span class="dv">${escHtml(card.artist)}</span></div>` : ''}
+      ${priceStr ? `<div class="detail-row"><span class="dl">Pre\u00e7o</span><span class="dv" style="color:var(--green)">${priceStr}</span></div>` : ''}
+      <div style="margin-top:12px;text-align:center">
+        <a href="${card.liga_pokemon_url || buildLigaUrl(card)}" target="_blank" class="btn-liga">Ver na Liga Pok\u00e9mon</a>
+      </div>
+    </div>
+  `;
 }
 
 // =============================================
@@ -2237,7 +3489,7 @@ function renderStats() {
   const sortedRarities = Object.entries(rarityStats).sort((a, b) => b[1] - a[1]);
   for (const [rarity, count] of sortedRarities) {
     html += `<div class="stat-row">
-      <span class="label">${rarity}</span>
+      <span class="label">${escHtml(rarity)}</span>
       <span class="value">${count}</span>
     </div>`;
   }
@@ -2250,8 +3502,8 @@ function renderStats() {
     const tp = topPokemon[i];
     const badge = tp.registered ? ' style="color:var(--gold)"' : '';
     html += `<div class="top-pokemon-row" onclick="openModal(${tp.num})" style="cursor:pointer">
-      <img src="${spriteUrl(tp.num)}" alt="${tp.name}" loading="lazy">
-      <span class="name"${badge}>#${tp.num} ${tp.name} ${tp.registered ? '(registrado)' : ''}</span>
+      <img src="${spriteUrl(tp.num)}" alt="${escHtml(tp.name)}" loading="lazy">
+      <span class="name"${badge}>#${tp.num} ${escHtml(tp.name)} ${tp.registered ? '(registrado)' : ''}</span>
       <span class="count">${tp.count} cartas</span>
     </div>`;
   }
@@ -2265,6 +3517,10 @@ function renderStats() {
 // =============================================
 document.getElementById('modal-overlay').addEventListener('click', (e) => {
   if (e.target === e.currentTarget) closeModal();
+});
+
+document.getElementById('binder-detail-overlay').addEventListener('click', (e) => {
+  if (e.target === e.currentTarget) closeBinderDetail();
 });
 
 // =============================================
