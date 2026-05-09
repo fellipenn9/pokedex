@@ -4,6 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PokéDex Collector - Sua coleção Full Art</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#e94560">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="PokéDex">
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -19,6 +26,10 @@
   --text: #eee;
   --text-dim: #aaa;
   --radius: 8px;
+  --grid-min: 140px;
+  --grid-gap: 10px;
+  --sprite-size: 80px;
+  --content-pad: 24px;
 }
 
 body {
@@ -89,7 +100,7 @@ body {
 
 /* Main content */
 .main-content {
-  padding: 16px 24px;
+  padding: 16px var(--content-pad);
   max-width: 1600px;
   margin: 0 auto;
 }
@@ -174,8 +185,8 @@ body {
 /* Pokemon Grid */
 .pokemon-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  gap: 10px;
+  grid-template-columns: repeat(auto-fill, minmax(var(--grid-min), 1fr));
+  gap: var(--grid-gap);
 }
 
 .poke-cell {
@@ -191,7 +202,7 @@ body {
   overflow: hidden;
   border: 2px solid transparent;
   content-visibility: auto;
-  contain-intrinsic-size: 140px;
+  contain-intrinsic-size: var(--grid-min);
 }
 
 .poke-cell:hover {
@@ -201,8 +212,8 @@ body {
 }
 
 .poke-cell img {
-  width: 80px;
-  height: 80px;
+  width: var(--sprite-size);
+  height: var(--sprite-size);
   image-rendering: pixelated;
   transition: opacity 0.2s;
 }
@@ -217,8 +228,8 @@ body {
 }
 
 .poke-cell .placeholder {
-  width: 80px;
-  height: 80px;
+  width: var(--sprite-size);
+  height: var(--sprite-size);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1124,6 +1135,51 @@ body {
 }
 
 /* Binder */
+.binder-progress {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  margin-bottom: 12px;
+}
+
+.binder-progress-text {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+
+.binder-progress-text strong {
+  color: var(--gold);
+  font-weight: 700;
+}
+
+.binder-progress-bar {
+  flex: 1;
+  height: 10px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 5px;
+  overflow: hidden;
+  min-width: 80px;
+}
+
+.binder-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--green), var(--gold));
+  border-radius: 5px;
+  transition: width 0.4s;
+}
+
+.binder-progress-pct {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--gold);
+  min-width: 42px;
+  text-align: right;
+}
+
 .binder-nav {
   display: flex;
   align-items: center;
@@ -1326,19 +1382,29 @@ body {
 }
 
 .binder-slot.empty {
-  opacity: 0.6;
+  opacity: 0.7;
   border-style: dashed;
 }
 
+.binder-slot.empty img.slot-sprite {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  filter: brightness(0) invert(0.25);
+  opacity: 0.5;
+}
+
 .binder-slot.empty .slot-num {
-  font-size: 1.4rem;
-  font-weight: 800;
-  color: rgba(255,255,255,0.85);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.4);
+  margin-top: 2px;
 }
 
 .binder-slot.empty .slot-name {
-  font-size: 0.9rem;
-  color: rgba(255,255,255,0.7);
+  font-size: 0.65rem;
+  color: rgba(255,255,255,0.3);
   text-transform: capitalize;
   text-align: center;
   padding: 0 4px;
@@ -1346,7 +1412,7 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  margin-top: 3px;
+  margin-top: 1px;
 }
 
 .binder-slot.filled {
@@ -1616,20 +1682,71 @@ body {
   padding-bottom: 20px;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .pokemon-grid {
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-    gap: 6px;
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 24px;
+  color: var(--text-dim);
+  font-size: 0.75rem;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  margin-top: 32px;
+}
+
+/* Responsive — Tablet (max 1024px) */
+@media (max-width: 1024px) {
+  :root {
+    --content-pad: 16px;
   }
-  .poke-cell img { width: 56px; height: 56px; }
-  .poke-cell .placeholder { width: 56px; height: 56px; font-size: 0.75rem; }
+  .header { padding: 12px 16px; }
+  .header h1 { font-size: 1.2rem; }
+  .tabs { padding: 8px 16px; }
+  .binder-page { grid-template-columns: repeat(4, 1fr); }
+}
+
+/* Responsive — Large phones (max 768px) */
+@media (max-width: 768px) {
+  :root {
+    --grid-min: 100px;
+    --grid-gap: 6px;
+    --sprite-size: 56px;
+    --content-pad: 12px;
+  }
+  .header h1 { font-size: 1rem; }
+  .poke-cell .placeholder { font-size: 0.75rem; }
   .poke-cell .poke-num { font-size: 0.7rem; }
   .poke-cell .poke-name { font-size: 0.65rem; }
-  .header h1 { font-size: 1rem; }
-  .filters input { width: 150px; }
+  .tabs {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding: 8px 12px;
+  }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    flex-shrink: 0;
+    padding: 7px 14px;
+    font-size: 0.82rem;
+  }
+  .filters {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .filters input {
+    width: 100%;
+    order: -1;
+  }
+  .filters select {
+    flex: 1 1 calc(50% - 5px);
+    min-width: 0;
+  }
+  .filter-legend {
+    width: 100%;
+    margin-left: 0;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
   .cards-grid {
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   }
   .current-card-preview {
     flex-direction: column;
@@ -1639,18 +1756,131 @@ body {
     flex-direction: row;
     justify-content: center;
   }
+  .modal { max-width: 100%; border-radius: 8px; }
   .sorteador-display { font-size: 4rem; }
   .binder-spread { flex-direction: column; align-items: center; }
   .binder-half { max-width: 100%; }
   .binder-spine { display: none; }
-  .binder-left .binder-page { border-radius: 12px 12px 0 0; border-right: 2px solid rgba(255,255,255,0.05); border-bottom: none; }
-  .binder-right .binder-page { border-radius: 0 0 12px 12px; border-left: 2px solid rgba(255,255,255,0.05); border-top: none; }
-  .binder-filters input[type="text"] { width: 160px; }
-  .binder-page { gap: 4px; padding: 8px; }
+  .binder-half.binder-right { display: none; }
+  .binder-left .binder-page { border-radius: 12px; border-right: 2px solid rgba(255,255,255,0.05); }
+  .binder-page { gap: 6px; padding: 10px; grid-template-columns: repeat(3, 1fr); }
+  .binder-slot.empty, .binder-slot.sprite-only { aspect-ratio: auto; padding: 8px 4px; }
+  .binder-slot.empty img.slot-sprite { width: 44px; height: 44px; }
+  .binder-slot.empty .slot-num { font-size: 0.7rem; }
+  .binder-slot.empty .slot-name { font-size: 0.6rem; }
+  .binder-slot.sprite-only img.slot-sprite { width: 48px; height: 48px; }
+  .binder-slot.sprite-only .slot-num { font-size: 0.75rem; }
+  .binder-slot.sprite-only .slot-name { font-size: 0.65rem; }
+  .binder-filters input[type="text"] { width: 100%; }
+  .binder-filters { flex-direction: column; align-items: stretch; }
   .binder-nav { gap: 8px; font-size: 0.8rem; }
-  .binder-nav button { padding: 4px 10px; font-size: 0.8rem; }
+  .binder-nav button { padding: 6px 12px; font-size: 0.8rem; min-width: 44px; min-height: 44px; }
   .binder-nav .page-label { min-width: 100px; }
   .binder-detail { max-width: 95vw; }
+  .settings-panel { width: 100%; max-width: 100%; border-radius: 12px 12px 0 0; }
+  .settings-overlay { align-items: flex-end; }
+  .settings-item { min-height: 48px; }
+}
+
+/* Responsive — Small phones (max 480px) */
+@media (max-width: 480px) {
+  :root {
+    --grid-min: 80px;
+    --grid-gap: 4px;
+    --sprite-size: 44px;
+    --content-pad: 8px;
+  }
+  .header { padding: 10px 12px; gap: 8px; }
+  .header h1 { font-size: 0.95rem; }
+  .btn-settings .btn-settings-text { display: none; }
+  .btn-settings { padding: 8px; }
+  .user-avatar { width: 28px; height: 28px; }
+  .tabs { padding: 6px 8px; gap: 3px; }
+  .tab-btn { padding: 6px 10px; font-size: 0.75rem; }
+  .poke-cell .poke-num { font-size: 0.6rem; }
+  .poke-cell .poke-name { font-size: 0.58rem; }
+  .poke-cell .placeholder { font-size: 0.65rem; }
+  .filters select {
+    flex: 1 1 100%;
+  }
+  .filter-legend { font-size: 0.65rem; gap: 8px; }
+  .legend-dot { width: 10px; height: 10px; }
+  .cards-grid {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 8px;
+  }
+  /* Modal full-screen on phones */
+  .modal-overlay {
+    padding: 0;
+    align-items: stretch;
+  }
+  .modal {
+    border-radius: 0;
+    max-height: 100dvh;
+    max-height: 100vh;
+    height: 100%;
+  }
+  .modal-header .close-btn {
+    min-width: 44px;
+    min-height: 44px;
+    font-size: 1.6rem;
+  }
+  .modal-header { padding: 12px 16px; }
+  .modal-body { padding: 16px; }
+  /* Sorteador */
+  .sorteador-display { font-size: 3rem; }
+  .pokeball-wrapper { width: 100px; height: 100px; }
+  .pokeball { width: 80px; height: 80px; }
+  .pokeball .pokeball-top { width: 80px; height: 40px; border-radius: 40px 40px 0 0; }
+  .pokeball .pokeball-bottom { width: 80px; height: 40px; border-radius: 0 0 40px 40px; }
+  .pokeball .pokeball-line { width: 80px; height: 4px; top: 38px; }
+  .pokeball .pokeball-center { width: 24px; height: 24px; border-width: 4px; top: 28px; left: 28px; }
+  .sorteador-pokemon { flex-direction: column; gap: 12px; min-height: 140px; }
+  .sorteador-pokemon img { width: 120px; height: 120px; }
+  .sorteador-pokemon .name { font-size: 1.5rem; }
+  .sorteador-controls .btn { min-height: 44px; }
+  /* Stats */
+  .stats-grid { grid-template-columns: 1fr; }
+  .stat-card { padding: 14px; }
+  .stat-card h3 { font-size: 0.9rem; }
+  .stat-row { font-size: 0.8rem; }
+  .stats-progress-title { font-size: 1.4rem !important; }
+  /* Binder */
+  .binder-progress { padding: 10px 12px; gap: 8px; }
+  .binder-progress-text { font-size: 0.75rem; }
+  .binder-progress-pct { font-size: 0.75rem; min-width: 36px; }
+  .binder-progress-bar { height: 8px; }
+  .binder-page { grid-template-columns: repeat(3, 1fr); gap: 4px; padding: 8px; }
+  .binder-slot.empty, .binder-slot.sprite-only { aspect-ratio: auto; padding: 6px 2px; }
+  .binder-slot.empty img.slot-sprite { width: 36px; height: 36px; }
+  .binder-slot.empty .slot-num { font-size: 0.6rem; }
+  .binder-slot.empty .slot-name { font-size: 0.55rem; }
+  .binder-slot.sprite-only img.slot-sprite { width: 40px; height: 40px; }
+  .binder-slot.sprite-only .slot-num { font-size: 0.65rem; }
+  .binder-slot.sprite-only .slot-name { font-size: 0.55rem; }
+  /* Binder detail full-screen */
+  .binder-detail-overlay { padding: 0; }
+  .binder-detail {
+    max-width: 100%;
+    max-height: 100dvh;
+    max-height: 100vh;
+    border-radius: 0;
+    height: 100%;
+  }
+  .binder-detail .detail-close { min-width: 44px; min-height: 44px; }
+  .binder-detail .detail-img { border-radius: 0; }
+  /* Settings full-screen */
+  .settings-panel { border-radius: 0; }
+  .settings-overlay.open .settings-panel { transform: scale(1) translateY(0); }
+  /* Scroll nav */
+  .scroll-nav { right: 12px; bottom: 16px; }
+  .scroll-nav button { width: 40px; height: 40px; font-size: 1.1rem; }
+  /* Footer */
+  .footer { padding: 16px 12px; font-size: 0.65rem; }
+  /* Login */
+  .login-logo h1 { font-size: 1.4rem; }
+  .login-pokedex-img svg { width: 100px; height: 134px; }
+  .btn-google { padding: 10px 24px; font-size: 0.9rem; }
 }
 
 /* Scrollbar */
@@ -1659,26 +1889,156 @@ body {
 ::-webkit-scrollbar-thumb { background: var(--gray); border-radius: 4px; }
 ::-webkit-scrollbar-thumb:hover { background: #777; }
 
-/* Collection export/import */
-.collection-actions {
+/* Settings button */
+.btn-settings {
   display: flex;
-  gap: 8px;
-}
-
-.btn-small {
-  padding: 6px 12px;
-  border: 1px solid var(--gray);
-  background: transparent;
-  color: var(--text-dim);
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border: 1px solid rgba(255,255,255,0.25);
+  background: rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.85);
   border-radius: var(--radius);
   cursor: pointer;
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   transition: all 0.2s;
 }
 
-.btn-small:hover {
-  border-color: var(--text);
+.btn-settings:hover {
+  background: rgba(255,255,255,0.2);
+  border-color: rgba(255,255,255,0.4);
+  color: white;
+}
+
+.btn-settings svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+  transition: transform 0.3s;
+}
+
+.btn-settings:hover svg {
+  transform: rotate(45deg);
+}
+
+/* Settings modal */
+.settings-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s, visibility 0.25s;
+}
+
+.settings-overlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.settings-panel {
+  background: var(--bg-card);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  width: 340px;
+  max-width: 90vw;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  transform: scale(0.9) translateY(20px);
+  transition: transform 0.25s;
+  overflow: hidden;
+}
+
+.settings-overlay.open .settings-panel {
+  transform: scale(1) translateY(0);
+}
+
+.settings-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.settings-header h2 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.settings-header h2 svg {
+  width: 18px;
+  height: 18px;
+  fill: var(--text-dim);
+}
+
+.settings-close {
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  font-size: 1.4rem;
+  cursor: pointer;
+  padding: 4px;
+  line-height: 1;
+  transition: color 0.2s;
+}
+
+.settings-close:hover {
   color: var(--text);
+}
+
+.settings-body {
+  padding: 8px 0;
+}
+
+.settings-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  background: none;
+  border: none;
+  color: var(--text);
+  width: 100%;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.15s;
+  text-align: left;
+}
+
+.settings-item:hover {
+  background: rgba(255,255,255,0.06);
+}
+
+.settings-item svg {
+  width: 18px;
+  height: 18px;
+  fill: var(--text-dim);
+  flex-shrink: 0;
+}
+
+.settings-item span {
+  flex: 1;
+}
+
+.settings-item.danger {
+  color: var(--accent);
+}
+
+.settings-item.danger svg {
+  fill: var(--accent);
+}
+
+.settings-divider {
+  height: 1px;
+  background: rgba(255,255,255,0.08);
+  margin: 4px 0;
 }
 
 /* Login overlay */
@@ -1844,22 +2204,6 @@ body {
   white-space: nowrap;
 }
 
-.btn-logout {
-  padding: 4px 10px;
-  background: rgba(255,255,255,0.15);
-  border: 1px solid rgba(255,255,255,0.2);
-  color: rgba(255,255,255,0.7);
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.7rem;
-  transition: all 0.2s;
-}
-
-.btn-logout:hover {
-  background: rgba(233, 69, 96, 0.3);
-  border-color: var(--accent);
-  color: white;
-}
 
 /* App wrapper — hidden until login */
 .app-wrapper { display: none; }
@@ -1867,7 +2211,32 @@ body {
 
 @media (max-width: 768px) {
   .user-name { display: none; }
-  .login-logo h1 { font-size: 1.6rem; }
+}
+
+/* Touch devices — disable hover effects, add active feedback */
+@media (hover: none) {
+  .poke-cell:hover { transform: none; box-shadow: none; }
+  .poke-cell:active { transform: scale(0.95); }
+  .card-item:hover { transform: none; box-shadow: none; border-color: rgba(255,255,255,0.06); }
+  .card-item:active { transform: scale(0.97); }
+  .binder-slot.filled:hover { transform: none; box-shadow: none; }
+  .binder-slot.filled:active { transform: scale(0.95); }
+  .btn:hover { transform: none; }
+  .btn:active { transform: scale(0.95); }
+  .btn-liga-pokedex:hover { transform: none; box-shadow: 0 2px 8px rgba(233, 69, 96, 0.3); }
+  .btn-liga-pokedex:active { transform: scale(0.95); }
+  .btn-search-api:hover { transform: none; box-shadow: none; }
+  .btn-search-api:active { transform: scale(0.95); }
+  .scroll-nav button:hover { background: var(--bg-card); color: var(--text-dim); transform: none; box-shadow: 0 2px 10px rgba(0,0,0,0.4); }
+  .scroll-nav button:active { background: var(--accent); color: white; transform: scale(0.95); }
+  .btn-settings:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.25); color: rgba(255,255,255,0.85); }
+  .btn-settings:active { background: rgba(255,255,255,0.2); }
+  .btn-google:hover { transform: none; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+  .btn-google:active { transform: scale(0.97); }
+  .binder-detail .detail-close:hover { transform: none; }
+  .binder-detail .detail-close:active { transform: scale(0.9); }
+  .card-actions a:hover { opacity: 1; }
+  .card-actions a:active { opacity: 0.7; }
 }
 </style>
 
@@ -1928,15 +2297,45 @@ body {
 <div class="header">
   <h1>PokéDex Collector</h1>
   <div class="header-actions">
-    <div class="collection-actions">
-      <button class="btn-small" onclick="exportCollection()">Exportar Coleção</button>
-      <button class="btn-small" onclick="importCollection()">Importar Coleção</button>
-      <button class="btn-small" onclick="clearCollection()">Limpar Coleção</button>
-    </div>
     <div class="user-info" id="user-info">
-      <img class="user-avatar" id="user-avatar" src="" alt="">
+      <img class="user-avatar" id="user-avatar" src="" alt="" referrerpolicy="no-referrer">
       <span class="user-name" id="user-name"></span>
-      <button class="btn-logout" onclick="logout()">Sair</button>
+    </div>
+    <button class="btn-settings" onclick="openSettings()">
+      <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.31.06-.63.06-.94 0-.31-.02-.63-.06-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.49.49 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.48.48 0 0 0-.48-.41h-3.84a.48.48 0 0 0-.48.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96a.49.49 0 0 0-.59.22L2.74 8.87a.48.48 0 0 0 .12.61l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.26.41.48.41h3.84c.24 0 .44-.17.48-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6A3.6 3.6 0 1 1 12 8.4a3.6 3.6 0 0 1 0 7.2z"/></svg>
+      <span class="btn-settings-text">Configurações</span>
+    </button>
+  </div>
+</div>
+
+<!-- Settings Modal -->
+<div class="settings-overlay" id="settings-overlay" onclick="closeSettingsOutside(event)">
+  <div class="settings-panel">
+    <div class="settings-header">
+      <h2>
+        <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.31.06-.63.06-.94 0-.31-.02-.63-.06-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.49.49 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.48.48 0 0 0-.48-.41h-3.84a.48.48 0 0 0-.48.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96a.49.49 0 0 0-.59.22L2.74 8.87a.48.48 0 0 0 .12.61l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.26.41.48.41h3.84c.24 0 .44-.17.48-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6A3.6 3.6 0 1 1 12 8.4a3.6 3.6 0 0 1 0 7.2z"/></svg>
+        Configurações
+      </h2>
+      <button class="settings-close" onclick="closeSettings()">&times;</button>
+    </div>
+    <div class="settings-body">
+      <button class="settings-item" onclick="exportCollection(); closeSettings();">
+        <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+        <span>Exportar Coleção</span>
+      </button>
+      <button class="settings-item" onclick="importCollection(); closeSettings();">
+        <svg viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4v6zm-4 2h14v2H5v-2z"/></svg>
+        <span>Importar Coleção</span>
+      </button>
+      <button class="settings-item danger" onclick="clearCollection(); closeSettings();">
+        <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+        <span>Limpar Coleção</span>
+      </button>
+      <div class="settings-divider"></div>
+      <button class="settings-item danger" onclick="logout(); closeSettings();">
+        <svg viewBox="0 0 24 24"><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5-5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg>
+        <span>Sair da conta</span>
+      </button>
     </div>
   </div>
 </div>
@@ -2034,6 +2433,7 @@ body {
 
   <!-- Binder Tab -->
   <div class="tab-panel" id="tab-binder">
+    <div class="binder-progress" id="binder-progress"></div>
     <div class="binder-filters">
       <input type="text" id="binder-search" placeholder="Buscar por nome ou número...">
       <div class="binder-toggle" id="binder-toggle-registered" onclick="toggleBinderRegistered()">
@@ -2330,6 +2730,19 @@ function findCardById(pokeNum, cardId) {
   const col = collection[String(pokeNum)];
   if (col && col.cardData && col.cardData.id === cardId) return col.cardData;
   return null;
+}
+
+// Settings modal
+function openSettings() {
+  document.getElementById('settings-overlay').classList.add('open');
+}
+
+function closeSettings() {
+  document.getElementById('settings-overlay').classList.remove('open');
+}
+
+function closeSettingsOutside(e) {
+  if (e.target === e.currentTarget) closeSettings();
 }
 
 function exportCollection() {
@@ -3069,8 +3482,15 @@ function updateSorteioHistory() {
 // BINDER — Fichário dupla página (5x4 x2)
 // =============================================
 let binderOpening = 0;
-const SLOTS_PER_PAGE = 20;
 const TOTAL_POKEMON = 1025;
+
+function getSlotsPerPage() {
+  const w = window.innerWidth;
+  if (w <= 480) return 6;   // 3x2
+  if (w <= 768) return 9;   // 3x3
+  if (w <= 1024) return 16; // 4x4
+  return 20;                // 5x4
+}
 const PSYDUCK_LOADING_GIF = 'https://gifdb.com/images/high/psyduck-walking-confused-2lm01y84dnh68nox.gif';
 let binderAnimating = false;
 let binderOnlyRegistered = false;
@@ -3100,11 +3520,17 @@ function getBinderList() {
 }
 
 function getBinderTotalPages() {
-  if (!binderFilteredList) return Math.ceil(TOTAL_POKEMON / SLOTS_PER_PAGE);
-  return Math.max(1, Math.ceil(binderFilteredList.length / SLOTS_PER_PAGE));
+  const spp = getSlotsPerPage();
+  if (!binderFilteredList) return Math.ceil(TOTAL_POKEMON / spp);
+  return Math.max(1, Math.ceil(binderFilteredList.length / spp));
+}
+
+function isSinglePageMode() {
+  return window.innerWidth <= 768;
 }
 
 function getBinderTotalOpenings() {
+  if (isSinglePageMode()) return getBinderTotalPages();
   return Math.max(1, Math.ceil(getBinderTotalPages() / 2));
 }
 
@@ -3147,8 +3573,15 @@ function buildSlotEl(pokeNum) {
     }
     slotEl.onclick = () => openModal(pokeNum);
   } else {
-    // Empty — not registered
+    // Empty — not registered, show dark silhouette sprite
     slotEl.className = 'binder-slot empty';
+    slotEl.style.cursor = 'pointer';
+    const img = document.createElement('img');
+    img.src = spriteUrl(pokeNum);
+    img.alt = poke ? poke.name : '#' + pokeNum;
+    img.loading = 'lazy';
+    img.className = 'slot-sprite';
+    slotEl.appendChild(img);
     const numEl = document.createElement('div');
     numEl.className = 'slot-num';
     numEl.textContent = '#' + pokeNum;
@@ -3159,6 +3592,7 @@ function buildSlotEl(pokeNum) {
       nameEl.textContent = poke.name;
       slotEl.appendChild(nameEl);
     }
+    slotEl.onclick = () => openModal(pokeNum);
   }
   return slotEl;
 }
@@ -3166,10 +3600,11 @@ function buildSlotEl(pokeNum) {
 function buildPageSlots(pageIndex) {
   const fragment = document.createDocumentFragment();
 
+  const spp = getSlotsPerPage();
   if (!binderFilteredList) {
     // Normal mode: fixed positions
-    for (let slot = 0; slot < SLOTS_PER_PAGE; slot++) {
-      const pokeNum = pageIndex * SLOTS_PER_PAGE + slot + 1;
+    for (let slot = 0; slot < spp; slot++) {
+      const pokeNum = pageIndex * spp + slot + 1;
       if (pokeNum > TOTAL_POKEMON) {
         const empty = document.createElement('div');
         empty.className = 'binder-slot past-end';
@@ -3180,8 +3615,8 @@ function buildPageSlots(pageIndex) {
     }
   } else {
     // Filtered mode: show from filtered list
-    const start = pageIndex * SLOTS_PER_PAGE;
-    for (let slot = 0; slot < SLOTS_PER_PAGE; slot++) {
+    const start = pageIndex * spp;
+    for (let slot = 0; slot < spp; slot++) {
       const idx = start + slot;
       if (idx >= binderFilteredList.length) {
         const empty = document.createElement('div');
@@ -3195,9 +3630,23 @@ function buildPageSlots(pageIndex) {
   return fragment;
 }
 
+function renderBinderProgress() {
+  const el = document.getElementById('binder-progress');
+  if (!el) return;
+  const total = POKEDEX_DATA.length || TOTAL_POKEMON;
+  const registered = POKEDEX_DATA.filter(p => isRegistered(p.number)).length;
+  const pct = total > 0 ? ((registered / total) * 100).toFixed(1) : 0;
+  el.innerHTML = `
+    <span class="binder-progress-text"><strong>${registered}</strong> / ${total}</span>
+    <div class="binder-progress-bar"><div class="binder-progress-fill" style="width:${pct}%"></div></div>
+    <span class="binder-progress-pct">${pct}%</span>
+  `;
+}
+
 function renderBinder() {
   getBinderList();
   updateClearFiltersBtn();
+  renderBinderProgress();
 
   const nav = document.getElementById('binder-nav');
   const leftPage = document.getElementById('binder-page-left');
@@ -3208,13 +3657,14 @@ function renderBinder() {
 
   const totalPages = getBinderTotalPages();
   const totalOpenings = getBinderTotalOpenings();
+  const singlePage = isSinglePageMode();
 
   // Clamp opening
   if (binderOpening >= totalOpenings) binderOpening = totalOpenings - 1;
   if (binderOpening < 0) binderOpening = 0;
 
-  const leftPageIdx = binderOpening * 2;
-  const rightPageIdx = binderOpening * 2 + 1;
+  const leftPageIdx = singlePage ? binderOpening : binderOpening * 2;
+  const rightPageIdx = singlePage ? -1 : binderOpening * 2 + 1;
 
   // Search result text
   if (binderFilteredList) {
@@ -3229,22 +3679,25 @@ function renderBinder() {
   // Nav
   const isFirst = binderOpening === 0;
   const isLast = binderOpening >= totalOpenings - 1;
+  const pageLabel = singlePage
+    ? `P\u00e1g. ${leftPageIdx + 1} / ${totalPages}`
+    : `P\u00e1g. ${leftPageIdx + 1}\u2013${Math.min(rightPageIdx + 1, totalPages)} / ${totalPages}`;
   nav.innerHTML = `
     <button onclick="binderGoTo(0)" ${isFirst ? 'disabled' : ''}>\u25C0\u25C0</button>
     <button onclick="binderPrev()" ${isFirst ? 'disabled' : ''}>\u25C0</button>
-    <span class="page-label">P\u00e1g. ${leftPageIdx + 1}\u2013${Math.min(rightPageIdx + 1, totalPages)} / ${totalPages}</span>
+    <span class="page-label">${pageLabel}</span>
     <button onclick="binderNext()" ${isLast ? 'disabled' : ''}>\u25B6</button>
     <button onclick="binderGoTo(${totalOpenings - 1})" ${isLast ? 'disabled' : ''}>\u25B6\u25B6</button>
   `;
 
-  // Left page
+  // Left page (always shown)
   leftPage.innerHTML = '';
   leftPage.appendChild(buildPageSlots(leftPageIdx));
   leftNum.textContent = 'P\u00e1gina ' + (leftPageIdx + 1);
 
-  // Right page
+  // Right page (hidden in single-page mode via CSS)
   rightPage.innerHTML = '';
-  if (rightPageIdx < totalPages) {
+  if (!singlePage && rightPageIdx >= 0 && rightPageIdx < totalPages) {
     rightPage.appendChild(buildPageSlots(rightPageIdx));
     rightNum.textContent = 'P\u00e1gina ' + (rightPageIdx + 1);
   } else {
@@ -3293,6 +3746,58 @@ function setupBinderSearch() {
   });
 }
 
+// Responsive resize — re-render binder when breakpoint changes
+(function() {
+  let lastSpp = getSlotsPerPage();
+  let lastSingle = isSinglePageMode();
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      const newSpp = getSlotsPerPage();
+      const newSingle = isSinglePageMode();
+      if (newSpp !== lastSpp || newSingle !== lastSingle) {
+        // Convert opening index between single/dual page modes
+        if (newSingle !== lastSingle && !newSingle) {
+          // Single -> dual: opening was page index, convert to pair index
+          binderOpening = Math.floor(binderOpening / 2);
+        } else if (newSingle !== lastSingle && newSingle) {
+          // Dual -> single: opening was pair index, convert to page index
+          binderOpening = binderOpening * 2;
+        } else {
+          binderOpening = 0;
+        }
+        lastSpp = newSpp;
+        lastSingle = newSingle;
+        renderBinder();
+      }
+    }, 200);
+  });
+})();
+
+// Swipe gesture on binder for mobile navigation
+(function() {
+  const binderBook = document.querySelector('.binder-book');
+  if (!binderBook) return;
+  let touchStartX = 0;
+  let touchStartY = 0;
+
+  binderBook.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+    touchStartY = e.changedTouches[0].screenY;
+  }, { passive: true });
+
+  binderBook.addEventListener('touchend', (e) => {
+    const dx = e.changedTouches[0].screenX - touchStartX;
+    const dy = e.changedTouches[0].screenY - touchStartY;
+    // Only trigger if horizontal swipe is dominant and > 50px
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+      if (dx < 0) binderNext();
+      else binderPrev();
+    }
+  }, { passive: true });
+})();
+
 function animatePageTurn(direction, callback) {
   if (binderAnimating) return;
   binderAnimating = true;
@@ -3300,7 +3805,8 @@ function animatePageTurn(direction, callback) {
   const leftHalf = document.getElementById('binder-half-left');
   const rightHalf = document.getElementById('binder-half-right');
 
-  const turningEl = direction === 'forward' ? rightHalf : leftHalf;
+  // Single-page mode: always animate the left half (right is hidden)
+  const turningEl = isSinglePageMode() ? leftHalf : (direction === 'forward' ? rightHalf : leftHalf);
   turningEl.classList.add('turning-out');
 
   turningEl.addEventListener('animationend', function onOut() {
@@ -3460,7 +3966,7 @@ function renderStats() {
   // Progresso geral
   html += `<div class="stat-card" style="grid-column: 1 / -1">
     <h3>Progresso Geral</h3>
-    <div style="font-size:2rem;font-weight:900;color:var(--gold);margin-bottom:8px">${registeredCount} / ${totalPokemon} Pokémon registrados</div>
+    <div class="stats-progress-title" style="font-size:2rem;font-weight:900;color:var(--gold);margin-bottom:8px">${registeredCount} / ${totalPokemon} Pokémon registrados</div>
     <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
     <div class="progress-text">${pct}% completo | ${pokeWithFullart} Pokémon com full art disponível | ${totalCardsAvailable} cartas de referência</div>
   </div>`;
@@ -3589,7 +4095,7 @@ document.getElementById('binder-detail-overlay').addEventListener('click', (e) =
   <button onclick="preloadAllSprites();window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'})" title="Ir ao final">&#9660;</button>
 </div>
 
-<footer style="text-align:center;padding:24px;color:var(--text-dim);font-size:0.75rem;border-top:1px solid rgba(255,255,255,0.05);margin-top:32px;">
+<footer class="footer">
   PokéDex Collector &copy; 2026 Fellipe Santos. Dados de cartas via pokemontcg.io. Pokémon e marcas relacionadas são propriedade da Nintendo/Game Freak/The Pokémon Company.
 </footer>
 
