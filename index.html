@@ -308,6 +308,27 @@ body {
   max-height: 85vh;
   overflow-y: auto;
   box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+  border: 2px solid transparent;
+  transition: border-color 0.2s;
+}
+
+.modal.modal-registered {
+  border-color: var(--gold);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.6), 0 0 20px rgba(255, 215, 0, 0.15);
+}
+
+.modal-registered-badge {
+  display: inline-block;
+  background: var(--gold);
+  color: #111;
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  vertical-align: middle;
+  margin-left: 8px;
 }
 
 .modal-header {
@@ -1556,6 +1577,22 @@ body {
   z-index: 3;
 }
 
+.card-registered-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: var(--gold);
+  color: #111;
+  font-size: 0.68rem;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 20px;
+  z-index: 5;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(255, 215, 0, 0.4);
+}
+
 .card-select-bar {
   position: sticky;
   bottom: 0;
@@ -2682,6 +2719,7 @@ async function loadCollection() {
 
 async function saveCollection() {
   if (!currentUser) return;
+  lastFilteredNums = null; // Invalida cache do grid para forçar re-render
 
   // Cache local para acesso rapido
   localStorage.setItem('fullart_collection_cache_' + currentUser.uid, JSON.stringify(collection));
@@ -2703,7 +2741,7 @@ async function toggleRegistered(pokeNum) {
   } else {
     collection[key] = true;
   }
-  await saveCollection();
+  saveCollection(); // fire-and-forget, UI atualiza imediatamente
 }
 
 function isRegistered(pokeNum) {
@@ -2811,7 +2849,16 @@ function spriteUrl(num) {
   return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${num}.png`;
 }
 
+let renderGridRAF = null;
+let lastFilteredNums = null;
+
 function renderGrid() {
+  if (renderGridRAF) cancelAnimationFrame(renderGridRAF);
+  renderGridRAF = requestAnimationFrame(renderGridInner);
+}
+
+function renderGridInner() {
+  renderGridRAF = null;
   const container = document.getElementById('pokemon-grid');
   const search = document.getElementById('search-input').value.toLowerCase().trim();
   const genFilter = document.getElementById('gen-filter').value;
@@ -2842,6 +2889,11 @@ function renderGrid() {
 
     return true;
   });
+
+  // Skip DOM rebuild if filter result is identical
+  const filteredNums = filtered.map(p => p.number).join(',');
+  if (filteredNums === lastFilteredNums) return;
+  lastFilteredNums = filteredNums;
 
   // Construir DOM via fragment (mais rapido que innerHTML para muitos elementos)
   const fragment = document.createDocumentFragment();
@@ -3060,11 +3112,15 @@ function openModal(pokeNum) {
   const body = document.getElementById('modal-body');
 
   sprite.src = spriteUrl(pokeNum);
-  nameEl.textContent = `#${pokeNum} ${poke.name}`;
+  const registered = isRegistered(pokeNum);
+  nameEl.innerHTML = `#${pokeNum} ${escHtml(poke.name)}${registered ? '<span class="modal-registered-badge">Registrado</span>' : ''}`;
   infoEl.textContent = `${poke.types ? poke.types.join(', ') : ''} | Gen ${poke.generation} | ${poke.region || ''}`;
 
+  // Borda dourada no modal para pokémon registrado
+  const modalEl = overlay.querySelector('.modal');
+  modalEl.classList.toggle('modal-registered', registered);
+
   let html = '';
-  const registered = isRegistered(pokeNum);
   const existing = getSelectedCards(pokeNum);
   modalSelectedCard = existing.length > 0 ? existing[0] : null;
 
@@ -3146,20 +3202,20 @@ async function confirmCardSelection() {
     delete collection[key];
   }
 
-  await saveCollection();
   openModal(pokeNum);
   renderGrid();
   if (document.getElementById('tab-binder').classList.contains('active')) {
     renderBinder();
   }
+  await saveCollection();
 }
 
 async function handleRemoveCustomCard(pokeNum) {
   delete collection[String(pokeNum)];
-  await saveCollection();
   openModal(pokeNum);
   renderGrid();
   if (document.getElementById('tab-binder').classList.contains('active')) renderBinder();
+  await saveCollection();
 }
 
 async function searchPokemonCards(pokeNum) {
@@ -3193,6 +3249,7 @@ async function searchPokemonCards(pokeNum) {
     modalApiCards = {};
     const existing = getSelectedCards(pokeNum);
     modalSelectedCard = existing.length > 0 ? existing[0] : null;
+    const savedCardId = modalSelectedCard; // carta atualmente registrada na coleção
 
     let html = `<div style="text-align:center;margin:16px 0 12px"><span class="results-count">${apiCards.length} carta${apiCards.length !== 1 ? 's' : ''} encontrada${apiCards.length !== 1 ? 's' : ''} \u2014 selecione uma</span></div>`;
     html += '<div class="cards-grid">';
@@ -3229,6 +3286,7 @@ async function searchPokemonCards(pokeNum) {
       modalApiCards[c.id] = cardData;
 
       const isSelected = modalSelectedCard === c.id;
+      const isCurrentRegistered = c.id === savedCardId;
       const setLine = [cardData.set_name, cardData.ed_code, cardData.set_year].filter(Boolean).join(' - ');
       const artist = cardData.artist;
       const subtypes = (cardData.subtypes || []).join(', ');
@@ -3239,6 +3297,7 @@ async function searchPokemonCards(pokeNum) {
       html += `<div class="card-item ${isSelected ? 'selected' : ''}" data-card-id="${c.id}">
         <div class="card-select-overlay" onclick="toggleCardSelection('${c.id}')"></div>
         <div class="card-select-check ${isSelected ? 'checked' : ''}" onclick="toggleCardSelection('${c.id}')">\u2713</div>
+        ${isCurrentRegistered ? '<div class="card-registered-badge">Registrada</div>' : ''}
         <img src="${cardData.image_small}" alt="${escHtml(c.name)}" loading="lazy" onerror="this.style.display='none'">
         <div class="card-info">
           <div class="card-name">${escHtml(c.name)} (${c.number}/${cardData.set_total})</div>
@@ -3257,7 +3316,7 @@ async function searchPokemonCards(pokeNum) {
     html += '</div>';
     html += `<div class="card-select-bar" id="card-select-bar">
       <span class="select-count" id="select-count-text">${modalSelectedCard ? '1 carta selecionada' : 'Nenhuma carta selecionada'}</span>
-      <button class="btn-confirm-selection" onclick="confirmCardSelection()">Confirmar sele\u00e7\u00e3o</button>
+      <button class="btn-confirm-selection" onclick="confirmCardSelection()">Registrar na Pok\u00e9dex</button>
     </div>`;
 
     container.innerHTML = html;
@@ -3270,8 +3329,8 @@ function closeModal() {
   document.getElementById('modal-overlay').classList.remove('open');
 }
 
-async function handleToggleRegister(pokeNum) {
-  await toggleRegistered(pokeNum);
+function handleToggleRegister(pokeNum) {
+  toggleRegistered(pokeNum);
   openModal(pokeNum);
   renderGrid();
   if (document.getElementById('tab-binder').classList.contains('active')) {
