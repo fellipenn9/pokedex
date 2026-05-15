@@ -1077,6 +1077,156 @@ body {
   margin: 2px;
 }
 
+/* Pokedex Checklist Tab */
+.pokedex-progress {
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.pokedex-progress .progress-text {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.pokedex-progress .progress-bar {
+  flex: 1;
+  min-width: 120px;
+  margin: 0;
+}
+
+.pokedex-progress .progress-pct {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--green);
+  white-space: nowrap;
+}
+
+.pokedex-filters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.pokedex-filters input,
+.pokedex-filters select {
+  padding: 8px 12px;
+  border: 1px solid var(--gray);
+  border-radius: var(--radius);
+  background: var(--bg-card);
+  color: var(--text);
+  font-size: 0.85rem;
+}
+
+.pokedex-filters input { width: 220px; }
+.pokedex-filters select { min-width: 140px; }
+
+.pokedex-checklist-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--grid-min), 1fr));
+  gap: var(--grid-gap);
+}
+
+.dex-cell {
+  aspect-ratio: 1;
+  border-radius: var(--radius);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s, background 0.2s, border-color 0.2s;
+  position: relative;
+  overflow: hidden;
+  border: 2px solid #333;
+  background: #2a2a3a;
+  content-visibility: auto;
+  contain-intrinsic-size: var(--grid-min);
+}
+
+.dex-cell:hover {
+  transform: scale(1.12);
+  z-index: 10;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+}
+
+.dex-cell img {
+  width: var(--sprite-size);
+  height: var(--sprite-size);
+  image-rendering: pixelated;
+  transition: opacity 0.2s, filter 0.2s;
+}
+
+.dex-cell img.loading {
+  opacity: 0;
+  position: absolute;
+}
+
+.dex-cell img.loaded {
+  opacity: 0.35;
+  filter: brightness(0.5) saturate(0);
+}
+
+.dex-cell .placeholder {
+  width: var(--sprite-size);
+  height: var(--sprite-size);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.25);
+  border-radius: 50%;
+  background: rgba(255,255,255,0.05);
+}
+
+.dex-cell .poke-num {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.7);
+  font-weight: 600;
+}
+
+.dex-cell .poke-name {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.5);
+  text-transform: capitalize;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 0 4px;
+}
+
+.dex-cell.caught {
+  background: #1a3a1a;
+  border-color: var(--green);
+}
+
+.dex-cell.caught img.loaded {
+  opacity: 1;
+  filter: none;
+}
+
+.dex-cell.caught::after {
+  content: '';
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 12px;
+  height: 12px;
+  background: var(--green);
+  border-radius: 50%;
+}
+
 /* Estatísticas */
 .stats-grid {
   display: grid;
@@ -1752,6 +1902,27 @@ body {
   .poke-cell .placeholder { font-size: 0.75rem; }
   .poke-cell .poke-num { font-size: 0.7rem; }
   .poke-cell .poke-name { font-size: 0.65rem; }
+  .dex-cell .placeholder { font-size: 0.75rem; }
+  .dex-cell .poke-num { font-size: 0.7rem; }
+  .dex-cell .poke-name { font-size: 0.65rem; }
+  .pokedex-filters {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .pokedex-filters input {
+    width: 100%;
+    order: -1;
+  }
+  .pokedex-filters select {
+    flex: 1 1 calc(50% - 5px);
+    min-width: 0;
+  }
+  .pokedex-progress {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+    gap: 8px;
+  }
   .tabs {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
@@ -1837,6 +2008,12 @@ body {
   .poke-cell .poke-num { font-size: 0.6rem; }
   .poke-cell .poke-name { font-size: 0.58rem; }
   .poke-cell .placeholder { font-size: 0.65rem; }
+  .dex-cell .poke-num { font-size: 0.6rem; }
+  .dex-cell .poke-name { font-size: 0.58rem; }
+  .dex-cell .placeholder { font-size: 0.65rem; }
+  .pokedex-filters select {
+    flex: 1 1 100%;
+  }
   .filters select {
     flex: 1 1 100%;
   }
@@ -2254,6 +2431,8 @@ body {
 @media (hover: none) {
   .poke-cell:hover { transform: none; box-shadow: none; }
   .poke-cell:active { transform: scale(0.95); }
+  .dex-cell:hover { transform: none; box-shadow: none; }
+  .dex-cell:active { transform: scale(0.95); }
   .card-item:hover { transform: none; box-shadow: none; border-color: rgba(255,255,255,0.06); }
   .card-item:active { transform: scale(0.97); }
   .binder-slot.filled:hover { transform: none; box-shadow: none; }
@@ -2378,15 +2557,47 @@ body {
 </div>
 
 <div class="tabs">
-  <button class="tab-btn active" data-tab="grid">Pokédex</button>
+  <button class="tab-btn active" data-tab="pokedex">Pokédex</button>
+  <button class="tab-btn" data-tab="grid">Coleção</button>
   <button class="tab-btn" data-tab="sorteador">Sorteador</button>
   <button class="tab-btn" data-tab="stats">Estatísticas</button>
   <button class="tab-btn" data-tab="binder">Fichário</button>
 </div>
 
 <div class="main-content">
-  <!-- Grid Tab -->
-  <div class="tab-panel active" id="tab-grid">
+  <!-- Pokedex Checklist Tab -->
+  <div class="tab-panel active" id="tab-pokedex">
+    <div class="pokedex-progress" id="pokedex-progress">
+      <div class="progress-text" id="pokedex-progress-text">0 / 1025 Pokémon</div>
+      <div class="progress-bar"><div class="progress-fill" id="pokedex-progress-fill" style="width:0%"></div></div>
+      <div class="progress-pct" id="pokedex-progress-pct">0%</div>
+    </div>
+    <div class="pokedex-filters">
+      <input type="text" id="pokedex-search" placeholder="Buscar por nome ou número...">
+      <select id="pokedex-gen-filter">
+        <option value="">Todas gerações</option>
+        <option value="1">Gen 1 - Kanto</option>
+        <option value="2">Gen 2 - Johto</option>
+        <option value="3">Gen 3 - Hoenn</option>
+        <option value="4">Gen 4 - Sinnoh</option>
+        <option value="5">Gen 5 - Unova</option>
+        <option value="6">Gen 6 - Kalos</option>
+        <option value="7">Gen 7 - Alola</option>
+        <option value="8">Gen 8 - Galar</option>
+        <option value="9">Gen 9 - Paldea</option>
+      </select>
+      <select id="pokedex-status-filter">
+        <option value="">Todos status</option>
+        <option value="caught">Capturados</option>
+        <option value="missing">Faltando</option>
+      </select>
+      <button class="btn-clear-filters" id="btn-clear-pokedex-filters" onclick="clearPokedexFilters()" style="display:none">Limpar filtros</button>
+    </div>
+    <div id="pokedex-checklist-grid" class="pokedex-checklist-grid"></div>
+  </div>
+
+  <!-- Grid Tab (Coleção Full Art) -->
+  <div class="tab-panel" id="tab-grid">
     <div class="filters">
       <input type="text" id="search-input" placeholder="Buscar por nome ou número...">
       <select id="gen-filter">
@@ -2548,6 +2759,7 @@ let FULLART_DATA = { metadata: {}, by_pokedex: {} };
 // collection = { "25": true, "6": true } — chave = numero pokedex
 // =============================================
 let collection = {};
+let pokedexTracker = {};
 let currentUser = null;
 let sorteioHistory = [];
 let sortearAnimId = null;
@@ -2620,12 +2832,13 @@ let appInitialized = false;
 async function initApp() {
   if (appInitialized) {
     // Se ja inicializou, so recarrega a colecao (ex: login de outro usuario)
-    await loadCollection();
+    await Promise.all([loadCollection(), loadPokedexTracker()]);
     renderGrid();
+    renderPokedexGrid();
     return;
   }
 
-  await loadCollection();
+  await Promise.all([loadCollection(), loadPokedexTracker()]);
 
   try {
     const cacheBust = '?v=' + Date.now();
@@ -2650,9 +2863,11 @@ async function initApp() {
   POKEDEX_DATA.forEach(p => { pokedexLookup[p.number] = p; });
 
   populateTypeFilter();
+  renderPokedexGrid();
   renderGrid();
   setupTabs();
   setupFilters();
+  setupPokedexFilters();
   setupKeyboard();
   setupBinderSearch();
   appInitialized = true;
@@ -2770,6 +2985,244 @@ function findCardById(pokeNum, cardId) {
   return null;
 }
 
+// =============================================
+// POKEDEX TRACKER (Firestore + localStorage cache)
+// Checklist simples: { "1": true, "25": true, ... }
+// =============================================
+async function loadPokedexTracker() {
+  if (!currentUser) {
+    pokedexTracker = {};
+    return;
+  }
+
+  try {
+    const doc = await db.collection('users').doc(currentUser.uid).get();
+    if (doc.exists && doc.data().pokedexTracker) {
+      pokedexTracker = doc.data().pokedexTracker;
+    } else {
+      // Tentar cache local
+      const cached = localStorage.getItem('pokedex_tracker_cache_' + currentUser.uid);
+      if (cached) {
+        pokedexTracker = JSON.parse(cached);
+      } else {
+        pokedexTracker = {};
+      }
+    }
+  } catch (err) {
+    console.error('Erro ao carregar pokedexTracker:', err);
+    try {
+      const cached = localStorage.getItem('pokedex_tracker_cache_' + currentUser.uid);
+      if (cached) pokedexTracker = JSON.parse(cached);
+      else pokedexTracker = {};
+    } catch (e) { pokedexTracker = {}; }
+  }
+}
+
+async function savePokedexTracker() {
+  if (!currentUser) return;
+  lastPokedexFilteredNums = null;
+
+  localStorage.setItem('pokedex_tracker_cache_' + currentUser.uid, JSON.stringify(pokedexTracker));
+
+  try {
+    await db.collection('users').doc(currentUser.uid).update({
+      pokedexTracker: pokedexTracker,
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+  } catch (err) {
+    // Se o documento nao existe, criar com set
+    try {
+      await db.collection('users').doc(currentUser.uid).set({
+        pokedexTracker: pokedexTracker,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      }, { merge: true });
+    } catch (e) {
+      console.error('Erro ao salvar pokedexTracker:', e);
+    }
+  }
+}
+
+function togglePokedexEntry(pokeNum) {
+  const key = String(pokeNum);
+  if (pokedexTracker[key]) {
+    delete pokedexTracker[key];
+  } else {
+    pokedexTracker[key] = true;
+  }
+  savePokedexTracker(); // fire-and-forget
+}
+
+function isInPokedex(pokeNum) {
+  return !!pokedexTracker[String(pokeNum)];
+}
+
+// =============================================
+// POKEDEX GRID RENDER
+// =============================================
+let renderPokedexRAF = null;
+let lastPokedexFilteredNums = null;
+
+function renderPokedexGrid() {
+  if (renderPokedexRAF) cancelAnimationFrame(renderPokedexRAF);
+  renderPokedexRAF = requestAnimationFrame(renderPokedexGridInner);
+}
+
+function renderPokedexGridInner() {
+  renderPokedexRAF = null;
+  const container = document.getElementById('pokedex-checklist-grid');
+  if (!container) return;
+
+  const search = (document.getElementById('pokedex-search') || {}).value || '';
+  const searchLower = search.toLowerCase().trim();
+  const genFilter = (document.getElementById('pokedex-gen-filter') || {}).value || '';
+  const statusFilter = (document.getElementById('pokedex-status-filter') || {}).value || '';
+
+  const filtered = POKEDEX_DATA.filter(p => {
+    if (searchLower) {
+      const matchName = p.name.toLowerCase().includes(searchLower);
+      const matchNum = String(p.number).includes(searchLower);
+      if (!matchName && !matchNum) return false;
+    }
+    if (genFilter && String(p.generation) !== genFilter) return false;
+    if (statusFilter) {
+      const caught = isInPokedex(p.number);
+      if (statusFilter === 'caught' && !caught) return false;
+      if (statusFilter === 'missing' && caught) return false;
+    }
+    return true;
+  });
+
+  const filteredNums = filtered.map(p => p.number).join(',');
+  if (filteredNums === lastPokedexFilteredNums) return;
+  lastPokedexFilteredNums = filteredNums;
+
+  const fragment = document.createDocumentFragment();
+
+  for (const p of filtered) {
+    const caught = isInPokedex(p.number);
+
+    const cell = document.createElement('div');
+    cell.className = 'dex-cell' + (caught ? ' caught' : '');
+    cell.title = `#${p.number} ${p.name}`;
+    cell.dataset.num = p.number;
+    cell.onclick = function() {
+      const num = parseInt(this.dataset.num);
+      togglePokedexEntry(num);
+      this.classList.toggle('caught');
+      // Atualizar sprite visual
+      const img = this.querySelector('img');
+      if (img && img.classList.contains('loaded')) {
+        // CSS handles visual via .caught class
+      }
+      updatePokedexProgress();
+    };
+
+    const placeholder = document.createElement('div');
+    placeholder.className = 'placeholder';
+    placeholder.textContent = p.number;
+    cell.appendChild(placeholder);
+
+    const img = document.createElement('img');
+    img.alt = p.name;
+    img.width = 64;
+    img.height = 64;
+    img.className = 'loading';
+    img.dataset.src = spriteUrl(p.number);
+    img.decoding = 'async';
+    img.onload = function() {
+      this.classList.remove('loading');
+      this.classList.add('loaded');
+      if (placeholder.parentNode) placeholder.parentNode.removeChild(placeholder);
+    };
+    img.onerror = function() { this.style.display = 'none'; };
+    cell.appendChild(img);
+
+    const num = document.createElement('span');
+    num.className = 'poke-num';
+    num.textContent = `#${p.number}`;
+    cell.appendChild(num);
+
+    const name = document.createElement('span');
+    name.className = 'poke-name';
+    name.textContent = p.name;
+    cell.appendChild(name);
+
+    fragment.appendChild(cell);
+  }
+
+  container.innerHTML = '';
+  container.appendChild(fragment);
+
+  observePokedexSprites();
+  updatePokedexProgress();
+}
+
+function observePokedexSprites() {
+  // Reutiliza o mesmo observer das sprites (criado em observeSprites)
+  // Se ainda nao existe, cria um novo
+  if (!spriteObserver) {
+    observeSprites();
+  }
+  document.querySelectorAll('.dex-cell img[data-src]').forEach(img => {
+    spriteObserver.observe(img);
+  });
+}
+
+function updatePokedexProgress() {
+  const total = POKEDEX_DATA.length || 1025;
+  const caught = Object.keys(pokedexTracker).length;
+  const pct = ((caught / total) * 100).toFixed(1);
+
+  const textEl = document.getElementById('pokedex-progress-text');
+  const fillEl = document.getElementById('pokedex-progress-fill');
+  const pctEl = document.getElementById('pokedex-progress-pct');
+
+  if (textEl) textEl.textContent = `${caught} / ${total} Pokémon`;
+  if (fillEl) fillEl.style.width = pct + '%';
+  if (pctEl) pctEl.textContent = pct + '%';
+}
+
+// =============================================
+// POKEDEX FILTERS
+// =============================================
+function updateClearPokedexFiltersBtn() {
+  const search = (document.getElementById('pokedex-search') || {}).value || '';
+  const gen = (document.getElementById('pokedex-gen-filter') || {}).value || '';
+  const status = (document.getElementById('pokedex-status-filter') || {}).value || '';
+  const hasFilter = search.trim().length > 0 || gen || status;
+  const btn = document.getElementById('btn-clear-pokedex-filters');
+  if (btn) btn.style.display = hasFilter ? 'inline-block' : 'none';
+}
+
+function clearPokedexFilters() {
+  document.getElementById('pokedex-search').value = '';
+  document.getElementById('pokedex-gen-filter').value = '';
+  document.getElementById('pokedex-status-filter').value = '';
+  updateClearPokedexFiltersBtn();
+  lastPokedexFilteredNums = null;
+  renderPokedexGrid();
+}
+
+function setupPokedexFilters() {
+  let debounce;
+  const onFilterChange = () => {
+    updateClearPokedexFiltersBtn();
+    lastPokedexFilteredNums = null;
+    renderPokedexGrid();
+  };
+  const searchEl = document.getElementById('pokedex-search');
+  if (searchEl) {
+    searchEl.addEventListener('input', () => {
+      clearTimeout(debounce);
+      debounce = setTimeout(onFilterChange, 200);
+    });
+  }
+  const genEl = document.getElementById('pokedex-gen-filter');
+  if (genEl) genEl.addEventListener('change', onFilterChange);
+  const statusEl = document.getElementById('pokedex-status-filter');
+  if (statusEl) statusEl.addEventListener('change', onFilterChange);
+}
+
 // Settings modal
 function openSettings() {
   document.getElementById('settings-overlay').classList.add('open');
@@ -2784,7 +3237,7 @@ function closeSettingsOutside(e) {
 }
 
 function exportCollection() {
-  const data = JSON.stringify(collection, null, 2);
+  const data = JSON.stringify({ collection, pokedexTracker }, null, 2);
   const blob = new Blob([data], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -2805,10 +3258,19 @@ function importCollection() {
     reader.onload = async (ev) => {
       try {
         const data = JSON.parse(ev.target.result);
-        collection = data;
+        // Suporta formato novo (com pokedexTracker) e legado (só collection)
+        if (data.collection && typeof data.collection === 'object') {
+          collection = data.collection;
+          if (data.pokedexTracker) pokedexTracker = data.pokedexTracker;
+        } else {
+          // Formato legado: o JSON inteiro é a collection
+          collection = data;
+        }
         await saveCollection();
+        if (data.pokedexTracker) await savePokedexTracker();
         renderGrid();
-        alert('Coleção importada com sucesso!');
+        renderPokedexGrid();
+        alert('Dados importados com sucesso!');
       } catch (err) {
         alert('Erro ao importar: arquivo invalido');
       }
@@ -2819,10 +3281,12 @@ function importCollection() {
 }
 
 async function clearCollection() {
-  if (confirm('Tem certeza que deseja limpar toda a coleção?')) {
+  if (confirm('Tem certeza que deseja limpar toda a coleção e a Pokédex?')) {
     collection = {};
-    await saveCollection();
+    pokedexTracker = {};
+    await Promise.all([saveCollection(), savePokedexTracker()]);
     renderGrid();
+    renderPokedexGrid();
   }
 }
 
@@ -2997,10 +3461,14 @@ function observeSprites() {
   document.querySelectorAll('.poke-cell img[data-src]').forEach(img => {
     spriteObserver.observe(img);
   });
+  // Re-observar dex-cell sprites que ainda nao carregaram
+  document.querySelectorAll('.dex-cell img[data-src]').forEach(img => {
+    spriteObserver.observe(img);
+  });
 }
 
 function preloadAllSprites() {
-  document.querySelectorAll('.poke-cell img[data-src]').forEach(img => {
+  document.querySelectorAll('.poke-cell img[data-src], .dex-cell img[data-src]').forEach(img => {
     if (spriteObserver) spriteObserver.unobserve(img);
     loadQueue.push(img);
   });
@@ -3349,6 +3817,7 @@ function setupTabs() {
       btn.classList.add('active');
       document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
 
+      if (btn.dataset.tab === 'pokedex') renderPokedexGrid();
       if (btn.dataset.tab === 'stats') renderStats();
       if (btn.dataset.tab === 'binder') renderBinder();
     });
@@ -4022,17 +4491,52 @@ function renderStats() {
 
   let html = '';
 
-  // Progresso geral
+  // Pokedex Tracker (Fichario Fisico)
+  const dexCaught = Object.keys(pokedexTracker).length;
+  const dexPct = totalPokemon > 0 ? ((dexCaught / totalPokemon) * 100).toFixed(1) : 0;
+  const dexGenStats = {};
+  for (let gen = 1; gen <= 9; gen++) {
+    dexGenStats[gen] = { total: 0, caught: 0 };
+  }
+  POKEDEX_DATA.forEach(p => {
+    if (dexGenStats[p.generation]) {
+      dexGenStats[p.generation].total++;
+      if (isInPokedex(p.number)) dexGenStats[p.generation].caught++;
+    }
+  });
+
   html += `<div class="stat-card" style="grid-column: 1 / -1">
-    <h3>Progresso Geral</h3>
+    <h3 style="color:var(--green)">Pokédex (Fichário Físico)</h3>
+    <div class="stats-progress-title" style="font-size:2rem;font-weight:900;color:var(--green);margin-bottom:8px">${dexCaught} / ${totalPokemon} Pokémon</div>
+    <div class="progress-bar"><div class="progress-fill" style="width:${dexPct}%;background:linear-gradient(90deg, #00c853, #69f0ae)"></div></div>
+    <div class="progress-text">${dexPct}% completo</div>
+  </div>`;
+
+  html += `<div class="stat-card">
+    <h3 style="color:var(--green)">Pokédex por Geração</h3>`;
+  const dexRegions = ['', 'Kanto', 'Johto', 'Hoenn', 'Sinnoh', 'Unova', 'Kalos', 'Alola', 'Galar', 'Paldea'];
+  for (let gen = 1; gen <= 9; gen++) {
+    const dgs = dexGenStats[gen];
+    if (dgs.total === 0) continue;
+    const dgPct = ((dgs.caught / dgs.total) * 100).toFixed(0);
+    html += `<div class="stat-row">
+      <span class="label">Gen ${gen} - ${dexRegions[gen]}</span>
+      <span class="value" style="color:var(--green)">${dgs.caught}/${dgs.total} (${dgPct}%)</span>
+    </div>`;
+  }
+  html += '</div>';
+
+  // Progresso geral (Colecao Full Art)
+  html += `<div class="stat-card" style="grid-column: 1 / -1">
+    <h3>Coleção Full Art</h3>
     <div class="stats-progress-title" style="font-size:2rem;font-weight:900;color:var(--gold);margin-bottom:8px">${registeredCount} / ${totalPokemon} Pokémon registrados</div>
     <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
     <div class="progress-text">${pct}% completo | ${pokeWithFullart} Pokémon com full art disponível | ${totalCardsAvailable} cartas de referência</div>
   </div>`;
 
-  // Por geracao
+  // Por geracao (Colecao Full Art)
   html += `<div class="stat-card">
-    <h3>Por Geração</h3>`;
+    <h3>Coleção por Geração</h3>`;
   const regions = ['', 'Kanto', 'Johto', 'Hoenn', 'Sinnoh', 'Unova', 'Kalos', 'Alola', 'Galar', 'Paldea'];
   for (let gen = 1; gen <= 9; gen++) {
     const gs = genStats[gen];
