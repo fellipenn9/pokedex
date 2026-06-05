@@ -2751,6 +2751,10 @@ const googleProvider = new firebase.auth.GoogleAuthProvider();
 // =============================================
 // DATA
 // =============================================
+// Versao dos JSONs estaticos. Use isto para cache-busting em vez de timestamp:
+// o browser pode cachear os arquivos (fullart_cards.json ~6.7MB) entre sessoes.
+// BUMP ESTE VALOR sempre que regerar os JSONs com os scrapers Python.
+const DATA_VERSION = '2026-05-31';
 let POKEDEX_DATA = [];
 let FULLART_DATA = { metadata: {}, by_pokedex: {} };
 
@@ -2763,6 +2767,7 @@ let pokedexTracker = {};
 let currentUser = null;
 let sorteioHistory = [];
 let sortearAnimId = null;
+let realtimeUnsub = null; // unsubscribe do listener onSnapshot
 
 // =============================================
 // AUTH — Login com Google
@@ -2773,6 +2778,7 @@ auth.onAuthStateChanged(async (user) => {
     showApp(user);
     await initApp();
   } else {
+    detachRealtimeSync();
     currentUser = null;
     showLogin();
   }
@@ -2835,13 +2841,14 @@ async function initApp() {
     await Promise.all([loadCollection(), loadPokedexTracker()]);
     renderGrid();
     renderPokedexGrid();
+    attachRealtimeSync(); // re-ativa sync em tempo real p/ o novo usuario
     return;
   }
 
   await Promise.all([loadCollection(), loadPokedexTracker()]);
 
   try {
-    const cacheBust = '?v=' + Date.now();
+    const cacheBust = '?v=' + DATA_VERSION;
     const [pokedexResp, fullartResp] = await Promise.all([
       fetch('pokedex_dados.json' + cacheBust),
       fetch('fullart_cards.json' + cacheBust)
@@ -2871,6 +2878,104 @@ async function initApp() {
   setupKeyboard();
   setupBinderSearch();
   appInitialized = true;
+  attachRealtimeSync(); // sincronizacao em tempo real entre dispositivos
+}
+
+// =============================================
+// SYNC EM TEMPO REAL (onSnapshot)
+// Mantem collection/pokedexTracker atualizados ao vivo entre dispositivos.
+// Sem isso, um aparelho aberto nao "via" mudancas feitas em outro ate dar F5,
+// e podia regravar por cima com estado obsoleto.
+// =============================================
+function detachRealtimeSync() {
+  if (realtimeUnsub) {
+    realtimeUnsub();
+    realtimeUnsub = null;
+  }
+}
+
+// Compara dois mapas {chave: valor} independente da ordem das chaves
+function sameMap(a, b) {
+  const ka = Object.keys(a || {});
+  const kb = Object.keys(b || {});
+  if (ka.length !== kb.length) return false;
+  for (const k of ka) {
+    if (!(k in b)) return false;
+    if (JSON.stringify(a[k]) !== JSON.stringify(b[k])) return false;
+  }
+  return true;
+}
+
+function attachRealtimeSync() {
+  if (!currentUser) return;
+  detachRealtimeSync(); // garante listener unico
+
+  realtimeUnsub = db.collection('users').doc(currentUser.uid).onSnapshot(
+    { includeMetadataChanges: true },
+    (doc) => {
+      // Ignora snapshots que sao reflexo das nossas proprias escritas locais
+      // (latency compensation) — evita re-render/flicker a cada toque.
+      if (doc.metadata && doc.metadata.hasPendingWrites) return;
+      if (!doc.exists) return;
+
+      const data = doc.data() || {};
+      const cloudCol = data.collection || {};
+      const cloudTracker = data.pokedexTracker || {};
+
+      const colChanged = !sameMap(cloudCol, collection);
+      const trackerChanged = !sameMap(cloudTracker, pokedexTracker);
+      if (!colChanged && !trackerChanged) return; // nada novo vindo de fora
+
+      // Aplica mudanca remota em memoria + cache local
+      collection = cloudCol;
+      pokedexTracker = cloudTracker;
+      localStorage.setItem('fullart_collection_cache_' + currentUser.uid, JSON.stringify(collection));
+      localStorage.setItem('pokedex_tracker_cache_' + currentUser.uid, JSON.stringify(pokedexTracker));
+
+      // Invalida os guards de cache p/ forcar re-render mesmo com mesma lista filtrada
+      lastFilteredNums = null;
+      lastPokedexFilteredNums = null;
+
+      if (trackerChanged) renderPokedexGrid();
+      if (colChanged) renderGrid();
+      const binderTab = document.getElementById('tab-binder');
+      if (binderTab && binderTab.classList.contains('active')) renderBinder();
+      const statsTab = document.getElementById('tab-stats');
+      if (statsTab && statsTab.classList.contains('active')) renderStats();
+
+      showToast('Sincronizado de outro dispositivo', 'info');
+    },
+    (err) => {
+      console.error('Erro no listener de sincronização:', err);
+    }
+  );
+}
+
+// =============================================
+// TOAST — feedback visual transitorio
+// =============================================
+function showToast(message, type) {
+  let el = document.getElementById('app-toast');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'app-toast';
+    el.style.cssText = 'position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(8px);' +
+      'z-index:9999;padding:12px 18px;border-radius:10px;font-size:0.9rem;font-weight:600;color:#fff;' +
+      'box-shadow:0 6px 24px rgba(0,0,0,0.45);opacity:0;transition:opacity .25s ease, transform .25s ease;' +
+      'pointer-events:none;max-width:90vw;text-align:center;';
+    document.body.appendChild(el);
+  }
+  el.textContent = message;
+  el.style.background = type === 'error' ? '#c0392b' : (type === 'success' ? '#1e7e34' : '#2a3b55');
+  // força reflow para reiniciar a transicao
+  void el.offsetWidth;
+  el.style.opacity = '1';
+  el.style.transform = 'translateX(-50%) translateY(0)';
+  clearTimeout(el._hideTimer);
+  el._hideTimer = setTimeout(() => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateX(-50%) translateY(8px)';
+  }, type === 'error' ? 6000 : 2200);
 }
 
 let pokedexLookup = {};
@@ -2898,10 +3003,11 @@ async function loadCollection() {
           // Uniao: tudo que esta em qualquer um dos dois
           collection = { ...cloudData, ...localData };
           // Salvar merge no Firestore e limpar localStorage
+          // merge:true preserva pokedexTracker (campo irmão no mesmo doc)
           await db.collection('users').doc(currentUser.uid).set({
             collection: collection,
             updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-          });
+          }, { merge: true });
           localStorage.removeItem('fullart_collection_v2');
           return;
         }
@@ -2915,7 +3021,7 @@ async function loadCollection() {
         await db.collection('users').doc(currentUser.uid).set({
           collection: collection,
           updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-        });
+        }, { merge: true });
         localStorage.removeItem('fullart_collection_v2');
       } else {
         collection = {};
@@ -2940,12 +3046,48 @@ async function saveCollection() {
   localStorage.setItem('fullart_collection_cache_' + currentUser.uid, JSON.stringify(collection));
 
   try {
+    // merge:true é OBRIGATÓRIO: sem ele, o .set() substitui o documento
+    // inteiro e apaga o campo pokedexTracker (marcações da aba Pokédex).
     await db.collection('users').doc(currentUser.uid).set({
       collection: collection,
       updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-    });
+    }, { merge: true });
   } catch (err) {
     console.error('Erro ao salvar coleção:', err);
+    showToast('Erro ao salvar. Verifique a conexão.', 'error');
+  }
+}
+
+// Grava UMA entrada da coleção (escrita granular por chave).
+// Evita "última escrita vence": dois dispositivos editando cartas
+// diferentes não se sobrescrevem, pois cada um toca só a sua chave.
+// value === undefined => remove a chave.
+async function saveCollectionEntry(key, value) {
+  if (!currentUser) return;
+  lastFilteredNums = null; // invalida cache do grid p/ re-render
+  localStorage.setItem('fullart_collection_cache_' + currentUser.uid, JSON.stringify(collection));
+
+  const fieldVal = value === undefined
+    ? firebase.firestore.FieldValue.delete()
+    : value;
+  const ref = db.collection('users').doc(currentUser.uid);
+  try {
+    // update com field path aninhado: toca SÓ collection.<key>
+    await ref.update({
+      ['collection.' + key]: fieldVal,
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+  } catch (err) {
+    // Documento ainda não existe → cria via set+merge (sem field path)
+    try {
+      await ref.set({
+        collection: { [key]: fieldVal },
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      }, { merge: true });
+    } catch (e) {
+      console.error('Erro ao salvar carta:', e);
+      showToast('Erro ao salvar. Verifique a conexão.', 'error');
+    }
   }
 }
 
@@ -2953,10 +3095,11 @@ async function toggleRegistered(pokeNum) {
   const key = String(pokeNum);
   if (collection[key]) {
     delete collection[key];
+    saveCollectionEntry(key, undefined); // fire-and-forget
   } else {
     collection[key] = true;
+    saveCollectionEntry(key, true);
   }
-  saveCollection(); // fire-and-forget, UI atualiza imediatamente
 }
 
 function isRegistered(pokeNum) {
@@ -3038,6 +3181,38 @@ async function savePokedexTracker() {
       }, { merge: true });
     } catch (e) {
       console.error('Erro ao salvar pokedexTracker:', e);
+      showToast('Erro ao salvar. Verifique a conexão.', 'error');
+    }
+  }
+}
+
+// Grava UMA entrada do pokedexTracker (escrita granular por chave).
+// Cada toque toca só pokedexTracker.<key> — dois dispositivos marcando
+// Pokémon diferentes não se sobrescrevem. value === undefined => remove.
+async function savePokedexEntry(key, value) {
+  if (!currentUser) return;
+  lastPokedexFilteredNums = null;
+  localStorage.setItem('pokedex_tracker_cache_' + currentUser.uid, JSON.stringify(pokedexTracker));
+
+  const fieldVal = value === undefined
+    ? firebase.firestore.FieldValue.delete()
+    : value;
+  const ref = db.collection('users').doc(currentUser.uid);
+  try {
+    await ref.update({
+      ['pokedexTracker.' + key]: fieldVal,
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+  } catch (err) {
+    // Documento ainda não existe → cria via set+merge (sem field path)
+    try {
+      await ref.set({
+        pokedexTracker: { [key]: fieldVal },
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      }, { merge: true });
+    } catch (e) {
+      console.error('Erro ao salvar entrada da Pokédex:', e);
+      showToast('Erro ao salvar. Verifique a conexão.', 'error');
     }
   }
 }
@@ -3046,10 +3221,11 @@ function togglePokedexEntry(pokeNum) {
   const key = String(pokeNum);
   if (pokedexTracker[key]) {
     delete pokedexTracker[key];
+    savePokedexEntry(key, undefined); // fire-and-forget
   } else {
     pokedexTracker[key] = true;
+    savePokedexEntry(key, true);
   }
-  savePokedexTracker(); // fire-and-forget
 }
 
 function isInPokedex(pokeNum) {
@@ -3281,10 +3457,25 @@ function importCollection() {
 }
 
 async function clearCollection() {
+  if (!currentUser) return;
   if (confirm('Tem certeza que deseja limpar toda a coleção e a Pokédex?')) {
     collection = {};
     pokedexTracker = {};
-    await Promise.all([saveCollection(), savePokedexTracker()]);
+    lastFilteredNums = null;
+    lastPokedexFilteredNums = null;
+    localStorage.setItem('fullart_collection_cache_' + currentUser.uid, '{}');
+    localStorage.setItem('pokedex_tracker_cache_' + currentUser.uid, '{}');
+    try {
+      // set SEM merge: reset intencional dos dois campos de uma vez
+      await db.collection('users').doc(currentUser.uid).set({
+        collection: {},
+        pokedexTracker: {},
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    } catch (err) {
+      console.error('Erro ao limpar dados:', err);
+      showToast('Erro ao limpar dados. Verifique a conexão.', 'error');
+    }
     renderGrid();
     renderPokedexGrid();
   }
@@ -3606,7 +3797,7 @@ function openModal(pokeNum) {
           <div class="preview-rarity">${escHtml(card.rarity || '')}</div>
         </div>
         <div class="preview-actions">
-          <a href="${ligaUrl}" target="_blank" class="btn-liga" style="font-size:0.72rem;padding:6px 12px;border-radius:6px">Liga Pok\u00e9mon</a>
+          <a href="${escHtml(ligaUrl)}" target="_blank" rel="noopener noreferrer" class="btn-liga" style="font-size:0.72rem;padding:6px 12px;border-radius:6px">Liga Pok\u00e9mon</a>
           <button class="btn-register unregister" style="font-size:0.72rem;padding:6px 12px" onclick="handleRemoveCustomCard(${pokeNum})">Remover</button>
         </div>
       </div>`;
@@ -3659,6 +3850,7 @@ async function confirmCardSelection() {
   const pokeNum = modalCurrentPokeNum;
   const key = String(pokeNum);
 
+  let entryValue;
   if (modalSelectedCard) {
     const entry = { cards: [modalSelectedCard] };
     // If card is from API search, save its data so binder can render it
@@ -3666,8 +3858,10 @@ async function confirmCardSelection() {
       entry.cardData = modalApiCards[modalSelectedCard];
     }
     collection[key] = entry;
+    entryValue = entry;
   } else {
     delete collection[key];
+    entryValue = undefined;
   }
 
   openModal(pokeNum);
@@ -3675,20 +3869,29 @@ async function confirmCardSelection() {
   if (document.getElementById('tab-binder').classList.contains('active')) {
     renderBinder();
   }
-  await saveCollection();
+  await saveCollectionEntry(key, entryValue); // granular: toca só esta carta
 }
 
 async function handleRemoveCustomCard(pokeNum) {
-  delete collection[String(pokeNum)];
+  const key = String(pokeNum);
+  delete collection[key];
   openModal(pokeNum);
   renderGrid();
   if (document.getElementById('tab-binder').classList.contains('active')) renderBinder();
-  await saveCollection();
+  await saveCollectionEntry(key, undefined); // granular
 }
+
+let cardSearchController = null; // aborta busca anterior em andamento
 
 async function searchPokemonCards(pokeNum) {
   const container = document.getElementById('api-search-results');
   if (!container) return;
+
+  // Cancela qualquer busca anterior ainda em voo (evita corrida/duplo-fetch)
+  if (cardSearchController) cardSearchController.abort();
+  const controller = new AbortController();
+  cardSearchController = controller;
+
   container.innerHTML = `<div class="api-loading">
     <img src="${PSYDUCK_LOADING_GIF}" alt="Psyduck buscando..." class="loading-psyduck">
     <div>Buscando cartas...</div>
@@ -3696,7 +3899,7 @@ async function searchPokemonCards(pokeNum) {
 
   try {
     const url = `https://api.pokemontcg.io/v2/cards?q=nationalPokedexNumbers:${pokeNum}&select=id,name,number,set,images,rarity,artist,supertype,subtypes&orderBy=-set.releaseDate&pageSize=100`;
-    const resp = await fetch(url);
+    const resp = await fetch(url, { signal: controller.signal });
     if (!resp.ok) throw new Error('API retornou ' + resp.status);
     const json = await resp.json();
     const apiCards = json.data || [];
@@ -3763,8 +3966,8 @@ async function searchPokemonCards(pokeNum) {
       const ligaUrl = cardData.liga_pokemon_url || buildLigaUrl(cardData);
 
       html += `<div class="card-item ${isSelected ? 'selected' : ''}" data-card-id="${c.id}">
-        <div class="card-select-overlay" onclick="toggleCardSelection('${c.id}')"></div>
-        <div class="card-select-check ${isSelected ? 'checked' : ''}" onclick="toggleCardSelection('${c.id}')">\u2713</div>
+        <div class="card-select-overlay"></div>
+        <div class="card-select-check ${isSelected ? 'checked' : ''}">\u2713</div>
         ${isCurrentRegistered ? '<div class="card-registered-badge">Registrada</div>' : ''}
         <img src="${cardData.image_small}" alt="${escHtml(c.name)}" loading="lazy" onerror="this.style.display='none'">
         <div class="card-info">
@@ -3776,7 +3979,7 @@ async function searchPokemonCards(pokeNum) {
           ${pricesHtml}
         </div>
         <div class="card-actions">
-          <a href="${ligaUrl}" target="_blank" class="btn-liga">Ver na Liga Pok\u00e9mon</a>
+          <a href="${escHtml(ligaUrl)}" target="_blank" rel="noopener noreferrer" class="btn-liga">Ver na Liga Pok\u00e9mon</a>
         </div>
       </div>`;
     }
@@ -3789,7 +3992,10 @@ async function searchPokemonCards(pokeNum) {
 
     container.innerHTML = html;
   } catch (err) {
+    if (err.name === 'AbortError') return; // busca substituida por outra — ignora
     container.innerHTML = `<div class="api-loading" style="color:#f66">Erro ao buscar: ${escHtml(err.message)}</div>`;
+  } finally {
+    if (cardSearchController === controller) cardSearchController = null;
   }
 }
 
@@ -3822,6 +4028,19 @@ function setupTabs() {
       if (btn.dataset.tab === 'binder') renderBinder();
     });
   });
+
+  // Event delegation p/ selecao de carta no modal (evita onclick inline com id
+  // interpolado — mais seguro contra injecao de atributo). O id vem do
+  // data-card-id do .card-item pai, ja escapado no HTML.
+  const modalOverlay = document.getElementById('modal-overlay');
+  if (modalOverlay) {
+    modalOverlay.addEventListener('click', (e) => {
+      const hit = e.target.closest('.card-select-overlay, .card-select-check');
+      if (!hit) return;
+      const item = hit.closest('.card-item');
+      if (item && item.dataset.cardId) toggleCardSelection(item.dataset.cardId);
+    });
+  }
 }
 
 // =============================================
@@ -3898,7 +4117,9 @@ function getEligiblePokemon() {
   });
 }
 
-function sortear() {
+const delay = (ms) => new Promise((r) => setTimeout(r, ms));
+
+async function sortear() {
   const eligible = getEligiblePokemon();
   if (eligible.length === 0) {
     alert('Nenhum Pokémon disponível para sortear! Tente resetar o sorteio.');
@@ -3906,73 +4127,77 @@ function sortear() {
   }
 
   const btnSortear = document.getElementById('btn-sortear');
+  if (btnSortear.disabled) return; // ja em andamento — evita clique duplo
   btnSortear.disabled = true;
 
-  const chosen = eligible[Math.floor(Math.random() * eligible.length)];
-  const display = document.getElementById('sorteador-display');
-  const pokeDiv = document.getElementById('sorteador-pokemon');
-  const pokeball = document.getElementById('pokeball-anim');
-  const sparkles = document.getElementById('sparkles');
-  const flash = document.getElementById('capture-flash');
-  const pokeText = document.getElementById('pokeball-text');
+  // try/finally garante que o botao SEMPRE volta a habilitar, mesmo em erro
+  try {
+    const chosen = eligible[Math.floor(Math.random() * eligible.length)];
+    const display = document.getElementById('sorteador-display');
+    const pokeDiv = document.getElementById('sorteador-pokemon');
+    const pokeball = document.getElementById('pokeball-anim');
+    const sparkles = document.getElementById('sparkles');
+    const flash = document.getElementById('capture-flash');
+    const pokeText = document.getElementById('pokeball-text');
 
-  // Reset tudo
-  display.style.display = 'none';
-  display.classList.remove('reveal');
-  pokeDiv.innerHTML = '';
-  pokeDiv.classList.remove('reveal');
-  pokeball.classList.remove('captured');
-  sparkles.classList.remove('active');
-  flash.classList.remove('active');
-  pokeText.textContent = 'Capturando...';
+    // Reset tudo
+    display.style.display = 'none';
+    display.classList.remove('reveal');
+    pokeDiv.innerHTML = '';
+    pokeDiv.classList.remove('reveal');
+    pokeball.classList.remove('captured');
+    sparkles.classList.remove('active');
+    flash.classList.remove('active');
+    pokeText.textContent = 'Capturando...';
 
-  // Fase 1: Pokeball balancando (1.5s)
-  pokeball.classList.add('active');
+    // Fase 1: Pokeball balancando
+    pokeball.classList.add('active');
+    await delay(1500);
 
-  setTimeout(() => {
-    // Fase 2: Captura — pokeball para, centro dourado (0.6s)
+    // Fase 2: Captura — pokeball para, centro dourado
     pokeball.classList.add('captured');
     pokeText.textContent = 'Gotcha!';
+    await delay(400);
 
     // Fase 3: Flash + estrelinhas
-    setTimeout(() => {
-      flash.classList.add('active');
-      sparkles.classList.add('active');
+    flash.classList.add('active');
+    sparkles.classList.add('active');
+    await delay(800);
 
-      // Fase 4: Esconde pokeball, revela resultado
-      setTimeout(() => {
-        pokeball.classList.remove('active');
-        pokeball.classList.remove('captured');
-        sparkles.classList.remove('active');
-        flash.classList.remove('active');
+    // Fase 4: Esconde pokeball, revela resultado
+    pokeball.classList.remove('active');
+    pokeball.classList.remove('captured');
+    sparkles.classList.remove('active');
+    flash.classList.remove('active');
 
-        display.style.display = 'flex';
-        display.textContent = String(chosen.number).padStart(4, '0');
-        display.classList.add('reveal');
-        display.style.textShadow = '0 0 40px rgba(255, 215, 0, 0.8)';
-        setTimeout(() => { display.style.textShadow = '0 0 20px rgba(255, 215, 0, 0.3)'; }, 800);
+    display.style.display = 'flex';
+    display.textContent = String(chosen.number).padStart(4, '0');
+    display.classList.add('reveal');
+    display.style.textShadow = '0 0 40px rgba(255, 215, 0, 0.8)';
+    setTimeout(() => { display.style.textShadow = '0 0 20px rgba(255, 215, 0, 0.3)'; }, 800);
 
-        // Revelar pokemon
-        setTimeout(() => {
-          pokeDiv.classList.add('reveal');
-          pokeDiv.innerHTML = `
-            <img src="${spriteUrl(chosen.number)}" alt="${escHtml(chosen.name)}">
-            <div>
-              <div class="name">${escHtml(chosen.name)}</div>
-              <div style="color:var(--text-dim);font-size:0.95rem">${chosen.types ? chosen.types.join(', ') : ''} | Gen ${chosen.generation}</div>
-              <div style="margin-top:10px">
-                <button class="btn btn-primary" onclick="openModal(${chosen.number})" style="font-size:0.9rem;padding:8px 20px">Ver Cartas</button>
-              </div>
-            </div>
-          `;
+    await delay(300);
 
-          sorteioHistory.push(chosen.number);
-          updateSorteioHistory();
-          btnSortear.disabled = false;
-        }, 300);
-      }, 800);
-    }, 400);
-  }, 1500);
+    // Revelar pokemon
+    pokeDiv.classList.add('reveal');
+    pokeDiv.innerHTML = `
+      <img src="${spriteUrl(chosen.number)}" alt="${escHtml(chosen.name)}">
+      <div>
+        <div class="name">${escHtml(chosen.name)}</div>
+        <div style="color:var(--text-dim);font-size:0.95rem">${chosen.types ? chosen.types.join(', ') : ''} | Gen ${chosen.generation}</div>
+        <div style="margin-top:10px">
+          <button class="btn btn-primary" onclick="openModal(${chosen.number})" style="font-size:0.9rem;padding:8px 20px">Ver Cartas</button>
+        </div>
+      </div>
+    `;
+
+    sorteioHistory.push(chosen.number);
+    updateSorteioHistory();
+  } catch (e) {
+    console.error('Erro no sorteio:', e);
+  } finally {
+    btnSortear.disabled = false;
+  }
 }
 
 function resetSorteio() {
@@ -4335,21 +4560,45 @@ function animatePageTurn(direction, callback) {
 
   // Single-page mode: always animate the left half (right is hidden)
   const turningEl = isSinglePageMode() ? leftHalf : (direction === 'forward' ? rightHalf : leftHalf);
+
+  // callback roda no maximo uma vez; flag sempre destrava (evita fichario travado)
+  let callbackRan = false;
+  const runCallback = () => {
+    if (callbackRan) return;
+    callbackRan = true;
+    try { callback(); } catch (e) { console.error('Erro ao virar página:', e); }
+  };
+  const reset = () => {
+    if (turningEl) turningEl.classList.remove('turning-out', 'turning-in');
+    binderAnimating = false;
+  };
+
+  if (!turningEl) { runCallback(); reset(); return; }
+
+  let phase2Started = false;
   turningEl.classList.add('turning-out');
 
   turningEl.addEventListener('animationend', function onOut() {
     turningEl.removeEventListener('animationend', onOut);
+    phase2Started = true;
     turningEl.classList.remove('turning-out');
 
-    callback();
+    runCallback();
 
     turningEl.classList.add('turning-in');
     turningEl.addEventListener('animationend', function onIn() {
       turningEl.removeEventListener('animationend', onIn);
-      turningEl.classList.remove('turning-in');
-      binderAnimating = false;
+      reset();
     }, { once: true });
+    setTimeout(reset, 700); // seguranca: 2a fase nunca dispara animationend
   }, { once: true });
+
+  // Seguranca global: se a 1a fase nao disparar animationend, destrava em 1.2s
+  setTimeout(() => {
+    if (!binderAnimating) return;
+    if (!phase2Started) runCallback();
+    reset();
+  }, 1200);
 }
 
 function binderPrev() {
@@ -4427,8 +4676,9 @@ function renderBinderDetail() {
 
   container.innerHTML = `
     <button class="detail-close" onclick="closeBinderDetail()">\u00d7</button>
-    <img class="detail-img" src="${card.image_large || card.image_small}" alt="${escHtml(card.name)}"
-         onerror="if(this.src!=='${card.image_small}')this.src='${card.image_small}'">
+    <img class="detail-img" src="${escHtml(card.image_large || card.image_small)}" alt="${escHtml(card.name)}"
+         data-fb="${escHtml(card.image_small || '')}"
+         onerror="this.onerror=null; if(this.dataset.fb && this.src!==this.dataset.fb) this.src=this.dataset.fb;">
     <div class="detail-body">
       <h3>${escHtml(card.name)}</h3>
       <div class="detail-row"><span class="dl">Pok\u00e9mon</span><span class="dv">#${pokeNum} ${poke ? escHtml(poke.name) : ''}</span></div>
@@ -4651,6 +4901,18 @@ document.getElementById('binder-detail-overlay').addEventListener('click', (e) =
   }
   requestAnimationFrame(animate);
 })();
+
+// =============================================
+// SERVICE WORKER — offline + PWA instalavel
+// (estrategia em sw.js: network-first p/ HTML, cache-first p/ assets/JSONs)
+// =============================================
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch((err) => {
+      console.error('Falha ao registrar service worker:', err);
+    });
+  });
+}
 </script>
 
 <div class="scroll-nav">

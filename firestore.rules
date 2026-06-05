@@ -1,0 +1,36 @@
+// =============================================================================
+// Firestore Security Rules — PokéDex Collector (projeto pokedex-82ba8)
+// =============================================================================
+// IMPORTANTE: a apiKey do Firebase no index.html é PÚBLICA por design.
+// A segurança real dos dados depende 100% destas regras. Sem elas (ou com
+// regras permissivas), qualquer pessoa poderia ler/escrever a coleção de
+// qualquer usuário.
+//
+// COMO APLICAR:
+//   1. Firebase Console → projeto pokedex-82ba8 → Firestore Database → aba "Regras"
+//   2. Cole o conteúdo abaixo (sem este cabeçalho de comentário, se preferir)
+//   3. Clique em "Publicar"
+//   4. Teste no "Simulador de regras" (ou Firebase Emulator) antes de confiar.
+//
+// MODELO DE DADOS:
+//   users/{uid} → { collection: {...}, pokedexTracker: {...}, updatedAt }
+//   Cada usuário só pode ler/escrever o PRÓPRIO documento (uid == auth.uid).
+// =============================================================================
+
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Cada usuário só acessa o próprio documento users/{uid}
+    match /users/{userId} {
+      allow read, write: if request.auth != null
+                         && request.auth.uid == userId;
+    }
+
+    // Nega qualquer outro acesso por padrão (defesa em profundidade)
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
