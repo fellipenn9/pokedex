@@ -2871,16 +2871,19 @@ let appInitialized = false;
 async function initApp() {
   if (appInitialized) {
     // Se ja inicializou, so recarrega a colecao (ex: login de outro usuario)
-    await Promise.all([loadCollection(), loadPokedexTracker()]);
+    achSessionReady = false;
+    await Promise.all([loadCollection(), loadPokedexTracker(), loadAchievements()]);
     renderGrid();
     renderPokedexGrid();
+    evaluateAchievements({ silent: true }); // aplica retroativo sem notificar
+    achSessionReady = true;
     attachRealtimeSync(); // re-ativa sync em tempo real p/ o novo usuario
     return;
   }
 
   showBoot(true);
   showDataError(null);
-  await Promise.all([loadCollection(), loadPokedexTracker()]);
+  await Promise.all([loadCollection(), loadPokedexTracker(), loadAchievements()]);
 
   try {
     const cacheBust = '?v=' + DATA_VERSION;
@@ -2917,6 +2920,8 @@ async function initApp() {
   setupKeyboard();
   setupBinderSearch();
   appInitialized = true;
+  evaluateAchievements({ silent: true }); // aplica conquistas retroativas (sem notificar)
+  achSessionReady = true;                 // a partir daqui, novos desbloqueios notificam
   attachRealtimeSync(); // sincronizacao em tempo real entre dispositivos
   showBoot(false);
 }
@@ -2959,6 +2964,7 @@ function attachRealtimeSync() {
       if (!doc.exists) return;
 
       const data = doc.data() || {};
+      if (data.achievements) unlockedAch = data.achievements; // sync conquistas entre dispositivos
       const cloudCol = data.collection || {};
       const cloudTracker = data.pokedexTracker || {};
 
@@ -2983,6 +2989,7 @@ function attachRealtimeSync() {
       const statsTab = document.getElementById('tab-stats');
       if (statsTab && statsTab.classList.contains('active')) renderStats();
 
+      evaluateAchievements({ silent: true }); // registra conquistas do estado sincronizado (sem notificar 2x)
       showToast('Sincronizado de outro dispositivo', 'info');
     },
     (err) => {
@@ -3129,6 +3136,7 @@ async function saveCollectionEntry(key, value) {
       showToast('Erro ao salvar. Verifique a conexão.', 'error');
     }
   }
+  evaluateAchievements(); // verifica novas conquistas (Coleção/Full Art)
 }
 
 async function toggleRegistered(pokeNum) {
@@ -3256,6 +3264,7 @@ async function savePokedexEntry(key, value) {
       showToast('Erro ao salvar. Verifique a conexão.', 'error');
     }
   }
+  evaluateAchievements(); // verifica novas conquistas (Pokédex)
 }
 
 function togglePokedexEntry(pokeNum) {
@@ -5043,6 +5052,151 @@ document.getElementById('binder-detail-overlay').addEventListener('click', (e) =
   }
   requestAnimationFrame(animate);
 })();
+
+// =============================================
+// CONQUISTAS — motor + notificação
+// =============================================
+let unlockedAch = {};        // { id: {unlockedAt} } — espelha users/{uid}.achievements
+let achSessionReady = false; // após o load retroativo, novos desbloqueios passam a notificar
+let ACHIEVEMENTS = [];        // construído lazy quando POKEDEX_DATA está pronto
+const TIER_COLOR = { bronze:'#cd7f32', silver:'#c0c8d4', gold:'#f0b32a', diamond:'#8a3fc0' };
+function tierName(t){ return {bronze:'Bronze',silver:'Prata',gold:'Ouro',diamond:'Diamante'}[t] || t; }
+
+// --- métricas (sobre o estado em memória) ---
+const reg = n => pokedexTracker[String(n)] === true;
+const totalReg = () => Object.keys(pokedexTracker).filter(k => pokedexTracker[k] === true).length;
+const typeCount = t => POKEDEX_DATA.filter(p => (p.types||[]).includes(t) && reg(p.number)).length;
+const typeTotal = t => POKEDEX_DATA.filter(p => (p.types||[]).includes(t)).length;
+const regionCount = r => POKEDEX_DATA.filter(p => p.region === r && reg(p.number)).length;
+const regionTotal = r => POKEDEX_DATA.filter(p => p.region === r).length;
+const faCollected = () => Object.keys(collection).length;
+const faTotal = () => Object.keys((FULLART_DATA && FULLART_DATA.by_pokedex) || {}).length || 690;
+const colCardData = n => { const c = collection[String(n)]; return (c && typeof c === 'object') ? c.cardData : null; };
+const rarityCount = rar => Object.keys(collection).filter(k => { const cd = colCardData(k); return cd && cd.rarity === rar; }).length;
+
+function slugA(s){ return String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]/g,''); }
+
+const TIERS4 = [['bronze',0.25,'🥉'],['silver',0.5,'🥈'],['gold',0.75,'🥇'],['diamond',1,'💎']];
+
+function buildAchievements(){
+  const A = [];
+  const TIPOS = [['Água','Insígnia Cascata'],['Normal','Insígnia Equilíbrio'],['Grama','Insígnia Bosque'],['Voador','Insígnia Brisa'],['Psíquico','Insígnia Mente'],['Inseto','Insígnia Casulo'],['Veneno','Insígnia Toxina'],['Fogo','Insígnia Brasa'],['Terra','Insígnia Terremoto'],['Pedra','Insígnia Penhasco'],['Lutador','Insígnia Punho'],['Dragão','Insígnia Ascensão'],['Elétrico','Insígnia Trovão'],['Sombrio','Insígnia Eclipse'],['Fantasma','Insígnia Assombração'],['Ferro','Insígnia Engrenagem'],['Fada','Insígnia Encanto'],['Gelo','Insígnia Geleira']];
+  for (const [t,nm] of TIPOS) for (const [tier,pct,tl] of TIERS4)
+    A.push({ id:`tipo-${slugA(t)}-${tier}`, grupo:'Tipos', nome:nm, tier, tierLabel:tl, target:()=>Math.ceil(typeTotal(t)*pct), progress:()=>typeCount(t) });
+  const REGS = ['Kanto','Johto','Hoenn','Sinnoh','Unova','Kalos','Alola','Galar','Hisui','Paldea'];
+  for (const r of REGS) for (const [tier,pct,tl] of TIERS4)
+    A.push({ id:`regiao-${slugA(r)}-${tier}`, grupo:'Regiões', nome:r, tier, tierLabel:tl, target:()=>Math.ceil(regionTotal(r)*pct), progress:()=>regionCount(r) });
+  const JORN = [['poke','Treinador Novato',100,'bronze','🥉'],['great','Treinador Experiente',350,'silver','🥈'],['ultra','Treinador de Elite',700,'gold','🥇'],['master','Mestre Pokémon',1025,'diamond','💎']];
+  for (const [k,nm,tg,tier,tl] of JORN) A.push({ id:`jornada-${k}`, grupo:'Jornada', nome:nm, tier, tierLabel:tl, target:()=>tg, progress:()=>totalReg() });
+  for (const [tier,pct,tl] of TIERS4)
+    A.push({ id:`fa-col-${tier}`, grupo:'Full Art', nome:'Colecionador Full Art', tier, tierLabel:tl, target:()=>Math.ceil(faTotal()*pct), progress:()=>faCollected() });
+  A.push({ id:'fa-special', grupo:'Full Art', nome:'Ilustração Especial', tier:'gold', tierLabel:'🥇', target:()=>20, progress:()=>rarityCount('Special Illustration Rare') });
+  A.push({ id:'fa-hyper', grupo:'Full Art', nome:'Caçador de Hyper Rare', tier:'gold', tierLabel:'🥇', target:()=>10, progress:()=>rarityCount('Hyper Rare') });
+  A.push({ id:'fa-mega', grupo:'Full Art', nome:'As Coroas Mega', tier:'diamond', tierLabel:'💎', target:()=>6, progress:()=>rarityCount('Mega Hyper Rare') });
+  const SEC = [
+    ['sec-pikachu','Escolhi Você!','bronze','🥉',()=>reg(25)?1:0],
+    ['sec-magikarp','Aposta no Inútil','bronze','🥉',()=>reg(129)?1:0],
+    ['sec-primeiro','O Primeiro de Todos','bronze','🥉',()=>reg(1)?1:0],
+    ['sec-ultimo','O Último de Todos','bronze','🥉',()=>reg(1025)?1:0],
+    ['sec-milesimo','O Milésimo','silver','🥈',()=>reg(1000)?1:0],
+    ['sec-clone','Clone e Original','silver','🥈',()=>(reg(150)&&reg(151))?1:0],
+    ['sec-1996','De Volta a 1996','gold','🥇',()=>regionCount('Kanto')>=151?1:0],
+    ['sec-tesouro','Tesouro Secreto','silver','🥈',()=>rarityCount('Rare Secret')>=1?1:0],
+  ];
+  for (const [id,nm,tier,tl,prog] of SEC) A.push({ id, grupo:'Secretas', nome:nm, tier, tierLabel:tl, secret:true, target:()=>1, progress:prog });
+  return A;
+}
+
+async function loadAchievements(){
+  if (!currentUser) { unlockedAch = {}; return; }
+  try {
+    const doc = await db.collection('users').doc(currentUser.uid).get();
+    if (doc.exists && doc.data().achievements) unlockedAch = doc.data().achievements;
+    else { const c = localStorage.getItem('ach_' + currentUser.uid); unlockedAch = c ? JSON.parse(c) : {}; }
+  } catch (e) {
+    try { const c = localStorage.getItem('ach_' + currentUser.uid); unlockedAch = c ? JSON.parse(c) : {}; } catch (_) { unlockedAch = {}; }
+  }
+}
+
+function evaluateAchievements(opts){
+  opts = opts || {};
+  if (!currentUser || !POKEDEX_DATA.length) return;
+  if (!ACHIEVEMENTS.length) ACHIEVEMENTS = buildAchievements();
+  const newly = [];
+  for (const a of ACHIEVEMENTS) {
+    if (unlockedAch[a.id]) continue;
+    let p, t; try { p = a.progress(); t = a.target(); } catch (e) { continue; }
+    if (p >= t && t > 0) { unlockedAch[a.id] = { unlockedAt: Date.now() }; newly.push(a); }
+  }
+  if (!newly.length) return;
+  try { localStorage.setItem('ach_' + currentUser.uid, JSON.stringify(unlockedAch)); } catch (e) {}
+  db.collection('users').doc(currentUser.uid)
+    .set({ achievements: unlockedAch, updatedAt: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true })
+    .catch(e => console.error('Erro ao salvar conquistas:', e));
+  if (!opts.silent && achSessionReady) notifyAch(newly);
+}
+
+// --- notificação ---
+function injectAchStyles(){
+  if (document.getElementById('ach-style')) return;
+  const s = document.createElement('style'); s.id = 'ach-style';
+  s.textContent = `
+  .ach-toast-wrap{position:fixed;right:16px;bottom:16px;z-index:1400;display:flex;flex-direction:column;gap:8px}
+  .ach-toast{display:flex;align-items:center;gap:10px;background:#1c1c2b;border:1px solid #2e2e44;border-left:5px solid var(--at);border-radius:12px;padding:10px 14px;box-shadow:0 8px 24px rgba(0,0,0,.55);min-width:230px;max-width:90vw;animation:achin .3s ease, achout .5s ease 3.6s forwards}
+  .ach-toast .medal{width:38px;height:38px;border-radius:50%;background:radial-gradient(circle at 38% 30%,#ffffffcc,var(--at));display:flex;align-items:center;justify-content:center;font-size:1.05rem;flex-shrink:0;border:2px solid #ffffff44}
+  .ach-toast .t1{font-size:.64rem;color:#9aa0bb;text-transform:uppercase;letter-spacing:.05em}
+  .ach-toast .t2{font-size:.9rem;font-weight:800;color:#eef0f8}
+  @keyframes achin{from{transform:translateX(120%);opacity:0}to{transform:translateX(0);opacity:1}}
+  @keyframes achout{to{transform:translateX(120%);opacity:0}}
+  .ach-modal{position:fixed;inset:0;z-index:1450;display:flex;align-items:center;justify-content:center;background:rgba(8,8,14,.74);opacity:0;animation:achfade .25s forwards;padding:16px}
+  @keyframes achfade{to{opacity:1}}
+  .ach-card{background:#1a1a28;border:1px solid #2e2e44;border-radius:18px;padding:24px 22px;text-align:center;max-width:340px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.7),0 0 36px var(--at)}
+  .ach-big{width:118px;height:118px;margin:0 auto 12px;border-radius:50%;background:radial-gradient(circle at 38% 30%,#fff,var(--at) 62%,#00000066);display:flex;align-items:center;justify-content:center;font-size:3.2rem;border:5px solid #ffffff55;box-shadow:0 0 28px var(--at);animation:achpop .5s cubic-bezier(.2,1.5,.4,1)}
+  @keyframes achpop{from{transform:scale(0) rotate(-22deg);opacity:0}to{transform:scale(1);opacity:1}}
+  .ach-label{font-size:.7rem;letter-spacing:.12em;color:var(--at);text-transform:uppercase;font-weight:800}
+  .ach-name{font-size:1.3rem;font-weight:900;margin:5px 0 2px;color:#fff}
+  .ach-sub{font-size:.82rem;color:#9aa0bb;margin-bottom:16px}
+  .ach-btn{background:var(--at);color:#15151a;border:0;padding:9px 24px;border-radius:10px;font-weight:800;cursor:pointer;font-size:.9rem}
+  .ach-combo{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:4px 0 14px}
+  .ach-combo .mini{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;background:radial-gradient(circle at 38% 30%,#ffffffcc,var(--mt));border:2px solid #ffffff44}
+  `;
+  document.head.appendChild(s);
+}
+function showAchToast(a){
+  injectAchStyles();
+  let wrap = document.getElementById('ach-toast-wrap');
+  if (!wrap) { wrap = document.createElement('div'); wrap.id = 'ach-toast-wrap'; wrap.className = 'ach-toast-wrap'; document.body.appendChild(wrap); }
+  const el = document.createElement('div'); el.className = 'ach-toast'; el.style.setProperty('--at', TIER_COLOR[a.tier]);
+  el.innerHTML = `<div class="medal">${a.tierLabel}</div><div><div class="t1">Insígnia desbloqueada</div><div class="t2">${escHtml(a.nome)}</div></div>`;
+  wrap.appendChild(el);
+  setTimeout(() => el.remove(), 4200);
+}
+function showAchModal(list){
+  injectAchStyles();
+  const top = list[0], at = TIER_COLOR[top.tier];
+  const ov = document.createElement('div'); ov.className = 'ach-modal'; ov.style.setProperty('--at', at);
+  let body;
+  if (list.length === 1) {
+    body = `<div class="ach-big">${top.tierLabel}</div><div class="ach-label">Insígnia Desbloqueada!</div>
+      <div class="ach-name">${escHtml(top.nome)}</div><div class="ach-sub">${escHtml(top.grupo)} · ${tierName(top.tier)}</div>`;
+  } else {
+    const minis = list.slice(0,10).map(a => `<div class="mini" style="--mt:${TIER_COLOR[a.tier]}">${a.tierLabel}</div>`).join('');
+    const names = list.map(a => a.nome).slice(0,4).join(' · ');
+    body = `<div class="ach-big">🎉</div><div class="ach-label">Combo de Conquistas!</div>
+      <div class="ach-name">+${list.length} insígnias</div><div class="ach-combo">${minis}</div>
+      <div class="ach-sub">${escHtml(names)}${list.length>4?'…':''}</div>`;
+  }
+  ov.innerHTML = `<div class="ach-card">${body}<button class="ach-btn">Continuar</button></div>`;
+  ov.querySelector('.ach-btn').onclick = () => ov.remove();
+  ov.addEventListener('click', e => { if (e.target === ov) ov.remove(); });
+  document.body.appendChild(ov);
+}
+function notifyAch(list){
+  const rank = { bronze:0, silver:1, gold:2, diamond:3 };
+  list = list.slice().sort((a,b) => rank[b.tier] - rank[a.tier]);
+  if (list.length === 1) { (rank[list[0].tier] >= 2) ? showAchModal(list) : showAchToast(list[0]); }
+  else showAchModal(list);
+}
 
 // =============================================
 // SERVICE WORKER — offline + PWA instalavel
