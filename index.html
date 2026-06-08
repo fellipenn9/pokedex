@@ -2454,6 +2454,34 @@ body {
   .card-actions a:hover { opacity: 1; }
   .card-actions a:active { opacity: 0.7; }
 }
+/* ===== Polimento UX ===== */
+#boot-loading{position:fixed;inset:0;z-index:1200;display:none;flex-direction:column;align-items:center;justify-content:center;background:#14141f;color:#cdd2e6;gap:16px}
+#boot-loading.show{display:flex}
+#boot-loading .spinner{width:54px;height:54px;border-radius:50%;border:5px solid rgba(255,255,255,.12);border-top-color:#e94560;animation:bootspin 1s linear infinite}
+@keyframes bootspin{to{transform:rotate(360deg)}}
+#boot-loading .bl-txt{font-size:.9rem;color:#9aa0bb}
+#data-error{position:fixed;left:50%;top:64px;transform:translateX(-50%);z-index:1100;max-width:90vw;background:#3a1620;border:1px solid #c0392b;color:#ffd9df;padding:12px 16px;border-radius:10px;font-size:.85rem;display:none;text-align:center;box-shadow:0 8px 24px rgba(0,0,0,.5)}
+#data-error.show{display:block}
+#data-error button{margin-top:8px;background:#e94560;border:0;color:#fff;padding:6px 14px;border-radius:8px;cursor:pointer;font-weight:600}
+.ui-dialog-overlay{position:fixed;inset:0;z-index:1300;display:flex;align-items:center;justify-content:center;background:rgba(8,8,14,.6);opacity:0;pointer-events:none;transition:opacity .18s}
+.ui-dialog-overlay.show{opacity:1;pointer-events:auto}
+.ui-dialog{background:#1e1e2e;border:1px solid #2e2e44;border-radius:14px;max-width:340px;width:90%;padding:20px;box-shadow:0 16px 48px rgba(0,0,0,.6);transform:scale(.94);transition:transform .18s}
+.ui-dialog-overlay.show .ui-dialog{transform:scale(1)}
+.ui-dialog .ui-msg{color:#e8e8f0;font-size:.95rem;line-height:1.45;margin-bottom:16px}
+.ui-dialog .ui-actions{display:flex;gap:10px;justify-content:flex-end}
+.ui-dialog button{padding:8px 16px;border-radius:8px;font-weight:600;cursor:pointer;font-size:.85rem;border:0}
+.ui-dialog .ui-cancel{background:#2e2e44;color:#cdd2e6}
+.ui-dialog .ui-ok{background:#e94560;color:#fff}
+.ui-dialog .ui-ok.danger{background:#c0392b}
+img.img-na{opacity:.8}
+body.modal-open{overflow:hidden}
+.empty-state{text-align:center;padding:36px 20px;color:#9aa0bb}
+.empty-state .empty-ico{font-size:2.4rem;opacity:.7}
+.empty-state .empty-title{font-size:1rem;font-weight:700;color:#e8e8f0;margin-top:8px}
+.empty-state .empty-sub{font-size:.82rem;margin-top:6px;line-height:1.5}
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
+}
 </style>
 
 <!-- Firebase SDK (compat) -->
@@ -2708,16 +2736,21 @@ body {
   </div>
 </div>
 
+<!-- Boot loading -->
+<div id="boot-loading"><div class="spinner"></div><div class="bl-txt">Carregando sua coleção…</div></div>
+<!-- Erro de carregamento de dados -->
+<div id="data-error"></div>
+
 <!-- Modal -->
 <div class="modal-overlay" id="modal-overlay">
-  <div class="modal">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-name">
     <div class="modal-header">
       <img id="modal-sprite" src="" alt="">
       <div>
         <h2 id="modal-name"></h2>
         <span id="modal-info" style="font-size:0.85rem;color:var(--text-dim)"></span>
       </div>
-      <button class="close-btn" onclick="closeModal()">&times;</button>
+      <button class="close-btn" aria-label="Fechar" onclick="closeModal()">&times;</button>
     </div>
     <div class="modal-body" id="modal-body"></div>
   </div>
@@ -2807,7 +2840,7 @@ async function loginWithGoogle() {
 }
 
 async function logout() {
-  if (confirm('Deseja sair da sua conta?')) {
+  if (await uiConfirm('Deseja sair da sua conta?', { okLabel: 'Sair', danger: true })) {
     await auth.signOut();
   }
 }
@@ -2845,6 +2878,8 @@ async function initApp() {
     return;
   }
 
+  showBoot(true);
+  showDataError(null);
   await Promise.all([loadCollection(), loadPokedexTracker()]);
 
   try {
@@ -2853,12 +2888,16 @@ async function initApp() {
       fetch('pokedex_dados.json' + cacheBust),
       fetch('fullart_cards.json' + cacheBust)
     ]);
+    if (!pokedexResp.ok || !fullartResp.ok) throw new Error('HTTP ' + pokedexResp.status + '/' + fullartResp.status);
     POKEDEX_DATA = await pokedexResp.json();
     FULLART_DATA = await fullartResp.json();
   } catch (e) {
     console.error('Erro ao carregar dados:', e);
     if (typeof INLINE_POKEDEX !== 'undefined') POKEDEX_DATA = INLINE_POKEDEX;
     if (typeof INLINE_FULLART !== 'undefined') FULLART_DATA = INLINE_FULLART;
+    if (!POKEDEX_DATA || !POKEDEX_DATA.length) {
+      showDataError('Não foi possível carregar os dados da Pokédex. Verifique sua conexão.');
+    }
   }
 
   // Filtrar apenas Pokemon 1-1025 e ordenar
@@ -2879,6 +2918,7 @@ async function initApp() {
   setupBinderSearch();
   appInitialized = true;
   attachRealtimeSync(); // sincronizacao em tempo real entre dispositivos
+  showBoot(false);
 }
 
 // =============================================
@@ -3099,6 +3139,7 @@ async function toggleRegistered(pokeNum) {
   } else {
     collection[key] = true;
     saveCollectionEntry(key, true);
+    ensurePokedexCaught(pokeNum); // registrou na Coleção => marca na Pokédex
   }
 }
 
@@ -3228,6 +3269,18 @@ function togglePokedexEntry(pokeNum) {
   }
 }
 
+// Registrar carta na Coleção marca o Pokémon como capturado na Pokédex (controle geral).
+// Uma direção só: registrar carta => garante capturado; remover carta NÃO desmarca
+// (o usuário pode ter a carta básica). Idempotente: não faz nada se já capturado.
+function ensurePokedexCaught(pokeNum) {
+  const key = String(pokeNum);
+  if (pokedexTracker[key]) return;
+  pokedexTracker[key] = true;
+  savePokedexEntry(key, true);   // grava granular + cache + toast em erro
+  renderPokedexGrid();           // reflete na aba Pokédex (RAF-debounced)
+  updatePokedexProgress();
+}
+
 function isInPokedex(pokeNum) {
   return !!pokedexTracker[String(pokeNum)];
 }
@@ -3310,7 +3363,7 @@ function renderPokedexGridInner() {
       this.classList.add('loaded');
       if (placeholder.parentNode) placeholder.parentNode.removeChild(placeholder);
     };
-    img.onerror = function() { this.style.display = 'none'; };
+    img.onerror = function() { this.onerror=null; this.src = SPRITE_FALLBACK; this.classList.remove('loading'); this.classList.add('loaded','img-na'); };
     cell.appendChild(img);
 
     const num = document.createElement('span');
@@ -3401,11 +3454,14 @@ function setupPokedexFilters() {
 
 // Settings modal
 function openSettings() {
-  document.getElementById('settings-overlay').classList.add('open');
+  const ov = document.getElementById('settings-overlay');
+  ov.classList.add('open');
+  openOverlay(ov);
 }
 
 function closeSettings() {
   document.getElementById('settings-overlay').classList.remove('open');
+  closeOverlay();
 }
 
 function closeSettingsOutside(e) {
@@ -3446,9 +3502,9 @@ function importCollection() {
         if (data.pokedexTracker) await savePokedexTracker();
         renderGrid();
         renderPokedexGrid();
-        alert('Dados importados com sucesso!');
+        uiAlert('Dados importados com sucesso!');
       } catch (err) {
-        alert('Erro ao importar: arquivo invalido');
+        uiAlert('Erro ao importar: arquivo inválido.');
       }
     };
     reader.readAsText(file);
@@ -3458,7 +3514,7 @@ function importCollection() {
 
 async function clearCollection() {
   if (!currentUser) return;
-  if (confirm('Tem certeza que deseja limpar toda a coleção e a Pokédex?')) {
+  if (await uiConfirm('Tem certeza que deseja limpar toda a coleção e a Pokédex? Isso não pode ser desfeito.', { okLabel: 'Limpar tudo', danger: true })) {
     collection = {};
     pokedexTracker = {};
     lastFilteredNums = null;
@@ -3587,7 +3643,7 @@ function renderGridInner() {
       this.classList.add('loaded');
       if (placeholder.parentNode) placeholder.parentNode.removeChild(placeholder);
     };
-    img.onerror = function() { this.style.display = 'none'; };
+    img.onerror = function() { this.onerror=null; this.src = SPRITE_FALLBACK; this.classList.remove('loading'); this.classList.add('loaded','img-na'); };
     cell.appendChild(img);
 
     const num = document.createElement('span');
@@ -3818,6 +3874,7 @@ function openModal(pokeNum) {
 
   body.innerHTML = html;
   overlay.classList.add('open');
+  openOverlay(overlay);
 }
 
 function toggleCardSelection(cardId) {
@@ -3859,6 +3916,7 @@ async function confirmCardSelection() {
     }
     collection[key] = entry;
     entryValue = entry;
+    ensurePokedexCaught(pokeNum); // registrou Full Art => marca na Pokédex
   } else {
     delete collection[key];
     entryValue = undefined;
@@ -3905,7 +3963,11 @@ async function searchPokemonCards(pokeNum) {
     const apiCards = json.data || [];
 
     if (apiCards.length === 0) {
-      container.innerHTML = '<div class="api-loading">Nenhuma carta encontrada para este Pok\u00e9mon.</div>';
+      container.innerHTML = `<div class="empty-state">
+        <div class="empty-ico">\ud83d\udd0d</div>
+        <div class="empty-title">Nenhuma carta encontrada</div>
+        <div class="empty-sub">Este Pok\u00e9mon ainda n\u00e3o tem cartas no banco da pokemontcg.io.<br>Nem todos t\u00eam Full Art \u2014 tente outro.</div>
+      </div>`;
       return;
     }
 
@@ -3969,7 +4031,7 @@ async function searchPokemonCards(pokeNum) {
         <div class="card-select-overlay"></div>
         <div class="card-select-check ${isSelected ? 'checked' : ''}">\u2713</div>
         ${isCurrentRegistered ? '<div class="card-registered-badge">Registrada</div>' : ''}
-        <img src="${cardData.image_small}" alt="${escHtml(c.name)}" loading="lazy" onerror="this.style.display='none'">
+        <img src="${escHtml(cardData.image_small || '')}" alt="${escHtml(c.name)}" loading="lazy" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src=CARD_IMG_FALLBACK;this.classList.add('img-na')">
         <div class="card-info">
           <div class="card-name">${escHtml(c.name)} (${c.number}/${cardData.set_total})</div>
           <div class="card-set">${escHtml(setLine)}</div>
@@ -3993,7 +4055,11 @@ async function searchPokemonCards(pokeNum) {
     container.innerHTML = html;
   } catch (err) {
     if (err.name === 'AbortError') return; // busca substituida por outra — ignora
-    container.innerHTML = `<div class="api-loading" style="color:#f66">Erro ao buscar: ${escHtml(err.message)}</div>`;
+    console.error('Erro ao buscar cartas na pokemontcg.io:', err);
+    container.innerHTML = `<div class="api-loading" style="color:#f88;text-align:center">
+      Não foi possível carregar as cartas.<br><small style="color:var(--text-dim)">${escHtml(err.message || 'erro de rede')}</small><br>
+      <button class="btn-confirm-selection" style="margin-top:12px" onclick="searchPokemonCards(${pokeNum})">Tentar novamente</button>
+    </div>`;
   } finally {
     if (cardSearchController === controller) cardSearchController = null;
   }
@@ -4001,6 +4067,7 @@ async function searchPokemonCards(pokeNum) {
 
 function closeModal() {
   document.getElementById('modal-overlay').classList.remove('open');
+  closeOverlay();
 }
 
 function handleToggleRegister(pokeNum) {
@@ -4122,7 +4189,7 @@ const delay = (ms) => new Promise((r) => setTimeout(r, ms));
 async function sortear() {
   const eligible = getEligiblePokemon();
   if (eligible.length === 0) {
-    alert('Nenhum Pokémon disponível para sortear! Tente resetar o sorteio.');
+    await uiAlert('Nenhum Pokémon disponível para sortear! Tente resetar o sorteio.');
     return;
   }
 
@@ -4245,6 +4312,78 @@ function getSlotsPerPage() {
   return 20;                // 5x4
 }
 const PSYDUCK_LOADING_GIF = 'https://gifdb.com/images/high/psyduck-walking-confused-2lm01y84dnh68nox.gif';
+// Placeholder exibido quando a imagem da carta (pokemontcg.io) falha ao carregar.
+const CARD_IMG_FALLBACK = 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="245" height="342"><rect width="245" height="342" rx="12" fill="#26263a"/><rect x="8" y="8" width="229" height="326" rx="9" fill="none" stroke="#3a3a55" stroke-width="2"/><text x="122" y="165" font-size="70" fill="#4a4a66" text-anchor="middle" font-family="sans-serif">?</text><text x="122" y="215" font-size="17" fill="#7a7a99" text-anchor="middle" font-family="sans-serif">imagem indisponível</text></svg>');
+// Placeholder (silhueta de pokébola) p/ sprites que falham
+const SPRITE_FALLBACK = 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96"><circle cx="48" cy="48" r="33" fill="none" stroke="#3a3a55" stroke-width="5"/><line x1="15" y1="48" x2="81" y2="48" stroke="#3a3a55" stroke-width="5"/><circle cx="48" cy="48" r="10" fill="#26263a" stroke="#3a3a55" stroke-width="5"/></svg>');
+
+let modalReturnFocus = null; // foco a restaurar ao fechar o modal de cartas
+
+// === Boot loading / erro de dados ===
+function showBoot(on){ const el = document.getElementById('boot-loading'); if (el) el.classList.toggle('show', !!on); }
+function showDataError(msg){ const el = document.getElementById('data-error'); if (!el) return;
+  if (!msg){ el.classList.remove('show'); el.innerHTML=''; return; }
+  el.innerHTML = msg + '<br><button onclick="location.reload()">Recarregar</button>'; el.classList.add('show'); }
+
+// === Diálogo temático (substitui alert/confirm) ===
+function uiDialog({ message, confirm, okLabel, cancelLabel, danger }){
+  return new Promise(resolve => {
+    let ov = document.getElementById('ui-dialog-overlay');
+    if (!ov){ ov = document.createElement('div'); ov.id='ui-dialog-overlay'; ov.className='ui-dialog-overlay'; document.body.appendChild(ov); }
+    ov.innerHTML = `<div class="ui-dialog" role="dialog" aria-modal="true"><div class="ui-msg"></div>
+      <div class="ui-actions">${confirm ? '<button class="ui-cancel"></button>' : ''}<button class="ui-ok${danger?' danger':''}"></button></div></div>`;
+    ov.querySelector('.ui-msg').textContent = message;
+    const okBtn = ov.querySelector('.ui-ok'); okBtn.textContent = okLabel || 'OK';
+    const cancelBtn = ov.querySelector('.ui-cancel'); if (cancelBtn) cancelBtn.textContent = cancelLabel || 'Cancelar';
+    const onKey = (e) => { if (e.key==='Escape' && confirm) close(false); else if (e.key==='Enter') close(true); };
+    function close(val){ ov.classList.remove('show'); document.removeEventListener('keydown', onKey); setTimeout(()=>{ ov.innerHTML=''; }, 200); resolve(val); }
+    okBtn.onclick = () => close(true);
+    if (cancelBtn) cancelBtn.onclick = () => close(false);
+    ov.onclick = (e) => { if (e.target === ov && confirm) close(false); };
+    document.addEventListener('keydown', onKey);
+    requestAnimationFrame(() => { ov.classList.add('show'); okBtn.focus(); });
+  });
+}
+function uiConfirm(message, opts){ opts = opts || {}; return uiDialog({ message, confirm:true, okLabel:opts.okLabel, cancelLabel:opts.cancelLabel, danger:opts.danger }); }
+function uiAlert(message, opts){ opts = opts || {}; return uiDialog({ message, confirm:false, okLabel:opts.okLabel || 'OK' }); }
+
+// === Gerenciador de overlay: inert no fundo + scroll-lock + trap de Tab ===
+let activeModalOverlay = null;
+function focusables(el){
+  return Array.from(el.querySelectorAll('a[href],button:not([disabled]),input:not([disabled]),select,textarea,[tabindex]:not([tabindex="-1"])'))
+    .filter(e => e.offsetParent !== null);
+}
+function setBackgroundInert(active){
+  const wrap = document.getElementById('app-wrapper');
+  if (wrap) for (const child of wrap.children) child.inert = (child !== active);
+  document.body.classList.add('modal-open');
+}
+function clearBackgroundInert(){
+  const wrap = document.getElementById('app-wrapper');
+  if (wrap) for (const child of wrap.children) child.inert = false;
+  document.body.classList.remove('modal-open');
+}
+function openOverlay(overlayEl){
+  if (!overlayEl) return;
+  modalReturnFocus = document.activeElement;
+  activeModalOverlay = overlayEl;
+  setBackgroundInert(overlayEl);
+  requestAnimationFrame(() => { const f = focusables(overlayEl); (f[0] || overlayEl).focus(); });
+}
+function closeOverlay(){
+  clearBackgroundInert();
+  activeModalOverlay = null;
+  if (modalReturnFocus) { try { modalReturnFocus.focus(); } catch (e) {} modalReturnFocus = null; }
+}
+// Trap de Tab: foco circula só dentro do overlay ativo
+document.addEventListener('keydown', (e) => {
+  if (e.key !== 'Tab' || !activeModalOverlay) return;
+  const f = focusables(activeModalOverlay);
+  if (!f.length) return;
+  const first = f[0], last = f[f.length - 1];
+  if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+  else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+});
 let binderAnimating = false;
 let binderOnlyRegistered = false;
 let binderFilteredList = null; // null = no filter (fixed positions), array = filtered pokemon numbers
@@ -4638,11 +4777,14 @@ let binderDetailPokeNum = null;
 function openBinderDetail(pokeNum) {
   binderDetailPokeNum = pokeNum;
   renderBinderDetail();
-  document.getElementById('binder-detail-overlay').classList.add('open');
+  const ov = document.getElementById('binder-detail-overlay');
+  ov.classList.add('open');
+  openOverlay(ov);
 }
 
 function closeBinderDetail() {
   document.getElementById('binder-detail-overlay').classList.remove('open');
+  closeOverlay();
 }
 
 function renderBinderDetail() {
