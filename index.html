@@ -2479,6 +2479,34 @@ body.modal-open{overflow:hidden}
 .empty-state .empty-ico{font-size:2.4rem;opacity:.7}
 .empty-state .empty-title{font-size:1rem;font-weight:700;color:#e8e8f0;margin-top:8px}
 .empty-state .empty-sub{font-size:.82rem;margin-top:6px;line-height:1.5}
+/* ===== Aba Conquistas ===== */
+.ach-head{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:10px}
+.ach-total{font-size:1.5rem;font-weight:800} .ach-total small{font-size:.8rem;color:#9aa0bb;font-weight:500}
+.ach-tierchips{display:flex;gap:8px} .ach-tc{background:#1c1c2b;border:1px solid #2e2e44;padding:3px 9px;border-radius:14px;font-size:.8rem}
+.ach-obar{flex:1;min-width:120px;height:9px;background:#222;border-radius:6px;overflow:hidden}
+.ach-of{height:100%;background:linear-gradient(90deg,#e94560,#ffd56b)}
+.ach-chips{display:flex;gap:7px;overflow-x:auto;padding-bottom:6px;margin-bottom:6px}
+.ach-chip{white-space:nowrap;background:#1c1c2b;border:1px solid #2e2e44;color:#eef0f8;padding:6px 13px;border-radius:18px;font-size:.8rem;cursor:pointer}
+.ach-chip.active{background:#e94560;border-color:#e94560}
+.ach-sect{font-size:.95rem;color:#ffd56b;margin:16px 4px 8px;border-left:3px solid #ffd56b;padding-left:10px}
+.ach-strip{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px} .ach-strip .ach-c{min-width:138px}
+.ach-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(138px,1fr));gap:8px}
+.ach-c{background:#1a1a28;border:1px solid #2e2e44;border-radius:14px;padding:8px 6px 10px;text-align:center;cursor:pointer;transition:transform .15s,border-color .15s}
+.ach-c:hover{transform:translateY(-3px);border-color:#3a3a55}
+.ach-c svg{width:100px;height:140px;display:block;margin:0 auto}
+.ach-tro.locked{filter:grayscale(1) brightness(.5);opacity:.6}
+.ach-c.diamond .ach-tro:not(.locked) svg{filter:drop-shadow(0 0 6px rgba(168,85,222,.55))}
+.ach-nm{font-size:.76rem;font-weight:700;line-height:1.15;margin-top:2px} .ach-gp{font-size:.62rem;color:#9aa0bb}
+.ach-pbar{height:6px;background:#222;border-radius:5px;overflow:hidden;margin:6px 8px 0}
+.ach-pf{height:100%;background:linear-gradient(90deg,#e94560,#ffd56b)}
+.ach-pt{font-size:.64rem;color:#9aa0bb;margin-top:3px} .ach-done{color:#7CFC9B;font-size:.66rem;margin-top:3px}
+.ach-q{height:140px;display:flex;align-items:center;justify-content:center;font-size:3rem;color:#3a3a55}
+.ach-detail-ov{position:fixed;inset:0;z-index:60;background:rgba(8,8,14,.74);display:none;align-items:center;justify-content:center;padding:16px}
+.ach-detail-ov.open{display:flex}
+.ach-detail{background:#1a1a28;border:1px solid #2e2e44;border-radius:16px;max-width:330px;width:100%;padding:18px;text-align:center;position:relative}
+.ach-detail svg{width:150px;height:210px;display:block;margin:0 auto}
+.ach-detail h2{margin:4px 0 2px;font-size:1.15rem} .ach-d-gp{color:#ffd56b;font-size:.78rem} .ach-d-prog{margin-top:10px;font-size:.85rem}
+.ach-x{position:absolute;top:8px;right:12px;background:none;border:0;color:#9aa0bb;font-size:1.5rem;cursor:pointer}
 @media (prefers-reduced-motion: reduce){
   *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
 }
@@ -2590,6 +2618,7 @@ body.modal-open{overflow:hidden}
   <button class="tab-btn" data-tab="sorteador">Sorteador</button>
   <button class="tab-btn" data-tab="stats">Estatísticas</button>
   <button class="tab-btn" data-tab="binder">Fichário</button>
+  <button class="tab-btn" data-tab="conquistas">🏆 Conquistas</button>
 </div>
 
 <div class="main-content">
@@ -2734,6 +2763,9 @@ body.modal-open{overflow:hidden}
       </div>
     </div>
   </div>
+
+  <!-- Conquistas Tab -->
+  <div class="tab-panel" id="tab-conquistas"></div>
 </div>
 
 <!-- Boot loading -->
@@ -4102,6 +4134,7 @@ function setupTabs() {
       if (btn.dataset.tab === 'pokedex') renderPokedexGrid();
       if (btn.dataset.tab === 'stats') renderStats();
       if (btn.dataset.tab === 'binder') renderBinder();
+      if (btn.dataset.tab === 'conquistas') renderAchievements();
     });
   });
 
@@ -5078,32 +5111,77 @@ function slugA(s){ return String(s).toLowerCase().normalize('NFD').replace(/[̀-
 
 const TIERS4 = [['bronze',0.25,'🥉'],['silver',0.5,'🥈'],['gold',0.75,'🥇'],['diamond',1,'💎']];
 
+// listas estáticas p/ Temáticas (números nacionais — refináveis)
+const L_INICIAIS=[1,4,7,152,155,158,252,255,258,387,390,393,495,498,501,650,653,656,722,725,728,810,813,816,906,909,912];
+const L_EEVEE=[133,134,135,136,196,197,470,471,700];
+const L_BEBES=[172,173,174,175,236,238,239,240,298,360,406,433,438,439,440,446,447,458];
+const L_FOSSEIS=[138,139,140,141,142,345,346,347,348,408,409,410,411,564,565,566,567,696,697,698,699,880,881,882,883];
+const L_PSEUDO=[149,248,373,376,445,635,706,784,887,998];
+const L_MITICOS=[151,251,385,386,489,490,491,492,493,494,647,648,649,719,720,721,801,802,807,808,809,893];
+const L_LENDARIOS=[144,145,146,150,243,244,245,249,250,377,378,379,380,381,382,383,384,480,481,482,483,484,485,486,487,488,638,639,640,641,642,643,644,645,646,716,717,718,772,773,785,786,787,788,789,790,791,792,800,888,889,890,891,892,894,895,896,897,898,905,1001,1002,1003,1004,1007,1008,1009,1010,1014,1015,1016,1017,1024];
+const listCount = arr => arr.filter(reg).length;
+const WK = s => 'https://static.wikia.nocookie.net/pokemon/images/' + s;
+
 function buildAchievements(){
   const A = [];
-  const TIPOS = [['Água','Insígnia Cascata'],['Normal','Insígnia Equilíbrio'],['Grama','Insígnia Bosque'],['Voador','Insígnia Brisa'],['Psíquico','Insígnia Mente'],['Inseto','Insígnia Casulo'],['Veneno','Insígnia Toxina'],['Fogo','Insígnia Brasa'],['Terra','Insígnia Terremoto'],['Pedra','Insígnia Penhasco'],['Lutador','Insígnia Punho'],['Dragão','Insígnia Ascensão'],['Elétrico','Insígnia Trovão'],['Sombrio','Insígnia Eclipse'],['Fantasma','Insígnia Assombração'],['Ferro','Insígnia Engrenagem'],['Fada','Insígnia Encanto'],['Gelo','Insígnia Geleira']];
-  for (const [t,nm] of TIPOS) for (const [tier,pct,tl] of TIERS4)
-    A.push({ id:`tipo-${slugA(t)}-${tier}`, grupo:'Tipos', nome:nm, tier, tierLabel:tl, target:()=>Math.ceil(typeTotal(t)*pct), progress:()=>typeCount(t) });
-  const REGS = ['Kanto','Johto','Hoenn','Sinnoh','Unova','Kalos','Alola','Galar','Hisui','Paldea'];
-  for (const r of REGS) for (const [tier,pct,tl] of TIERS4)
-    A.push({ id:`regiao-${slugA(r)}-${tier}`, grupo:'Regiões', nome:r, tier, tierLabel:tl, target:()=>Math.ceil(regionTotal(r)*pct), progress:()=>regionCount(r) });
-  const JORN = [['poke','Treinador Novato',100,'bronze','🥉'],['great','Treinador Experiente',350,'silver','🥈'],['ultra','Treinador de Elite',700,'gold','🥇'],['master','Mestre Pokémon',1025,'diamond','💎']];
-  for (const [k,nm,tg,tier,tl] of JORN) A.push({ id:`jornada-${k}`, grupo:'Jornada', nome:nm, tier, tierLabel:tl, target:()=>tg, progress:()=>totalReg() });
-  for (const [tier,pct,tl] of TIERS4)
-    A.push({ id:`fa-col-${tier}`, grupo:'Full Art', nome:'Colecionador Full Art', tier, tierLabel:tl, target:()=>Math.ceil(faTotal()*pct), progress:()=>faCollected() });
-  A.push({ id:'fa-special', grupo:'Full Art', nome:'Ilustração Especial', tier:'gold', tierLabel:'🥇', target:()=>20, progress:()=>rarityCount('Special Illustration Rare') });
-  A.push({ id:'fa-hyper', grupo:'Full Art', nome:'Caçador de Hyper Rare', tier:'gold', tierLabel:'🥇', target:()=>10, progress:()=>rarityCount('Hyper Rare') });
-  A.push({ id:'fa-mega', grupo:'Full Art', nome:'As Coroas Mega', tier:'diamond', tierLabel:'💎', target:()=>6, progress:()=>rarityCount('Mega Hyper Rare') });
-  const SEC = [
-    ['sec-pikachu','Escolhi Você!','bronze','🥉',()=>reg(25)?1:0],
-    ['sec-magikarp','Aposta no Inútil','bronze','🥉',()=>reg(129)?1:0],
-    ['sec-primeiro','O Primeiro de Todos','bronze','🥉',()=>reg(1)?1:0],
-    ['sec-ultimo','O Último de Todos','bronze','🥉',()=>reg(1025)?1:0],
-    ['sec-milesimo','O Milésimo','silver','🥈',()=>reg(1000)?1:0],
-    ['sec-clone','Clone e Original','silver','🥈',()=>(reg(150)&&reg(151))?1:0],
-    ['sec-1996','De Volta a 1996','gold','🥇',()=>regionCount('Kanto')>=151?1:0],
-    ['sec-tesouro','Tesouro Secreto','silver','🥈',()=>rarityCount('Rare Secret')>=1?1:0],
+  // [ptType, nome, cor, badgeURL]
+  const TIPOS = [
+    ['Água','Insígnia Cascata','#4aa3ff','9/9c/Cascade_Badge.png/revision/latest?cb=20241015140805'],
+    ['Normal','Insígnia Equilíbrio','#a8a878','a/a7/Plain_Badge.png/revision/latest?cb=20081229171221'],
+    ['Grama','Insígnia Bosque','#5fbf60','b/b5/Rainbow_Badge.png/revision/latest?cb=20241015141116'],
+    ['Voador','Insígnia Brisa','#8fa9ff','4/4a/Zephyr_Badge.png/revision/latest?cb=20081229171509'],
+    ['Psíquico','Insígnia Mente','#f85888','6/6b/Marsh_Badge.png/revision/latest?cb=20241015141132'],
+    ['Inseto','Insígnia Casulo','#a8b820','0/08/Hive_Badge.png/revision/latest?cb=20081229171030'],
+    ['Veneno','Insígnia Toxina','#a45bc0','7/7d/Soul_Badge.png/revision/latest?cb=20241015141124'],
+    ['Fogo','Insígnia Brasa','#f0832f','1/12/Volcano_Badge.png/revision/latest?cb=20241015141139'],
+    ['Terra','Insígnia Terremoto','#cfa54f','7/78/Earth_Badge.png/revision/latest?cb=20241015141830'],
+    ['Pedra','Insígnia Penhasco','#b8a038','d/dd/Boulder_Badge.png/revision/latest?cb=20241015140145'],
+    ['Lutador','Insígnia Punho','#c03028','b/b9/Storm_Badge.png/revision/latest?cb=20081229171417'],
+    ['Dragão','Insígnia Ascensão','#7038f8','5/58/Rising_Badge.png/revision/latest?cb=20081229171321'],
+    ['Elétrico','Insígnia Trovão','#f8d030','a/a6/Thunder_Badge.png/revision/latest?cb=20241015141106'],
+    ['Sombrio','Insígnia Eclipse','#5a5366','1/13/Psychic_Badge.png/revision/latest?cb=20240323091150'],
+    ['Fantasma','Insígnia Assombração','#705898','4/48/Fog_Badge.png/revision/latest?cb=20081229170948'],
+    ['Ferro','Insígnia Engrenagem','#9aa0ad','7/7b/Mineral_Badge.png/revision/latest?cb=20081229171159'],
+    ['Fada','Insígnia Encanto','#ee99ac','8/82/Coral-Eye_Badge.png/revision/latest?cb=20090128204131'],
+    ['Gelo','Insígnia Geleira','#7fd6e0','e/e6/Glacier_Badge.png/revision/latest?cb=20081229170955'],
   ];
-  for (const [id,nm,tier,tl,prog] of SEC) A.push({ id, grupo:'Secretas', nome:nm, tier, tierLabel:tl, secret:true, target:()=>1, progress:prog });
+  for (const [t,nm,cor,bg] of TIPOS) for (const [tier,pct,tl] of TIERS4)
+    A.push({ id:`tipo-${slugA(t)}-${tier}`, grupo:'Tipos', nome:nm, tier, tierLabel:tl, target:()=>Math.ceil(typeTotal(t)*pct), progress:()=>typeCount(t), icon:{orb:cor,img:WK(bg)} });
+  // [região, cor, dexLendário]
+  const REGS = [['Kanto','#e0533a',151],['Johto','#d4a82b',250],['Hoenn','#2fae5e',384],['Sinnoh','#4a78c0',493],['Unova','#6b7280',644],['Kalos','#3f74d6',717],['Alola','#f29440',792],['Galar','#7b46c9',890],['Hisui','#9a7a52',905],['Paldea','#d23b6a',1008]];
+  for (const [r,cor,dx] of REGS) for (const [tier,pct,tl] of TIERS4)
+    A.push({ id:`regiao-${slugA(r)}-${tier}`, grupo:'Regiões', nome:r, tier, tierLabel:tl, target:()=>Math.ceil(regionTotal(r)*pct), progress:()=>regionCount(r), icon:{orb:cor,art:dx} });
+  const JORN = [['poke','Treinador Novato',100,'bronze','🥉'],['great','Treinador Experiente',350,'silver','🥈'],['ultra','Treinador de Elite',700,'gold','🥇'],['master','Mestre Pokémon',1025,'diamond','💎']];
+  for (const [k,nm,tg,tier,tl] of JORN) A.push({ id:`jornada-${k}`, grupo:'Jornada', nome:nm, tier, tierLabel:tl, target:()=>tg, progress:()=>totalReg(), icon:{ball:k} });
+  for (const [tier,pct,tl] of TIERS4)
+    A.push({ id:`fa-col-${tier}`, grupo:'Full Art', nome:'Colecionador Full Art', tier, tierLabel:tl, target:()=>Math.ceil(faTotal()*pct), progress:()=>faCollected(), icon:{holo:'collector'} });
+  A.push({ id:'fa-special', grupo:'Full Art', nome:'Ilustração Especial', tier:'gold', tierLabel:'🥇', target:()=>20, progress:()=>rarityCount('Special Illustration Rare'), icon:{holo:'special'} });
+  A.push({ id:'fa-hyper', grupo:'Full Art', nome:'Caçador de Hyper Rare', tier:'gold', tierLabel:'🥇', target:()=>10, progress:()=>rarityCount('Hyper Rare'), icon:{holo:'hyper'} });
+  A.push({ id:'fa-mega', grupo:'Full Art', nome:'As Coroas Mega', tier:'diamond', tierLabel:'💎', target:()=>6, progress:()=>rarityCount('Mega Hyper Rare'), icon:{holo:'mega'} });
+  // Temáticas [id,nome,tier,tl,lista,corOrb,repDex]
+  const TEM = [
+    ['tem-iniciais','Mestre dos Iniciais','gold','🥇',L_INICIAIS,'#4caf50',4],
+    ['tem-eevee','Mestre das Oito Faces','gold','🥇',L_EEVEE,'#c8a06a',133],
+    ['tem-bebes','Diretor do Berçário','gold','🥇',L_BEBES,'#f3a6c4',175],
+    ['tem-fosseis','Paleontólogo','diamond','💎',L_FOSSEIS,'#9a7a52',142],
+    ['tem-pseudo','Sangue Pseudo-Lendário','diamond','💎',L_PSEUDO,'#6a4fb0',149],
+    ['tem-miticos','Caçador de Míticos','diamond','💎',L_MITICOS,'#f06fae',385],
+    ['tem-lendarios','Conselho dos Lendários','diamond','💎',L_LENDARIOS,'#d4a82b',150],
+  ];
+  for (const [id,nm,tier,tl,lst,cor,dx] of TEM)
+    A.push({ id, grupo:'Temáticas', nome:nm, tier, tierLabel:tl, target:()=>lst.length, progress:()=>listCount(lst), icon:{orb:cor,art:dx} });
+  // Secretas [id,nome,tier,tl,prog,icon]
+  const SEC = [
+    ['sec-pikachu','Escolhi Você!','bronze','🥉',()=>reg(25)?1:0,{art:25}],
+    ['sec-magikarp','Aposta no Inútil','bronze','🥉',()=>reg(129)?1:0,{art:129}],
+    ['sec-primeiro','O Primeiro de Todos','bronze','🥉',()=>reg(1)?1:0,{art:1}],
+    ['sec-ultimo','O Último de Todos','bronze','🥉',()=>reg(1025)?1:0,{art:1025}],
+    ['sec-milesimo','O Milésimo','silver','🥈',()=>reg(1000)?1:0,{art:1000}],
+    ['sec-clone','Clone e Original','silver','🥈',()=>(reg(150)&&reg(151))?1:0,{duo:[150,151]}],
+    ['sec-1996','De Volta a 1996','gold','🥇',()=>regionCount('Kanto')>=151?1:0,{art:94}],
+    ['sec-tesouro','Tesouro Secreto','silver','🥈',()=>rarityCount('Rare Secret')>=1?1:0,{art:999}],
+  ];
+  for (const [id,nm,tier,tl,prog,ic] of SEC) A.push({ id, grupo:'Secretas', nome:nm, tier, tierLabel:tl, secret:true, target:()=>1, progress:prog, icon:Object.assign({orb:'#6a4f9a'},ic) });
   return A;
 }
 
@@ -5196,6 +5274,136 @@ function notifyAch(list){
   list = list.slice().sort((a,b) => rank[b.tier] - rank[a.tier]);
   if (list.length === 1) { (rank[list[0].tier] >= 2) ? showAchModal(list) : showAchToast(list[0]); }
   else showAchModal(list);
+}
+
+// =============================================
+// ABA CONQUISTAS — render do grid de troféus
+// =============================================
+let achFilter = 'Tudo';
+let achGradCache = {}, achGradN = 0;
+function achMix(hex,w,t){const a=parseInt(hex.slice(1),16),r=(a>>16)&255,g=(a>>8)&255,b=a&255;const a2=parseInt(w.slice(1),16),r2=(a2>>16)&255,g2=(a2>>8)&255,b2=a2&255;const R=Math.round(r+(r2-r)*t),G=Math.round(g+(g2-g)*t),B=Math.round(b+(b2-b)*t);return '#'+((1<<24)+(R<<16)+(G<<8)+B).toString(16).slice(1);}
+function ensureAchDefs(){
+  if (document.getElementById('ach-defs')) return;
+  const wrap = document.createElement('div'); wrap.style.cssText='position:absolute;width:0;height:0;overflow:hidden';
+  wrap.innerHTML = `<svg id="ach-defs" width="0" height="0"><defs>
+    <linearGradient id="am-bronze" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f4d3a0"/><stop offset=".3" stop-color="#d68f44"/><stop offset=".62" stop-color="#a5601f"/><stop offset="1" stop-color="#6b3a12"/></linearGradient>
+    <linearGradient id="am-silver" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff"/><stop offset=".3" stop-color="#e3e9f2"/><stop offset=".6" stop-color="#aab3c2"/><stop offset="1" stop-color="#6f7889"/></linearGradient>
+    <linearGradient id="am-gold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff6cf"/><stop offset=".28" stop-color="#ffd84d"/><stop offset=".55" stop-color="#e7a51f"/><stop offset=".8" stop-color="#b3760f"/><stop offset="1" stop-color="#7a4d08"/></linearGradient>
+    <linearGradient id="am-diamond" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f1d8ff"/><stop offset=".28" stop-color="#c186ee"/><stop offset=".58" stop-color="#8a3fc0"/><stop offset=".82" stop-color="#5e2393"/><stop offset="1" stop-color="#3a1060"/></linearGradient>
+    <radialGradient id="ao-ball" cx=".4" cy=".3" r=".85"><stop offset="0" stop-color="#eef4ff"/><stop offset=".5" stop-color="#b6c0d4"/><stop offset="1" stop-color="#5e6a84"/></radialGradient>
+    <radialGradient id="ao-card" cx=".4" cy=".3" r=".85"><stop offset="0" stop-color="#cfe0ff"/><stop offset=".5" stop-color="#3a4a7a"/><stop offset="1" stop-color="#0e1430"/></radialGradient>
+    <linearGradient id="aholo" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff5e7e"/><stop offset=".25" stop-color="#ffd24d"/><stop offset=".5" stop-color="#57e0a0"/><stop offset=".75" stop-color="#4aa3ff"/><stop offset="1" stop-color="#b06bdf"/></linearGradient>
+    <radialGradient id="aspec" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff" stop-opacity=".9"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+    <radialGradient id="acore" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff" stop-opacity=".22"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+    <radialGradient id="aglow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#9fb6ff" stop-opacity=".16"/><stop offset="1" stop-color="#9fb6ff" stop-opacity="0"/></radialGradient>
+    <radialGradient id="ashade" cx=".5" cy=".82" r=".6"><stop offset="0" stop-color="#000" stop-opacity=".38"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+    <linearGradient id="astone" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a4470"/><stop offset=".5" stop-color="#212949"/><stop offset="1" stop-color="#0e1324"/></linearGradient>
+    <linearGradient id="acyld" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#000" stop-opacity=".45"/><stop offset=".5" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".5"/></linearGradient>
+    <linearGradient id="acyll" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".42" stop-color="#fff" stop-opacity=".14"/><stop offset=".6" stop-color="#fff" stop-opacity="0"/></linearGradient>
+    <filter id="asoft" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="2.2"/></filter>
+    <filter id="ads" x="-30%" y="-25%" width="160%" height="155%"><feDropShadow dx="0" dy="3" stdDeviation="3.2" flood-color="#000" flood-opacity=".5"/></filter>
+    <clipPath id="aclip"><circle cx="75" cy="66" r="40"/></clipPath>
+  </defs></svg>`;
+  document.body.appendChild(wrap);
+}
+function achOrbGrad(color){
+  if (achGradCache[color]) return achGradCache[color];
+  const id = 'aoc-' + (achGradN++);
+  const defs = document.querySelector('#ach-defs defs');
+  if (defs) defs.insertAdjacentHTML('beforeend', `<radialGradient id="${id}" cx=".38" cy=".3" r=".85"><stop offset="0" stop-color="${achMix(color,'#ffffff',.6)}"/><stop offset=".45" stop-color="${color}"/><stop offset="1" stop-color="${achMix(color,'#000000',.5)}"/></radialGradient>`);
+  achGradCache[color] = 'url(#' + id + ')';
+  return achGradCache[color];
+}
+function achStand(m){return `
+  <ellipse cx="75" cy="194" rx="52" ry="7.5" fill="#000" opacity=".42" filter="url(#asoft)"/>
+  <path d="M40,172 L110,172 L105,185 A33,7 0 0 1 45,185 Z" fill="${m}"/><ellipse cx="75" cy="185" rx="32.5" ry="6.5" fill="#000" opacity=".22"/>
+  <ellipse cx="75" cy="172" rx="35" ry="8.5" fill="${m}"/><ellipse cx="68" cy="170" rx="16" ry="3" fill="#fff" opacity=".35"/>
+  <path d="M45,135 L105,135 L102,170 A30,8 0 0 1 48,170 Z" fill="url(#astone)"/><path d="M45,135 L105,135 L102,170 A30,8 0 0 1 48,170 Z" fill="url(#acyld)"/><path d="M45,135 L105,135 L102,170 A30,8 0 0 1 48,170 Z" fill="url(#acyll)"/>
+  <g stroke-linecap="round"><line x1="57" y1="139" x2="56" y2="167" stroke="#000" stroke-opacity=".26" stroke-width="1.6"/><line x1="93" y1="139" x2="94" y2="167" stroke="#000" stroke-opacity=".26" stroke-width="1.6"/></g>
+  <ellipse cx="75" cy="135" rx="30" ry="7.5" fill="${m}"/><ellipse cx="75" cy="135" rx="24" ry="5.4" fill="#0e1324"/><ellipse cx="71" cy="133.5" rx="13" ry="2.4" fill="#fff" opacity=".4"/>
+  <rect x="53" y="147" width="44" height="15" rx="3" fill="#0b0f1c"/><rect x="53" y="147" width="44" height="15" rx="3" fill="none" stroke="${m}" stroke-width="1.6"/>
+  <path d="M75,150.5 l4.6,3.3 -4.6,5 -4.6,-5 z" fill="${m}"/><path d="M75,150.5 l4.6,3.3 -4.6,2 -4.6,-2 z" fill="#fff" opacity=".55"/>
+  <path d="M66,112 L84,112 C83,122 88,128 97,134 L53,134 C62,128 67,122 66,112 Z" fill="${m}"/>
+  <ellipse cx="75" cy="110" rx="15" ry="4.6" fill="${m}"/><ellipse cx="75" cy="113" rx="13" ry="3.8" fill="${m}"/><ellipse cx="75" cy="116" rx="11" ry="3.2" fill="${m}"/>`;}
+function achSpark(x,y,s){s=s||1;const a=4.2*s,b=1.2*s;return `<g transform="translate(${x} ${y})" opacity=".92"><path d="M0,${-a} L${b},0 L0,${a} L${-b},0 Z" fill="#fff"/><path d="M${-a},0 L0,${b} L${a},0 L0,${-b} Z" fill="#fff"/></g>`;}
+function achLaurel(m){let s='';const br=(a0,a1,n)=>{for(let i=0;i<n;i++){const t=i/(n-1),a=(a0+(a1-a0)*t)*Math.PI/180,x=75+50*Math.cos(a),y=66+50*Math.sin(a),rot=a*180/Math.PI+90;s+=`<ellipse cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" rx="7" ry="2.7" fill="${m}" transform="rotate(${rot.toFixed(1)} ${x.toFixed(1)} ${y.toFixed(1)})"/>`;}};br(120,250,6);br(60,-70,6);return s;}
+function achImg(href,x,y,w,h){return `<image href="${href}" x="${x}" y="${y}" width="${w}" height="${h}" clip-path="url(#aclip)" preserveAspectRatio="xMidYMid meet" onerror="this.remove()"/>`;}
+function achBall(kind){
+  const TOP={poke:'#ee1c25',great:'#2f6fb8',ultra:'#f4be00',master:'#7b3fb0'}[kind]; let deco='';
+  if(kind==='great') deco=`<g fill="#e3392b" stroke="#bf271c" stroke-width=".6"><path d="M0,-10 Q6,-2 0,8 Q-6,-2 0,-10 Z" transform="translate(65.5 49) rotate(-25)"/><path d="M0,-10 Q6,-2 0,8 Q-6,-2 0,-10 Z" transform="translate(84.5 49) rotate(25)"/></g>`;
+  else if(kind==='ultra') deco=`<rect x="61" y="43" width="28" height="20" rx="6" fill="#1a1a1a"/><ellipse cx="69" cy="48" rx="6.5" ry="2.6" fill="#fff" opacity=".16"/>`;
+  else if(kind==='master') deco=`<circle cx="65" cy="53" r="3.6" fill="#d39bea"/><circle cx="85" cy="53" r="3.6" fill="#d39bea"/><text x="75" y="56" text-anchor="middle" font-size="11" font-weight="900" fill="#fff" font-family="sans-serif">M</text>`;
+  return `<circle cx="75" cy="66" r="26" fill="#f4f4f4" stroke="#15151a" stroke-width="3.5"/><path d="M49,66 a26,26 0 0 1 52,0 Z" fill="${TOP}"/><ellipse cx="62" cy="50" rx="5" ry="3" fill="#fff" opacity=".35"/>${deco}<rect x="49" y="62.6" width="52" height="6.4" fill="#15151a"/><circle cx="75" cy="66" r="8.5" fill="#fff" stroke="#15151a" stroke-width="3.5"/><circle cx="75" cy="66" r="3.4" fill="#cfd6e0"/>`;
+}
+function achHolo(variant){
+  let extra='';
+  if(variant==='special') extra=`<path d="M75,40 l1.6,3.4 3.8,.4 -2.8,2.6 .8,3.7 -3.4,-1.9 -3.4,1.9 .8,-3.7 -2.8,-2.6 3.8,-.4 z" fill="#fff"/>`;
+  if(variant==='mega') extra=`<path d="M64,40 l4,5 4,-6 4,6 4,-5 -1,9 -14,0 z" fill="#ffd24d" stroke="#15151a" stroke-width=".6"/>`;
+  return `<g transform="rotate(-8 75 65)"><rect x="60" y="45" width="30" height="42" rx="4" fill="url(#aholo)" stroke="#fff" stroke-width="2"/>${variant==='hyper'?'<rect x="60" y="45" width="30" height="42" rx="4" fill="#fff" opacity=".18"/>':''}<rect x="63" y="49" width="24" height="18" rx="2" fill="#0e1430" opacity=".35"/><rect x="63" y="70" width="24" height="3.4" rx="1.7" fill="#fff" opacity=".55"/><rect x="63" y="76" width="16" height="3" rx="1.5" fill="#fff" opacity=".4"/></g>${extra}`;
+}
+function achInner(icon){
+  if(icon.ball) return achBall(icon.ball);
+  if(icon.holo) return achHolo(icon.holo);
+  if(icon.duo) return achImg(ART(icon.duo[0]),36,42,48,48)+achImg(ART(icon.duo[1]),68,48,38,38);
+  if(icon.img) return achImg(icon.img,48,39,54,54);
+  if(icon.art) return achImg(ART(icon.art),37,29,76,76);
+  return '';
+}
+function achOrbFill(icon){ if(icon.ball) return 'url(#ao-ball)'; if(icon.holo) return 'url(#ao-card)'; return achOrbGrad(icon.orb||'#2a3350'); }
+function achOrb(icon,m){
+  let st='';for(let i=0;i<10;i++){const a=(i/10)*Math.PI*2-Math.PI/2,x=75+44*Math.cos(a),y=66+44*Math.sin(a);st+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="2.3" fill="${m}"/><circle cx="${(x-.5).toFixed(1)}" cy="${(y-.6).toFixed(1)}" r=".85" fill="#fff" opacity=".75"/>`;}
+  return `<circle cx="75" cy="66" r="44" fill="${achOrbFill(icon)}"/><ellipse cx="75" cy="70" rx="30" ry="27" fill="url(#acore)"/>${achInner(icon)}<ellipse cx="75" cy="93" rx="33" ry="19" fill="url(#ashade)"/>
+  <circle cx="75" cy="66" r="44" fill="none" stroke="${m}" stroke-width="7.5"/><circle cx="75" cy="66" r="47.8" fill="none" stroke="#000" stroke-opacity=".3" stroke-width="1.2"/><circle cx="75" cy="66" r="40.2" fill="none" stroke="#000" stroke-opacity=".35" stroke-width="1.2"/>
+  <path d="M45,54 A44,44 0 0 1 84,29" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="2.4" stroke-linecap="round"/>${st}<ellipse cx="61" cy="47" rx="16" ry="10" fill="url(#aspec)" transform="rotate(-25 61 47)"/>${achSpark(96,40,1)}${achSpark(58,86,.7)}`;
+}
+function achTrophy(tier,icon){const m=`url(#am-${tier})`;return `<svg viewBox="0 0 150 210"><ellipse cx="75" cy="64" rx="66" ry="76" fill="url(#aglow)"/><g filter="url(#ads)">${achStand(m)}${achLaurel(m)}${achOrb(icon,m)}</g></svg>`;}
+
+function achState(a){ const unlocked=!!unlockedAch[a.id]; let p=0,t=1; try{p=a.progress();t=a.target();}catch(e){} return {unlocked,p,t,pct:t?Math.min(100,Math.round(p/t*100)):0}; }
+function achCard(a,s){
+  const cls = 'ach-c'+(a.tier==='diamond'?' diamond':'');
+  if(a.secret && !s.unlocked) return `<div class="${cls}" onclick="openAchDetail('${a.id}')"><div class="ach-q">❓</div><div class="ach-nm">Conquista Secreta</div></div>`;
+  const tro = `<div class="ach-tro${s.unlocked?'':' locked'}">${achTrophy(a.tier,a.icon)}</div>`;
+  let foot;
+  if(s.unlocked) foot = `<div class="ach-done">✓ ${a.tierLabel} ${tierName(a.tier)}</div>`;
+  else foot = `<div class="ach-pbar"><div class="ach-pf" style="width:${s.pct}%"></div></div><div class="ach-pt">${s.p}/${s.t}</div>`;
+  return `<div class="${cls}" onclick="openAchDetail('${a.id}')"><div class="ach-nm">${escHtml(a.nome)}</div><div class="ach-gp">${a.grupo} · ${a.tierLabel}</div>${tro}${foot}</div>`;
+}
+function renderAchievements(){
+  if(!POKEDEX_DATA.length) return;
+  if(!ACHIEVEMENTS.length) ACHIEVEMENTS = buildAchievements();
+  ensureAchDefs();
+  const panel = document.getElementById('tab-conquistas'); if(!panel) return;
+  const states = ACHIEVEMENTS.map(a=>({a,s:achState(a)}));
+  const total = states.length, unlocked = states.filter(x=>x.s.unlocked).length;
+  const byTier={bronze:0,silver:0,gold:0,diamond:0}; states.forEach(x=>{ if(x.s.unlocked) byTier[x.a.tier]++; });
+  const quase = states.filter(x=>!x.s.unlocked && !x.a.secret && x.s.p>0).sort((a,b)=>b.s.pct-a.s.pct).slice(0,5);
+  const GROUPS=['Tudo','Tipos','Regiões','Jornada','Temáticas','Full Art','Secretas'];
+  const tierMini={bronze:'🥉',silver:'🥈',gold:'🥇',diamond:'💎'};
+  const filtered = states.filter(x=>achFilter==='Tudo'||x.a.grupo===achFilter);
+  let html = `<div class="ach-head">
+      <div class="ach-total">${unlocked}<small> / ${total} insígnias</small></div>
+      <div class="ach-tierchips">${Object.keys(byTier).map(t=>`<span class="ach-tc">${tierMini[t]} ${byTier[t]}</span>`).join('')}</div>
+      <div class="ach-obar"><div class="ach-of" style="width:${Math.round(unlocked/total*100)}%"></div></div>
+    </div>
+    <div class="ach-chips">${GROUPS.map(g=>`<button class="ach-chip ${g===achFilter?'active':''}" onclick="achSetFilter('${g}')">${g}</button>`).join('')}</div>`;
+  if(achFilter==='Tudo' && quase.length) html += `<div class="ach-sect">⭐ Quase lá</div><div class="ach-strip">${quase.map(x=>achCard(x.a,x.s)).join('')}</div>`;
+  html += `<div class="ach-sect">${achFilter==='Tudo'?'Todas':achFilter}</div><div class="ach-grid">${filtered.map(x=>achCard(x.a,x.s)).join('')}</div>`;
+  panel.innerHTML = html;
+}
+function achSetFilter(g){ achFilter=g; renderAchievements(); }
+function openAchDetail(id){
+  const a = ACHIEVEMENTS.find(x=>x.id===id); if(!a) return;
+  const s = achState(a); ensureAchDefs();
+  let ov = document.getElementById('ach-detail-ov');
+  if(!ov){ ov=document.createElement('div'); ov.id='ach-detail-ov'; ov.className='ach-detail-ov'; document.body.appendChild(ov); ov.addEventListener('click',e=>{if(e.target===ov)ov.classList.remove('open');}); }
+  const secret = a.secret && !s.unlocked;
+  const tro = secret ? `<div class="ach-q" style="font-size:5rem;height:200px;display:flex;align-items:center;justify-content:center">❓</div>` : `<div class="${a.tier==='diamond'?'diamond':''} ${s.unlocked?'':'ach-tro locked'}" style="display:inline-block">${achTrophy(a.tier,a.icon)}</div>`;
+  const prog = s.unlocked ? `<div style="color:#7CFC9B;font-weight:700">✓ Desbloqueada — ${tierName(a.tier)}</div>`
+    : secret ? `<div style="color:#9aa0bb">Conquista secreta — continue jogando…</div>`
+    : `<div>${a.tierLabel} ${tierName(a.tier)} · ${s.p}/${s.t} (${s.pct}%)</div>`;
+  ov.innerHTML = `<div class="ach-detail"><button class="ach-x" onclick="document.getElementById('ach-detail-ov').classList.remove('open')">&times;</button>
+    ${tro}<h2>${secret?'???':escHtml(a.nome)}</h2><div class="ach-d-gp">${escHtml(a.grupo)}</div><div class="ach-d-prog">${prog}</div></div>`;
+  ov.classList.add('open');
 }
 
 // =============================================
