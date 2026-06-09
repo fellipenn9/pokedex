@@ -2981,11 +2981,105 @@ function showApp(user) {
 // =============================================
 let appInitialized = false;
 
+// =============================================
+// B3 — ÍNDICES + ownedCards (fundação das Coleções)
+// ownedCards = conjunto único de cartas possuídas (cardId -> true).
+// Hoje é DERIVADO de `collection` (1 carta por Pokémon); `collection` segue
+// como espelho p/ o motor de Conquistas (congelado). SEM UI nova neste bloco.
+// =============================================
+let ownedCards = {};   // { cardId: true }
+let cardCache = {};    // { cardId: cardObj }  (cartas de busca API, fora do JSON)
+const IDX = { cardById:{}, dexOfCard:{}, cardsByDex:{}, dexByType:{}, dexByRegion:{}, dexByGen:{}, cardsByRarity:{}, cardsBySet:{}, built:false };
+
+function initIndices() {
+  IDX.cardById = {}; IDX.dexOfCard = {}; IDX.cardsByDex = {};
+  IDX.dexByType = {}; IDX.dexByRegion = {}; IDX.dexByGen = {};
+  IDX.cardsByRarity = {}; IDX.cardsBySet = {};
+  const bp = (FULLART_DATA && FULLART_DATA.by_pokedex) || {};
+  for (const dex in bp) {
+    const cards = (bp[dex] && bp[dex].cards) || [];
+    IDX.cardsByDex[dex] = [];
+    for (const c of cards) {
+      IDX.cardById[c.id] = c;
+      IDX.dexOfCard[c.id] = dex;
+      IDX.cardsByDex[dex].push(c.id);
+      if (c.rarity) (IDX.cardsByRarity[c.rarity] = IDX.cardsByRarity[c.rarity] || []).push(c.id);
+      if (c.set_name) (IDX.cardsBySet[c.set_name] = IDX.cardsBySet[c.set_name] || []).push(c.id);
+    }
+  }
+  for (const p of POKEDEX_DATA) {
+    const dex = String(p.number);
+    if (p.types) for (const t of p.types) (IDX.dexByType[t] = IDX.dexByType[t] || []).push(dex);
+    if (p.region) (IDX.dexByRegion[p.region] = IDX.dexByRegion[p.region] || []).push(dex);
+    if (p.generation != null) (IDX.dexByGen[p.generation] = IDX.dexByGen[p.generation] || []).push(dex);
+  }
+  IDX.built = true;
+}
+
+// Reconstroi ownedCards (+ cardCache) a partir de `collection`. Barato (O(#collection)).
+function ownedSync() {
+  const owned = {};
+  for (const key in collection) {
+    const entry = collection[key];
+    if (entry && typeof entry === 'object' && Array.isArray(entry.cards)) {
+      for (const cid of entry.cards) owned[cid] = true;
+      if (entry.cardData && entry.cardData.id) cardCache[entry.cardData.id] = entry.cardData;
+    }
+  }
+  ownedCards = owned;
+}
+
+function resolveCard(cardId) { return IDX.cardById[cardId] || cardCache[cardId] || null; }
+function isCardOwned(cardId) { return !!ownedCards[cardId]; }
+
+// Conjunto-alvo (ids de carta) de um critério de coleção. Base p/ B5/B6.
+function getTargetCardIds(criteria) {
+  if (!criteria) return [];
+  const { kind, value } = criteria;
+  const fromDex = (arr) => { const out = []; for (const d of (arr || [])) { const ids = IDX.cardsByDex[String(d)]; if (ids) out.push(...ids); } return out; };
+  switch (kind) {
+    case 'pokemon':       return (IDX.cardsByDex[String(value)] || []).slice();
+    case 'type':          return fromDex(IDX.dexByType[value]);
+    case 'region':        return fromDex(IDX.dexByRegion[value]);
+    case 'generation':    return fromDex(IDX.dexByGen[value]);
+    case 'rarity':        return (IDX.cardsByRarity[value] || []).slice();
+    case 'set':           return (IDX.cardsBySet[value] || []).slice();
+    case 'evolutionLine': return fromDex(value);            // value = [dex...]
+    case 'custom':        return (value || []).slice();      // value = [cardId...]
+    default:              return [];
+  }
+}
+
+// Progresso de uma coleção: { owned, total, pct, target }
+function collectionProgressFor(criteria) {
+  const target = getTargetCardIds(criteria);
+  let owned = 0; for (const id of target) if (ownedCards[id]) owned++;
+  return { owned, total: target.length, pct: target.length ? Math.round(owned / target.length * 100) : 0, target };
+}
+
+// Migração única: persiste ownedCards/cardCache no Firestore (campo novo).
+// Idempotente (flag localStorage). NÃO apaga `collection`.
+async function migrateOwnedCardsOnce() {
+  if (!currentUser) return;
+  const flag = 'migrated_ownedcards_' + currentUser.uid;
+  if (localStorage.getItem(flag)) return;
+  try {
+    await db.collection('users').doc(currentUser.uid).set({
+      ownedCards: ownedCards,
+      cardCache: cardCache,
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    }, { merge: true });
+    localStorage.setItem(flag, '1');
+  } catch (e) { console.error('Erro na migração ownedCards:', e); }
+}
+
 async function initApp() {
   if (appInitialized) {
     // Se ja inicializou, so recarrega a colecao (ex: login de outro usuario)
     achSessionReady = false;
     await Promise.all([loadCollection(), loadPokedexTracker(), loadAchievements()]);
+    ownedSync();             // re-deriva ownedCards p/ o novo usuário
+    migrateOwnedCardsOnce(); // idempotente por uid
     renderGrid();
     renderPokedexGrid();
     evaluateAchievements({ silent: true }); // aplica retroativo sem notificar
@@ -3023,6 +3117,11 @@ async function initApp() {
   // Criar lookup rapido
   pokedexLookup = {};
   POKEDEX_DATA.forEach(p => { pokedexLookup[p.number] = p; });
+
+  // B3: índices + ownedCards (fundação das coleções)
+  initIndices();
+  ownedSync();
+  migrateOwnedCardsOnce(); // fire-and-forget (idempotente)
 
   populateTypeFilter();
   renderPokedexGrid();
@@ -3088,6 +3187,7 @@ function attachRealtimeSync() {
       // Aplica mudanca remota em memoria + cache local
       collection = cloudCol;
       pokedexTracker = cloudTracker;
+      ownedSync(); // re-deriva ownedCards do estado remoto
       localStorage.setItem('fullart_collection_cache_' + currentUser.uid, JSON.stringify(collection));
       localStorage.setItem('pokedex_tracker_cache_' + currentUser.uid, JSON.stringify(pokedexTracker));
 
@@ -3223,6 +3323,7 @@ async function saveCollection() {
 // diferentes não se sobrescrevem, pois cada um toca só a sua chave.
 // value === undefined => remove a chave.
 async function saveCollectionEntry(key, value) {
+  ownedSync(); // mantém ownedCards vivo (espelho de collection)
   if (!currentUser) return;
   lastFilteredNums = null; // invalida cache do grid p/ re-render
   localStorage.setItem('fullart_collection_cache_' + currentUser.uid, JSON.stringify(collection));
