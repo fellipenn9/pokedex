@@ -2491,7 +2491,8 @@ body.modal-open{overflow:hidden}
 .ach-sect{display:flex;align-items:center;gap:8px;font-size:.95rem;font-weight:700;color:#cdd3e6;margin:18px 4px 6px}
 .ach-sc{font-size:.7rem;font-weight:600;color:#8990ad;background:#1c1c2b;border:1px solid #2e2e44;padding:1px 8px;border-radius:10px}
 .ach-strip{display:flex;gap:0;overflow-x:auto;padding-bottom:6px} .ach-strip .ach-c{min-width:94px;flex:0 0 auto}
-.ach-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(86px,1fr));gap:4px 0}
+.ach-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:10px 4px}
+.ach-grid.solo{grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:20px 10px;margin-top:4px}
 .ach-c{background:none;border:0;padding:2px 0 6px;text-align:center;cursor:pointer;transition:transform .15s}
 .ach-c:hover{transform:translateY(-4px)}
 .ach-c svg{width:100%;max-width:108px;height:auto;display:block;margin:0 auto}
@@ -5181,14 +5182,14 @@ function buildAchievements(){
     A.push({ id, grupo:'Temáticas', nome:nm, tier, tierLabel:tl, target:()=>lst.length, progress:()=>listCount(lst), icon:{orb:cor,art:dx} });
   // Secretas [id,nome,tier,tl,prog,icon]
   const SEC = [
-    ['sec-pikachu','Escolhi Você!','bronze','🥉',()=>reg(25)?1:0,{art:25}],
-    ['sec-magikarp','Aposta no Inútil','bronze','🥉',()=>reg(129)?1:0,{art:129}],
-    ['sec-primeiro','O Primeiro de Todos','bronze','🥉',()=>reg(1)?1:0,{art:1}],
-    ['sec-ultimo','O Último de Todos','bronze','🥉',()=>reg(1025)?1:0,{art:1025}],
-    ['sec-milesimo','O Milésimo','silver','🥈',()=>reg(1000)?1:0,{art:1000}],
-    ['sec-clone','Clone e Original','silver','🥈',()=>(reg(150)&&reg(151))?1:0,{duo:[150,151]}],
-    ['sec-1996','De Volta a 1996','gold','🥇',()=>regionCount('Kanto')>=151?1:0,{art:94}],
-    ['sec-tesouro','Tesouro Secreto','silver','🥈',()=>rarityCount('Rare Secret')>=1?1:0,{art:999}],
+    ['sec-pikachu','Escolhi Você!','diamond','💎',()=>reg(25)?1:0,{art:25}],
+    ['sec-magikarp','Aposta no Inútil','diamond','💎',()=>reg(129)?1:0,{art:129}],
+    ['sec-primeiro','O Primeiro de Todos','diamond','💎',()=>reg(1)?1:0,{art:1}],
+    ['sec-ultimo','O Último de Todos','diamond','💎',()=>reg(1025)?1:0,{art:1025}],
+    ['sec-milesimo','O Milésimo','diamond','💎',()=>reg(1000)?1:0,{art:1000}],
+    ['sec-clone','Clone e Original','diamond','💎',()=>(reg(150)&&reg(151))?1:0,{duo:[150,151]}],
+    ['sec-1996','De Volta a 1996','diamond','💎',()=>regionCount('Kanto')>=151?1:0,{art:94}],
+    ['sec-tesouro','Tesouro Secreto','diamond','💎',()=>rarityCount('Rare Secret')>=1?1:0,{art:999}],
   ];
   for (const [id,nm,tier,tl,prog,ic] of SEC) A.push({ id, grupo:'Secretas', nome:nm, tier, tierLabel:tl, secret:true, target:()=>1, progress:prog, icon:Object.assign({orb:'#6a4f9a'},ic) });
   return A;
@@ -5437,7 +5438,7 @@ function renderAchievements(){
     }
   } else {
     const gt=tracks.filter(t=>t.grupo===achFilter);
-    html += `<div class="ach-grid">${gt.map(achTrackCard).join('')}</div>`;
+    html += `<div class="ach-grid solo">${gt.map(achTrackCard).join('')}</div>`;
   }
   panel.innerHTML = html;
 }
