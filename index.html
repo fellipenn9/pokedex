@@ -108,6 +108,32 @@ body {
   box-shadow: 0 0 0 1px var(--gold) inset, 0 4px 14px rgba(240,179,42,0.25);
 }
 
+/* Sub-abas (nível 2) */
+.subtabs {
+  display: flex;
+  gap: 6px;
+  padding: 10px 24px 0;
+  flex-wrap: wrap;
+}
+.subtab-btn {
+  background: transparent;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  color: var(--text-dim);
+  padding: 6px 4px;
+  margin-right: 10px;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+}
+.subtab-btn:hover { color: var(--text); }
+.subtab-btn.active {
+  color: var(--text);
+  border-bottom-color: var(--accent);
+  font-weight: 600;
+}
+@media (max-width: 600px) { .subtabs { padding: 8px 12px 0; } }
+
 /* Main content */
 .main-content {
   padding: 16px var(--content-pad);
@@ -2689,13 +2715,12 @@ body.modal-open{overflow:hidden}
 </div>
 
 <div class="tabs">
-  <button class="tab-btn primary active" data-tab="pokedex">📕 Pokédex</button>
-  <button class="tab-btn" data-tab="grid">🃏 Coleção</button>
-  <button class="tab-btn" data-tab="binder">📒 Fichário</button>
-  <button class="tab-btn" data-tab="stats">📊 Estatísticas</button>
-  <button class="tab-btn" data-tab="conquistas">🏆 Conquistas</button>
-  <button class="tab-btn" data-tab="sorteador">🎲 Sorteador</button>
+  <button class="tab-btn primary active" data-nav="pokedex">📕 Pokédex</button>
+  <button class="tab-btn" data-nav="colecoes">🗂️ Coleções</button>
+  <button class="tab-btn" data-nav="progresso">📊 Progresso</button>
+  <button class="tab-btn" data-nav="sorteador">🎲 Sorteador</button>
 </div>
+<div class="subtabs" id="subtabs" style="display:none"></div>
 
 <div class="main-content">
   <!-- Pokedex Checklist Tab -->
@@ -3671,8 +3696,7 @@ function pokedexFilterRegion(g) {
   if (grid) grid.scrollIntoView({ behavior:'smooth', block:'start' });
 }
 function switchToPokedex() {
-  const btn = document.querySelector('.tab-btn[data-tab="pokedex"]');
-  if (btn) btn.click();
+  if (typeof selectNav === 'function') selectNav('pokedex');
   window.scrollTo({ top:0, behavior:'smooth' });
 }
 
@@ -4410,20 +4434,62 @@ function handleToggleRegister(pokeNum) {
 // =============================================
 // TABS
 // =============================================
-function setupTabs() {
-  document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-      btn.classList.add('active');
-      document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+// =============================================
+// NAVEGAÇÃO 2 NÍVEIS — abas de topo + sub-abas (B4)
+// Pokédex · Coleções(Coleção/Fichário) · Progresso(Estatísticas/Conquistas) · Sorteador
+// =============================================
+const NAV = {
+  pokedex:   { panel: 'pokedex' },
+  sorteador: { panel: 'sorteador' },
+  colecoes:  { subs: [{ key: 'grid', label: '🃏 Coleção' }, { key: 'binder', label: '📒 Fichário' }] },
+  progresso: { subs: [{ key: 'stats', label: '📊 Estatísticas' }, { key: 'conquistas', label: '🏆 Conquistas' }] },
+};
+const lastSub = { colecoes: 'grid', progresso: 'stats' };
+let activeNav = 'pokedex';
 
-      if (btn.dataset.tab === 'pokedex') renderPokedexGrid();
-      if (btn.dataset.tab === 'stats') renderStats();
-      if (btn.dataset.tab === 'binder') renderBinder();
-      if (btn.dataset.tab === 'conquistas') renderAchievements();
-    });
+function showPanel(panelKey) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  const el = document.getElementById('tab-' + panelKey);
+  if (el) el.classList.add('active');
+  if (panelKey === 'pokedex') renderPokedexGrid();
+  else if (panelKey === 'stats') renderStats();
+  else if (panelKey === 'binder') renderBinder();
+  else if (panelKey === 'conquistas') renderAchievements();
+}
+function selectNav(nav) {
+  if (!NAV[nav]) return;
+  activeNav = nav;
+  document.querySelectorAll('.tab-btn[data-nav]').forEach(b => b.classList.toggle('active', b.dataset.nav === nav));
+  const cfg = NAV[nav];
+  const sub = document.getElementById('subtabs');
+  if (cfg.subs) {
+    const cur = lastSub[nav] || cfg.subs[0].key;
+    if (sub) {
+      sub.style.display = '';
+      sub.innerHTML = cfg.subs.map(s => `<button class="subtab-btn${s.key === cur ? ' active' : ''}" data-sub="${s.key}" data-nav="${nav}">${s.label}</button>`).join('');
+    }
+    showPanel(cur);
+  } else {
+    if (sub) { sub.style.display = 'none'; sub.innerHTML = ''; }
+    showPanel(cfg.panel);
+  }
+}
+function selectSub(nav, subKey) {
+  lastSub[nav] = subKey;
+  document.querySelectorAll('#subtabs .subtab-btn').forEach(b => b.classList.toggle('active', b.dataset.sub === subKey));
+  showPanel(subKey);
+}
+
+function setupTabs() {
+  document.querySelectorAll('.tab-btn[data-nav]').forEach(btn => {
+    btn.addEventListener('click', () => selectNav(btn.dataset.nav));
   });
+  const sub = document.getElementById('subtabs');
+  if (sub) sub.addEventListener('click', (e) => {
+    const b = e.target.closest('.subtab-btn');
+    if (b) selectSub(b.dataset.nav, b.dataset.sub);
+  });
+  selectNav('pokedex'); // estado inicial
 
   // Event delegation p/ selecao de carta no modal (evita onclick inline com id
   // interpolado — mais seguro contra injecao de atributo). O id vem do
