@@ -2484,29 +2484,38 @@ body.modal-open{overflow:hidden}
 .ach-total{font-size:1.5rem;font-weight:800} .ach-total small{font-size:.8rem;color:#9aa0bb;font-weight:500}
 .ach-tierchips{display:flex;gap:8px} .ach-tc{background:#1c1c2b;border:1px solid #2e2e44;padding:3px 9px;border-radius:14px;font-size:.8rem}
 .ach-obar{flex:1;min-width:120px;height:9px;background:#222;border-radius:6px;overflow:hidden}
-.ach-of{height:100%;background:linear-gradient(90deg,#e94560,#ffd56b)}
+.ach-of{height:100%;background:linear-gradient(90deg,#3fe0a0,#7af0c4)}
 .ach-chips{display:flex;gap:7px;overflow-x:auto;padding-bottom:6px;margin-bottom:6px}
 .ach-chip{white-space:nowrap;background:#1c1c2b;border:1px solid #2e2e44;color:#eef0f8;padding:6px 13px;border-radius:18px;font-size:.8rem;cursor:pointer}
 .ach-chip.active{background:#e94560;border-color:#e94560}
-.ach-sect{font-size:.95rem;color:#ffd56b;margin:16px 4px 8px;border-left:3px solid #ffd56b;padding-left:10px}
-.ach-strip{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px} .ach-strip .ach-c{min-width:138px}
-.ach-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(138px,1fr));gap:8px}
-.ach-c{background:#1a1a28;border:1px solid #2e2e44;border-radius:14px;padding:8px 6px 10px;text-align:center;cursor:pointer;transition:transform .15s,border-color .15s}
-.ach-c:hover{transform:translateY(-3px);border-color:#3a3a55}
-.ach-c svg{width:100px;height:140px;display:block;margin:0 auto}
-.ach-tro.locked{filter:grayscale(1) brightness(.5);opacity:.6}
-.ach-c.diamond .ach-tro:not(.locked) svg{filter:drop-shadow(0 0 6px rgba(168,85,222,.55))}
-.ach-nm{font-size:.76rem;font-weight:700;line-height:1.15;margin-top:2px} .ach-gp{font-size:.62rem;color:#9aa0bb}
-.ach-pbar{height:6px;background:#222;border-radius:5px;overflow:hidden;margin:6px 8px 0}
-.ach-pf{height:100%;background:linear-gradient(90deg,#e94560,#ffd56b)}
-.ach-pt{font-size:.64rem;color:#9aa0bb;margin-top:3px} .ach-done{color:#7CFC9B;font-size:.66rem;margin-top:3px}
+.ach-sect{display:flex;align-items:center;gap:8px;font-size:.95rem;font-weight:700;color:#cdd3e6;margin:18px 4px 6px}
+.ach-sc{font-size:.7rem;font-weight:600;color:#8990ad;background:#1c1c2b;border:1px solid #2e2e44;padding:1px 8px;border-radius:10px}
+.ach-strip{display:flex;gap:0;overflow-x:auto;padding-bottom:6px} .ach-strip .ach-c{min-width:94px;flex:0 0 auto}
+.ach-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(86px,1fr));gap:4px 0}
+.ach-c{background:none;border:0;padding:2px 0 6px;text-align:center;cursor:pointer;transition:transform .15s}
+.ach-c:hover{transform:translateY(-4px)}
+.ach-c svg{width:100%;max-width:108px;height:auto;display:block;margin:0 auto}
+.ach-tro.locked{filter:grayscale(1) brightness(.55);opacity:.62}
+.ach-c.diamond .ach-tro:not(.locked) svg{filter:drop-shadow(0 0 7px rgba(168,85,222,.6))}
+.ach-pbar{height:6px;background:#2a2a3a;border-radius:5px;overflow:hidden;margin:1px 13px 0}
+.ach-pbar.wide{margin:8px auto 0;max-width:230px}
+.ach-pf{height:100%;background:linear-gradient(90deg,#3fe0a0,#7af0c4)}
+.ach-done{color:#7CFC9B;font-size:.85rem;font-weight:700;height:6px;line-height:.4}
 .ach-q{height:140px;display:flex;align-items:center;justify-content:center;font-size:3rem;color:#3a3a55}
-.ach-detail-ov{position:fixed;inset:0;z-index:60;background:rgba(8,8,14,.74);display:none;align-items:center;justify-content:center;padding:16px}
+.ach-detail-ov{position:fixed;inset:0;z-index:60;background:rgba(8,8,14,.78);display:none;align-items:center;justify-content:center;padding:16px}
 .ach-detail-ov.open{display:flex}
-.ach-detail{background:#1a1a28;border:1px solid #2e2e44;border-radius:16px;max-width:330px;width:100%;padding:18px;text-align:center;position:relative}
-.ach-detail svg{width:150px;height:210px;display:block;margin:0 auto}
-.ach-detail h2{margin:4px 0 2px;font-size:1.15rem} .ach-d-gp{color:#ffd56b;font-size:.78rem} .ach-d-prog{margin-top:10px;font-size:.85rem}
-.ach-x{position:absolute;top:8px;right:12px;background:none;border:0;color:#9aa0bb;font-size:1.5rem;cursor:pointer}
+.ach-detail{background:#16161f;border:1px solid #2e2e44;border-radius:18px;max-width:344px;width:100%;padding:14px 18px 20px;text-align:center;position:relative}
+.ach-hero svg{width:160px;height:auto;display:block;margin:0 auto}
+.ach-detail h2{margin:2px 0 2px;font-size:1.18rem} .ach-d-gp{color:#ffd56b;font-size:.78rem}
+.ach-d-prog{margin-top:8px} .ach-d-line{font-size:.82rem;color:#cdd3e6;margin-top:6px} .ach-d-done{color:#7CFC9B;font-weight:700;font-size:.95rem}
+.ach-d-hint{font-size:.78rem;color:#9aa0bb;margin-top:8px;line-height:1.3}
+.ach-medals{display:flex;justify-content:center;gap:6px;margin-top:14px;flex-wrap:wrap}
+.ach-medal{cursor:pointer;border:2px solid transparent;border-radius:12px;padding:2px 2px 1px;transition:border-color .15s,background .15s;width:62px}
+.ach-medal.sel{border-color:#4a78c0;background:#1c2238}
+.ach-medal svg{width:54px;height:auto;display:block;margin:0 auto}
+.ach-medal-t{font-size:.62rem;color:#9aa0bb;margin-top:-1px}
+.ach-medal.locked .ach-medal-t{color:#6b7187}
+.ach-x{position:absolute;top:8px;right:12px;background:none;border:0;color:#9aa0bb;font-size:1.5rem;cursor:pointer;z-index:2}
 @media (prefers-reduced-motion: reduce){
   *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
 }
@@ -5146,15 +5155,15 @@ function buildAchievements(){
     ['Gelo','Insígnia Geleira','#7fd6e0','e/e6/Glacier_Badge.png/revision/latest?cb=20081229170955'],
   ];
   for (const [t,nm,cor,bg] of TIPOS) for (const [tier,pct,tl] of TIERS4)
-    A.push({ id:`tipo-${slugA(t)}-${tier}`, grupo:'Tipos', nome:nm, tier, tierLabel:tl, target:()=>Math.ceil(typeTotal(t)*pct), progress:()=>typeCount(t), icon:{orb:cor,img:WK(bg)} });
+    A.push({ id:`tipo-${slugA(t)}-${tier}`, track:`tipo-${slugA(t)}`, grupo:'Tipos', nome:nm, tier, tierLabel:tl, hint:`Registre Pokémon do tipo desta insígnia.`, target:()=>Math.ceil(typeTotal(t)*pct), progress:()=>typeCount(t), icon:{orb:cor,img:WK(bg)} });
   // [região, cor, dexLendário]
   const REGS = [['Kanto','#e0533a',151],['Johto','#d4a82b',250],['Hoenn','#2fae5e',384],['Sinnoh','#4a78c0',493],['Unova','#6b7280',644],['Kalos','#3f74d6',717],['Alola','#f29440',792],['Galar','#7b46c9',890],['Hisui','#9a7a52',905],['Paldea','#d23b6a',1008]];
   for (const [r,cor,dx] of REGS) for (const [tier,pct,tl] of TIERS4)
-    A.push({ id:`regiao-${slugA(r)}-${tier}`, grupo:'Regiões', nome:r, tier, tierLabel:tl, target:()=>Math.ceil(regionTotal(r)*pct), progress:()=>regionCount(r), icon:{orb:cor,art:dx} });
+    A.push({ id:`regiao-${slugA(r)}-${tier}`, track:`regiao-${slugA(r)}`, grupo:'Regiões', nome:r, tier, tierLabel:tl, hint:`Complete a Pokédex da região ${r}.`, target:()=>Math.ceil(regionTotal(r)*pct), progress:()=>regionCount(r), icon:{orb:cor,art:dx} });
   const JORN = [['poke','Treinador Novato',100,'bronze','🥉'],['great','Treinador Experiente',350,'silver','🥈'],['ultra','Treinador de Elite',700,'gold','🥇'],['master','Mestre Pokémon',1025,'diamond','💎']];
-  for (const [k,nm,tg,tier,tl] of JORN) A.push({ id:`jornada-${k}`, grupo:'Jornada', nome:nm, tier, tierLabel:tl, target:()=>tg, progress:()=>totalReg(), icon:{ball:k} });
+  for (const [k,nm,tg,tier,tl] of JORN) A.push({ id:`jornada-${k}`, track:'jornada', grupo:'Jornada', nome:nm, tier, tierLabel:tl, hint:'Registre Pokémon para avançar na sua jornada.', target:()=>tg, progress:()=>totalReg(), icon:{ball:k} });
   for (const [tier,pct,tl] of TIERS4)
-    A.push({ id:`fa-col-${tier}`, grupo:'Full Art', nome:'Colecionador Full Art', tier, tierLabel:tl, target:()=>Math.ceil(faTotal()*pct), progress:()=>faCollected(), icon:{holo:'collector'} });
+    A.push({ id:`fa-col-${tier}`, track:'fa-col', grupo:'Full Art', nome:'Colecionador Full Art', tier, tierLabel:tl, hint:'Colecione cartas Full Art.', target:()=>Math.ceil(faTotal()*pct), progress:()=>faCollected(), icon:{holo:'collector'} });
   A.push({ id:'fa-special', grupo:'Full Art', nome:'Ilustração Especial', tier:'gold', tierLabel:'🥇', target:()=>20, progress:()=>rarityCount('Special Illustration Rare'), icon:{holo:'special'} });
   A.push({ id:'fa-hyper', grupo:'Full Art', nome:'Caçador de Hyper Rare', tier:'gold', tierLabel:'🥇', target:()=>10, progress:()=>rarityCount('Hyper Rare'), icon:{holo:'hyper'} });
   A.push({ id:'fa-mega', grupo:'Full Art', nome:'As Coroas Mega', tier:'diamond', tierLabel:'💎', target:()=>6, progress:()=>rarityCount('Mega Hyper Rare'), icon:{holo:'mega'} });
@@ -5304,6 +5313,8 @@ function ensureAchDefs(){
     <filter id="asoft" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="2.2"/></filter>
     <filter id="ads" x="-30%" y="-25%" width="160%" height="155%"><feDropShadow dx="0" dy="3" stdDeviation="3.2" flood-color="#000" flood-opacity=".5"/></filter>
     <clipPath id="aclip"><circle cx="75" cy="66" r="40"/></clipPath>
+    <radialGradient id="apodt" cx=".42" cy=".4" r=".75"><stop offset="0" stop-color="#fbfdff"/><stop offset=".55" stop-color="#dde6f4"/><stop offset="1" stop-color="#b9c5dc"/></radialGradient>
+    <linearGradient id="apods" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c4d0e4"/><stop offset="1" stop-color="#8693ad"/></linearGradient>
   </defs></svg>`;
   document.body.appendChild(wrap);
 }
@@ -5342,7 +5353,13 @@ function achHolo(variant){
   if(variant==='mega') extra=`<path d="M64,40 l4,5 4,-6 4,6 4,-5 -1,9 -14,0 z" fill="#ffd24d" stroke="#15151a" stroke-width=".6"/>`;
   return `<g transform="rotate(-8 75 65)"><rect x="60" y="45" width="30" height="42" rx="4" fill="url(#aholo)" stroke="#fff" stroke-width="2"/>${variant==='hyper'?'<rect x="60" y="45" width="30" height="42" rx="4" fill="#fff" opacity=".18"/>':''}<rect x="63" y="49" width="24" height="18" rx="2" fill="#0e1430" opacity=".35"/><rect x="63" y="70" width="24" height="3.4" rx="1.7" fill="#fff" opacity=".55"/><rect x="63" y="76" width="16" height="3" rx="1.5" fill="#fff" opacity=".4"/></g>${extra}`;
 }
+function achPodium(){return `
+  <ellipse cx="75" cy="208" rx="50" ry="11" fill="#000" opacity=".3" filter="url(#asoft)"/>
+  <ellipse cx="75" cy="203" rx="51" ry="12.5" fill="url(#apods)"/>
+  <ellipse cx="75" cy="199" rx="51" ry="12.5" fill="url(#apodt)"/>
+  <ellipse cx="75" cy="196.5" rx="41" ry="8.5" fill="#fff" opacity=".42"/>`;}
 function achInner(icon){
+  if(icon.q) return `<text x="75" y="82" text-anchor="middle" font-size="48" font-weight="900" fill="#fff" opacity=".82" font-family="sans-serif">?</text>`;
   if(icon.ball) return achBall(icon.ball);
   if(icon.holo) return achHolo(icon.holo);
   if(icon.duo) return achImg(ART(icon.duo[0]),36,42,48,48)+achImg(ART(icon.duo[1]),68,48,38,38);
@@ -5350,24 +5367,47 @@ function achInner(icon){
   if(icon.art) return achImg(ART(icon.art),37,29,76,76);
   return '';
 }
-function achOrbFill(icon){ if(icon.ball) return 'url(#ao-ball)'; if(icon.holo) return 'url(#ao-card)'; return achOrbGrad(icon.orb||'#2a3350'); }
+function achOrbFill(icon){ if(icon.q) return 'url(#ao-ball)'; if(icon.ball) return 'url(#ao-ball)'; if(icon.holo) return 'url(#ao-card)'; return achOrbGrad(icon.orb||'#2a3350'); }
 function achOrb(icon,m){
   let st='';for(let i=0;i<10;i++){const a=(i/10)*Math.PI*2-Math.PI/2,x=75+44*Math.cos(a),y=66+44*Math.sin(a);st+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="2.3" fill="${m}"/><circle cx="${(x-.5).toFixed(1)}" cy="${(y-.6).toFixed(1)}" r=".85" fill="#fff" opacity=".75"/>`;}
   return `<circle cx="75" cy="66" r="44" fill="${achOrbFill(icon)}"/><ellipse cx="75" cy="70" rx="30" ry="27" fill="url(#acore)"/>${achInner(icon)}<ellipse cx="75" cy="93" rx="33" ry="19" fill="url(#ashade)"/>
   <circle cx="75" cy="66" r="44" fill="none" stroke="${m}" stroke-width="7.5"/><circle cx="75" cy="66" r="47.8" fill="none" stroke="#000" stroke-opacity=".3" stroke-width="1.2"/><circle cx="75" cy="66" r="40.2" fill="none" stroke="#000" stroke-opacity=".35" stroke-width="1.2"/>
   <path d="M45,54 A44,44 0 0 1 84,29" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="2.4" stroke-linecap="round"/>${st}<ellipse cx="61" cy="47" rx="16" ry="10" fill="url(#aspec)" transform="rotate(-25 61 47)"/>${achSpark(96,40,1)}${achSpark(58,86,.7)}`;
 }
-function achTrophy(tier,icon){const m=`url(#am-${tier})`;return `<svg viewBox="0 0 150 210"><ellipse cx="75" cy="64" rx="66" ry="76" fill="url(#aglow)"/><g filter="url(#ads)">${achStand(m)}${achLaurel(m)}${achOrb(icon,m)}</g></svg>`;}
+function achTrophy(tier,icon,pod){const m=`url(#am-${tier})`;return `<svg viewBox="0 0 150 ${pod?218:210}">${pod?achPodium():''}<ellipse cx="75" cy="64" rx="66" ry="76" fill="url(#aglow)"/><g filter="url(#ads)">${achStand(m)}${achLaurel(m)}${achOrb(icon,m)}</g></svg>`;}
 
 function achState(a){ const unlocked=!!unlockedAch[a.id]; let p=0,t=1; try{p=a.progress();t=a.target();}catch(e){} return {unlocked,p,t,pct:t?Math.min(100,Math.round(p/t*100)):0}; }
-function achCard(a,s){
-  const cls = 'ach-c'+(a.tier==='diamond'?' diamond':'');
-  if(a.secret && !s.unlocked) return `<div class="${cls}" onclick="openAchDetail('${a.id}')"><div class="ach-q">❓</div><div class="ach-nm">Conquista Secreta</div></div>`;
-  const tro = `<div class="ach-tro${s.unlocked?'':' locked'}">${achTrophy(a.tier,a.icon)}</div>`;
-  let foot;
-  if(s.unlocked) foot = `<div class="ach-done">✓ ${a.tierLabel} ${tierName(a.tier)}</div>`;
-  else foot = `<div class="ach-pbar"><div class="ach-pf" style="width:${s.pct}%"></div></div><div class="ach-pt">${s.p}/${s.t}</div>`;
-  return `<div class="${cls}" onclick="openAchDetail('${a.id}')"><div class="ach-nm">${escHtml(a.nome)}</div><div class="ach-gp">${a.grupo} · ${a.tierLabel}</div>${tro}${foot}</div>`;
+function tierNm(t){return {bronze:'Bronze',silver:'Prata',gold:'Ouro',diamond:'Diamante'}[t]||t;}
+// Agrupa conquistas em "tracks": 1 por conquista, tiers colapsados (modelo TCG Pocket)
+function achTracks(states){
+  const map={}, order=[];
+  for(const x of states){
+    const k=x.a.track||x.a.id;
+    if(!map[k]){ map[k]={key:k, grupo:x.a.grupo, secret:!!x.a.secret, members:[]}; order.push(k); }
+    map[k].members.push(x);
+  }
+  return order.map(k=>{
+    const tk=map[k];
+    tk.members.sort((a,b)=>(a.s.t||0)-(b.s.t||0));
+    const unl=tk.members.filter(m=>m.s.unlocked);
+    tk.current=unl.length?unl[unl.length-1]:null;
+    tk.next=tk.members.find(m=>!m.s.unlocked)||null;
+    tk.disp=tk.current||tk.members[0];
+    tk.complete=!tk.next;
+    tk.done=unl.length;
+    tk.name=tk.grupo==='Jornada'?'Jornada do Treinador':tk.members[0].a.nome;
+    return tk;
+  });
+}
+function achTrackCard(tk){
+  const cls='ach-c'+(tk.disp.a.tier==='diamond'&&tk.current?' diamond':'');
+  if(tk.secret && !tk.current)
+    return `<div class="${cls}" onclick="openAchTrack('${tk.key}')"><div class="ach-tro locked">${achTrophy('bronze',{q:1},true)}</div></div>`;
+  const tro=`<div class="ach-tro${tk.current?'':' locked'}">${achTrophy(tk.disp.a.tier,tk.disp.a.icon,true)}</div>`;
+  const foot = tk.complete
+    ? `<div class="ach-done">✓</div>`
+    : `<div class="ach-pbar"><div class="ach-pf" style="width:${tk.next.s.pct}%"></div></div>`;
+  return `<div class="${cls}" onclick="openAchTrack('${tk.key}')">${tro}${foot}</div>`;
 }
 function renderAchievements(){
   if(!POKEDEX_DATA.length) return;
@@ -5375,35 +5415,65 @@ function renderAchievements(){
   ensureAchDefs();
   const panel = document.getElementById('tab-conquistas'); if(!panel) return;
   const states = ACHIEVEMENTS.map(a=>({a,s:achState(a)}));
-  const total = states.length, unlocked = states.filter(x=>x.s.unlocked).length;
+  const tracks = achTracks(states);
+  const totalT = tracks.length, doneT = tracks.filter(t=>t.complete).length;
   const byTier={bronze:0,silver:0,gold:0,diamond:0}; states.forEach(x=>{ if(x.s.unlocked) byTier[x.a.tier]++; });
-  const quase = states.filter(x=>!x.s.unlocked && !x.a.secret && x.s.p>0).sort((a,b)=>b.s.pct-a.s.pct).slice(0,5);
+  const quase = tracks.filter(t=>t.next && !t.secret && t.next.s.p>0).sort((a,b)=>b.next.s.pct-a.next.s.pct).slice(0,6);
   const GROUPS=['Tudo','Tipos','Regiões','Jornada','Temáticas','Full Art','Secretas'];
+  const SECT=['Tipos','Regiões','Jornada','Temáticas','Full Art','Secretas'];
   const tierMini={bronze:'🥉',silver:'🥈',gold:'🥇',diamond:'💎'};
-  const filtered = states.filter(x=>achFilter==='Tudo'||x.a.grupo===achFilter);
   let html = `<div class="ach-head">
-      <div class="ach-total">${unlocked}<small> / ${total} insígnias</small></div>
+      <div class="ach-total">${doneT}<small> / ${totalT} conquistas</small></div>
       <div class="ach-tierchips">${Object.keys(byTier).map(t=>`<span class="ach-tc">${tierMini[t]} ${byTier[t]}</span>`).join('')}</div>
-      <div class="ach-obar"><div class="ach-of" style="width:${Math.round(unlocked/total*100)}%"></div></div>
+      <div class="ach-obar"><div class="ach-of" style="width:${totalT?Math.round(doneT/totalT*100):0}%"></div></div>
     </div>
     <div class="ach-chips">${GROUPS.map(g=>`<button class="ach-chip ${g===achFilter?'active':''}" onclick="achSetFilter('${g}')">${g}</button>`).join('')}</div>`;
-  if(achFilter==='Tudo' && quase.length) html += `<div class="ach-sect">⭐ Quase lá</div><div class="ach-strip">${quase.map(x=>achCard(x.a,x.s)).join('')}</div>`;
-  html += `<div class="ach-sect">${achFilter==='Tudo'?'Todas':achFilter}</div><div class="ach-grid">${filtered.map(x=>achCard(x.a,x.s)).join('')}</div>`;
+  if(achFilter==='Tudo'){
+    if(quase.length) html += `<div class="ach-sect">⭐ Quase lá</div><div class="ach-strip">${quase.map(achTrackCard).join('')}</div>`;
+    for(const g of SECT){
+      const gt=tracks.filter(t=>t.grupo===g); if(!gt.length) continue;
+      const gd=gt.filter(t=>t.complete).length;
+      html += `<div class="ach-sect">${g}<span class="ach-sc">${gd}/${gt.length}</span></div><div class="ach-grid">${gt.map(achTrackCard).join('')}</div>`;
+    }
+  } else {
+    const gt=tracks.filter(t=>t.grupo===achFilter);
+    html += `<div class="ach-grid">${gt.map(achTrackCard).join('')}</div>`;
+  }
   panel.innerHTML = html;
 }
 function achSetFilter(g){ achFilter=g; renderAchievements(); }
-function openAchDetail(id){
-  const a = ACHIEVEMENTS.find(x=>x.id===id); if(!a) return;
-  const s = achState(a); ensureAchDefs();
+function openAchTrack(key,sel){
+  if(!ACHIEVEMENTS.length) ACHIEVEMENTS = buildAchievements();
+  const states = ACHIEVEMENTS.map(a=>({a,s:achState(a)}));
+  const tk = achTracks(states).find(t=>t.key===key); if(!tk) return;
+  ensureAchDefs();
   let ov = document.getElementById('ach-detail-ov');
   if(!ov){ ov=document.createElement('div'); ov.id='ach-detail-ov'; ov.className='ach-detail-ov'; document.body.appendChild(ov); ov.addEventListener('click',e=>{if(e.target===ov)ov.classList.remove('open');}); }
-  const secret = a.secret && !s.unlocked;
-  const tro = secret ? `<div class="ach-q" style="font-size:5rem;height:200px;display:flex;align-items:center;justify-content:center">❓</div>` : `<div class="${a.tier==='diamond'?'diamond':''} ${s.unlocked?'':'ach-tro locked'}" style="display:inline-block">${achTrophy(a.tier,a.icon)}</div>`;
-  const prog = s.unlocked ? `<div style="color:#7CFC9B;font-weight:700">✓ Desbloqueada — ${tierName(a.tier)}</div>`
-    : secret ? `<div style="color:#9aa0bb">Conquista secreta — continue jogando…</div>`
-    : `<div>${a.tierLabel} ${tierName(a.tier)} · ${s.p}/${s.t} (${s.pct}%)</div>`;
+  const isSecretLocked = tk.secret && !tk.current;
+  const defIdx = tk.current ? tk.members.indexOf(tk.current) : 0;
+  const idx = (typeof sel==='number') ? sel : defIdx;
+  const sm = tk.members[idx];
+  const heroUnlocked = sm.s.unlocked;
+  const hero = isSecretLocked
+    ? `<div class="ach-tro locked" style="display:inline-block">${achTrophy('bronze',{q:1},true)}</div>`
+    : `<div class="${sm.a.tier==='diamond'&&heroUnlocked?'diamond':''} ach-tro${heroUnlocked?'':' locked'}" style="display:inline-block">${achTrophy(sm.a.tier,sm.a.icon,true)}</div>`;
+  let prog;
+  if(isSecretLocked) prog=`<div class="ach-d-line">Conquista secreta — continue colecionando…</div>`;
+  else if(tk.complete) prog=`<div class="ach-d-done">✓ Concluído — ${tierNm(tk.disp.a.tier)}</div>`;
+  else { const n=tk.next; prog=`<div class="ach-pbar wide"><div class="ach-pf" style="width:${n.s.pct}%"></div></div><div class="ach-d-line">${n.s.p} / ${n.s.t} · próximo: ${tierNm(n.a.tier)}</div>`; }
+  const hint = isSecretLocked ? '' : `<div class="ach-d-hint">${escHtml(sm.a.hint||tk.members[0].a.hint||'')}</div>`;
+  let medals='';
+  if(!isSecretLocked && tk.members.length>1){
+    medals=`<div class="ach-medals">${tk.members.map((m,i)=>{
+      const u=m.s.unlocked;
+      return `<div class="ach-medal${i===idx?' sel':''}${u?'':' locked'}" onclick="event.stopPropagation();openAchTrack('${tk.key}',${i})"><div class="ach-tro${u?'':' locked'}">${achTrophy(m.a.tier,m.a.icon,false)}</div><div class="ach-medal-t">${u?'✓ ':''}${m.s.t}</div></div>`;
+    }).join('')}</div>`;
+  }
   ov.innerHTML = `<div class="ach-detail"><button class="ach-x" onclick="document.getElementById('ach-detail-ov').classList.remove('open')">&times;</button>
-    ${tro}<h2>${secret?'???':escHtml(a.nome)}</h2><div class="ach-d-gp">${escHtml(a.grupo)}</div><div class="ach-d-prog">${prog}</div></div>`;
+    <div class="ach-hero">${hero}</div>
+    <h2>${isSecretLocked?'???':escHtml(tk.name)}</h2>
+    <div class="ach-d-gp">${escHtml(tk.grupo)}</div>
+    <div class="ach-d-prog">${prog}</div>${hint}${medals}</div>`;
   ov.classList.add('open');
 }
 
