@@ -5281,6 +5281,7 @@ function notifyAch(list){
 // =============================================
 let achFilter = 'Tudo';
 let achGradCache = {}, achGradN = 0;
+const ART = n => 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/' + n + '.png';
 function achMix(hex,w,t){const a=parseInt(hex.slice(1),16),r=(a>>16)&255,g=(a>>8)&255,b=a&255;const a2=parseInt(w.slice(1),16),r2=(a2>>16)&255,g2=(a2>>8)&255,b2=a2&255;const R=Math.round(r+(r2-r)*t),G=Math.round(g+(g2-g)*t),B=Math.round(b+(b2-b)*t);return '#'+((1<<24)+(R<<16)+(G<<8)+B).toString(16).slice(1);}
 function ensureAchDefs(){
   if (document.getElementById('ach-defs')) return;
