@@ -98,6 +98,16 @@ body {
   color: var(--text);
 }
 
+/* Pokédex = objetivo principal: destaque sutil mesmo quando inativa */
+.tab-btn.primary:not(.active) {
+  border-color: var(--gold);
+  color: var(--gold);
+  font-weight: 600;
+}
+.tab-btn.primary.active {
+  box-shadow: 0 0 0 1px var(--gold) inset, 0 4px 14px rgba(240,179,42,0.25);
+}
+
 /* Main content */
 .main-content {
   padding: 16px var(--content-pad);
@@ -1078,36 +1088,34 @@ body {
 }
 
 /* Pokedex Checklist Tab */
-.pokedex-progress {
-  background: var(--bg-card);
-  border-radius: var(--radius);
-  padding: 16px 20px;
+.pokedex-hero {
+  background: linear-gradient(135deg, rgba(233,69,96,0.12), rgba(255,215,0,0.08)), var(--bg-card);
+  border: 1px solid rgba(255,215,0,0.25);
+  border-radius: 16px;
+  padding: 16px 18px;
   margin-bottom: 16px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
 }
-
-.pokedex-progress .progress-text {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--text);
-  white-space: nowrap;
-}
-
-.pokedex-progress .progress-bar {
-  flex: 1;
-  min-width: 120px;
-  margin: 0;
-}
-
-.pokedex-progress .progress-pct {
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: var(--green);
-  white-space: nowrap;
-}
+.ph-goal { font-size: .8rem; color: var(--gold); font-weight: 700; letter-spacing: .3px; margin-bottom: 8px; }
+.ph-top { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.ph-count { font-size: 2rem; font-weight: 800; line-height: 1; color: var(--text); }
+.ph-count small { font-size: .85rem; font-weight: 500; color: var(--text-dim); }
+.ph-pct { font-size: 1.1rem; font-weight: 800; color: var(--green); }
+.pokedex-hero .progress-bar { height: 12px; margin: 8px 0 0; }
+.ph-onboard { font-size: .85rem; color: var(--text-dim); margin-top: 10px; line-height: 1.4; }
+.ph-cta-row { margin-top: 12px; }
+.ph-cta { background: var(--accent); color: #fff; border: 0; border-radius: 10px; padding: 10px 16px; font-weight: 700; font-size: .9rem; cursor: pointer; width: 100%; transition: filter .15s; }
+.ph-cta:hover { filter: brightness(1.08); }
+.ph-regions { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px,1fr)); gap: 8px; margin-top: 14px; }
+.ph-chip { background: rgba(255,255,255,0.04); border: 1px solid var(--gray); border-radius: 10px; padding: 7px 9px; cursor: pointer; text-align: left; transition: border-color .15s, background .15s; }
+.ph-chip:hover { border-color: var(--text-dim); }
+.ph-chip.active { border-color: var(--accent); background: rgba(233,69,96,0.12); }
+.ph-chip.done { border-color: var(--green); }
+.ph-chip-name { display: block; font-size: .72rem; font-weight: 700; color: var(--text); }
+.ph-chip-n { display: block; font-size: .68rem; color: var(--text-dim); margin: 2px 0 4px; }
+.ph-chip-bar { display: block; height: 4px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden; }
+.ph-chip-bar span { display: block; height: 100%; background: linear-gradient(90deg, var(--green), var(--gold)); }
+.header-progress { font-size: .8rem; font-weight: 700; color: var(--gold); background: rgba(255,215,0,0.1); border: 1px solid rgba(255,215,0,0.25); border-radius: 14px; padding: 3px 10px; cursor: pointer; white-space: nowrap; }
+@media (max-width: 560px) { .header-progress { display: none; } }
 
 .pokedex-filters {
   display: flex;
@@ -2255,6 +2263,21 @@ body {
   margin: 4px 0;
 }
 
+/* Settings revamp: perfil, seções, toggles */
+.settings-body { max-height: min(72vh, 600px); overflow-y: auto; }
+.set-profile { display: flex; align-items: center; gap: 12px; padding: 14px 20px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.set-prof-avatar { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; border: 2px solid var(--gold); flex-shrink: 0; }
+.set-prof-name { font-weight: 700; font-size: 1rem; }
+.set-prof-sub { font-size: .78rem; color: var(--text-dim); margin-top: 2px; }
+.set-section { font-size: .72rem; text-transform: uppercase; letter-spacing: .5px; color: var(--text-dim); font-weight: 700; padding: 14px 20px 4px; }
+.toggle-row { justify-content: flex-start; }
+.settings-toggle { margin-left: auto; width: 42px; height: 24px; border-radius: 14px; background: rgba(255,255,255,0.15); position: relative; flex-shrink: 0; transition: background .2s; }
+.settings-toggle.on { background: var(--green); }
+.settings-toggle .st-knob { position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 50%; background: #fff; transition: left .2s; }
+.settings-toggle.on .st-knob { left: 21px; }
+.set-about { font-size: .74rem; color: var(--text-dim); padding: 4px 20px 12px; line-height: 1.4; }
+html.reduce-motion *, html.reduce-motion *::before, html.reduce-motion *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
+
 /* Login overlay */
 .login-overlay {
   position: fixed;
@@ -2578,6 +2601,7 @@ body.modal-open{overflow:hidden}
 
 <div class="header">
   <h1>PokéDex Collector</h1>
+  <span class="header-progress" id="header-progress" title="Progresso da Pokédex" onclick="switchToPokedex()"></span>
   <div class="header-actions">
     <div class="user-info" id="user-info">
       <img class="user-avatar" id="user-avatar" src="" alt="" referrerpolicy="no-referrer">
@@ -2601,18 +2625,63 @@ body.modal-open{overflow:hidden}
       <button class="settings-close" onclick="closeSettings()">&times;</button>
     </div>
     <div class="settings-body">
+      <!-- Perfil -->
+      <div class="set-profile">
+        <img class="set-prof-avatar" id="set-prof-avatar" src="" alt="" referrerpolicy="no-referrer">
+        <div class="set-prof-info">
+          <div class="set-prof-name" id="set-prof-name">Treinador</div>
+          <div class="set-prof-sub" id="set-prof-sub"></div>
+        </div>
+      </div>
+
+      <!-- Preferências -->
+      <div class="set-section">Preferências</div>
+      <button class="settings-item toggle-row" onclick="togglePref('notifyAch')">
+        <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5S10.5 3.17 10.5 4v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+        <span>Notificar conquistas</span>
+        <span class="settings-toggle" data-pref="notifyAch" role="switch" aria-checked="true"><span class="st-knob"></span></span>
+      </button>
+      <button class="settings-item toggle-row" onclick="togglePref('vibrate')">
+        <svg viewBox="0 0 24 24"><path d="M0 15h2V9H0v6zm3 2h2V7H3v10zm19-8v6h2V9h-2zm-3 8h2V7h-2v10zM16.5 3h-9C6.67 3 6 3.67 6 4.5v15c0 .83.67 1.5 1.5 1.5h9c.83 0 1.5-.67 1.5-1.5v-15c0-.83-.67-1.5-1.5-1.5zM16 19H8V5h8v14z"/></svg>
+        <span>Vibrar ao desbloquear</span>
+        <span class="settings-toggle" data-pref="vibrate" role="switch" aria-checked="true"><span class="st-knob"></span></span>
+      </button>
+      <button class="settings-item toggle-row" onclick="togglePref('reduceMotion')">
+        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8 0-1.85.63-3.55 1.69-4.9L16.9 18.31A7.902 7.902 0 0 1 12 20zm6.31-3.1L7.1 5.69A7.902 7.902 0 0 1 12 4c4.41 0 8 3.59 8 8 0 1.85-.63 3.55-1.69 4.9z"/></svg>
+        <span>Reduzir animações</span>
+        <span class="settings-toggle" data-pref="reduceMotion" role="switch" aria-checked="false"><span class="st-knob"></span></span>
+      </button>
+
+      <!-- App -->
+      <div class="set-section">App</div>
+      <button class="settings-item" id="set-install" style="display:none" onclick="installApp();">
+        <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+        <span>Instalar app</span>
+      </button>
+      <button class="settings-item" onclick="shareProgress();">
+        <svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>
+        <span>Compartilhar progresso</span>
+      </button>
+
+      <!-- Dados -->
+      <div class="set-section">Dados</div>
       <button class="settings-item" onclick="exportCollection(); closeSettings();">
         <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
-        <span>Exportar Coleção</span>
+        <span>Exportar coleção</span>
       </button>
       <button class="settings-item" onclick="importCollection(); closeSettings();">
         <svg viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4v6zm-4 2h14v2H5v-2z"/></svg>
-        <span>Importar Coleção</span>
+        <span>Importar coleção</span>
       </button>
       <button class="settings-item danger" onclick="clearCollection(); closeSettings();">
         <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
-        <span>Limpar Coleção</span>
+        <span>Limpar coleção</span>
       </button>
+
+      <!-- Sobre -->
+      <div class="set-section">Sobre</div>
+      <div class="set-about">PokéDex Collector · dados <span id="set-version"></span><br>Cartas via pokemontcg.io. Pokémon © Nintendo/Game Freak/The Pokémon Company.</div>
+
       <div class="settings-divider"></div>
       <button class="settings-item danger" onclick="logout(); closeSettings();">
         <svg viewBox="0 0 24 24"><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5-5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg>
@@ -2623,21 +2692,29 @@ body.modal-open{overflow:hidden}
 </div>
 
 <div class="tabs">
-  <button class="tab-btn active" data-tab="pokedex">📕 Pokédex</button>
+  <button class="tab-btn primary active" data-tab="pokedex">📕 Pokédex</button>
   <button class="tab-btn" data-tab="grid">🃏 Coleção</button>
-  <button class="tab-btn" data-tab="sorteador">🎲 Sorteador</button>
-  <button class="tab-btn" data-tab="stats">📊 Estatísticas</button>
   <button class="tab-btn" data-tab="binder">📒 Fichário</button>
+  <button class="tab-btn" data-tab="stats">📊 Estatísticas</button>
   <button class="tab-btn" data-tab="conquistas">🏆 Conquistas</button>
+  <button class="tab-btn" data-tab="sorteador">🎲 Sorteador</button>
 </div>
 
 <div class="main-content">
   <!-- Pokedex Checklist Tab -->
   <div class="tab-panel active" id="tab-pokedex">
-    <div class="pokedex-progress" id="pokedex-progress">
-      <div class="progress-text" id="pokedex-progress-text">0 / 1025 Pokémon</div>
+    <div class="pokedex-hero" id="pokedex-progress">
+      <div class="ph-goal">🎯 Objetivo: completar a Pokédex</div>
+      <div class="ph-top">
+        <div class="ph-count"><span id="pokedex-progress-text">0</span> <small>/ 1025 Pokémon</small></div>
+        <div class="ph-pct" id="pokedex-progress-pct">0%</div>
+      </div>
       <div class="progress-bar"><div class="progress-fill" id="pokedex-progress-fill" style="width:0%"></div></div>
-      <div class="progress-pct" id="pokedex-progress-pct">0%</div>
+      <div class="ph-onboard" id="ph-onboard" style="display:none">Bem-vindo! Comece registrando os Pokémon que você já tem. Cada um conta pra completar a Pokédex.</div>
+      <div class="ph-cta-row">
+        <button class="ph-cta" id="ph-cta" onclick="pokedexContinue()">▶ Continuar registrando</button>
+      </div>
+      <div class="ph-regions" id="ph-regions"></div>
     </div>
     <div class="pokedex-filters">
       <input type="text" id="pokedex-search" placeholder="Buscar por nome ou número...">
@@ -3448,6 +3525,7 @@ function observePokedexSprites() {
   });
 }
 
+const GEN_REGION = {1:'Kanto',2:'Johto',3:'Hoenn',4:'Sinnoh',5:'Unova',6:'Kalos',7:'Alola',8:'Galar',9:'Paldea'};
 function updatePokedexProgress() {
   const total = POKEDEX_DATA.length || 1025;
   const caught = Object.keys(pokedexTracker).length;
@@ -3457,9 +3535,60 @@ function updatePokedexProgress() {
   const fillEl = document.getElementById('pokedex-progress-fill');
   const pctEl = document.getElementById('pokedex-progress-pct');
 
-  if (textEl) textEl.textContent = `${caught} / ${total} Pokémon`;
+  if (textEl) textEl.textContent = caught;
   if (fillEl) fillEl.style.width = pct + '%';
   if (pctEl) pctEl.textContent = pct + '%';
+
+  const hp = document.getElementById('header-progress');
+  if (hp) hp.textContent = `📕 ${caught}/${total}`;
+  const ob = document.getElementById('ph-onboard');
+  if (ob) ob.style.display = caught === 0 ? 'block' : 'none';
+  const cta = document.getElementById('ph-cta');
+  if (cta) cta.style.display = (caught >= total || caught === 0) ? 'none' : '';
+  renderRegionChips();
+}
+function renderRegionChips() {
+  const wrap = document.getElementById('ph-regions');
+  if (!wrap || !POKEDEX_DATA.length) return;
+  const agg = {};
+  for (const p of POKEDEX_DATA) {
+    const g = p.generation; if (!g) continue;
+    if (!agg[g]) agg[g] = { t:0, c:0 };
+    agg[g].t++;
+    if (pokedexTracker[p.number]) agg[g].c++;
+  }
+  const cur = (document.getElementById('pokedex-gen-filter') || {}).value || '';
+  wrap.innerHTML = Object.keys(agg).sort((a,b)=>a-b).map(g=>{
+    const { t, c } = agg[g]; const pct = t ? Math.round(c/t*100) : 0; const done = c>=t && t>0;
+    return `<button class="ph-chip${String(g)===cur?' active':''}${done?' done':''}" onclick="pokedexFilterRegion('${g}')">
+      <span class="ph-chip-name">${GEN_REGION[g] || ('Gen '+g)}${done?' ✓':''}</span>
+      <span class="ph-chip-n">${c}/${t}</span>
+      <span class="ph-chip-bar"><span style="width:${pct}%"></span></span>
+    </button>`;
+  }).join('');
+}
+function pokedexFilterRegion(g) {
+  const genEl = document.getElementById('pokedex-gen-filter'); if (!genEl) return;
+  genEl.value = (genEl.value === String(g)) ? '' : String(g);
+  updateClearPokedexFiltersBtn();
+  lastPokedexFilteredNums = null;
+  renderPokedexGrid();
+  renderRegionChips();
+  const grid = document.getElementById('pokedex-checklist-grid');
+  if (grid) grid.scrollIntoView({ behavior:'smooth', block:'start' });
+}
+function pokedexContinue() {
+  const st = document.getElementById('pokedex-status-filter'); if (st) st.value = 'missing';
+  updateClearPokedexFiltersBtn();
+  lastPokedexFilteredNums = null;
+  renderPokedexGrid();
+  const grid = document.getElementById('pokedex-checklist-grid');
+  if (grid) grid.scrollIntoView({ behavior:'smooth', block:'start' });
+}
+function switchToPokedex() {
+  const btn = document.querySelector('.tab-btn[data-tab="pokedex"]');
+  if (btn) btn.click();
+  window.scrollTo({ top:0, behavior:'smooth' });
 }
 
 // =============================================
@@ -3489,6 +3618,7 @@ function setupPokedexFilters() {
     updateClearPokedexFiltersBtn();
     lastPokedexFilteredNums = null;
     renderPokedexGrid();
+    renderRegionChips();
   };
   const searchEl = document.getElementById('pokedex-search');
   if (searchEl) {
@@ -3503,9 +3633,71 @@ function setupPokedexFilters() {
   if (statusEl) statusEl.addEventListener('change', onFilterChange);
 }
 
+// =============================================
+// PREFERÊNCIAS (localStorage, custo zero)
+// =============================================
+const PREFS_KEY = 'pokedex_prefs';
+const DEFAULT_PREFS = { notifyAch: true, vibrate: true, reduceMotion: false };
+let PREFS = (() => { try { return Object.assign({}, DEFAULT_PREFS, JSON.parse(localStorage.getItem(PREFS_KEY) || '{}')); } catch (e) { return Object.assign({}, DEFAULT_PREFS); } })();
+function savePrefs() { try { localStorage.setItem(PREFS_KEY, JSON.stringify(PREFS)); } catch (e) {} }
+function applyPrefs() { document.documentElement.classList.toggle('reduce-motion', !!PREFS.reduceMotion); }
+function setPref(key, val) { PREFS[key] = val; savePrefs(); applyPrefs(); }
+function togglePref(key) { setPref(key, !PREFS[key]); renderSettingsToggles(); }
+function renderSettingsToggles() {
+  document.querySelectorAll('.settings-toggle[data-pref]').forEach(el => {
+    const on = !!PREFS[el.dataset.pref];
+    el.classList.toggle('on', on);
+    el.setAttribute('aria-checked', on ? 'true' : 'false');
+  });
+}
+applyPrefs();
+
+function renderSettingsProfile() {
+  const nameEl = document.getElementById('set-prof-name');
+  const avEl = document.getElementById('set-prof-avatar');
+  const subEl = document.getElementById('set-prof-sub');
+  if (currentUser) {
+    if (nameEl) nameEl.textContent = currentUser.displayName || 'Treinador';
+    if (avEl) { if (currentUser.photoURL) { avEl.src = currentUser.photoURL; avEl.style.display = ''; } else avEl.style.display = 'none'; }
+  }
+  const total = POKEDEX_DATA.length || 1025;
+  const caught = Object.keys(pokedexTracker).length;
+  const ach = Object.keys(unlockedAch || {}).length;
+  if (subEl) subEl.textContent = `📕 ${caught}/${total} Pokédex · 🏆 ${ach} conquistas`;
+  const v = document.getElementById('set-version');
+  if (v) v.textContent = DATA_VERSION;
+}
+
+// PWA install
+let deferredInstallPrompt = null;
+window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredInstallPrompt = e; updateInstallItem(); });
+window.addEventListener('appinstalled', () => { deferredInstallPrompt = null; updateInstallItem(); });
+function updateInstallItem() { const it = document.getElementById('set-install'); if (it) it.style.display = deferredInstallPrompt ? '' : 'none'; }
+async function installApp() {
+  if (!deferredInstallPrompt) { uiAlert('O app já está instalado ou seu navegador não oferece instalação aqui.'); return; }
+  deferredInstallPrompt.prompt();
+  try { await deferredInstallPrompt.userChoice; } catch (e) {}
+  deferredInstallPrompt = null; updateInstallItem();
+}
+
+// Compartilhar progresso
+async function shareProgress() {
+  const total = POKEDEX_DATA.length || 1025;
+  const caught = Object.keys(pokedexTracker).length;
+  const pct = ((caught / total) * 100).toFixed(1);
+  const text = `Minha Pokédex: ${caught}/${total} (${pct}%) registrados! 📕 — PokéDex Collector`;
+  try {
+    if (navigator.share) await navigator.share({ title: 'PokéDex Collector', text, url: location.href });
+    else { await navigator.clipboard.writeText(text + ' ' + location.href); uiAlert('Progresso copiado para a área de transferência!'); }
+  } catch (e) {}
+}
+
 // Settings modal
 function openSettings() {
   const ov = document.getElementById('settings-overlay');
+  renderSettingsProfile();
+  renderSettingsToggles();
+  updateInstallItem();
   ov.classList.add('open');
   openOverlay(ov);
 }
@@ -5280,6 +5472,8 @@ function showAchModal(list){
   document.body.appendChild(ov);
 }
 function notifyAch(list){
+  if (typeof PREFS !== 'undefined' && !PREFS.notifyAch) return;
+  if (typeof PREFS !== 'undefined' && PREFS.vibrate && navigator.vibrate) { try { navigator.vibrate([40,30,40]); } catch(e){} }
   const rank = { bronze:0, silver:1, gold:2, diamond:3 };
   list = list.slice().sort((a,b) => rank[b.tier] - rank[a.tier]);
   if (list.length === 1) { (rank[list[0].tier] >= 2) ? showAchModal(list) : showAchToast(list[0]); }
