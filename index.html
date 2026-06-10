@@ -5998,7 +5998,7 @@ async function deleteCollection(id) {
 // ---- Roteamento dentro de 🗂️ Coleções ----
 function colRoute(view, colId) {
   colState = { view, colId: colId || null };
-  ['colhub', 'grid', 'binder', 'colview'].forEach(k => { const e = document.getElementById('tab-' + k); if (e) e.classList.remove('active'); });
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active')); // limpa também o painel da aba anterior
   const ctx = document.getElementById('col-ctxbar');
   if (view === 'hub') {
     if (ctx) ctx.style.display = 'none';
