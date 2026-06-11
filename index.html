@@ -6322,7 +6322,7 @@ function cbAnimateTurn(direction, cb) {
 // Ano de lançamento do set da carta (cacheado via detalhes)
 async function cardYear(c) {
   try {
-    if (c.custom) return null;
+    if (c.custom) return c.year || null;
     if (c.source === 'ptcg') { const d = await ptcgCardDetail(c.id); const rd = d && d.set && d.set.releaseDate; return rd ? parseInt(String(rd).slice(0, 4)) : null; }
     const d = await tcgCardDetail(c.lang, c.id); if (!d || !d.set || !d.set.id) return null;
     const sd = await tcgSetDetail(c.lang, d.set.id); const rd = sd && sd.releaseDate; return rd ? parseInt(String(rd).slice(0, 4)) : null;
@@ -6376,7 +6376,7 @@ function binderAddCards(colId, startPage, startPos, cards) {
   const col = userCollections[colId]; const b = ensureBinder(col); const { per } = gridDims(b.grid);
   const occ = new Set(b.cards.map(c => c.page * per + c.pos));
   let lin = startPage * per + startPos;
-  for (const card of cards) { while (occ.has(lin)) lin++; const e = { page: Math.floor(lin / per), pos: lin % per, id: card.id, lang: card.lang, name: card.name, img: card.img }; if (card.custom) e.custom = true; if (card.source) e.source = card.source; b.cards.push(e); occ.add(lin); lin++; }
+  for (const card of cards) { while (occ.has(lin)) lin++; const e = { page: Math.floor(lin / per), pos: lin % per, id: card.id, lang: card.lang, name: card.name, img: card.img }; if (card.custom) e.custom = true; if (card.year) e.year = card.year; if (card.source) e.source = card.source; b.cards.push(e); occ.add(lin); lin++; }
   const maxLin = b.cards.reduce((m, c) => Math.max(m, c.page * per + c.pos), 0);
   b.pageCount = Math.max(b.pageCount, Math.floor(maxLin / per) + 1);
   persistCollection(colId, col);
@@ -6536,10 +6536,16 @@ async function acAddUrl() {
     const ok = await uiConfirm('Esse link parece ser de uma PÁGINA, não da imagem (a carta não vai aparecer).\n\nDica: clique com o botão direito na imagem da carta → "Copiar endereço da imagem" e cole aqui (termina em .jpg/.png).\n\nAdicionar mesmo assim?', { okLabel: 'Adicionar assim', cancelLabel: 'Cancelar', danger: true });
     if (!ok) return;
   }
+  const lang = ((document.getElementById('ac-urllang') || {}).value || acState.lang);
+  const yRaw = parseInt(((document.getElementById('ac-urlyear') || {}).value || '').trim(), 10);
+  const year = (yRaw >= 1996 && yRaw <= 2099) ? yRaw : null;
   const id = 'url-' + Date.now().toString(36) + Math.floor(Math.random() * 1e4).toString(36);
-  acState.selected.push({ id, name: nm || 'Carta personalizada', img: url, lang: acState.lang, custom: true });
+  const entry = { id, name: nm || 'Carta personalizada', img: url, lang, custom: true };
+  if (year) entry.year = year;
+  acState.selected.push(entry);
   const ui = document.getElementById('ac-url'); if (ui) ui.value = '';
   const un = document.getElementById('ac-urlname'); if (un) un.value = '';
+  const uy = document.getElementById('ac-urlyear'); if (uy) uy.value = '';
   renderAddCardsTray();
   showToast('Imagem adicionada à seleção', 'success');
 }
@@ -6567,6 +6573,11 @@ function renderAddCards() {
     <input class="ac-sel" id="ac-url" placeholder="Link direto da imagem (.jpg/.png)">
     <div class="ac-hint">Na LigaPokémon: botão direito na imagem da carta → “Copiar endereço da imagem”.</div>
     <input class="ac-sel" id="ac-urlname" placeholder="Nome (opcional)" style="margin-top:6px">
+    <div style="display:flex;gap:6px;margin-top:6px">
+      <select class="ac-sel" id="ac-urllang" style="flex:1">${AC_LANGS.map(([l, lbl]) => `<option value="${l}"${acState.lang === l ? ' selected' : ''}>${lbl}</option>`).join('')}</select>
+      <input class="ac-sel" id="ac-urlyear" type="number" inputmode="numeric" min="1996" max="2099" placeholder="Ano (ex.: 2010)" style="flex:1">
+    </div>
+    <div class="ac-hint">Ano e idioma ajudam o botão “Organizar” a posicionar a carta corretamente.</div>
     <button class="ac-clearf" style="margin-top:8px" onclick="acAddUrl()">Adicionar imagem</button>`;
   const lEl = document.getElementById('ac-langs');
   if (lEl) lEl.innerHTML = AC_LANGS.map(([l, lbl]) => `<button class="ac-lang${acState.lang === l ? ' active' : ''}" onclick="acSetLang('${l}')">${lbl}</button>`).join('');
