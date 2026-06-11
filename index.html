@@ -6230,7 +6230,7 @@ let binderPage = 0;
 const GRID_SIZES = ['2x2', '3x3', '4x3', '4x4', '4x5', '5x4'];
 function gridDims(g) { const p = (g || '4x4').split('x').map(Number); return { cols: p[0], rows: p[1], per: p[0] * p[1] }; }
 function ensureBinder(col) { if (!col.binder) col.binder = { grid: '4x4', pageCount: 1, cards: [] }; return col.binder; }
-function cardImg(c, q) { return c && c.img ? (c.img + '/' + (q === 'low' ? 'low.webp' : 'high.webp')) : CARD_IMG_FALLBACK; }
+function cardImg(c, q) { if (!c || !c.img) return CARD_IMG_FALLBACK; if (c.custom) return c.img; return c.img + '/' + (q === 'low' ? 'low.webp' : 'high.webp'); }
 function binderSlots(col, page) { const { per } = gridDims(col.binder.grid); const arr = new Array(per).fill(null); for (const c of col.binder.cards) { if (c.page === page && c.pos < per) arr[c.pos] = c; } return arr; }
 function reflowBinder(b) { const { per } = gridDims(b.grid); const o = b.cards.slice().sort((a, b2) => (a.page - b2.page) || (a.pos - b2.pos)); o.forEach((c, i) => { c.page = Math.floor(i / per); c.pos = i % per; }); b.cards = o; b.pageCount = Math.max(1, Math.ceil(o.length / per) || 1); }
 // HTML das cartas de UMA página (filhos da .binder-page)
@@ -6331,7 +6331,7 @@ function binderAddCards(colId, startPage, startPos, cards) {
   const col = userCollections[colId]; const b = ensureBinder(col); const { per } = gridDims(b.grid);
   const occ = new Set(b.cards.map(c => c.page * per + c.pos));
   let lin = startPage * per + startPos;
-  for (const card of cards) { while (occ.has(lin)) lin++; b.cards.push({ page: Math.floor(lin / per), pos: lin % per, id: card.id, lang: card.lang, name: card.name, img: card.img }); occ.add(lin); lin++; }
+  for (const card of cards) { while (occ.has(lin)) lin++; const e = { page: Math.floor(lin / per), pos: lin % per, id: card.id, lang: card.lang, name: card.name, img: card.img }; if (card.custom) e.custom = true; b.cards.push(e); occ.add(lin); lin++; }
   const maxLin = b.cards.reduce((m, c) => Math.max(m, c.page * per + c.pos), 0);
   b.pageCount = Math.max(b.pageCount, Math.floor(maxLin / per) + 1);
   persistCollection(colId, col);
@@ -6446,6 +6446,18 @@ function acRemoveSel(id, lang) {
   if (i >= 0) acState.selected.splice(i, 1);
   renderAddCardsResults(); renderAddCardsTray();
 }
+// Carta fora do catálogo: adicionar por URL de imagem (ex.: LigaPokémon)
+function acAddUrl() {
+  const url = ((document.getElementById('ac-url') || {}).value || '').trim();
+  const nm = ((document.getElementById('ac-urlname') || {}).value || '').trim();
+  if (!/^https?:\/\//i.test(url)) { uiAlert('Cole uma URL de imagem válida (começando com http).'); return; }
+  const id = 'url-' + Date.now().toString(36) + Math.floor(Math.random() * 1e4).toString(36);
+  acState.selected.push({ id, name: nm || 'Carta personalizada', img: url, lang: acState.lang, custom: true });
+  const ui = document.getElementById('ac-url'); if (ui) ui.value = '';
+  const un = document.getElementById('ac-urlname'); if (un) un.value = '';
+  renderAddCardsTray();
+  showToast('Imagem adicionada à seleção', 'success');
+}
 function acConfirm() {
   if (!acState.selected.length) return;
   binderAddCards(acState.colId, acState.page, acState.pos, acState.selected);
@@ -6465,7 +6477,11 @@ function renderAddCards() {
     <div class="ac-flabel">Categoria</div>${sel(f.category, opts.categories, 'Todas', 'category')}
     <div class="ac-flabel">Set / Edição</div>${dlInput(f.set, 'ac-dl-sets', 'Buscar set…', 'set', opts.sets, true)}
     <div class="ac-flabel">Artista</div>${dlInput(f.artist, 'ac-dl-artists', 'Buscar artista…', 'artist', opts.illustrators, false)}
-    <button class="ac-clearf" onclick="acClearFilters()">Limpar filtros</button>`;
+    <button class="ac-clearf" onclick="acClearFilters()">Limpar filtros</button>
+    <div class="ac-flabel" style="margin-top:18px">Não está na lista? Adicionar por imagem</div>
+    <input class="ac-sel" id="ac-url" placeholder="URL da imagem (ex.: LigaPokémon)">
+    <input class="ac-sel" id="ac-urlname" placeholder="Nome (opcional)" style="margin-top:6px">
+    <button class="ac-clearf" style="margin-top:8px" onclick="acAddUrl()">Adicionar imagem</button>`;
   const lEl = document.getElementById('ac-langs');
   if (lEl) lEl.innerHTML = AC_LANGS.map(([l, lbl]) => `<button class="ac-lang${acState.lang === l ? ' active' : ''}" onclick="acSetLang('${l}')">${lbl}</button>`).join('');
   const qi = document.getElementById('ac-query'); if (qi && qi.value !== acState.query) qi.value = acState.query;
@@ -6545,6 +6561,11 @@ async function openBinderCardDetail(colId, page, pos) {
   const card = col.binder.cards.find(c => c.page === page && c.pos === pos); if (!card) return;
   const ov = document.getElementById('binder-detail-overlay'); const cont = document.getElementById('binder-detail');
   const shell = body => `<button class="detail-close" onclick="closeBinderDetail()">×</button><img class="detail-img" src="${escHtml(cardImg(card, 'high'))}" alt="${escHtml(card.name || '')}" onerror="this.onerror=null;this.src=CARD_IMG_FALLBACK"><div class="detail-body"><h3>${escHtml(card.name || '')}</h3>${body}</div>`;
+  const langLbl0 = ({ en: 'Inglês', pt: 'Português', ja: 'Japonês' })[card.lang] || card.lang;
+  if (card.custom) { // carta adicionada por URL — sem dados da API
+    cont.innerHTML = shell(`<div class="detail-row"><span class="dl">Tipo</span><span class="dv">Carta personalizada</span></div><div class="detail-row"><span class="dl">Idioma</span><span class="dv">${escHtml(langLbl0)}</span></div>`);
+    ov.classList.add('open'); openOverlay(ov); return;
+  }
   cont.innerHTML = shell('<div class="ttp-load">Carregando…</div>');
   ov.classList.add('open'); openOverlay(ov);
   const d = await tcgCardDetail(card.lang, card.id); if (!d || !ov.classList.contains('open')) return;
