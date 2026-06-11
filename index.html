@@ -2389,9 +2389,16 @@ html.reduce-motion *, html.reduce-motion *::before, html.reduce-motion *::after 
 .ac-flabel { font-size: .7rem; text-transform: uppercase; letter-spacing: .4px; color: var(--text-dim); font-weight: 700; margin: 10px 0 4px; }
 .ac-flabel:first-child { margin-top: 0; }
 .ac-sel { width: 100%; padding: 8px; border-radius: 8px; border: 1px solid var(--gray); background: var(--bg-dark); color: var(--text); font-size: .82rem; }
-.ac-results { overflow-y: auto; padding: 16px; display: grid; grid-template-columns: repeat(auto-fill, minmax(122px,1fr)); gap: 18px 16px; align-content: start; }
-.ac-card { position: relative; aspect-ratio: 245/342; cursor: pointer; border-radius: 8px; overflow: hidden; }
-.ac-card img { width: 100%; height: 100%; object-fit: contain; }
+.ac-results { overflow-y: auto; padding: 18px; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px,1fr)); gap: 24px 20px; align-content: start; }
+.ac-card { position: relative; aspect-ratio: 245/342; cursor: pointer; border-radius: 10px; background: #0d0d15; box-shadow: 0 2px 8px rgba(0,0,0,.4); }
+.ac-card img { width: 100%; height: 100%; object-fit: contain; display: block; border-radius: 10px; }
+.ac-tooltip { position: fixed; z-index: 600; display: none; width: 250px; background: #14141f; border: 1px solid var(--gray); border-radius: 12px; padding: 12px 14px; box-shadow: 0 10px 30px rgba(0,0,0,.6); pointer-events: none; font-size: .82rem; }
+.ttp-cat { font-size: .7rem; text-transform: uppercase; letter-spacing: .4px; color: var(--text-dim); font-weight: 700; }
+.ttp-name { font-weight: 800; font-size: 1rem; margin: 2px 0 8px; }
+.ttp-row, .ac-tooltip .detail-row { display: flex; flex-direction: column; padding: 4px 0; border-top: 1px solid rgba(255,255,255,.06); }
+.ttp-l { font-size: .68rem; text-transform: uppercase; letter-spacing: .3px; color: var(--text-dim); font-weight: 700; }
+.ttp-v { font-weight: 600; }
+.ttp-load { color: var(--text-dim); padding: 6px 0; }
 .ac-card .ac-pick { position: absolute; top: 5px; right: 5px; width: 24px; height: 24px; border-radius: 50%; background: var(--green); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; opacity: 0; transform: scale(.6); transition: .15s; }
 .ac-card.on { outline: 3px solid var(--green); outline-offset: -3px; }
 .ac-card.on .ac-pick { opacity: 1; transform: scale(1); }
@@ -3027,6 +3034,7 @@ body.modal-open{overflow:hidden}
     </div>
   </div>
 </div>
+<div class="ac-tooltip" id="ac-tooltip"></div>
 
 <!-- Boot loading -->
 <div id="boot-loading"><div class="spinner"></div><div class="bl-txt">Carregando sua coleção…</div></div>
@@ -6234,7 +6242,7 @@ function renderBinderView(colId) {
     ${col.description ? `<div class="bv-desc">${escHtml(col.description)}</div>` : ''}
     <div class="bv-grid" style="grid-template-columns:repeat(${cols},1fr);grid-template-rows:repeat(${rows},1fr);aspect-ratio:${cols * 245}/${rows * 342}">`;
   slots.forEach((c, i) => {
-    if (c) html += `<div class="bv-slot filled" draggable="true" ondragstart="binderDragStart(event,${page},${i})" ondragover="event.preventDefault()" ondrop="binderDrop(event,'${colId}',${page},${i})"><img loading="lazy" referrerpolicy="no-referrer" src="${escHtml(cardImg(c, 'high'))}" alt="${escHtml(c.name || '')}" onerror="this.onerror=null;this.src=CARD_IMG_FALLBACK"><button class="bv-rm" title="Remover" onclick="binderRemove('${colId}',${page},${i})">×</button></div>`;
+    if (c) html += `<div class="bv-slot filled" draggable="true" ondragstart="binderDragStart(event,${page},${i})" ondragover="event.preventDefault()" ondrop="binderDrop(event,'${colId}',${page},${i})" onclick="openBinderCardDetail('${colId}',${page},${i})"><img loading="lazy" referrerpolicy="no-referrer" src="${escHtml(cardImg(c, 'high'))}" alt="${escHtml(c.name || '')}" onerror="this.onerror=null;this.src=CARD_IMG_FALLBACK"><button class="bv-rm" title="Remover" onclick="event.stopPropagation();binderRemove('${colId}',${page},${i})">×</button></div>`;
     else html += `<div class="bv-slot empty" ondragover="event.preventDefault()" ondrop="binderDrop(event,'${colId}',${page},${i})" onclick="openAddCards('${colId}',${page},${i})"><span>＋</span></div>`;
   });
   html += `</div>`;
@@ -6320,8 +6328,10 @@ async function acLoadOptions() {
       fetch(base + 'categories').then(r => r.json()).catch(() => []),
       fetch(base + 'illustrators').then(r => r.json()).catch(() => []),
     ]);
-    acOptsCache[lang] = { types: types || [], rarities: rarities || [], sets: (sets || []).map(s => ({ id: s.id, name: s.name })).reverse(), categories: cats || [], illustrators: (illus || []).slice().sort() };
-  } catch (e) { acOptsCache[lang] = { types: [], rarities: [], sets: [], categories: [], illustrators: [] }; }
+    const setList = (sets || []).map(s => ({ id: s.id, name: s.name })).reverse();
+    const setNameToId = {}; for (const s of setList) setNameToId[s.name] = s.id;
+    acOptsCache[lang] = { types: types || [], rarities: rarities || [], sets: setList, setNameToId, categories: cats || [], illustrators: (illus || []).slice().sort() };
+  } catch (e) { acOptsCache[lang] = { types: [], rarities: [], sets: [], setNameToId: {}, categories: [], illustrators: [] }; }
   return acOptsCache[lang];
 }
 async function acSearch() {
@@ -6333,9 +6343,9 @@ async function acSearch() {
   if (query.trim()) p.set('name', 'like:' + query.trim());
   if (filters.types) p.set('types', filters.types);
   if (filters.rarity) p.set('rarity', filters.rarity);
-  if (filters.set) p.set('set', filters.set);
+  if (filters.set) { const opts = acOptsCache[lang] || {}; const sid = (opts.setNameToId || {})[filters.set]; if (sid) p.set('set', sid); }
   if (filters.category) p.set('category', filters.category);
-  if (filters.artist) p.set('illustrator', filters.artist);
+  if (filters.artist) p.set('illustrator', 'like:' + filters.artist);
   p.set('pagination:page', '1'); p.set('pagination:itemsPerPage', '60'); p.set('sort:field', 'name'); p.set('sort:order', 'ASC');
   const myLang = lang;
   try {
@@ -6363,12 +6373,13 @@ function renderAddCards() {
   const opts = acOptsCache[acState.lang] || { types: [], rarities: [], sets: [], categories: [], illustrators: [] };
   const f = acState.filters;
   const sel = (val, arr, ph, key, isObj) => `<select class="ac-sel" onchange="acSetFilter('${key}',this.value)"><option value="">${ph}</option>${arr.map(o => { const v = isObj ? o.id : o; const l = isObj ? o.name : o; return `<option value="${escHtml(String(v))}"${String(val) === String(v) ? ' selected' : ''}>${escHtml(String(l))}</option>`; }).join('')}</select>`;
+  const dlInput = (val, listId, ph, key, arr, isObj) => `<input class="ac-sel" list="${listId}" placeholder="${ph}" value="${escHtml(val || '')}" onchange="acSetFilter('${key}',this.value)"><datalist id="${listId}">${arr.map(o => `<option value="${escHtml(isObj ? o.name : o)}">`).join('')}</datalist>`;
   const fEl = document.getElementById('ac-filters');
   if (fEl) fEl.innerHTML = `<div class="ac-flabel">Tipo</div>${sel(f.types, opts.types, 'Todos os tipos', 'types')}
     <div class="ac-flabel">Raridade</div>${sel(f.rarity, opts.rarities, 'Todas', 'rarity')}
     <div class="ac-flabel">Categoria</div>${sel(f.category, opts.categories, 'Todas', 'category')}
-    <div class="ac-flabel">Set / Edição</div>${sel(f.set, opts.sets, 'Todos os sets', 'set', true)}
-    <div class="ac-flabel">Artista</div>${sel(f.artist, opts.illustrators, 'Todos os artistas', 'artist')}`;
+    <div class="ac-flabel">Set / Edição</div>${dlInput(f.set, 'ac-dl-sets', 'Buscar set…', 'set', opts.sets, true)}
+    <div class="ac-flabel">Artista</div>${dlInput(f.artist, 'ac-dl-artists', 'Buscar artista…', 'artist', opts.illustrators, false)}`;
   const lEl = document.getElementById('ac-langs');
   if (lEl) lEl.innerHTML = AC_LANGS.map(([l, lbl]) => `<button class="ac-lang${acState.lang === l ? ' active' : ''}" onclick="acSetLang('${l}')">${lbl}</button>`).join('');
   const qi = document.getElementById('ac-query'); if (qi && qi.value !== acState.query) qi.value = acState.query;
@@ -6378,7 +6389,7 @@ function renderAddCardsResults() {
   const wrap = document.getElementById('ac-results'); if (!wrap) return;
   if (acState.loading) { wrap.innerHTML = '<div class="ac-empty">Buscando…</div>'; return; }
   if (!acState.results.length) { wrap.innerHTML = '<div class="ac-empty">Busque por nome/número ou use os filtros ao lado.</div>'; return; }
-  wrap.innerHTML = acState.results.map(c => { const on = acState.selected.some(s => s.id === c.id); return `<div class="ac-card${on ? ' on' : ''}" onclick="acToggle('${escHtml(c.id)}')"><img loading="lazy" referrerpolicy="no-referrer" src="${escHtml(c.image + '/low.webp')}" alt="${escHtml(c.name)}" onerror="this.onerror=null;this.src=CARD_IMG_FALLBACK"><div class="ac-pick">✓</div></div>`; }).join('');
+  wrap.innerHTML = acState.results.map(c => { const on = acState.selected.some(s => s.id === c.id); return `<div class="ac-card${on ? ' on' : ''}" data-id="${escHtml(c.id)}" onclick="acToggle('${escHtml(c.id)}')" onmouseenter="acCardHover(event,'${escHtml(c.id)}')" onmouseleave="acCardLeave()"><img loading="lazy" referrerpolicy="no-referrer" src="${escHtml(c.image + '/low.webp')}" alt="${escHtml(c.name)}" onerror="this.onerror=null;this.src=CARD_IMG_FALLBACK"><div class="ac-pick">✓</div></div>`; }).join('');
 }
 function renderAddCardsTray() {
   const t = document.getElementById('ac-selected'); if (!t) return;
@@ -6387,6 +6398,74 @@ function renderAddCardsTray() {
   if (btn) { btn.textContent = n ? ('Adicionar ' + n + ' carta(s)') : 'Adicionar'; btn.disabled = !n; }
   if (!n) { t.innerHTML = '<div class="ac-empty">Cartas selecionadas aparecem aqui.</div>'; return; }
   t.innerHTML = acState.selected.map(s => `<div class="ac-srow"><img referrerpolicy="no-referrer" src="${escHtml(s.img + '/low.webp')}" onerror="this.onerror=null;this.src=CARD_IMG_FALLBACK"><span>${escHtml(s.name)}</span><button onclick="acToggle('${escHtml(s.id)}')">×</button></div>`).join('');
+}
+
+// =============================================
+// TCGdex — detalhe de carta/set (tooltip + modal do fichário)
+// =============================================
+const tcgDetailCache = {}, tcgSetCache = {};
+async function tcgCardDetail(lang, id) { const k = lang + ':' + id; if (tcgDetailCache[k]) return tcgDetailCache[k]; try { const d = await fetch('https://api.tcgdex.net/v2/' + lang + '/cards/' + id).then(r => r.json()); tcgDetailCache[k] = d; return d; } catch (e) { return null; } }
+async function tcgSetDetail(lang, setId) { const k = lang + ':' + setId; if (tcgSetCache[k]) return tcgSetCache[k]; try { const d = await fetch('https://api.tcgdex.net/v2/' + lang + '/sets/' + setId).then(r => r.json()); tcgSetCache[k] = d; return d; } catch (e) { return null; } }
+function catPT(c) { return ({ Pokemon: 'Pokémon', Trainer: 'Treinador', Energy: 'Energia' })[c] || c || ''; }
+function cardEdition(d, sd) {
+  const abbr = (sd && sd.abbr && sd.abbr.official) ? sd.abbr.official : (d.set && d.set.id ? d.set.id.toUpperCase() : '');
+  const year = (sd && sd.releaseDate) ? String(sd.releaseDate).slice(0, 4) : '';
+  let ed = (d.set && d.set.name) ? d.set.name : '';
+  if (abbr) ed += ' - ' + abbr; if (year) ed += ' - ' + year;
+  return ed;
+}
+function buildCardTip(d, sd) {
+  const dex = (d.dexId && d.dexId[0]) ? ('#' + d.dexId[0] + ' ') : '';
+  const total = (d.set && d.set.cardCount && d.set.cardCount.official) || '?';
+  const row = (l, v) => `<div class="ttp-row"><span class="ttp-l">${l}</span><span class="ttp-v">${escHtml(String(v))}</span></div>`;
+  return `<div class="ttp-cat">${escHtml(catPT(d.category))}</div><div class="ttp-name">${escHtml(dex + (d.name || ''))}</div>`
+    + row('Edição', cardEdition(d, sd)) + row('Número', (d.localId || '?') + ' / ' + total)
+    + row('Raridade', d.rarity || '-') + (d.illustrator ? row('Artista', d.illustrator) : '');
+}
+// Tooltip (desktop)
+let acTipFor = null;
+function acHoverOk() { return window.matchMedia && matchMedia('(hover: hover) and (pointer: fine)').matches; }
+function showAcTip(anchor, html) {
+  const t = document.getElementById('ac-tooltip'); if (!t || !anchor) return;
+  t.innerHTML = html; t.style.display = 'block';
+  const r = anchor.getBoundingClientRect(); const tw = t.offsetWidth || 250, th = t.offsetHeight || 170;
+  let left = r.right + 10; if (left + tw > window.innerWidth - 8) left = r.left - tw - 10; if (left < 8) left = 8;
+  let top = r.top; if (top + th > window.innerHeight - 8) top = window.innerHeight - th - 8; if (top < 8) top = 8;
+  t.style.left = left + 'px'; t.style.top = top + 'px';
+}
+function hideAcTip() { const t = document.getElementById('ac-tooltip'); if (t) t.style.display = 'none'; }
+function acCardHover(e, id) {
+  if (!acHoverOk()) return;
+  acTipFor = id; const lang = acState.lang; const anchor = e.currentTarget;
+  showAcTip(anchor, '<div class="ttp-load">Carregando…</div>');
+  tcgCardDetail(lang, id).then(async d => {
+    if (acTipFor !== id || !d) return;
+    let sd = null; if (d.set && d.set.id) sd = await tcgSetDetail(lang, d.set.id);
+    if (acTipFor !== id) return;
+    showAcTip(anchor, buildCardTip(d, sd));
+  });
+}
+function acCardLeave() { acTipFor = null; hideAcTip(); }
+
+// Detalhe de uma carta DENTRO do fichário (reusa overlay .binder-detail)
+async function openBinderCardDetail(colId, page, pos) {
+  const col = userCollections[colId]; if (!col || !col.binder) return;
+  const card = col.binder.cards.find(c => c.page === page && c.pos === pos); if (!card) return;
+  const ov = document.getElementById('binder-detail-overlay'); const cont = document.getElementById('binder-detail');
+  const shell = body => `<button class="detail-close" onclick="closeBinderDetail()">×</button><img class="detail-img" src="${escHtml(cardImg(card, 'high'))}" alt="${escHtml(card.name || '')}" onerror="this.onerror=null;this.src=CARD_IMG_FALLBACK"><div class="detail-body"><h3>${escHtml(card.name || '')}</h3>${body}</div>`;
+  cont.innerHTML = shell('<div class="ttp-load">Carregando…</div>');
+  ov.classList.add('open'); openOverlay(ov);
+  const d = await tcgCardDetail(card.lang, card.id); if (!d || !ov.classList.contains('open')) return;
+  let sd = null; if (d.set && d.set.id) sd = await tcgSetDetail(card.lang, d.set.id);
+  if (!ov.classList.contains('open')) return;
+  const langLbl = ({ en: 'Inglês', pt: 'Português', ja: 'Japonês' })[card.lang] || card.lang;
+  const dex = (d.dexId && d.dexId[0]) ? ('#' + d.dexId[0] + ' ') : '';
+  const total = (d.set && d.set.cardCount && d.set.cardCount.official) || '?';
+  const row = (l, v) => `<div class="detail-row"><span class="dl">${l}</span><span class="dv">${escHtml(String(v))}</span></div>`;
+  const rows = row('Categoria', catPT(d.category)) + (dex ? row('Pokémon', dex + (d.name || '')) : '')
+    + row('Edição', cardEdition(d, sd)) + row('Número', (d.localId || '?') + ' / ' + total)
+    + row('Raridade', d.rarity || '-') + (d.illustrator ? row('Artista', d.illustrator) : '') + row('Idioma', langLbl);
+  cont.innerHTML = shell(rows);
 }
 
 // =============================================
