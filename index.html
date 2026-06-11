@@ -2353,6 +2353,62 @@ html.reduce-motion *, html.reduce-motion *::before, html.reduce-motion *::after 
 .wiz-ic.sel { border-color: var(--accent); background: rgba(233,69,96,.15); }
 .wiz-create { width: 100%; margin-top: 16px; background: var(--accent); color: #fff; border: 0; border-radius: 10px; padding: 12px; font-weight: 700; font-size: .95rem; cursor: pointer; }
 @media (max-width: 600px) { .col-ctxbar { padding: 8px 12px 0; } }
+/* fichário manual */
+.bv-bar { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 10px; }
+.bv-gridsizes { display: flex; gap: 4px; flex-wrap: wrap; }
+.bv-gs { background: rgba(255,255,255,.06); border: 1px solid var(--gray); color: var(--text-dim); border-radius: 8px; padding: 5px 9px; font-size: .78rem; cursor: pointer; }
+.bv-gs.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+.bv-pagenav { display: flex; align-items: center; gap: 8px; font-size: .85rem; }
+.bv-pagenav > button { background: rgba(255,255,255,.06); border: 1px solid var(--gray); color: var(--text); border-radius: 8px; min-width: 34px; height: 34px; cursor: pointer; }
+.bv-pagenav > button:disabled { opacity: .35; cursor: default; }
+.bv-addpage { font-size: .8rem; padding: 0 12px; white-space: nowrap; }
+.bv-count { margin-left: auto; font-size: .8rem; color: var(--text-dim); }
+.bv-desc { font-size: .85rem; color: var(--text-dim); margin: 0 2px 12px; }
+.bv-grid { display: grid; gap: 10px; }
+.bv-slot { position: relative; aspect-ratio: 245/342; border-radius: 8px; }
+.bv-slot.empty { border: 2px dashed var(--gray); display: flex; align-items: center; justify-content: center; color: var(--text-dim); font-size: 1.6rem; cursor: pointer; background: rgba(255,255,255,.02); }
+.bv-slot.empty:hover { border-color: var(--accent); color: var(--accent); }
+.bv-slot.filled img { width: 100%; height: 100%; object-fit: contain; border-radius: 8px; }
+.bv-rm { position: absolute; top: 4px; right: 4px; width: 22px; height: 22px; border-radius: 50%; background: rgba(0,0,0,.7); color: #fff; border: 0; cursor: pointer; font-size: .95rem; line-height: 1; opacity: 0; transition: opacity .15s; }
+.bv-slot.filled:hover .bv-rm { opacity: 1; }
+.wiz-area { resize: vertical; font-family: inherit; }
+/* modal adicionar cartas */
+.ac-ov { position: fixed; inset: 0; background: rgba(0,0,0,.7); z-index: 540; display: none; align-items: center; justify-content: center; padding: 12px; }
+.ac-ov.open { display: flex; }
+.ac-modal { background: var(--bg-card); border: 1px solid var(--gray); border-radius: 16px; width: 1000px; max-width: 96vw; height: 88vh; display: flex; flex-direction: column; overflow: hidden; }
+.ac-head { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,.08); }
+.ac-head h2 { font-size: 1.1rem; }
+.ac-top { display: flex; gap: 12px; align-items: center; padding: 10px 16px; border-bottom: 1px solid rgba(255,255,255,.08); flex-wrap: wrap; }
+.ac-langs { display: flex; gap: 6px; }
+.ac-lang { background: rgba(255,255,255,.06); border: 1px solid var(--gray); color: var(--text); border-radius: 18px; padding: 6px 12px; font-size: .82rem; cursor: pointer; white-space: nowrap; }
+.ac-lang.active { background: var(--accent); border-color: var(--accent); }
+.ac-search { flex: 1; min-width: 160px; padding: 9px 12px; border-radius: 8px; border: 1px solid var(--gray); background: var(--bg-dark); color: var(--text); }
+.ac-body { flex: 1; display: grid; grid-template-columns: 180px 1fr 230px; min-height: 0; }
+.ac-side { padding: 12px 14px; border-right: 1px solid rgba(255,255,255,.08); overflow-y: auto; }
+.ac-flabel { font-size: .7rem; text-transform: uppercase; letter-spacing: .4px; color: var(--text-dim); font-weight: 700; margin: 10px 0 4px; }
+.ac-flabel:first-child { margin-top: 0; }
+.ac-sel { width: 100%; padding: 8px; border-radius: 8px; border: 1px solid var(--gray); background: var(--bg-dark); color: var(--text); font-size: .82rem; }
+.ac-results { overflow-y: auto; padding: 12px; display: grid; grid-template-columns: repeat(auto-fill, minmax(110px,1fr)); gap: 10px; align-content: start; }
+.ac-card { position: relative; aspect-ratio: 245/342; cursor: pointer; border-radius: 8px; overflow: hidden; }
+.ac-card img { width: 100%; height: 100%; object-fit: contain; }
+.ac-card .ac-pick { position: absolute; top: 5px; right: 5px; width: 24px; height: 24px; border-radius: 50%; background: var(--green); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; opacity: 0; transform: scale(.6); transition: .15s; }
+.ac-card.on { outline: 3px solid var(--green); outline-offset: -3px; }
+.ac-card.on .ac-pick { opacity: 1; transform: scale(1); }
+.ac-empty { grid-column: 1/-1; color: var(--text-dim); font-size: .85rem; text-align: center; padding: 30px 10px; }
+.ac-tray { border-left: 1px solid rgba(255,255,255,.08); display: flex; flex-direction: column; min-height: 0; }
+.ac-tray-head { padding: 10px 14px; font-weight: 700; font-size: .9rem; border-bottom: 1px solid rgba(255,255,255,.08); }
+.ac-selected { flex: 1; overflow-y: auto; padding: 8px 10px; }
+.ac-srow { display: flex; align-items: center; gap: 8px; padding: 4px 0; font-size: .78rem; }
+.ac-srow img { width: 30px; height: 42px; object-fit: contain; border-radius: 3px; }
+.ac-srow span { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ac-srow button { background: none; border: 0; color: var(--text-dim); font-size: 1.1rem; cursor: pointer; }
+.ac-confirm { margin: 10px; background: var(--accent); color: #fff; border: 0; border-radius: 10px; padding: 11px; font-weight: 700; cursor: pointer; }
+.ac-confirm:disabled { opacity: .4; cursor: default; }
+@media (max-width: 760px) {
+  .ac-body { grid-template-columns: 1fr; }
+  .ac-side { display: none; }
+  .ac-tray { border-left: 0; border-top: 1px solid rgba(255,255,255,.08); max-height: 32vh; }
+}
 
 /* Login overlay */
 .login-overlay {
@@ -2934,7 +2990,7 @@ body.modal-open{overflow:hidden}
   <div class="tab-panel" id="tab-colview"></div>
 </div>
 
-<!-- Wizard de nova coleção -->
+<!-- Criar coleção -->
 <div class="col-wiz-ov" id="col-wiz-ov" onclick="if(event.target===this)closeColWizard()">
   <div class="col-wiz">
     <div class="col-wiz-head">
@@ -2942,6 +2998,29 @@ body.modal-open{overflow:hidden}
       <button class="settings-close" onclick="closeColWizard()">&times;</button>
     </div>
     <div class="col-wiz-body" id="col-wiz-body"></div>
+  </div>
+</div>
+
+<!-- Adicionar cartas (TCGdex) -->
+<div class="ac-ov" id="addcards-ov" onclick="if(event.target===this)closeAddCards()">
+  <div class="ac-modal">
+    <div class="ac-head">
+      <h2>Adicionar cartas</h2>
+      <button class="settings-close" onclick="closeAddCards()">&times;</button>
+    </div>
+    <div class="ac-top">
+      <div class="ac-langs" id="ac-langs"></div>
+      <input class="ac-search" id="ac-query" placeholder="Buscar por nome ou número…" oninput="acOnQuery(this.value)">
+    </div>
+    <div class="ac-body">
+      <div class="ac-side" id="ac-filters"></div>
+      <div class="ac-results" id="ac-results"></div>
+      <div class="ac-tray">
+        <div class="ac-tray-head">Selecionada</div>
+        <div class="ac-selected" id="ac-selected"></div>
+        <button class="ac-confirm" id="ac-confirm" onclick="acConfirm()" disabled>Adicionar</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -6042,15 +6121,16 @@ async function persistCollection(id, val) {
   try { await ref.update({ ['collections.' + id]: fv, updatedAt: firebase.firestore.FieldValue.serverTimestamp() }); }
   catch (e) { try { await ref.set({ collections: { [id]: fv }, updatedAt: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true }); } catch (_) {} }
 }
-async function createCollection(name, icon, criteria) {
+async function createBinder(name, description, icon) {
   if (Object.keys(userCollections).length >= COL_LIMIT) { uiAlert('Você atingiu o limite de ' + COL_LIMIT + ' coleções.'); return null; }
   name = (name || '').trim();
   if (name.length < 1 || name.length > 40) { uiAlert('Dê um nome de 1 a 40 caracteres.'); return null; }
-  if (!getTargetCardIds(criteria).length) { uiAlert('Esse critério não tem nenhuma carta. Escolha outro.'); return null; }
-  const dup = Object.values(userCollections).some(c => c.criteria && c.criteria.kind === criteria.kind && String(c.criteria.value) === String(criteria.value));
-  if (dup) { uiAlert('Você já tem uma coleção com esse critério.'); return null; }
   const id = genColId();
-  userCollections[id] = { name, icon: icon || '📦', criteria, createdAt: Date.now(), order: Object.keys(userCollections).length };
+  userCollections[id] = {
+    name, description: (description || '').trim().slice(0, 160), icon: icon || '📦',
+    createdAt: Date.now(), order: Object.keys(userCollections).length,
+    binder: { grid: '4x4', pageCount: 1, cards: [] }
+  };
   await persistCollection(id, userCollections[id]);
   return id;
 }
@@ -6079,8 +6159,8 @@ function colRoute(view, colId) {
     if (!userCollections[colId]) { colRoute('hub'); return; }
     renderColCtx(userCollections[colId].name, false);
     const e = document.getElementById('tab-colview'); if (e) e.classList.add('active');
-    colViewFilter = 'all';
-    renderColView(colId);
+    binderPage = 0;
+    renderBinderView(colId);
   }
 }
 function renderColCtx(title, isFullArt) {
@@ -6107,129 +6187,184 @@ function renderColHub() {
   const panel = document.getElementById('tab-colhub'); if (!panel) return;
   const cols = getAllCollections();
   let html = `<div class="colh-head">Suas Coleções</div><div class="colh-grid">`;
-  for (const c of cols) {
-    const p = c.isDefault ? faDefaultProgress() : collectionProgressFor(c.criteria);
-    html += colHubCard(c, p);
-  }
+  for (const c of cols) html += colHubCard(c);
   html += `<button class="colh-card colh-new" onclick="openColWizard()"><div class="colh-ico">➕</div><div class="colh-name">Nova coleção</div></button></div>`;
   panel.innerHTML = html;
 }
-function colHubCard(c, p) {
-  const del = c.isDefault ? '' : `<span class="colh-del" title="Excluir" onclick="event.stopPropagation();deleteCollection('${c.id}')">🗑</span>`;
-  const go = c.isDefault ? `colRoute('fullart')` : `colRoute('custom','${c.id}')`;
-  return `<button class="colh-card" onclick="${go}">${del}
-    <div class="colh-ico">${c.icon || '📦'}</div>
-    <div class="colh-name">${escHtml(c.name)}</div>
-    <div class="colh-sub">${p.owned}/${p.total}</div>
-    <div class="colh-bar"><span style="width:${p.pct}%"></span></div></button>`;
+function colHubCard(c) {
+  if (c.isDefault) {
+    const p = faDefaultProgress();
+    return `<button class="colh-card" onclick="colRoute('fullart')">
+      <div class="colh-ico">${c.icon}</div><div class="colh-name">${escHtml(c.name)}</div>
+      <div class="colh-sub">${p.owned}/${p.total}</div>
+      <div class="colh-bar"><span style="width:${p.pct}%"></span></div></button>`;
+  }
+  const n = (c.binder && c.binder.cards) ? c.binder.cards.length : 0;
+  return `<button class="colh-card" onclick="colRoute('custom','${c.id}')">
+    <span class="colh-del" title="Excluir" onclick="event.stopPropagation();deleteCollection('${c.id}')">🗑</span>
+    <div class="colh-ico">${c.icon || '📦'}</div><div class="colh-name">${escHtml(c.name)}</div>
+    <div class="colh-sub">${n} carta(s)</div></button>`;
 }
 
-// ---- Tela genérica de uma coleção customizada ----
-function renderColView(colId) {
+// ---- Fichário manual (coleção customizada) ----
+let binderPage = 0;
+const GRID_SIZES = ['2x2', '3x3', '4x3', '4x4', '4x5', '5x4'];
+function gridDims(g) { const p = (g || '4x4').split('x').map(Number); return { cols: p[0], rows: p[1], per: p[0] * p[1] }; }
+function ensureBinder(col) { if (!col.binder) col.binder = { grid: '4x4', pageCount: 1, cards: [] }; return col.binder; }
+function cardImg(c, q) { return c && c.img ? (c.img + '/' + (q === 'low' ? 'low.webp' : 'high.webp')) : CARD_IMG_FALLBACK; }
+function binderSlots(col, page) { const { per } = gridDims(col.binder.grid); const arr = new Array(per).fill(null); for (const c of col.binder.cards) { if (c.page === page && c.pos < per) arr[c.pos] = c; } return arr; }
+function reflowBinder(b) { const { per } = gridDims(b.grid); const o = b.cards.slice().sort((a, b2) => (a.page - b2.page) || (a.pos - b2.pos)); o.forEach((c, i) => { c.page = Math.floor(i / per); c.pos = i % per; }); b.cards = o; b.pageCount = Math.max(1, Math.ceil(o.length / per) || 1); }
+function renderBinderView(colId) {
   const col = userCollections[colId]; const panel = document.getElementById('tab-colview');
   if (!col || !panel) return;
-  const target = getTargetCardIds(col.criteria);
-  const ownedN = target.filter(id => ownedCards[id]).length;
-  const pct = target.length ? Math.round(ownedN / target.length * 100) : 0;
-  let list = target;
-  if (colViewFilter === 'have') list = target.filter(id => ownedCards[id]);
-  else if (colViewFilter === 'missing') list = target.filter(id => !ownedCards[id]);
-  const chip = (k, l) => `<button class="cv-chip${colViewFilter === k ? ' active' : ''}" onclick="colViewSetFilter('${k}')">${l}</button>`;
-  panel.innerHTML = `<div class="cv-head">
-      <div class="cv-prog"><div class="cv-count" id="cv-count">${ownedN}<small> / ${target.length}</small></div><div class="cv-pct" id="cv-pct">${pct}%</div></div>
-      <div class="progress-bar"><div class="progress-fill" id="cv-fill" style="width:${pct}%"></div></div>
-      <div class="cv-chips">${chip('all', 'Todas')}${chip('have', 'Tenho')}${chip('missing', 'Faltam')}</div>
+  const b = ensureBinder(col); const { cols } = gridDims(b.grid);
+  if (binderPage > b.pageCount - 1) binderPage = b.pageCount - 1;
+  if (binderPage < 0) binderPage = 0;
+  const page = binderPage; const slots = binderSlots(col, page);
+  const gs = GRID_SIZES.map(g => `<button class="bv-gs${b.grid === g ? ' active' : ''}" onclick="binderSetGrid('${colId}','${g}')">${g.replace('x', '×')}</button>`).join('');
+  let html = `<div class="bv-bar">
+      <div class="bv-gridsizes">${gs}</div>
+      <div class="bv-pagenav"><button onclick="binderGoPage(${page - 1})"${page <= 0 ? ' disabled' : ''}>‹</button><span>${page + 1} / ${b.pageCount}</span><button onclick="binderGoPage(${page + 1})"${page >= b.pageCount - 1 ? ' disabled' : ''}>›</button><button class="bv-addpage" onclick="binderAddPage('${colId}')">+ Página</button></div>
+      <div class="bv-count">${b.cards.length} carta(s)</div>
     </div>
-    <div class="cv-grid">${list.map(cardCellHtml).join('') || '<div class="empty-state"><div class="empty-ico">🃏</div><div class="empty-title">Nada para mostrar</div></div>'}</div>`;
+    ${col.description ? `<div class="bv-desc">${escHtml(col.description)}</div>` : ''}
+    <div class="bv-grid" style="grid-template-columns:repeat(${cols},minmax(0,1fr))">`;
+  slots.forEach((c, i) => {
+    if (c) html += `<div class="bv-slot filled"><img loading="lazy" referrerpolicy="no-referrer" src="${escHtml(cardImg(c, 'high'))}" alt="${escHtml(c.name || '')}" onerror="this.onerror=null;this.src=CARD_IMG_FALLBACK"><button class="bv-rm" title="Remover" onclick="binderRemove('${colId}',${page},${i})">×</button></div>`;
+    else html += `<div class="bv-slot empty" onclick="openAddCards('${colId}',${page},${i})"><span>＋</span></div>`;
+  });
+  html += `</div>`;
+  panel.innerHTML = html;
 }
-function cardCellHtml(id) {
-  const card = resolveCard(id) || {};
-  const owned = !!ownedCards[id];
-  return `<div class="cv-card${owned ? ' owned' : ''}" data-id="${escHtml(id)}" onclick="cvToggle('${escHtml(id)}')">
-    <img loading="lazy" referrerpolicy="no-referrer" src="${escHtml(card.image_small || '')}" alt="${escHtml(card.name || '')}" onerror="this.onerror=null;this.src=CARD_IMG_FALLBACK">
-    <div class="cv-check">✓</div></div>`;
+function binderGoPage(p) { binderPage = p; renderBinderView(colState.colId); }
+function binderAddPage(colId) { const col = userCollections[colId]; const b = ensureBinder(col); b.pageCount++; binderPage = b.pageCount - 1; persistCollection(colId, col); renderBinderView(colId); }
+function binderSetGrid(colId, g) { const col = userCollections[colId]; const b = ensureBinder(col); b.grid = g; reflowBinder(b); if (binderPage > b.pageCount - 1) binderPage = b.pageCount - 1; persistCollection(colId, col); renderBinderView(colId); }
+function binderRemove(colId, page, pos) { const col = userCollections[colId]; const b = ensureBinder(col); b.cards = b.cards.filter(c => !(c.page === page && c.pos === pos)); persistCollection(colId, col); renderBinderView(colId); }
+function binderAddCards(colId, startPage, startPos, cards) {
+  const col = userCollections[colId]; const b = ensureBinder(col); const { per } = gridDims(b.grid);
+  const occ = new Set(b.cards.map(c => c.page * per + c.pos));
+  let lin = startPage * per + startPos;
+  for (const card of cards) { while (occ.has(lin)) lin++; b.cards.push({ page: Math.floor(lin / per), pos: lin % per, id: card.id, lang: card.lang, name: card.name, img: card.img }); occ.add(lin); lin++; }
+  const maxLin = b.cards.reduce((m, c) => Math.max(m, c.page * per + c.pos), 0);
+  b.pageCount = Math.max(b.pageCount, Math.floor(maxLin / per) + 1);
+  persistCollection(colId, col);
 }
-function cvToggle(id) {
-  const has = !!ownedCards[id];
-  setCardOwned(id, !has);
-  if (colViewFilter !== 'all') { renderColView(colState.colId); return; }
-  const sel = (window.CSS && CSS.escape) ? CSS.escape(id) : id;
-  const cell = document.querySelector('.cv-card[data-id="' + sel + '"]');
-  if (cell) cell.classList.toggle('owned', !has);
-  updateColViewProgress();
-}
-function updateColViewProgress() {
-  const col = userCollections[colState.colId]; if (!col) return;
-  const target = getTargetCardIds(col.criteria);
-  const ownedN = target.filter(id => ownedCards[id]).length;
-  const pct = target.length ? Math.round(ownedN / target.length * 100) : 0;
-  const c = document.getElementById('cv-count'); if (c) c.innerHTML = `${ownedN}<small> / ${target.length}</small>`;
-  const p = document.getElementById('cv-pct'); if (p) p.textContent = pct + '%';
-  const f = document.getElementById('cv-fill'); if (f) f.style.width = pct + '%';
-}
-function colViewSetFilter(k) { colViewFilter = k; renderColView(colState.colId); }
 
-// ---- Assistente de nova coleção ----
-const COL_KINDS = [
-  { kind: 'pokemon', label: 'Pokémon', ico: '🔴', hint: 'Escolha o Pokémon' },
-  { kind: 'type', label: 'Tipo', ico: '🌿', hint: 'Escolha o tipo' },
-  { kind: 'region', label: 'Região', ico: '🗺️', hint: 'Escolha a região' },
-  { kind: 'generation', label: 'Geração', ico: '🔢', hint: 'Escolha a geração' },
-  { kind: 'rarity', label: 'Raridade', ico: '💎', hint: 'Escolha a raridade' },
-  { kind: 'set', label: 'Set', ico: '📦', hint: 'Escolha o set' },
-];
+// ---- Criar coleção (nome / descrição / ícone) ----
 const COL_ICONS = ['📦','🔴','🌿','🔥','💧','⚡','🗺️','💎','⭐','🏆','👑','🎴','🃏','🐉','👻','🦋','🌸','❄️','🌙','☀️','🪨','🥊','🧪'];
-let wizState = { kind: null, value: null, name: '', icon: '📦' };
-
-function wizValueOptions(kind) {
-  if (kind === 'pokemon') return POKEDEX_DATA.filter(p => (IDX.cardsByDex[String(p.number)] || []).length).map(p => ({ v: p.number, l: `#${String(p.number).padStart(3,'0')} ${cap(p.name)}` }));
-  if (kind === 'type') return Object.keys(IDX.dexByType).sort().map(t => ({ v: t, l: t }));
-  if (kind === 'region') return Object.keys(IDX.dexByRegion).sort().map(r => ({ v: r, l: r }));
-  if (kind === 'generation') return Object.keys(IDX.dexByGen).sort((a, b) => a - b).map(g => ({ v: g, l: `Gen ${g} — ${GEN_REGION[g] || ''}` }));
-  if (kind === 'rarity') return Object.keys(IDX.cardsByRarity).sort().map(r => ({ v: r, l: `${r} (${IDX.cardsByRarity[r].length})` }));
-  if (kind === 'set') return Object.keys(IDX.cardsBySet).sort().map(s => ({ v: s, l: `${s} (${IDX.cardsBySet[s].length})` }));
-  return [];
-}
-function defaultColName(kind, value) {
-  if (kind === 'pokemon') { const p = pokedexLookup[value]; return p ? cap(p.name) : 'Pokémon'; }
-  if (kind === 'generation') return `Gen ${value} — ${GEN_REGION[value] || ''}`.trim();
-  return String(value);
-}
+let binderForm = { name: '', description: '', icon: '📦' };
 function openColWizard() {
   if (Object.keys(userCollections).length >= COL_LIMIT) { uiAlert('Você atingiu o limite de ' + COL_LIMIT + ' coleções.'); return; }
-  wizState = { kind: null, value: null, name: '', icon: '📦' };
+  binderForm = { name: '', description: '', icon: '📦' };
   document.getElementById('col-wiz-ov').classList.add('open');
-  renderWizard();
+  renderCreateBinder();
 }
 function closeColWizard() { document.getElementById('col-wiz-ov').classList.remove('open'); }
-function wizPickKind(k) { wizState.kind = k; wizState.value = null; renderWizard(); }
-function wizPickValue(v) { wizState.value = v; if (!wizState.name && v) wizState.name = defaultColName(wizState.kind, v); renderWizard(); }
-function wizPickIcon(ic) { wizState.icon = ic; renderWizard(); }
-function wizSetName(v) { wizState.name = v; }
-function renderWizard() {
+function renderCreateBinder() {
   const body = document.getElementById('col-wiz-body'); if (!body) return;
-  let html = `<div class="wiz-label">1. Tipo de coleção</div><div class="wiz-kinds">`;
-  html += COL_KINDS.map(k => `<button class="wiz-kind${wizState.kind === k.kind ? ' sel' : ''}" onclick="wizPickKind('${k.kind}')"><span>${k.ico}</span>${k.label}</button>`).join('');
-  html += `</div>`;
-  if (wizState.kind) {
-    const opts = wizValueOptions(wizState.kind);
-    html += `<div class="wiz-label">2. ${COL_KINDS.find(k => k.kind === wizState.kind).hint}</div>`;
-    html += `<select class="wiz-select" onchange="wizPickValue(this.value)"><option value="">— escolher —</option>${opts.map(o => `<option value="${escHtml(String(o.v))}"${String(wizState.value) === String(o.v) ? ' selected' : ''}>${escHtml(o.l)}</option>`).join('')}</select>`;
-  }
-  if (wizState.kind && wizState.value != null && wizState.value !== '') {
-    const n = getTargetCardIds({ kind: wizState.kind, value: wizState.value }).length;
-    html += `<div class="wiz-count">${n} carta(s) nesta coleção</div>`;
-    html += `<div class="wiz-label">3. Nome</div><input class="wiz-name" id="wiz-name" maxlength="40" value="${escHtml(wizState.name)}" oninput="wizSetName(this.value)" placeholder="Nome da coleção">`;
-    html += `<div class="wiz-label">Ícone</div><div class="wiz-icons">${COL_ICONS.map(ic => `<button class="wiz-ic${wizState.icon === ic ? ' sel' : ''}" onclick="wizPickIcon('${ic}')">${ic}</button>`).join('')}</div>`;
-    html += `<button class="wiz-create" onclick="wizCreate()">Criar coleção</button>`;
-  }
-  body.innerHTML = html;
+  body.innerHTML = `<div class="wiz-label">Nome</div>
+    <input class="wiz-name" id="bf-name" maxlength="40" value="${escHtml(binderForm.name)}" oninput="binderForm.name=this.value" placeholder="Ex.: Meus Charizards">
+    <div class="wiz-label">Descrição (opcional)</div>
+    <textarea class="wiz-name wiz-area" maxlength="160" rows="2" oninput="binderForm.description=this.value" placeholder="Sobre essa coleção…">${escHtml(binderForm.description)}</textarea>
+    <div class="wiz-label">Ícone</div>
+    <div class="wiz-icons">${COL_ICONS.map(ic => `<button class="wiz-ic${binderForm.icon === ic ? ' sel' : ''}" onclick="binderForm.icon='${ic}';renderCreateBinder()">${ic}</button>`).join('')}</div>
+    <button class="wiz-create" onclick="createBinderSubmit()">Criar coleção</button>`;
 }
-async function wizCreate() {
-  const { kind, value, name, icon } = wizState;
-  if (!kind || value == null || value === '') { uiAlert('Escolha o tipo e o valor.'); return; }
-  const id = await createCollection(name, icon, { kind, value: String(value) });
+async function createBinderSubmit() {
+  const id = await createBinder(binderForm.name, binderForm.description, binderForm.icon);
   if (id) { closeColWizard(); selectNav('colecoes'); colRoute('custom', id); }
+}
+
+// ---- Modal "Adicionar cartas" (TCGdex ao vivo, EN/PT/JA) ----
+const AC_LANGS = [['en', '🇺🇸 EN'], ['pt', '🇧🇷 PT'], ['ja', '🇯🇵 JA']];
+let acState = { colId: null, page: 0, pos: 0, lang: 'en', query: '', filters: { types: '', rarity: '', set: '', category: '' }, results: [], selected: [], loading: false };
+let acOptsCache = {};
+let acSearchTimer = null;
+function openAddCards(colId, page, pos) {
+  acState = { colId, page, pos, lang: 'en', query: '', filters: { types: '', rarity: '', set: '', category: '' }, results: [], selected: [], loading: false };
+  document.getElementById('addcards-ov').classList.add('open');
+  renderAddCards();
+  acLoadOptions().then(() => renderAddCards());
+}
+function closeAddCards() { document.getElementById('addcards-ov').classList.remove('open'); }
+function acSetLang(l) { acState.lang = l; acState.results = []; renderAddCards(); acLoadOptions().then(() => renderAddCards()); acSearch(); }
+function acSetFilter(k, v) { acState.filters[k] = v; acSearch(); }
+function acOnQuery(v) { acState.query = v; clearTimeout(acSearchTimer); acSearchTimer = setTimeout(acSearch, 350); }
+async function acLoadOptions() {
+  const lang = acState.lang; if (acOptsCache[lang]) return acOptsCache[lang];
+  const base = 'https://api.tcgdex.net/v2/' + lang + '/';
+  try {
+    const [types, rarities, sets, cats] = await Promise.all([
+      fetch(base + 'types').then(r => r.json()).catch(() => []),
+      fetch(base + 'rarities').then(r => r.json()).catch(() => []),
+      fetch(base + 'sets').then(r => r.json()).catch(() => []),
+      fetch(base + 'categories').then(r => r.json()).catch(() => []),
+    ]);
+    acOptsCache[lang] = { types: types || [], rarities: rarities || [], sets: (sets || []).map(s => ({ id: s.id, name: s.name })).reverse(), categories: cats || [] };
+  } catch (e) { acOptsCache[lang] = { types: [], rarities: [], sets: [], categories: [] }; }
+  return acOptsCache[lang];
+}
+async function acSearch() {
+  const { lang, query, filters } = acState;
+  const hasCrit = query.trim() || filters.types || filters.rarity || filters.set || filters.category;
+  acState.loading = true; renderAddCardsResults();
+  if (!hasCrit) { acState.results = []; acState.loading = false; renderAddCardsResults(); return; }
+  const p = new URLSearchParams();
+  if (query.trim()) p.set('name', 'like:' + query.trim());
+  if (filters.types) p.set('types', filters.types);
+  if (filters.rarity) p.set('rarity', filters.rarity);
+  if (filters.set) p.set('set', filters.set);
+  if (filters.category) p.set('category', filters.category);
+  p.set('pagination:page', '1'); p.set('pagination:itemsPerPage', '60'); p.set('sort:field', 'name'); p.set('sort:order', 'ASC');
+  const myLang = lang;
+  try {
+    const res = await fetch('https://api.tcgdex.net/v2/' + lang + '/cards?' + p.toString());
+    const data = await res.json();
+    if (acState.lang !== myLang) return; // troca de idioma no meio
+    acState.results = (Array.isArray(data) ? data : []).filter(c => c.image).slice(0, 80);
+  } catch (e) { acState.results = []; }
+  acState.loading = false; renderAddCardsResults();
+}
+function acToggle(id) {
+  const i = acState.selected.findIndex(s => s.id === id);
+  if (i >= 0) acState.selected.splice(i, 1);
+  else { const c = acState.results.find(r => r.id === id); if (c) acState.selected.push({ id: c.id, name: c.name, img: c.image, lang: acState.lang }); }
+  renderAddCardsResults(); renderAddCardsTray();
+}
+function acConfirm() {
+  if (!acState.selected.length) return;
+  binderAddCards(acState.colId, acState.page, acState.pos, acState.selected);
+  closeAddCards();
+  renderBinderView(acState.colId);
+  showToast(acState.selected.length + ' carta(s) adicionada(s)', 'success');
+}
+function renderAddCards() {
+  const opts = acOptsCache[acState.lang] || { types: [], rarities: [], sets: [], categories: [] };
+  const f = acState.filters;
+  const sel = (val, arr, ph, key, isObj) => `<select class="ac-sel" onchange="acSetFilter('${key}',this.value)"><option value="">${ph}</option>${arr.map(o => { const v = isObj ? o.id : o; const l = isObj ? o.name : o; return `<option value="${escHtml(String(v))}"${String(val) === String(v) ? ' selected' : ''}>${escHtml(String(l))}</option>`; }).join('')}</select>`;
+  const fEl = document.getElementById('ac-filters');
+  if (fEl) fEl.innerHTML = `<div class="ac-flabel">Tipo</div>${sel(f.types, opts.types, 'Todos os tipos', 'types')}
+    <div class="ac-flabel">Raridade</div>${sel(f.rarity, opts.rarities, 'Todas', 'rarity')}
+    <div class="ac-flabel">Categoria</div>${sel(f.category, opts.categories, 'Todas', 'category')}
+    <div class="ac-flabel">Set / Edição</div>${sel(f.set, opts.sets, 'Todos os sets', 'set', true)}`;
+  const lEl = document.getElementById('ac-langs');
+  if (lEl) lEl.innerHTML = AC_LANGS.map(([l, lbl]) => `<button class="ac-lang${acState.lang === l ? ' active' : ''}" onclick="acSetLang('${l}')">${lbl}</button>`).join('');
+  const qi = document.getElementById('ac-query'); if (qi && qi.value !== acState.query) qi.value = acState.query;
+  renderAddCardsResults(); renderAddCardsTray();
+}
+function renderAddCardsResults() {
+  const wrap = document.getElementById('ac-results'); if (!wrap) return;
+  if (acState.loading) { wrap.innerHTML = '<div class="ac-empty">Buscando…</div>'; return; }
+  if (!acState.results.length) { wrap.innerHTML = '<div class="ac-empty">Busque por nome/número ou use os filtros ao lado.</div>'; return; }
+  wrap.innerHTML = acState.results.map(c => { const on = acState.selected.some(s => s.id === c.id); return `<div class="ac-card${on ? ' on' : ''}" onclick="acToggle('${escHtml(c.id)}')"><img loading="lazy" referrerpolicy="no-referrer" src="${escHtml(c.image + '/low.webp')}" alt="${escHtml(c.name)}" onerror="this.onerror=null;this.src=CARD_IMG_FALLBACK"><div class="ac-pick">✓</div></div>`; }).join('');
+}
+function renderAddCardsTray() {
+  const t = document.getElementById('ac-selected'); if (!t) return;
+  const n = acState.selected.length;
+  const btn = document.getElementById('ac-confirm');
+  if (btn) { btn.textContent = n ? ('Adicionar ' + n + ' carta(s)') : 'Adicionar'; btn.disabled = !n; }
+  if (!n) { t.innerHTML = '<div class="ac-empty">Cartas selecionadas aparecem aqui.</div>'; return; }
+  t.innerHTML = acState.selected.map(s => `<div class="ac-srow"><img referrerpolicy="no-referrer" src="${escHtml(s.img + '/low.webp')}" onerror="this.onerror=null;this.src=CARD_IMG_FALLBACK"><span>${escHtml(s.name)}</span><button onclick="acToggle('${escHtml(s.id)}')">×</button></div>`).join('');
 }
 
 // =============================================
