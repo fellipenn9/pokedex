@@ -2364,9 +2364,21 @@ html.reduce-motion *, html.reduce-motion *::before, html.reduce-motion *::after 
 .bv-addpage { font-size: .8rem; padding: 0 12px; white-space: nowrap; }
 .bv-count { margin-left: auto; font-size: .8rem; color: var(--text-dim); }
 .bv-desc { font-size: .85rem; color: var(--text-dim); margin: 0 2px 12px; }
-.bv-grid { display: grid; gap: 6px; margin: 0 auto; max-width: 100%; max-height: calc(100vh - 250px); }
+.bv-book { display: flex; gap: 14px; justify-content: center; align-items: flex-start; }
+.bv-page { display: grid; gap: 6px; max-height: calc(100vh - 250px); max-width: calc(50% - 16px); }
+.bv-book.single .bv-page { max-width: min(100%, 560px); }
+.bv-page.blank { background: rgba(255,255,255,.02); border-radius: 8px; border: 1px dashed rgba(255,255,255,.06); }
+.bv-spine { width: 2px; background: rgba(255,255,255,.1); align-self: stretch; border-radius: 2px; }
+.bv-book.bv-turn-fwd { animation: bvturnfwd .34s ease; transform-origin: left center; }
+.bv-book.bv-turn-back { animation: bvturnback .34s ease; transform-origin: right center; }
+@keyframes bvturnfwd { 0% { transform: perspective(1600px) rotateY(10deg); opacity: .35; } 100% { transform: none; opacity: 1; } }
+@keyframes bvturnback { 0% { transform: perspective(1600px) rotateY(-10deg); opacity: .35; } 100% { transform: none; opacity: 1; } }
+@media (max-width: 700px) { .bv-book { flex-direction: column; align-items: center; } .bv-page { max-width: 100%; max-height: none; width: 100%; } .bv-spine { display: none; } }
 .bv-slot { position: relative; height: 100%; min-height: 0; border-radius: 8px; }
 .bv-slot.filled[draggable] { cursor: grab; }
+.ac-count { font-size: .8rem; color: var(--text-dim); white-space: nowrap; }
+.ac-q { position: absolute; top: 5px; left: 5px; width: 22px; height: 22px; border-radius: 50%; background: rgba(0,0,0,.6); color: #fff; border: 1px solid rgba(255,255,255,.25); font-size: .8rem; font-weight: 700; cursor: help; display: flex; align-items: center; justify-content: center; line-height: 1; }
+.ac-q:hover { background: var(--accent); }
 .bv-slot.empty { border: 2px dashed var(--gray); display: flex; align-items: center; justify-content: center; color: var(--text-dim); font-size: 1.6rem; cursor: pointer; background: rgba(255,255,255,.02); }
 .bv-slot.empty:hover { border-color: var(--accent); color: var(--accent); }
 .bv-slot.filled img { width: 100%; height: 100%; object-fit: contain; border-radius: 8px; }
@@ -3022,6 +3034,7 @@ body.modal-open{overflow:hidden}
     <div class="ac-top">
       <div class="ac-langs" id="ac-langs"></div>
       <input class="ac-search" id="ac-query" placeholder="Buscar por nome ou número…" oninput="acOnQuery(this.value)">
+      <span class="ac-count" id="ac-count"></span>
     </div>
     <div class="ac-body">
       <div class="ac-side" id="ac-filters"></div>
@@ -6226,27 +6239,49 @@ function ensureBinder(col) { if (!col.binder) col.binder = { grid: '4x4', pageCo
 function cardImg(c, q) { return c && c.img ? (c.img + '/' + (q === 'low' ? 'low.webp' : 'high.webp')) : CARD_IMG_FALLBACK; }
 function binderSlots(col, page) { const { per } = gridDims(col.binder.grid); const arr = new Array(per).fill(null); for (const c of col.binder.cards) { if (c.page === page && c.pos < per) arr[c.pos] = c; } return arr; }
 function reflowBinder(b) { const { per } = gridDims(b.grid); const o = b.cards.slice().sort((a, b2) => (a.page - b2.page) || (a.pos - b2.pos)); o.forEach((c, i) => { c.page = Math.floor(i / per); c.pos = i % per; }); b.cards = o; b.pageCount = Math.max(1, Math.ceil(o.length / per) || 1); }
+let binderTurn = null;
+function binderRenderPage(colId, pageIdx, cols, rows) {
+  const col = userCollections[colId]; const b = col.binder;
+  const slots = binderSlots(col, pageIdx);
+  let h = `<div class="bv-page" style="grid-template-columns:repeat(${cols},1fr);grid-template-rows:repeat(${rows},1fr);aspect-ratio:${cols * 245}/${rows * 342}">`;
+  slots.forEach((c, i) => {
+    if (c) h += `<div class="bv-slot filled" draggable="true" ondragstart="binderDragStart(event,${pageIdx},${i})" ondragover="event.preventDefault()" ondrop="binderDrop(event,'${colId}',${pageIdx},${i})" onclick="openBinderCardDetail('${colId}',${pageIdx},${i})"><img loading="lazy" referrerpolicy="no-referrer" src="${escHtml(cardImg(c, 'high'))}" alt="${escHtml(c.name || '')}" onerror="this.onerror=null;this.src=CARD_IMG_FALLBACK"><button class="bv-rm" title="Remover" onclick="event.stopPropagation();binderRemove('${colId}',${pageIdx},${i})">×</button></div>`;
+    else h += `<div class="bv-slot empty" ondragover="event.preventDefault()" ondrop="binderDrop(event,'${colId}',${pageIdx},${i})" onclick="openAddCards('${colId}',${pageIdx},${i})"><span>＋</span></div>`;
+  });
+  return h + `</div>`;
+}
 function renderBinderView(colId) {
   const col = userCollections[colId]; const panel = document.getElementById('tab-colview');
   if (!col || !panel) return;
   const b = ensureBinder(col); const { cols, rows } = gridDims(b.grid);
   if (binderPage > b.pageCount - 1) binderPage = b.pageCount - 1;
   if (binderPage < 0) binderPage = 0;
-  const page = binderPage; const slots = binderSlots(col, page);
+  binderPage = binderPage - (binderPage % 2);     // página esquerda do spread (par)
+  const left = binderPage, right = binderPage + 1;
+  const single = b.pageCount <= 1;
+  const hasRight = right < b.pageCount;
   const gs = GRID_SIZES.map(g => `<button class="bv-gs${b.grid === g ? ' active' : ''}" onclick="binderSetGrid('${colId}','${g}')">${g.replace('x', '×')}</button>`).join('');
-  let html = `<div class="bv-bar">
+  const label = (!single && (hasRight)) ? `${left + 1}–${right + 1} / ${b.pageCount}` : `${left + 1} / ${b.pageCount}`;
+  const turnCls = binderTurn ? (binderTurn === 'fwd' ? ' bv-turn-fwd' : ' bv-turn-back') : ''; binderTurn = null;
+  const prevDis = left <= 0 ? ' disabled' : '';
+  const nextDis = (left + 2 >= b.pageCount) ? ' disabled' : '';
+  let book;
+  if (single) book = binderRenderPage(colId, 0, cols, rows);
+  else book = binderRenderPage(colId, left, cols, rows) + `<div class="bv-spine"></div>` + (hasRight ? binderRenderPage(colId, right, cols, rows) : `<div class="bv-page blank" style="aspect-ratio:${cols * 245}/${rows * 342}"></div>`);
+  panel.innerHTML = `<div class="bv-bar">
       <div class="bv-gridsizes">${gs}</div>
-      <div class="bv-pagenav"><button onclick="binderGoPage(${page - 1})"${page <= 0 ? ' disabled' : ''}>‹</button><span>${page + 1} / ${b.pageCount}</span><button onclick="binderGoPage(${page + 1})"${page >= b.pageCount - 1 ? ' disabled' : ''}>›</button><button class="bv-addpage" onclick="binderAddPage('${colId}')">+ Página</button></div>
+      <div class="bv-pagenav"><button onclick="binderGoSpread('${colId}',-1)"${prevDis}>‹</button><span>${label}</span><button onclick="binderGoSpread('${colId}',1)"${nextDis}>›</button><button class="bv-addpage" onclick="binderAddPage('${colId}')">+ Página</button></div>
       <div class="bv-count">${b.cards.length} carta(s)</div>
     </div>
     ${col.description ? `<div class="bv-desc">${escHtml(col.description)}</div>` : ''}
-    <div class="bv-grid" style="grid-template-columns:repeat(${cols},1fr);grid-template-rows:repeat(${rows},1fr);aspect-ratio:${cols * 245}/${rows * 342}">`;
-  slots.forEach((c, i) => {
-    if (c) html += `<div class="bv-slot filled" draggable="true" ondragstart="binderDragStart(event,${page},${i})" ondragover="event.preventDefault()" ondrop="binderDrop(event,'${colId}',${page},${i})" onclick="openBinderCardDetail('${colId}',${page},${i})"><img loading="lazy" referrerpolicy="no-referrer" src="${escHtml(cardImg(c, 'high'))}" alt="${escHtml(c.name || '')}" onerror="this.onerror=null;this.src=CARD_IMG_FALLBACK"><button class="bv-rm" title="Remover" onclick="event.stopPropagation();binderRemove('${colId}',${page},${i})">×</button></div>`;
-    else html += `<div class="bv-slot empty" ondragover="event.preventDefault()" ondrop="binderDrop(event,'${colId}',${page},${i})" onclick="openAddCards('${colId}',${page},${i})"><span>＋</span></div>`;
-  });
-  html += `</div>`;
-  panel.innerHTML = html;
+    <div class="bv-book${single ? ' single' : ''}${turnCls}">${book}</div>`;
+}
+function binderGoSpread(colId, dir) {
+  const b = ensureBinder(userCollections[colId]);
+  const next = binderPage + dir * 2;
+  if (next < 0 || next > b.pageCount - 1) return;
+  binderPage = next; binderTurn = dir > 0 ? 'fwd' : 'back';
+  renderBinderView(colId);
 }
 let binderDrag = null;
 function binderDragStart(e, page, pos) { binderDrag = { page, pos }; if (e.dataTransfer) { e.dataTransfer.effectAllowed = 'move'; try { e.dataTransfer.setData('text/plain', String(pos)); } catch (_) {} } }
@@ -6263,8 +6298,7 @@ function binderDrop(e, colId, page, pos) {
   persistCollection(colId, col);
   renderBinderView(colId);
 }
-function binderGoPage(p) { binderPage = p; renderBinderView(colState.colId); }
-function binderAddPage(colId) { const col = userCollections[colId]; const b = ensureBinder(col); b.pageCount++; binderPage = b.pageCount - 1; persistCollection(colId, col); renderBinderView(colId); }
+function binderAddPage(colId) { const col = userCollections[colId]; const b = ensureBinder(col); b.pageCount++; binderPage = (b.pageCount - 1) - ((b.pageCount - 1) % 2); binderTurn = 'fwd'; persistCollection(colId, col); renderBinderView(colId); }
 function binderSetGrid(colId, g) { const col = userCollections[colId]; const b = ensureBinder(col); b.grid = g; reflowBinder(b); if (binderPage > b.pageCount - 1) binderPage = b.pageCount - 1; persistCollection(colId, col); renderBinderView(colId); }
 function binderRemove(colId, page, pos) { const col = userCollections[colId]; const b = ensureBinder(col); b.cards = b.cards.filter(c => !(c.page === page && c.pos === pos)); persistCollection(colId, col); renderBinderView(colId); }
 function binderAddCards(colId, startPage, startPos, cards) {
@@ -6304,6 +6338,9 @@ async function createBinderSubmit() {
 
 // ---- Modal "Adicionar cartas" (TCGdex ao vivo, EN/PT/JA) ----
 const AC_LANGS = [['en', '🇺🇸 EN'], ['pt', '🇧🇷 PT'], ['ja', '🇯🇵 JA']];
+// TCG tem 11 tipos de energia (≠ 18 dos jogos). Tradução p/ exibir em PT na aba EN.
+const TYPE_PT_EN = { Colorless: 'Incolor', Darkness: 'Sombrio', Dragon: 'Dragão', Fairy: 'Fada', Fighting: 'Lutador', Fire: 'Fogo', Grass: 'Planta', Lightning: 'Elétrico', Metal: 'Metal', Psychic: 'Psíquico', Water: 'Água' };
+function typeLabel(t, lang) { return lang === 'en' ? (TYPE_PT_EN[t] || t) : t; }
 let acState = { colId: null, page: 0, pos: 0, lang: 'en', query: '', filters: { types: '', rarity: '', set: '', category: '', artist: '' }, results: [], selected: [], loading: false };
 let acOptsCache = {};
 let acSearchTimer = null;
@@ -6346,14 +6383,16 @@ async function acSearch() {
   if (filters.set) { const opts = acOptsCache[lang] || {}; const sid = (opts.setNameToId || {})[filters.set]; if (sid) p.set('set', sid); }
   if (filters.category) p.set('category', filters.category);
   if (filters.artist) p.set('illustrator', 'like:' + filters.artist);
-  p.set('pagination:page', '1'); p.set('pagination:itemsPerPage', '60'); p.set('sort:field', 'name'); p.set('sort:order', 'ASC');
+  p.set('pagination:page', '1'); p.set('pagination:itemsPerPage', '400'); p.set('sort:field', 'name'); p.set('sort:order', 'ASC');
   const myLang = lang;
   try {
     const res = await fetch('https://api.tcgdex.net/v2/' + lang + '/cards?' + p.toString());
     const data = await res.json();
     if (acState.lang !== myLang) return; // troca de idioma no meio
-    acState.results = (Array.isArray(data) ? data : []).filter(c => c.image).slice(0, 80);
-  } catch (e) { acState.results = []; }
+    const withImg = (Array.isArray(data) ? data : []).filter(c => c.image);
+    acState.total = withImg.length;
+    acState.results = withImg.slice(0, 150);
+  } catch (e) { acState.results = []; acState.total = 0; }
   acState.loading = false; renderAddCardsResults();
 }
 function acToggle(id) {
@@ -6374,8 +6413,9 @@ function renderAddCards() {
   const f = acState.filters;
   const sel = (val, arr, ph, key, isObj) => `<select class="ac-sel" onchange="acSetFilter('${key}',this.value)"><option value="">${ph}</option>${arr.map(o => { const v = isObj ? o.id : o; const l = isObj ? o.name : o; return `<option value="${escHtml(String(v))}"${String(val) === String(v) ? ' selected' : ''}>${escHtml(String(l))}</option>`; }).join('')}</select>`;
   const dlInput = (val, listId, ph, key, arr, isObj) => `<input class="ac-sel" list="${listId}" placeholder="${ph}" value="${escHtml(val || '')}" onchange="acSetFilter('${key}',this.value)"><datalist id="${listId}">${arr.map(o => `<option value="${escHtml(isObj ? o.name : o)}">`).join('')}</datalist>`;
+  const typeSel = `<select class="ac-sel" onchange="acSetFilter('types',this.value)"><option value="">Todos os tipos</option>${opts.types.map(t => `<option value="${escHtml(t)}"${f.types === t ? ' selected' : ''}>${escHtml(typeLabel(t, acState.lang))}</option>`).join('')}</select>`;
   const fEl = document.getElementById('ac-filters');
-  if (fEl) fEl.innerHTML = `<div class="ac-flabel">Tipo</div>${sel(f.types, opts.types, 'Todos os tipos', 'types')}
+  if (fEl) fEl.innerHTML = `<div class="ac-flabel">Tipo</div>${typeSel}
     <div class="ac-flabel">Raridade</div>${sel(f.rarity, opts.rarities, 'Todas', 'rarity')}
     <div class="ac-flabel">Categoria</div>${sel(f.category, opts.categories, 'Todas', 'category')}
     <div class="ac-flabel">Set / Edição</div>${dlInput(f.set, 'ac-dl-sets', 'Buscar set…', 'set', opts.sets, true)}
@@ -6387,9 +6427,15 @@ function renderAddCards() {
 }
 function renderAddCardsResults() {
   const wrap = document.getElementById('ac-results'); if (!wrap) return;
-  if (acState.loading) { wrap.innerHTML = '<div class="ac-empty">Buscando…</div>'; return; }
+  const cEl = document.getElementById('ac-count');
+  if (acState.loading) { wrap.innerHTML = '<div class="ac-empty">Buscando…</div>'; if (cEl) cEl.textContent = ''; return; }
+  const total = acState.total || 0;
+  if (cEl) {
+    if (!total) cEl.textContent = '';
+    else { const cap = total >= 400 ? '400+' : total; cEl.textContent = cap + ' carta(s)' + (total > acState.results.length ? ` · mostrando ${acState.results.length}` : ''); }
+  }
   if (!acState.results.length) { wrap.innerHTML = '<div class="ac-empty">Busque por nome/número ou use os filtros ao lado.</div>'; return; }
-  wrap.innerHTML = acState.results.map(c => { const on = acState.selected.some(s => s.id === c.id); return `<div class="ac-card${on ? ' on' : ''}" data-id="${escHtml(c.id)}" onclick="acToggle('${escHtml(c.id)}')" onmouseenter="acCardHover(event,'${escHtml(c.id)}')" onmouseleave="acCardLeave()"><img loading="lazy" referrerpolicy="no-referrer" src="${escHtml(c.image + '/low.webp')}" alt="${escHtml(c.name)}" onerror="this.onerror=null;this.src=CARD_IMG_FALLBACK"><div class="ac-pick">✓</div></div>`; }).join('');
+  wrap.innerHTML = acState.results.map(c => { const on = acState.selected.some(s => s.id === c.id); return `<div class="ac-card${on ? ' on' : ''}" data-id="${escHtml(c.id)}" onclick="acToggle('${escHtml(c.id)}')"><img loading="lazy" referrerpolicy="no-referrer" src="${escHtml(c.image + '/low.webp')}" alt="${escHtml(c.name)}" onerror="this.onerror=null;this.src=CARD_IMG_FALLBACK"><div class="ac-pick">✓</div><button class="ac-q" onclick="event.stopPropagation()" onmouseenter="acCardHover(event,'${escHtml(c.id)}')" onmouseleave="acCardLeave()">?</button></div>`; }).join('');
 }
 function renderAddCardsTray() {
   const t = document.getElementById('ac-selected'); if (!t) return;
@@ -6436,7 +6482,7 @@ function showAcTip(anchor, html) {
 function hideAcTip() { const t = document.getElementById('ac-tooltip'); if (t) t.style.display = 'none'; }
 function acCardHover(e, id) {
   if (!acHoverOk()) return;
-  acTipFor = id; const lang = acState.lang; const anchor = e.currentTarget;
+  acTipFor = id; const lang = acState.lang; const anchor = e.currentTarget.closest('.ac-card') || e.currentTarget;
   showAcTip(anchor, '<div class="ttp-load">Carregando…</div>');
   tcgCardDetail(lang, id).then(async d => {
     if (acTipFor !== id || !d) return;
