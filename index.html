@@ -2362,6 +2362,7 @@ html.reduce-motion *, html.reduce-motion *::before, html.reduce-motion *::after 
 .bv-pagenav > button { background: rgba(255,255,255,.06); border: 1px solid var(--gray); color: var(--text); border-radius: 8px; min-width: 34px; height: 34px; cursor: pointer; }
 .bv-pagenav > button:disabled { opacity: .35; cursor: default; }
 .bv-addpage { font-size: .8rem; padding: 0 12px; white-space: nowrap; }
+.bv-org { background: rgba(255,255,255,.06); border: 1px solid var(--gray); color: var(--text); border-radius: 8px; padding: 6px 9px; font-size: .8rem; cursor: pointer; }
 .bv-count { margin-left: auto; font-size: .8rem; color: var(--text-dim); }
 .bv-desc { font-size: .85rem; color: var(--text-dim); margin: 0 2px 12px; }
 /* fichário customizado reusa a casca .binder-* da Full Art */
@@ -6251,6 +6252,11 @@ function renderBinderView(colId) {
   const gs = GRID_SIZES.map(g => `<button class="bv-gs${b.grid === g ? ' active' : ''}" onclick="binderSetGrid('${colId}','${g}')">${g.replace('x', '×')}</button>`).join('');
   panel.innerHTML = `<div class="bv-bar">
       <div class="bv-gridsizes">${gs}</div>
+      <select class="bv-org" onchange="if(this.value){binderOrganize('${colId}',this.value);this.value='';}" title="Sugestão de organização">
+        <option value="">↕ Organizar…</option>
+        <option value="year">Por ano de lançamento</option>
+        <option value="lang">Por idioma (EN→PT→JA)</option>
+      </select>
       <div class="bv-pagenav"><button id="cb-prev" onclick="binderGoSpread('${colId}',-1)">‹</button><span id="cb-label"></span><button id="cb-next" onclick="binderGoSpread('${colId}',1)">›</button><button class="bv-addpage" onclick="binderAddPage('${colId}')">+ Página</button></div>
       <div class="bv-count" id="cb-count"></div>
     </div>
@@ -6301,6 +6307,32 @@ function cbAnimateTurn(direction, cb) {
     setTimeout(reset, 700);
   }, { once: true });
   setTimeout(() => { if (!cbAnimating) return; run(); reset(); }, 1200);
+}
+// Ano de lançamento do set da carta (cacheado via detalhes)
+async function cardYear(c) {
+  try {
+    if (c.custom) return null;
+    if (c.source === 'ptcg') { const d = await ptcgCardDetail(c.id); const rd = d && d.set && d.set.releaseDate; return rd ? parseInt(String(rd).slice(0, 4)) : null; }
+    const d = await tcgCardDetail(c.lang, c.id); if (!d || !d.set || !d.set.id) return null;
+    const sd = await tcgSetDetail(c.lang, d.set.id); const rd = sd && sd.releaseDate; return rd ? parseInt(String(rd).slice(0, 4)) : null;
+  } catch (e) { return null; }
+}
+// Reorganiza (compacta) as cartas do fichário por ano ou por idioma
+async function binderOrganize(colId, mode) {
+  const col = userCollections[colId]; const b = ensureBinder(col);
+  if (!b.cards.length) { showToast('Fichário vazio.', 'info'); return; }
+  showToast('Organizando…', 'info');
+  await Promise.all(b.cards.map(async c => { c._y = await cardYear(c); }));
+  const lo = { en: 0, pt: 1, ja: 2 };
+  const arr = b.cards.slice();
+  if (mode === 'lang') arr.sort((a, b2) => (lo[a.lang] ?? 9) - (lo[b2.lang] ?? 9) || (a._y || 9999) - (b2._y || 9999) || (a.name || '').localeCompare(b2.name || ''));
+  else arr.sort((a, b2) => (a._y || 9999) - (b2._y || 9999) || (lo[a.lang] ?? 9) - (lo[b2.lang] ?? 9) || (a.name || '').localeCompare(b2.name || ''));
+  const { per } = gridDims(b.grid);
+  arr.forEach((c, i) => { c.page = Math.floor(i / per); c.pos = i % per; delete c._y; });
+  b.cards = arr; b.pageCount = Math.max(1, Math.ceil(arr.length / per));
+  persistCollection(colId, col);
+  binderPage = 0; renderBinderView(colId);
+  showToast(mode === 'lang' ? 'Organizado por idioma!' : 'Organizado por ano!', 'success');
 }
 function binderGoSpread(colId, dir) {
   const b = ensureBinder(userCollections[colId]);
