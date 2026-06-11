@@ -6230,7 +6230,7 @@ let binderPage = 0;
 const GRID_SIZES = ['2x2', '3x3', '4x3', '4x4', '4x5', '5x4'];
 function gridDims(g) { const p = (g || '4x4').split('x').map(Number); return { cols: p[0], rows: p[1], per: p[0] * p[1] }; }
 function ensureBinder(col) { if (!col.binder) col.binder = { grid: '4x4', pageCount: 1, cards: [] }; return col.binder; }
-function cardImg(c, q) { if (!c || !c.img) return CARD_IMG_FALLBACK; if (c.custom) return c.img; return c.img + '/' + (q === 'low' ? 'low.webp' : 'high.webp'); }
+function cardImg(c, q) { if (!c || !c.img) return CARD_IMG_FALLBACK; if (c.custom) return c.img; if (c.source === 'ptcg') return c.img + (q === 'low' ? '.png' : '_hires.png'); return c.img + '/' + (q === 'low' ? 'low.webp' : 'high.webp'); }
 function binderSlots(col, page) { const { per } = gridDims(col.binder.grid); const arr = new Array(per).fill(null); for (const c of col.binder.cards) { if (c.page === page && c.pos < per) arr[c.pos] = c; } return arr; }
 function reflowBinder(b) { const { per } = gridDims(b.grid); const o = b.cards.slice().sort((a, b2) => (a.page - b2.page) || (a.pos - b2.pos)); o.forEach((c, i) => { c.page = Math.floor(i / per); c.pos = i % per; }); b.cards = o; b.pageCount = Math.max(1, Math.ceil(o.length / per) || 1); }
 // HTML das cartas de UMA página (filhos da .binder-page)
@@ -6331,7 +6331,7 @@ function binderAddCards(colId, startPage, startPos, cards) {
   const col = userCollections[colId]; const b = ensureBinder(col); const { per } = gridDims(b.grid);
   const occ = new Set(b.cards.map(c => c.page * per + c.pos));
   let lin = startPage * per + startPos;
-  for (const card of cards) { while (occ.has(lin)) lin++; const e = { page: Math.floor(lin / per), pos: lin % per, id: card.id, lang: card.lang, name: card.name, img: card.img }; if (card.custom) e.custom = true; b.cards.push(e); occ.add(lin); lin++; }
+  for (const card of cards) { while (occ.has(lin)) lin++; const e = { page: Math.floor(lin / per), pos: lin % per, id: card.id, lang: card.lang, name: card.name, img: card.img }; if (card.custom) e.custom = true; if (card.source) e.source = card.source; b.cards.push(e); occ.add(lin); lin++; }
   const maxLin = b.cards.reduce((m, c) => Math.max(m, c.page * per + c.pos), 0);
   b.pageCount = Math.max(b.pageCount, Math.floor(maxLin / per) + 1);
   persistCollection(colId, col);
@@ -6386,51 +6386,86 @@ function acClearFilters() {
   renderAddCards(); acSearch();
 }
 function acOnQuery(v) { acState.query = v; clearTimeout(acSearchTimer); acSearchTimer = setTimeout(acSearch, 350); }
+function acSource(lang) { return lang === 'en' ? 'ptcg' : 'tcgdex'; } // EN = pokemontcg.io (catálogo completo); PT/JA = TCGdex (multi-idioma)
 async function acLoadOptions() {
   const lang = acState.lang; if (acOptsCache[lang]) return acOptsCache[lang];
-  const base = 'https://api.tcgdex.net/v2/' + lang + '/';
   try {
-    const [types, rarities, sets, cats, illus] = await Promise.all([
-      fetch(base + 'types').then(r => r.json()).catch(() => []),
-      fetch(base + 'rarities').then(r => r.json()).catch(() => []),
-      fetch(base + 'sets').then(r => r.json()).catch(() => []),
-      fetch(base + 'categories').then(r => r.json()).catch(() => []),
-      fetch(base + 'illustrators').then(r => r.json()).catch(() => []),
-    ]);
-    const setList = (sets || []).map(s => ({ id: s.id, name: s.name })).sort((a, b) => a.name.localeCompare(b.name));
-    const setNameToId = {}; for (const s of setList) setNameToId[s.name] = s.id;
-    acOptsCache[lang] = {
-      types: (types || []).slice().sort((a, b) => typeLabel(a).localeCompare(typeLabel(b))),
-      rarities: (rarities || []).slice().sort((a, b) => a.localeCompare(b)),
-      sets: setList, setNameToId,
-      categories: (cats || []).slice().sort((a, b) => a.localeCompare(b)),
-      illustrators: (illus || []).slice().sort((a, b) => a.localeCompare(b))
-    };
+    if (acSource(lang) === 'ptcg') {
+      const jd = u => fetch(u).then(r => r.json()).then(x => x.data || []).catch(() => []);
+      const [types, rarities, supertypes, sets] = await Promise.all([
+        jd('https://api.pokemontcg.io/v2/types'),
+        jd('https://api.pokemontcg.io/v2/rarities'),
+        jd('https://api.pokemontcg.io/v2/supertypes'),
+        fetch('https://api.pokemontcg.io/v2/sets?select=id,name&pageSize=300').then(r => r.json()).then(x => (x.data || []).map(s => ({ id: s.id, name: s.name }))).catch(() => []),
+      ]);
+      const setList = sets.sort((a, b) => a.name.localeCompare(b.name));
+      const setNameToId = {}; for (const s of setList) setNameToId[s.name] = s.id;
+      acOptsCache[lang] = {
+        types: types.slice().sort((a, b) => typeLabel(a).localeCompare(typeLabel(b))),
+        rarities: rarities.slice().sort((a, b) => a.localeCompare(b)),
+        sets: setList, setNameToId,
+        categories: supertypes.slice().sort((a, b) => a.localeCompare(b)),
+        illustrators: []
+      };
+    } else {
+      const base = 'https://api.tcgdex.net/v2/' + lang + '/';
+      const [types, rarities, sets, cats, illus] = await Promise.all([
+        fetch(base + 'types').then(r => r.json()).catch(() => []),
+        fetch(base + 'rarities').then(r => r.json()).catch(() => []),
+        fetch(base + 'sets').then(r => r.json()).catch(() => []),
+        fetch(base + 'categories').then(r => r.json()).catch(() => []),
+        fetch(base + 'illustrators').then(r => r.json()).catch(() => []),
+      ]);
+      const setList = (sets || []).map(s => ({ id: s.id, name: s.name })).sort((a, b) => a.name.localeCompare(b.name));
+      const setNameToId = {}; for (const s of setList) setNameToId[s.name] = s.id;
+      acOptsCache[lang] = {
+        types: (types || []).slice().sort((a, b) => typeLabel(a).localeCompare(typeLabel(b))),
+        rarities: (rarities || []).slice().sort((a, b) => a.localeCompare(b)),
+        sets: setList, setNameToId,
+        categories: (cats || []).slice().sort((a, b) => a.localeCompare(b)),
+        illustrators: (illus || []).slice().sort((a, b) => a.localeCompare(b))
+      };
+    }
   } catch (e) { acOptsCache[lang] = { types: [], rarities: [], sets: [], setNameToId: {}, categories: [], illustrators: [] }; }
   return acOptsCache[lang];
 }
 async function acSearch() {
   const { lang, query, filters } = acState;
+  const src = acSource(lang);
   const hasCrit = query.trim() || filters.types || filters.rarity || filters.set || filters.category || filters.artist;
   acState.loading = true; renderAddCardsResults();
-  if (!hasCrit) { acState.results = []; acState.loading = false; renderAddCardsResults(); return; }
-  const p = new URLSearchParams();
-  const q = query.trim();
-  if (q) { if (/^\d+$/.test(q)) p.set('dexId', q); else p.set('name', 'like:' + q); } // número = dex nacional (todos idiomas)
-  if (filters.types) p.set('types', filters.types);
-  if (filters.rarity) p.set('rarity', filters.rarity);
-  if (filters.set) { const opts = acOptsCache[lang] || {}; const sid = (opts.setNameToId || {})[filters.set]; if (sid) p.set('set', sid); }
-  if (filters.category) p.set('category', filters.category);
-  if (filters.artist) p.set('illustrator', 'like:' + filters.artist);
-  p.set('pagination:page', '1'); p.set('pagination:itemsPerPage', '400'); p.set('sort:field', 'name'); p.set('sort:order', 'ASC');
-  const myLang = lang;
+  if (!hasCrit) { acState.results = []; acState.total = 0; acState.loading = false; renderAddCardsResults(); return; }
+  const myLang = lang; const q = query.trim();
   try {
-    const res = await fetch('https://api.tcgdex.net/v2/' + lang + '/cards?' + p.toString());
-    const data = await res.json();
-    if (acState.lang !== myLang) return; // troca de idioma no meio
-    const withImg = (Array.isArray(data) ? data : []).filter(c => c.image);
-    acState.total = withImg.length;
-    acState.results = withImg.slice(0, 150);
+    if (src === 'ptcg') {
+      const opts = acOptsCache[lang] || {}; const parts = [];
+      if (q) parts.push(/^\d+$/.test(q) ? ('nationalPokedexNumbers:' + q) : ('name:"*' + q.replace(/"/g, '') + '*"'));
+      if (filters.types) parts.push('types:' + filters.types);
+      if (filters.rarity) parts.push('rarity:"' + filters.rarity.replace(/"/g, '') + '"');
+      if (filters.category) parts.push('supertype:"' + filters.category.replace(/"/g, '') + '"');
+      if (filters.set) { const sid = (opts.setNameToId || {})[filters.set]; if (sid) parts.push('set.id:' + sid); }
+      if (filters.artist) parts.push('artist:"*' + filters.artist.replace(/"/g, '') + '*"');
+      const url = 'https://api.pokemontcg.io/v2/cards?q=' + encodeURIComponent(parts.join(' ')) + '&select=id,name,number,rarity,artist,supertype,nationalPokedexNumbers,set,images&pageSize=150&orderBy=name';
+      const j = await fetch(url).then(r => r.json());
+      if (acState.lang !== myLang) return;
+      const arr = (j.data || []).filter(c => c.images && c.images.small);
+      acState.total = j.totalCount || arr.length;
+      acState.results = arr.map(c => ({ id: c.id, name: c.name, img: c.images.small.replace(/\.png$/, ''), source: 'ptcg', _raw: c }));
+    } else {
+      const p = new URLSearchParams();
+      if (q) { if (/^\d+$/.test(q)) p.set('dexId', q); else p.set('name', 'like:' + q); }
+      if (filters.types) p.set('types', filters.types);
+      if (filters.rarity) p.set('rarity', filters.rarity);
+      if (filters.set) { const sid = ((acOptsCache[lang] || {}).setNameToId || {})[filters.set]; if (sid) p.set('set', sid); }
+      if (filters.category) p.set('category', filters.category);
+      if (filters.artist) p.set('illustrator', 'like:' + filters.artist);
+      p.set('pagination:page', '1'); p.set('pagination:itemsPerPage', '400'); p.set('sort:field', 'name'); p.set('sort:order', 'ASC');
+      const data = await fetch('https://api.tcgdex.net/v2/' + lang + '/cards?' + p.toString()).then(r => r.json());
+      if (acState.lang !== myLang) return;
+      const withImg = (Array.isArray(data) ? data : []).filter(c => c.image);
+      acState.total = withImg.length;
+      acState.results = withImg.slice(0, 150).map(c => ({ id: c.id, name: c.name, img: c.image, source: 'tcgdex' }));
+    }
   } catch (e) { acState.results = []; acState.total = 0; }
   acState.loading = false; renderAddCardsResults();
 }
@@ -6438,7 +6473,7 @@ function acToggle(id) {
   const lang = acState.lang;
   const i = acState.selected.findIndex(s => s.id === id && s.lang === lang);
   if (i >= 0) acState.selected.splice(i, 1);
-  else { const c = acState.results.find(r => r.id === id); if (c) acState.selected.push({ id: c.id, name: c.name, img: c.image, lang }); }
+  else { const c = acState.results.find(r => r.id === id); if (c) acState.selected.push({ id: c.id, name: c.name, img: c.img, lang, source: c.source }); }
   renderAddCardsResults(); renderAddCardsTray();
 }
 function acRemoveSel(id, lang) {
@@ -6492,12 +6527,9 @@ function renderAddCardsResults() {
   const cEl = document.getElementById('ac-count');
   if (acState.loading) { wrap.innerHTML = '<div class="ac-empty">Buscando…</div>'; if (cEl) cEl.textContent = ''; return; }
   const total = acState.total || 0;
-  if (cEl) {
-    if (!total) cEl.textContent = '';
-    else { const cap = total >= 400 ? '400+' : total; cEl.textContent = cap + ' carta(s)' + (total > acState.results.length ? ` · mostrando ${acState.results.length}` : ''); }
-  }
+  if (cEl) cEl.textContent = total ? (total + ' carta(s)' + (total > acState.results.length ? ` · mostrando ${acState.results.length}` : '')) : '';
   if (!acState.results.length) { wrap.innerHTML = '<div class="ac-empty">Busque por nome/número ou use os filtros ao lado.</div>'; return; }
-  wrap.innerHTML = acState.results.map(c => { const on = acState.selected.some(s => s.id === c.id && s.lang === acState.lang); return `<div class="ac-card${on ? ' on' : ''}" data-id="${escHtml(c.id)}" onclick="acToggle('${escHtml(c.id)}')"><img loading="lazy" referrerpolicy="no-referrer" src="${escHtml(c.image + '/low.webp')}" alt="${escHtml(c.name)}" onerror="this.onerror=null;this.src=CARD_IMG_FALLBACK"><div class="ac-pick">✓</div><button class="ac-q" onclick="event.stopPropagation()" onmouseenter="acCardHover(event,'${escHtml(c.id)}')" onmouseleave="acCardLeave()">?</button></div>`; }).join('');
+  wrap.innerHTML = acState.results.map(c => { const on = acState.selected.some(s => s.id === c.id && s.lang === acState.lang); return `<div class="ac-card${on ? ' on' : ''}" data-id="${escHtml(c.id)}" onclick="acToggle('${escHtml(c.id)}')"><img loading="lazy" referrerpolicy="no-referrer" src="${escHtml(cardImg(c, 'low'))}" alt="${escHtml(c.name)}" onerror="this.onerror=null;this.src=CARD_IMG_FALLBACK"><div class="ac-pick">✓</div><button class="ac-q" onclick="event.stopPropagation()" onmouseenter="acCardHover(event,'${escHtml(c.id)}')" onmouseleave="acCardLeave()">?</button></div>`; }).join('');
 }
 function renderAddCardsTray() {
   const t = document.getElementById('ac-selected'); if (!t) return;
@@ -6505,7 +6537,7 @@ function renderAddCardsTray() {
   const btn = document.getElementById('ac-confirm');
   if (btn) { btn.textContent = n ? ('Adicionar ' + n + ' carta(s)') : 'Adicionar'; btn.disabled = !n; }
   if (!n) { t.innerHTML = '<div class="ac-empty">Cartas selecionadas aparecem aqui.</div>'; return; }
-  t.innerHTML = acState.selected.map(s => `<div class="ac-srow"><img referrerpolicy="no-referrer" src="${escHtml(s.img + '/low.webp')}" onerror="this.onerror=null;this.src=CARD_IMG_FALLBACK"><span>${escHtml(s.name)}</span><span class="ac-srow-lang">${escHtml((s.lang || '').toUpperCase())}</span><button onclick="acRemoveSel('${escHtml(s.id)}','${escHtml(s.lang)}')">×</button></div>`).join('');
+  t.innerHTML = acState.selected.map(s => `<div class="ac-srow"><img referrerpolicy="no-referrer" src="${escHtml(cardImg(s, 'low'))}" onerror="this.onerror=null;this.src=CARD_IMG_FALLBACK"><span>${escHtml(s.name)}</span><span class="ac-srow-lang">${escHtml((s.lang || '').toUpperCase())}</span><button onclick="acRemoveSel('${escHtml(s.id)}','${escHtml(s.lang)}')">×</button></div>`).join('');
 }
 
 // =============================================
@@ -6542,9 +6574,25 @@ function showAcTip(anchor, html) {
   t.style.left = left + 'px'; t.style.top = top + 'px';
 }
 function hideAcTip() { const t = document.getElementById('ac-tooltip'); if (t) t.style.display = 'none'; }
+function buildTipPtcg(c) {
+  if (!c) return '';
+  const dex = (c.nationalPokedexNumbers && c.nationalPokedexNumbers[0]) ? ('#' + c.nationalPokedexNumbers[0] + ' ') : '';
+  const set = c.set || {};
+  let ed = set.name || ''; if (set.ptcgoCode) ed += ' - ' + set.ptcgoCode; if (set.releaseDate) ed += ' - ' + String(set.releaseDate).slice(0, 4);
+  const total = set.printedTotal || set.total || '?';
+  const row = (l, v) => `<div class="ttp-row"><span class="ttp-l">${l}</span><span class="ttp-v">${escHtml(String(v))}</span></div>`;
+  return `<div class="ttp-cat">${escHtml(catPT(c.supertype))}</div><div class="ttp-name">${escHtml(dex + (c.name || ''))}</div>`
+    + row('Edição', ed) + row('Número', (c.number || '?') + ' / ' + total) + row('Raridade', c.rarity || '-') + (c.artist ? row('Artista', c.artist) : '');
+}
+async function ptcgCardDetail(id) {
+  const k = 'ptcg:' + id; if (tcgDetailCache[k]) return tcgDetailCache[k];
+  try { const j = await fetch('https://api.pokemontcg.io/v2/cards/' + id + '?select=id,name,number,rarity,artist,supertype,nationalPokedexNumbers,set,images').then(r => r.json()); tcgDetailCache[k] = j.data; return j.data; } catch (e) { return null; }
+}
 function acCardHover(e, id) {
   if (!acHoverOk()) return;
   acTipFor = id; const lang = acState.lang; const anchor = e.currentTarget.closest('.ac-card') || e.currentTarget;
+  const cr = acState.results.find(r => r.id === id);
+  if (cr && cr.source === 'ptcg') { showAcTip(anchor, buildTipPtcg(cr._raw)); return; }
   showAcTip(anchor, '<div class="ttp-load">Carregando…</div>');
   tcgCardDetail(lang, id).then(async d => {
     if (acTipFor !== id || !d) return;
@@ -6565,6 +6613,18 @@ async function openBinderCardDetail(colId, page, pos) {
   if (card.custom) { // carta adicionada por URL — sem dados da API
     cont.innerHTML = shell(`<div class="detail-row"><span class="dl">Tipo</span><span class="dv">Carta personalizada</span></div><div class="detail-row"><span class="dl">Idioma</span><span class="dv">${escHtml(langLbl0)}</span></div>`);
     ov.classList.add('open'); openOverlay(ov); return;
+  }
+  if (card.source === 'ptcg') { // EN via pokemontcg.io
+    cont.innerHTML = shell('<div class="ttp-load">Carregando…</div>');
+    ov.classList.add('open'); openOverlay(ov);
+    const c = await ptcgCardDetail(card.id); if (!c || !ov.classList.contains('open')) return;
+    const dexp = (c.nationalPokedexNumbers && c.nationalPokedexNumbers[0]) ? ('#' + c.nationalPokedexNumbers[0] + ' ') : '';
+    const set = c.set || {};
+    let ed = set.name || ''; if (set.ptcgoCode) ed += ' - ' + set.ptcgoCode; if (set.releaseDate) ed += ' - ' + String(set.releaseDate).slice(0, 4);
+    const totalp = set.printedTotal || set.total || '?';
+    const rowp = (l, v) => `<div class="detail-row"><span class="dl">${l}</span><span class="dv">${escHtml(String(v))}</span></div>`;
+    cont.innerHTML = shell(rowp('Categoria', catPT(c.supertype)) + (dexp ? rowp('Pokémon', dexp + (c.name || '')) : '') + rowp('Edição', ed) + rowp('Número', (c.number || '?') + ' / ' + totalp) + rowp('Raridade', c.rarity || '-') + (c.artist ? rowp('Artista', c.artist) : '') + rowp('Idioma', langLbl0));
+    return;
   }
   cont.innerHTML = shell('<div class="ttp-load">Carregando…</div>');
   ov.classList.add('open'); openOverlay(ov);
