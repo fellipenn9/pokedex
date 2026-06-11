@@ -1139,6 +1139,8 @@ body {
 .ph-chip-bar span { display: block; height: 100%; background: linear-gradient(90deg, var(--green), var(--gold)); }
 .header-progress { font-size: .8rem; font-weight: 700; color: var(--gold); background: rgba(255,215,0,0.1); border: 1px solid rgba(255,215,0,0.25); border-radius: 14px; padding: 3px 10px; cursor: pointer; white-space: nowrap; }
 @media (max-width: 560px) { .header-progress { display: none; } }
+.btn-export-dex { background: rgba(255,255,255,0.06); border: 1px solid var(--gray); color: var(--text); border-radius: var(--radius); padding: 8px 14px; font-size: 0.85rem; cursor: pointer; white-space: nowrap; transition: border-color .15s, background .15s; }
+.btn-export-dex:hover { border-color: var(--green); color: var(--green); }
 
 .pokedex-filters {
   display: flex;
@@ -2807,6 +2809,7 @@ body.modal-open{overflow:hidden}
         <option value="missing">Faltando</option>
       </select>
       <button class="btn-clear-filters" id="btn-clear-pokedex-filters" onclick="clearPokedexFilters()" style="display:none">Limpar filtros</button>
+      <button class="btn-export-dex" onclick="exportPokedex()" title="Baixar lista (número e nome) em Excel, com os filtros aplicados">⬇️ Exportar</button>
     </div>
     <div id="pokedex-checklist-grid" class="pokedex-checklist-grid"></div>
   </div>
@@ -3810,6 +3813,71 @@ function pokedexFilterRegion(g) {
 function switchToPokedex() {
   if (typeof selectNav === 'function') selectNav('pokedex');
   window.scrollTo({ top:0, behavior:'smooth' });
+}
+
+// =============================================
+// EXPORTAR POKÉDEX (Excel) — respeita os filtros aplicados
+// =============================================
+function getFilteredPokedexList() {
+  const sl = ((document.getElementById('pokedex-search') || {}).value || '').toLowerCase().trim();
+  const gen = (document.getElementById('pokedex-gen-filter') || {}).value || '';
+  const status = (document.getElementById('pokedex-status-filter') || {}).value || '';
+  return POKEDEX_DATA.filter(p => {
+    if (sl && !p.name.toLowerCase().includes(sl) && !String(p.number).includes(sl)) return false;
+    if (gen && String(p.generation) !== gen) return false;
+    if (status) { const c = isInPokedex(p.number); if (status === 'caught' && !c) return false; if (status === 'missing' && c) return false; }
+    return true;
+  });
+}
+function pokedexExportName(ext) {
+  const gen = (document.getElementById('pokedex-gen-filter') || {}).value || '';
+  const status = (document.getElementById('pokedex-status-filter') || {}).value || '';
+  let suffix = '';
+  if (gen) suffix += '-' + (GEN_REGION[gen] || ('gen' + gen)).toLowerCase();
+  if (status) suffix += '-' + (status === 'caught' ? 'capturados' : 'faltando');
+  return 'pokedex' + suffix + '.' + ext;
+}
+function triggerDownload(blob, filename) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 2000);
+}
+function downloadCsvPokedex(list) {
+  const rows = [['Número', 'Nome']].concat(list.map(p => [p.number, cap(p.name)]));
+  const csv = '﻿' + rows.map(r => r.map(c => { const s = String(c); return /[;"\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; }).join(';')).join('\r\n');
+  triggerDownload(new Blob([csv], { type: 'text/csv;charset=utf-8' }), pokedexExportName('csv'));
+}
+let _xlsxLoading = null;
+function loadXLSX() {
+  if (window.XLSX) return Promise.resolve(window.XLSX);
+  if (_xlsxLoading) return _xlsxLoading;
+  _xlsxLoading = new Promise((resolve, reject) => {
+    const s = document.createElement('script');
+    s.src = 'https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js';
+    s.onload = () => resolve(window.XLSX);
+    s.onerror = () => { _xlsxLoading = null; reject(new Error('cdn')); };
+    document.head.appendChild(s);
+  });
+  return _xlsxLoading;
+}
+async function exportPokedex() {
+  const list = getFilteredPokedexList();
+  if (!list.length) { uiAlert('Nenhum Pokémon para exportar com os filtros atuais.'); return; }
+  const aoa = [['Número', 'Nome']].concat(list.map(p => [p.number, cap(p.name)]));
+  try {
+    const XLSX = await loadXLSX();
+    const ws = XLSX.utils.aoa_to_sheet(aoa);
+    ws['!cols'] = [{ wch: 10 }, { wch: 24 }];
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Pokédex');
+    XLSX.writeFile(wb, pokedexExportName('xlsx'));
+    showToast(`Exportado: ${list.length} Pokémon`, 'success');
+  } catch (e) {
+    downloadCsvPokedex(list); // offline ou CDN bloqueado → CSV (abre no Excel)
+    showToast(`Exportado (CSV): ${list.length} Pokémon`, 'success');
+  }
 }
 
 // =============================================
