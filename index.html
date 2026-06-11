@@ -2393,6 +2393,7 @@ html.reduce-motion *, html.reduce-motion *::before, html.reduce-motion *::after 
 .ac-flabel { font-size: .7rem; text-transform: uppercase; letter-spacing: .4px; color: var(--text-dim); font-weight: 700; margin: 10px 0 4px; }
 .ac-flabel:first-child { margin-top: 0; }
 .ac-sel { width: 100%; padding: 8px; border-radius: 8px; border: 1px solid var(--gray); background: var(--bg-dark); color: var(--text); font-size: .82rem; }
+.ac-hint { font-size: .68rem; color: var(--text-dim); margin-top: 4px; line-height: 1.3; }
 .ac-clearf { width: 100%; margin-top: 16px; padding: 9px; border-radius: 8px; border: 1px solid var(--gray); background: rgba(255,255,255,.04); color: var(--text-dim); font-size: .82rem; cursor: pointer; }
 .ac-clearf:hover { border-color: var(--accent); color: var(--accent); }
 .ac-results { overflow-y: auto; padding: 18px; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px,1fr)); gap: 24px 20px; align-content: start; }
@@ -6514,10 +6515,15 @@ function acRemoveSel(id, lang) {
   renderAddCardsResults(); renderAddCardsTray();
 }
 // Carta fora do catálogo: adicionar por URL de imagem (ex.: LigaPokémon)
-function acAddUrl() {
+async function acAddUrl() {
   const url = ((document.getElementById('ac-url') || {}).value || '').trim();
   const nm = ((document.getElementById('ac-urlname') || {}).value || '').trim();
   if (!/^https?:\/\//i.test(url)) { uiAlert('Cole uma URL de imagem válida (começando com http).'); return; }
+  const looksImg = /\.(png|jpe?g|webp|gif|avif)(\?|#|$)/i.test(url);
+  if (!looksImg) {
+    const ok = await uiConfirm('Esse link parece ser de uma PÁGINA, não da imagem (a carta não vai aparecer).\n\nDica: clique com o botão direito na imagem da carta → "Copiar endereço da imagem" e cole aqui (termina em .jpg/.png).\n\nAdicionar mesmo assim?', { okLabel: 'Adicionar assim', cancelLabel: 'Cancelar', danger: true });
+    if (!ok) return;
+  }
   const id = 'url-' + Date.now().toString(36) + Math.floor(Math.random() * 1e4).toString(36);
   acState.selected.push({ id, name: nm || 'Carta personalizada', img: url, lang: acState.lang, custom: true });
   const ui = document.getElementById('ac-url'); if (ui) ui.value = '';
@@ -6546,7 +6552,8 @@ function renderAddCards() {
     <div class="ac-flabel">Artista</div>${dlInput(f.artist, 'ac-dl-artists', 'Buscar artista…', 'artist', opts.illustrators, false)}
     <button class="ac-clearf" onclick="acClearFilters()">Limpar filtros</button>
     <div class="ac-flabel" style="margin-top:18px">Não está na lista? Adicionar por imagem</div>
-    <input class="ac-sel" id="ac-url" placeholder="URL da imagem (ex.: LigaPokémon)">
+    <input class="ac-sel" id="ac-url" placeholder="Link direto da imagem (.jpg/.png)">
+    <div class="ac-hint">Na LigaPokémon: botão direito na imagem da carta → “Copiar endereço da imagem”.</div>
     <input class="ac-sel" id="ac-urlname" placeholder="Nome (opcional)" style="margin-top:6px">
     <button class="ac-clearf" style="margin-top:8px" onclick="acAddUrl()">Adicionar imagem</button>`;
   const lEl = document.getElementById('ac-langs');
