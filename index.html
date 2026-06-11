@@ -3026,7 +3026,7 @@ body.modal-open{overflow:hidden}
     </div>
     <div class="ac-top">
       <div class="ac-langs" id="ac-langs"></div>
-      <input class="ac-search" id="ac-query" placeholder="Buscar por nome ou número…" oninput="acOnQuery(this.value)">
+      <input class="ac-search" id="ac-query" placeholder="Nome (idioma atual) ou nº nacional, ex.: 155" oninput="acOnQuery(this.value)">
       <span class="ac-count" id="ac-count"></span>
     </div>
     <div class="ac-body">
@@ -6365,7 +6365,7 @@ async function createBinderSubmit() {
 const AC_LANGS = [['en', '🇺🇸 EN'], ['pt', '🇧🇷 PT'], ['ja', '🇯🇵 JA']];
 // TCG tem 11 tipos de energia (≠ 18 dos jogos). Tradução p/ exibir em PT na aba EN.
 const TYPE_PT_EN = { Colorless: 'Incolor', Darkness: 'Sombrio', Dragon: 'Dragão', Fairy: 'Fada', Fighting: 'Lutador', Fire: 'Fogo', Grass: 'Planta', Lightning: 'Elétrico', Metal: 'Metal', Psychic: 'Psíquico', Water: 'Água' };
-function typeLabel(t, lang) { return lang === 'en' ? (TYPE_PT_EN[t] || t) : t; }
+function typeLabel(t) { return TYPE_PT_EN[t] || t; } // en/ja usam chave inglesa -> PT; pt já vem em PT
 let acState = { colId: null, page: 0, pos: 0, lang: 'en', query: '', filters: { types: '', rarity: '', set: '', category: '', artist: '' }, results: [], selected: [], loading: false };
 let acOptsCache = {};
 let acSearchTimer = null;
@@ -6396,9 +6396,15 @@ async function acLoadOptions() {
       fetch(base + 'categories').then(r => r.json()).catch(() => []),
       fetch(base + 'illustrators').then(r => r.json()).catch(() => []),
     ]);
-    const setList = (sets || []).map(s => ({ id: s.id, name: s.name })).reverse();
+    const setList = (sets || []).map(s => ({ id: s.id, name: s.name })).sort((a, b) => a.name.localeCompare(b.name));
     const setNameToId = {}; for (const s of setList) setNameToId[s.name] = s.id;
-    acOptsCache[lang] = { types: types || [], rarities: rarities || [], sets: setList, setNameToId, categories: cats || [], illustrators: (illus || []).slice().sort() };
+    acOptsCache[lang] = {
+      types: (types || []).slice().sort((a, b) => typeLabel(a).localeCompare(typeLabel(b))),
+      rarities: (rarities || []).slice().sort((a, b) => a.localeCompare(b)),
+      sets: setList, setNameToId,
+      categories: (cats || []).slice().sort((a, b) => a.localeCompare(b)),
+      illustrators: (illus || []).slice().sort((a, b) => a.localeCompare(b))
+    };
   } catch (e) { acOptsCache[lang] = { types: [], rarities: [], sets: [], setNameToId: {}, categories: [], illustrators: [] }; }
   return acOptsCache[lang];
 }
@@ -6408,7 +6414,8 @@ async function acSearch() {
   acState.loading = true; renderAddCardsResults();
   if (!hasCrit) { acState.results = []; acState.loading = false; renderAddCardsResults(); return; }
   const p = new URLSearchParams();
-  if (query.trim()) p.set('name', 'like:' + query.trim());
+  const q = query.trim();
+  if (q) { if (/^\d+$/.test(q)) p.set('dexId', q); else p.set('name', 'like:' + q); } // número = dex nacional (todos idiomas)
   if (filters.types) p.set('types', filters.types);
   if (filters.rarity) p.set('rarity', filters.rarity);
   if (filters.set) { const opts = acOptsCache[lang] || {}; const sid = (opts.setNameToId || {})[filters.set]; if (sid) p.set('set', sid); }
@@ -6444,7 +6451,7 @@ function renderAddCards() {
   const f = acState.filters;
   const sel = (val, arr, ph, key, isObj) => `<select class="ac-sel" onchange="acSetFilter('${key}',this.value)"><option value="">${ph}</option>${arr.map(o => { const v = isObj ? o.id : o; const l = isObj ? o.name : o; return `<option value="${escHtml(String(v))}"${String(val) === String(v) ? ' selected' : ''}>${escHtml(String(l))}</option>`; }).join('')}</select>`;
   const dlInput = (val, listId, ph, key, arr, isObj) => `<input class="ac-sel" list="${listId}" placeholder="${ph}" value="${escHtml(val || '')}" onchange="acSetFilter('${key}',this.value)"><datalist id="${listId}">${arr.map(o => `<option value="${escHtml(isObj ? o.name : o)}">`).join('')}</datalist>`;
-  const typeSel = `<select class="ac-sel" onchange="acSetFilter('types',this.value)"><option value="">Todos os tipos</option>${opts.types.map(t => `<option value="${escHtml(t)}"${f.types === t ? ' selected' : ''}>${escHtml(typeLabel(t, acState.lang))}</option>`).join('')}</select>`;
+  const typeSel = `<select class="ac-sel" onchange="acSetFilter('types',this.value)"><option value="">Todos os tipos</option>${opts.types.map(t => `<option value="${escHtml(t)}"${f.types === t ? ' selected' : ''}>${escHtml(typeLabel(t))}</option>`).join('')}</select>`;
   const fEl = document.getElementById('ac-filters');
   if (fEl) fEl.innerHTML = `<div class="ac-flabel">Tipo</div>${typeSel}
     <div class="ac-flabel">Raridade</div>${sel(f.rarity, opts.rarities, 'Todas', 'rarity')}
