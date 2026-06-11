@@ -2414,6 +2414,7 @@ html.reduce-motion *, html.reduce-motion *::before, html.reduce-motion *::after 
 .ac-srow { display: flex; align-items: center; gap: 8px; padding: 4px 0; font-size: .78rem; }
 .ac-srow img { width: 30px; height: 42px; object-fit: contain; border-radius: 3px; }
 .ac-srow span { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ac-srow-lang { flex: 0 0 auto; font-size: .6rem; font-weight: 700; color: var(--text-dim); background: rgba(255,255,255,.08); border-radius: 6px; padding: 1px 5px; }
 .ac-srow button { background: none; border: 0; color: var(--text-dim); font-size: 1.1rem; cursor: pointer; }
 .ac-confirm { margin: 10px; background: var(--accent); color: #fff; border: 0; border-radius: 10px; padding: 11px; font-weight: 700; cursor: pointer; }
 .ac-confirm:disabled { opacity: .4; cursor: default; }
@@ -6434,9 +6435,15 @@ async function acSearch() {
   acState.loading = false; renderAddCardsResults();
 }
 function acToggle(id) {
-  const i = acState.selected.findIndex(s => s.id === id);
+  const lang = acState.lang;
+  const i = acState.selected.findIndex(s => s.id === id && s.lang === lang);
   if (i >= 0) acState.selected.splice(i, 1);
-  else { const c = acState.results.find(r => r.id === id); if (c) acState.selected.push({ id: c.id, name: c.name, img: c.image, lang: acState.lang }); }
+  else { const c = acState.results.find(r => r.id === id); if (c) acState.selected.push({ id: c.id, name: c.name, img: c.image, lang }); }
+  renderAddCardsResults(); renderAddCardsTray();
+}
+function acRemoveSel(id, lang) {
+  const i = acState.selected.findIndex(s => s.id === id && s.lang === lang);
+  if (i >= 0) acState.selected.splice(i, 1);
   renderAddCardsResults(); renderAddCardsTray();
 }
 function acConfirm() {
@@ -6474,7 +6481,7 @@ function renderAddCardsResults() {
     else { const cap = total >= 400 ? '400+' : total; cEl.textContent = cap + ' carta(s)' + (total > acState.results.length ? ` · mostrando ${acState.results.length}` : ''); }
   }
   if (!acState.results.length) { wrap.innerHTML = '<div class="ac-empty">Busque por nome/número ou use os filtros ao lado.</div>'; return; }
-  wrap.innerHTML = acState.results.map(c => { const on = acState.selected.some(s => s.id === c.id); return `<div class="ac-card${on ? ' on' : ''}" data-id="${escHtml(c.id)}" onclick="acToggle('${escHtml(c.id)}')"><img loading="lazy" referrerpolicy="no-referrer" src="${escHtml(c.image + '/low.webp')}" alt="${escHtml(c.name)}" onerror="this.onerror=null;this.src=CARD_IMG_FALLBACK"><div class="ac-pick">✓</div><button class="ac-q" onclick="event.stopPropagation()" onmouseenter="acCardHover(event,'${escHtml(c.id)}')" onmouseleave="acCardLeave()">?</button></div>`; }).join('');
+  wrap.innerHTML = acState.results.map(c => { const on = acState.selected.some(s => s.id === c.id && s.lang === acState.lang); return `<div class="ac-card${on ? ' on' : ''}" data-id="${escHtml(c.id)}" onclick="acToggle('${escHtml(c.id)}')"><img loading="lazy" referrerpolicy="no-referrer" src="${escHtml(c.image + '/low.webp')}" alt="${escHtml(c.name)}" onerror="this.onerror=null;this.src=CARD_IMG_FALLBACK"><div class="ac-pick">✓</div><button class="ac-q" onclick="event.stopPropagation()" onmouseenter="acCardHover(event,'${escHtml(c.id)}')" onmouseleave="acCardLeave()">?</button></div>`; }).join('');
 }
 function renderAddCardsTray() {
   const t = document.getElementById('ac-selected'); if (!t) return;
@@ -6482,7 +6489,7 @@ function renderAddCardsTray() {
   const btn = document.getElementById('ac-confirm');
   if (btn) { btn.textContent = n ? ('Adicionar ' + n + ' carta(s)') : 'Adicionar'; btn.disabled = !n; }
   if (!n) { t.innerHTML = '<div class="ac-empty">Cartas selecionadas aparecem aqui.</div>'; return; }
-  t.innerHTML = acState.selected.map(s => `<div class="ac-srow"><img referrerpolicy="no-referrer" src="${escHtml(s.img + '/low.webp')}" onerror="this.onerror=null;this.src=CARD_IMG_FALLBACK"><span>${escHtml(s.name)}</span><button onclick="acToggle('${escHtml(s.id)}')">×</button></div>`).join('');
+  t.innerHTML = acState.selected.map(s => `<div class="ac-srow"><img referrerpolicy="no-referrer" src="${escHtml(s.img + '/low.webp')}" onerror="this.onerror=null;this.src=CARD_IMG_FALLBACK"><span>${escHtml(s.name)}</span><span class="ac-srow-lang">${escHtml((s.lang || '').toUpperCase())}</span><button onclick="acRemoveSel('${escHtml(s.id)}','${escHtml(s.lang)}')">×</button></div>`).join('');
 }
 
 // =============================================
