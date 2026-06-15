@@ -6255,7 +6255,18 @@ let binderPage = 0;
 const GRID_SIZES = ['2x2', '3x3', '4x3', '4x4', '4x5', '5x4'];
 function gridDims(g) { const p = (g || '4x4').split('x').map(Number); return { cols: p[0], rows: p[1], per: p[0] * p[1] }; }
 function ensureBinder(col) { if (!col.binder) col.binder = { grid: '4x4', pageCount: 1, cards: [] }; return col.binder; }
-function cardImg(c, q) { if (!c || !c.img) return CARD_IMG_FALLBACK; if (c.custom) return c.img; if (c.source === 'ptcg') return c.img + (q === 'low' ? '.png' : '_hires.png'); return c.img + '/' + (q === 'low' ? 'low.webp' : 'high.webp'); }
+function cardImg(c, q) {
+  if (!c || !c.img) return CARD_IMG_FALLBACK;
+  if (c.custom) return c.img;
+  if (c.source === 'ptcg') {
+    const u = c.img;
+    // Novo host pokemontcg.io: images.scrydex.com/.../small|large (SEM .png — com .png dá 400)
+    if (/scrydex\.com/.test(u)) return q === 'high' ? u.replace(/\/small(?=$|\?)/, '/large') : u;
+    // Host legado: base sem extensão -> .png (low) / _hires.png (high)
+    return u + (q === 'low' ? '.png' : '_hires.png');
+  }
+  return c.img + '/' + (q === 'low' ? 'low.webp' : 'high.webp');
+}
 function binderSlots(col, page) { const { per } = gridDims(col.binder.grid); const arr = new Array(per).fill(null); for (const c of col.binder.cards) { if (c.page === page && c.pos < per) arr[c.pos] = c; } return arr; }
 function reflowBinder(b) { const { per } = gridDims(b.grid); const o = b.cards.slice().sort((a, b2) => (a.page - b2.page) || (a.pos - b2.pos)); o.forEach((c, i) => { c.page = Math.floor(i / per); c.pos = i % per; }); b.cards = o; b.pageCount = Math.max(1, Math.ceil(o.length / per) || 1); }
 // HTML das cartas de UMA página (filhos da .binder-page)
