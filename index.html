@@ -4609,11 +4609,29 @@ async function searchPokemonCards(pokeNum) {
     <div>Buscando cartas...</div>
   </div>`;
 
+  let usedFallback = false;
   try {
-    const url = `https://api.pokemontcg.io/v2/cards?q=nationalPokedexNumbers:${pokeNum}&select=id,name,number,set,images,rarity,artist,supertype,subtypes&orderBy=-set.releaseDate&pageSize=100`;
-    const resp = await fetchRetry(url, { signal: controller.signal }, 3);
-    if (!resp.ok) throw new Error('API retornou ' + resp.status);
-    const json = await resp.json();
+    let json;
+    try {
+      const url = `https://api.pokemontcg.io/v2/cards?q=nationalPokedexNumbers:${pokeNum}&select=id,name,number,set,images,rarity,artist,supertype,subtypes&orderBy=-set.releaseDate&pageSize=100`;
+      const resp = await fetchRetry(url, { signal: controller.signal }, 3);
+      if (!resp.ok) throw new Error('API retornou ' + resp.status);
+      json = await resp.json();
+    } catch (e) {
+      if (e && e.name === 'AbortError') throw e;
+      // pokemontcg.io indisponível (ex.: bloqueio de filtro de rede corporativa) ->
+      // cai para o TCGdex (outro domínio). Metadados (set/raridade/artista) ficam limitados.
+      const turl = `https://api.tcgdex.net/v2/en/cards?dexId=eq:${pokeNum}&pagination:itemsPerPage=100&sort:field=name&sort:order=ASC`;
+      const tresp = await fetchRetry(turl, { signal: controller.signal }, 2);
+      const tdata = await tresp.json();
+      const mapped = (Array.isArray(tdata) ? tdata : []).filter(t => t.image).map(t => ({
+        id: t.id, name: t.name, number: t.localId || '',
+        images: { small: t.image + '/low.webp', large: t.image + '/high.webp' },
+        set: {}, rarity: '', artist: '', supertype: 'Pokémon', subtypes: []
+      }));
+      json = { data: mapped };
+      usedFallback = true;
+    }
     const apiCards = json.data || [];
 
     if (apiCards.length === 0) {
@@ -4638,7 +4656,9 @@ async function searchPokemonCards(pokeNum) {
     modalSelectedCard = existing.length > 0 ? existing[0] : null;
     const savedCardId = modalSelectedCard; // carta atualmente registrada na coleção
 
-    let html = `<div style="text-align:center;margin:16px 0 12px"><span class="results-count">${apiCards.length} carta${apiCards.length !== 1 ? 's' : ''} encontrada${apiCards.length !== 1 ? 's' : ''} \u2014 selecione uma</span></div>`;
+    let html = '';
+    if (usedFallback) html += `<div style="text-align:center;margin:8px 0;padding:8px 12px;background:rgba(255,200,80,.12);border:1px solid rgba(255,200,80,.35);border-radius:10px;color:#ffd27a;font-size:.82rem">Fonte alternativa (TCGdex) \u2014 a pokemontcg.io parece bloqueada na sua rede. Imagens e nomes OK; dados de set/raridade podem faltar.</div>`;
+    html += `<div style="text-align:center;margin:16px 0 12px"><span class="results-count">${apiCards.length} carta${apiCards.length !== 1 ? 's' : ''} encontrada${apiCards.length !== 1 ? 's' : ''} \u2014 selecione uma</span></div>`;
     html += '<div class="cards-grid">';
 
     for (const c of apiCards) {
@@ -4687,7 +4707,7 @@ async function searchPokemonCards(pokeNum) {
         ${isCurrentRegistered ? '<div class="card-registered-badge">Registrada</div>' : ''}
         <img src="${escHtml(cardData.image_small || '')}" alt="${escHtml(c.name)}" loading="lazy" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src=CARD_IMG_FALLBACK;this.classList.add('img-na')">
         <div class="card-info">
-          <div class="card-name">${escHtml(c.name)} (${c.number}/${cardData.set_total})</div>
+          <div class="card-name">${escHtml(c.name)} (${c.number}${cardData.set_total ? '/' + cardData.set_total : ''})</div>
           <div class="card-set">${escHtml(setLine)}</div>
           <div class="card-rarity">${escHtml(cardData.rarity)}</div>
           ${artist ? `<div class="card-detail-row"><span class="detail-label">Artista</span><span class="detail-value">${escHtml(artist)}</span></div>` : ''}
@@ -6525,7 +6545,7 @@ async function acSearch() {
       acState.results = arr.map(c => ({ id: c.id, name: c.name, img: c.images.small.replace(/\.png$/, ''), source: 'ptcg', _raw: c }));
     } else {
       const p = new URLSearchParams();
-      if (q) { if (/^\d+$/.test(q)) p.set('dexId', q); else p.set('name', 'like:' + q); }
+      if (q) { if (/^\d+$/.test(q)) p.set('dexId', 'eq:' + q); else p.set('name', 'like:' + q); }
       if (filters.types) p.set('types', filters.types);
       if (filters.rarity) p.set('rarity', filters.rarity);
       if (filters.set) { const sid = ((acOptsCache[lang] || {}).setNameToId || {})[filters.set]; if (sid) p.set('set', sid); }
