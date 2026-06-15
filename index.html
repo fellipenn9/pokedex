@@ -4580,6 +4580,21 @@ async function handleRemoveCustomCard(pokeNum) {
 
 let cardSearchController = null; // aborta busca anterior em andamento
 
+// fetch com retry em falhas de rede transientes ("Failed to fetch" — pokemontcg.io
+// roda atrás de Cloudflare e dropa conexões esporádicas). Não insiste em AbortError.
+async function fetchRetry(url, opts = {}, tries = 3) {
+  let lastErr;
+  for (let i = 0; i < tries; i++) {
+    try { return await fetch(url, opts); }
+    catch (e) {
+      if (e && e.name === 'AbortError') throw e; // busca cancelada — não insistir
+      lastErr = e;
+      if (i < tries - 1) await new Promise(res => setTimeout(res, 400 * (i + 1)));
+    }
+  }
+  throw lastErr;
+}
+
 async function searchPokemonCards(pokeNum) {
   const container = document.getElementById('api-search-results');
   if (!container) return;
@@ -4596,7 +4611,7 @@ async function searchPokemonCards(pokeNum) {
 
   try {
     const url = `https://api.pokemontcg.io/v2/cards?q=nationalPokedexNumbers:${pokeNum}&select=id,name,number,set,images,rarity,artist,supertype,subtypes&orderBy=-set.releaseDate&pageSize=100`;
-    const resp = await fetch(url, { signal: controller.signal });
+    const resp = await fetchRetry(url, { signal: controller.signal }, 3);
     if (!resp.ok) throw new Error('API retornou ' + resp.status);
     const json = await resp.json();
     const apiCards = json.data || [];
@@ -4695,8 +4710,9 @@ async function searchPokemonCards(pokeNum) {
   } catch (err) {
     if (err.name === 'AbortError') return; // busca substituida por outra — ignora
     console.error('Erro ao buscar cartas na pokemontcg.io:', err);
+    const isNet = /failed to fetch|networkerror|load failed/i.test(err.message || '');
     container.innerHTML = `<div class="api-loading" style="color:#f88;text-align:center">
-      Não foi possível carregar as cartas.<br><small style="color:var(--text-dim)">${escHtml(err.message || 'erro de rede')}</small><br>
+      Não foi possível carregar as cartas.<br><small style="color:var(--text-dim)">${escHtml(isNet ? 'Instabilidade temporária da API. Aguarde alguns segundos e tente de novo.' : (err.message || 'erro de rede'))}</small><br>
       <button class="btn-confirm-selection" style="margin-top:12px" onclick="searchPokemonCards(${pokeNum})">Tentar novamente</button>
     </div>`;
   } finally {
@@ -6491,7 +6507,7 @@ async function acSearch() {
       if (filters.set) { const sid = (opts.setNameToId || {})[filters.set]; if (sid) parts.push('set.id:' + sid); }
       if (filters.artist) parts.push('artist:"*' + filters.artist.replace(/"/g, '') + '*"');
       const url = 'https://api.pokemontcg.io/v2/cards?q=' + encodeURIComponent(parts.join(' ')) + '&select=id,name,number,rarity,artist,supertype,nationalPokedexNumbers,set,images&pageSize=150&orderBy=name';
-      const j = await fetch(url).then(r => r.json());
+      const j = await fetchRetry(url).then(r => r.json());
       if (acState.lang !== myLang) return;
       const arr = (j.data || []).filter(c => c.images && c.images.small);
       acState.total = j.totalCount || arr.length;
@@ -6505,7 +6521,7 @@ async function acSearch() {
       if (filters.category) p.set('category', filters.category);
       if (filters.artist) p.set('illustrator', 'like:' + filters.artist);
       p.set('pagination:page', '1'); p.set('pagination:itemsPerPage', '400'); p.set('sort:field', 'name'); p.set('sort:order', 'ASC');
-      const data = await fetch('https://api.tcgdex.net/v2/' + lang + '/cards?' + p.toString()).then(r => r.json());
+      const data = await fetchRetry('https://api.tcgdex.net/v2/' + lang + '/cards?' + p.toString()).then(r => r.json());
       if (acState.lang !== myLang) return;
       const withImg = (Array.isArray(data) ? data : []).filter(c => c.image);
       acState.total = withImg.length;
