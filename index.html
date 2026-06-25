@@ -3569,6 +3569,18 @@ async function saveCollection() {
 // Evita "última escrita vence": dois dispositivos editando cartas
 // diferentes não se sobrescrevem, pois cada um toca só a sua chave.
 // value === undefined => remove a chave.
+// Firestore rejeita valores `undefined` ("Unsupported field value: undefined").
+// Remove undefined recursivamente antes de gravar (cardData de fallback pode ter).
+function stripUndefined(v) {
+  if (Array.isArray(v)) return v.map(stripUndefined);
+  if (v && typeof v === 'object') {
+    const o = {};
+    for (const k of Object.keys(v)) { if (v[k] !== undefined) o[k] = stripUndefined(v[k]); }
+    return o;
+  }
+  return v;
+}
+
 async function saveCollectionEntry(key, value) {
   ownedSync(); // mantém ownedCards vivo (espelho de collection)
   if (!currentUser) return;
@@ -3577,7 +3589,7 @@ async function saveCollectionEntry(key, value) {
 
   const fieldVal = value === undefined
     ? firebase.firestore.FieldValue.delete()
-    : value;
+    : stripUndefined(value);
   const ref = db.collection('users').doc(currentUser.uid);
   try {
     // update com field path aninhado: toca SÓ collection.<key>
@@ -4666,12 +4678,12 @@ async function searchPokemonCards(pokeNum) {
       const cardData = {
         id: c.id,
         name: c.name,
-        image_small: c.images ? c.images.small : '',
-        image_large: c.images ? c.images.large : '',
-        set_name: c.set ? c.set.name : '',
-        ed_code: c.set ? (c.set.ptcgoCode || c.set.id) : '',
-        set_year: c.set ? (c.set.releaseDate || '').substring(0, 4) : '',
-        set_total: c.set ? (c.set.printedTotal || c.set.total) : '',
+        image_small: (c.images && c.images.small) || '',
+        image_large: (c.images && c.images.large) || '',
+        set_name: (c.set && c.set.name) || '',
+        ed_code: (c.set && (c.set.ptcgoCode || c.set.id)) || '',
+        set_year: (c.set && (c.set.releaseDate || '').substring(0, 4)) || '',
+        set_total: (c.set && (c.set.printedTotal || c.set.total)) || '',
         number: c.number || '',
         rarity: c.rarity || '',
         artist: c.artist || '',
