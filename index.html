@@ -1776,6 +1776,22 @@ body {
   box-shadow: 0 2px 8px rgba(255, 215, 0, 0.4);
 }
 
+.card-liga-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: var(--blue);
+  color: #fff;
+  font-size: 0.62rem;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 20px;
+  z-index: 5;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(68, 138, 255, 0.4);
+}
+
 .card-select-bar {
   position: sticky;
   bottom: 0;
@@ -3103,9 +3119,12 @@ const googleProvider = new firebase.auth.GoogleAuthProvider();
 // Versao dos JSONs estaticos. Use isto para cache-busting em vez de timestamp:
 // o browser pode cachear os arquivos (fullart_cards.json ~6.7MB) entre sessoes.
 // BUMP ESTE VALOR sempre que regerar os JSONs com os scrapers Python.
-const DATA_VERSION = '2026-06-25b';
+const DATA_VERSION = '2026-08-05';
 let POKEDEX_DATA = [];
 let FULLART_DATA = { metadata: {}, by_pokedex: {} };
+// Cartas da Liga por dex (promos + sets novos que a pokemontcg.io não tem;
+// imagens em repositorio.sbrauble.com, que carregam mesmo na rede que bloqueia pokemontcg.io)
+let LIGA_CARDS = {};
 
 // =============================================
 // STATE
@@ -3351,6 +3370,12 @@ async function initApp() {
       showDataError('Não foi possível carregar os dados da Pokédex. Verifique sua conexão.');
     }
   }
+
+  // Cartas da Liga (best-effort): promos + sets novos. Não quebra o app se faltar.
+  try {
+    const lr = await fetch('liga_cards.json?v=' + DATA_VERSION);
+    if (lr.ok) LIGA_CARDS = await lr.json();
+  } catch (e) { /* arquivo opcional */ }
 
   // Filtrar apenas Pokemon 1-1025 e ordenar
   POKEDEX_DATA = POKEDEX_DATA.filter(p => p.number >= 1 && p.number <= 1025);
@@ -4646,6 +4671,26 @@ async function searchPokemonCards(pokeNum) {
     }
     const apiCards = json.data || [];
 
+    // Mescla cartas que a API/fallback n\u00e3o trouxe (promos, sets novos). A Liga
+    // (imagens em sbrauble) carrega mesmo na rede que bloqueia *.pokemontcg.io.
+    let addedLiga = 0;
+    {
+      const nkey = c => (String(c.number || '').trim().toLowerCase() + '|' + String(c.name || '').toLowerCase());
+      const seen = new Set(apiCards.map(nkey));
+      for (const lc of (LIGA_CARDS[String(pokeNum)] || [])) {
+        const c = { id: lc.id, name: lc.name, number: lc.number, images: { small: lc.image, large: lc.image },
+          set: { name: lc.set_name }, rarity: '', artist: '', supertype: 'Pok\u00e9mon', subtypes: [],
+          _liga: true, _priceLow: lc.priceLow, _priceHigh: lc.priceHigh };
+        const k = nkey(c); if (seen.has(k)) continue; seen.add(k); apiCards.push(c); addedLiga++;
+      }
+      for (const fc of (((FULLART_DATA.by_pokedex[String(pokeNum)] || {}).cards) || [])) {
+        const c = { id: fc.id, name: fc.name, number: fc.number, images: { small: fc.image_small, large: fc.image_large || fc.image_small },
+          set: { name: fc.set_name, ptcgoCode: fc.ed_code }, rarity: fc.rarity || '', artist: fc.artist || '',
+          supertype: fc.supertype || 'Pok\u00e9mon', subtypes: fc.subtypes || [], _local: fc };
+        const k = nkey(c); if (seen.has(k)) continue; seen.add(k); apiCards.push(c);
+      }
+    }
+
     if (apiCards.length === 0) {
       container.innerHTML = `<div class="empty-state">
         <div class="empty-ico">\ud83d\udd0d</div>
@@ -4670,6 +4715,7 @@ async function searchPokemonCards(pokeNum) {
 
     let html = '';
     if (usedFallback) html += `<div style="text-align:center;margin:8px 0;padding:8px 12px;background:rgba(255,200,80,.12);border:1px solid rgba(255,200,80,.35);border-radius:10px;color:#ffd27a;font-size:.82rem">Fonte alternativa (TCGdex) \u2014 a pokemontcg.io parece bloqueada na sua rede. Imagens e nomes OK; dados de set/raridade podem faltar.</div>`;
+    if (addedLiga > 0) html += `<div style="text-align:center;margin:8px 0;padding:8px 12px;background:rgba(68,138,255,.12);border:1px solid rgba(68,138,255,.35);border-radius:10px;color:#9ec3ff;font-size:.82rem">+${addedLiga} carta(s) da Liga Pok\u00e9mon (promos e sets novos que n\u00e3o est\u00e3o na base principal).</div>`;
     html += `<div style="text-align:center;margin:16px 0 12px"><span class="results-count">${apiCards.length} carta${apiCards.length !== 1 ? 's' : ''} encontrada${apiCards.length !== 1 ? 's' : ''} \u2014 selecione uma</span></div>`;
     html += '<div class="cards-grid">';
 
@@ -4692,7 +4738,7 @@ async function searchPokemonCards(pokeNum) {
       };
 
       // Enrich with local fullart data (prices, liga_url, etc.)
-      const local = localMap[c.id];
+      const local = localMap[c.id] || c._local;
       if (local) {
         cardData.liga_pokemon_url = local.liga_pokemon_url;
         cardData.liga_prices = local.liga_prices;
@@ -4700,6 +4746,10 @@ async function searchPokemonCards(pokeNum) {
         cardData.liga_scraped_at = local.liga_scraped_at;
         if (local.image_small) cardData.image_small = local.image_small;
         if (local.image_large) cardData.image_large = local.image_large;
+      }
+      // Carta vinda da Liga (promo/set novo): preço do menor/maior da Liga
+      if (c._liga && c._priceHigh > 0) {
+        cardData.liga_prices = { '0': { low: c._priceLow, mid: 0, high: c._priceHigh } };
       }
 
       modalApiCards[c.id] = cardData;
@@ -4710,13 +4760,14 @@ async function searchPokemonCards(pokeNum) {
       const artist = cardData.artist;
       const subtypes = (cardData.subtypes || []).join(', ');
       const typeStr = subtypes ? `${cardData.supertype} \u2013 ${subtypes}` : cardData.supertype;
-      const pricesHtml = local ? buildPricesHtml(cardData) : '';
+      const pricesHtml = buildPricesHtml(cardData);
       const ligaUrl = cardData.liga_pokemon_url || buildLigaUrl(cardData);
 
       html += `<div class="card-item ${isSelected ? 'selected' : ''}" data-card-id="${c.id}">
         <div class="card-select-overlay"></div>
         <div class="card-select-check ${isSelected ? 'checked' : ''}">\u2713</div>
         ${isCurrentRegistered ? '<div class="card-registered-badge">Registrada</div>' : ''}
+        ${c._liga ? '<div class="card-liga-badge">Liga</div>' : ''}
         <img src="${escHtml(cardData.image_small || '')}" alt="${escHtml(c.name)}" loading="lazy" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src=CARD_IMG_FALLBACK;this.classList.add('img-na')">
         <div class="card-info">
           <div class="card-name">${escHtml(c.name)} (${c.number}${cardData.set_total ? '/' + cardData.set_total : ''})</div>
