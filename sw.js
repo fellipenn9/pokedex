@@ -16,7 +16,7 @@
 // caches antigos no 'activate'.
 // =============================================================================
 
-const CACHE_VERSION = 'v1-2026-08-05';
+const CACHE_VERSION = 'v1-2026-08-05b';
 const CACHE_NAME = 'pokedex-' + CACHE_VERSION;
 
 // Assets do "app shell" pre-cacheados na instalacao.
