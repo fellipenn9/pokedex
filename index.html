@@ -3119,12 +3119,13 @@ const googleProvider = new firebase.auth.GoogleAuthProvider();
 // Versao dos JSONs estaticos. Use isto para cache-busting em vez de timestamp:
 // o browser pode cachear os arquivos (fullart_cards.json ~6.7MB) entre sessoes.
 // BUMP ESTE VALOR sempre que regerar os JSONs com os scrapers Python.
-const DATA_VERSION = '2026-08-05b';
+const DATA_VERSION = '2026-08-05c';
 let POKEDEX_DATA = [];
 let FULLART_DATA = { metadata: {}, by_pokedex: {} };
 // Cartas da Liga por dex (promos + sets novos que a pokemontcg.io não tem;
 // imagens em repositorio.sbrauble.com, que carregam mesmo na rede que bloqueia pokemontcg.io)
 let LIGA_CARDS = {};
+let _cardCountCache = {}; // memo da contagem de cartas por dex (Full Art + Liga)
 
 // =============================================
 // STATE
@@ -3376,6 +3377,7 @@ async function initApp() {
     const lr = await fetch('liga_cards.json?v=' + DATA_VERSION);
     if (lr.ok) LIGA_CARDS = await lr.json();
   } catch (e) { /* arquivo opcional */ }
+  _cardCountCache = {}; // recomputa contagem de cartas já com a Liga carregada
 
   // Filtrar apenas Pokemon 1-1025 e ordenar
   POKEDEX_DATA = POKEDEX_DATA.filter(p => p.number >= 1 && p.number <= 1025);
@@ -4217,8 +4219,7 @@ async function clearCollection() {
 // GRID
 // =============================================
 function hasFullArt(pokeNum) {
-  const entry = FULLART_DATA.by_pokedex[String(pokeNum)];
-  return entry && entry.cards && entry.cards.length > 0;
+  return getCardCount(pokeNum) > 0;
 }
 
 function getPokeStatus(pokeNum) {
@@ -4226,10 +4227,18 @@ function getPokeStatus(pokeNum) {
   return 'not-registered';
 }
 
+// Nº de cartas disponíveis p/ registrar = Full Art (base) + Liga (promos/sets novos),
+// deduplicadas por número+nome. Memoizado (dados estáticos após load; _cardCountCache no topo).
 function getCardCount(pokeNum) {
-  const entry = FULLART_DATA.by_pokedex[String(pokeNum)];
-  if (!entry || !entry.cards) return 0;
-  return entry.cards.length;
+  const key = String(pokeNum);
+  if (_cardCountCache[key] != null) return _cardCountCache[key];
+  const seen = new Set();
+  const add = c => seen.add(String(c.number || '').trim().toLowerCase() + '|' + String(c.name || '').toLowerCase());
+  const fa = (FULLART_DATA.by_pokedex[key] || {}).cards || [];
+  fa.forEach(add);
+  (LIGA_CARDS[key] || []).forEach(add);
+  _cardCountCache[key] = seen.size;
+  return seen.size;
 }
 
 function spriteUrl(num) {
@@ -4292,7 +4301,7 @@ function renderGridInner() {
     const cell = document.createElement('div');
     const hasFa = cardCount > 0;
     cell.className = `poke-cell ${status}${status === 'not-registered' && hasFa ? ' with-fullart' : ''}`;
-    cell.title = `#${p.number} ${p.name}${hasFa ? ` (${cardCount} full art)` : ''}`;
+    cell.title = `#${p.number} ${p.name}${hasFa ? ` (${cardCount} carta${cardCount !== 1 ? 's' : ''})` : ''}`;
     cell.onclick = () => openModal(p.number);
 
     if (hasFa) {

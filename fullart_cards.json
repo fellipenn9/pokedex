@@ -24201,7 +24201,20 @@
           "image_small": "https://images.pokemontcg.io/swsh11tg/TG06.png",
           "image_large": "https://images.pokemontcg.io/swsh11tg/TG06_hires.png",
           "liga_pokemon_url": "https://www.ligapokemon.com.br/?view=cards/search&card=nome%3DGengar",
-          "ed_code": "LOR"
+          "ed_code": "LOR",
+          "liga_prices": {
+            "0": {
+              "low": 197.7,
+              "mid": 0,
+              "high": 999
+            }
+          },
+          "liga_details": {
+            "set_code": "LORTG",
+            "stock_min": 197.7,
+            "stock_max": 999
+          },
+          "liga_scraped_at": "2026-08-05 13:20"
         },
         {
           "id": "swsh8-271",
@@ -25045,9 +25058,19 @@
             "reverseHoloAvg30": 35.45
           },
           "cardmarket_url": "https://prices.pokemontcg.io/cardmarket/ex6-108",
-          "liga_prices": {},
-          "liga_details": {},
-          "liga_scraped_at": "2026-04-21 14:46"
+          "liga_prices": {
+            "0": {
+              "low": 2999.9,
+              "mid": 0,
+              "high": 2999.9
+            }
+          },
+          "liga_details": {
+            "set_code": "FL",
+            "stock_min": 2999.9,
+            "stock_max": 2999.9
+          },
+          "liga_scraped_at": "2026-08-05 13:20"
         }
       ]
     },
@@ -47295,7 +47318,20 @@
           "image_small": "https://images.pokemontcg.io/swsh9tg/TG09.png",
           "image_large": "https://images.pokemontcg.io/swsh9tg/TG09_hires.png",
           "liga_pokemon_url": "https://www.ligapokemon.com.br/?view=cards/search&card=nome%3DAriados",
-          "ed_code": "BRS"
+          "ed_code": "BRS",
+          "liga_prices": {
+            "0": {
+              "low": 39,
+              "mid": 0,
+              "high": 90
+            }
+          },
+          "liga_details": {
+            "set_code": "BSTG",
+            "stock_min": 39,
+            "stock_max": 90
+          },
+          "liga_scraped_at": "2026-08-05 13:20"
         }
       ]
     },
@@ -54162,7 +54198,20 @@
           "image_small": "https://images.pokemontcg.io/swsh12pt5gg/GG23.png",
           "image_large": "https://images.pokemontcg.io/swsh12pt5gg/GG23_hires.png",
           "liga_pokemon_url": "https://www.ligapokemon.com.br/?view=cards/search&card=nome%3DDunsparce",
-          "ed_code": "CRZ"
+          "ed_code": "CRZ",
+          "liga_prices": {
+            "0": {
+              "low": 10,
+              "mid": 0,
+              "high": 49.95
+            }
+          },
+          "liga_details": {
+            "set_code": "CZGG",
+            "stock_min": 10,
+            "stock_max": 49.95
+          },
+          "liga_scraped_at": "2026-08-05 13:20"
         }
       ]
     },
@@ -61051,7 +61100,20 @@
           "image_small": "https://images.pokemontcg.io/sv4pt5/112.png",
           "image_large": "https://images.pokemontcg.io/sv4pt5/112_hires.png",
           "liga_pokemon_url": "https://www.ligapokemon.com.br/?view=cards/search&card=nome%3DEntei",
-          "ed_code": "sv4pt5"
+          "ed_code": "sv4pt5",
+          "liga_prices": {
+            "0": {
+              "low": 50,
+              "mid": 0,
+              "high": 149.99
+            }
+          },
+          "liga_details": {
+            "set_code": "PAF",
+            "stock_min": 50,
+            "stock_max": 149.99
+          },
+          "liga_scraped_at": "2026-08-05 13:20"
         },
         {
           "id": "swsh12pt5gg-GG36",
@@ -61100,9 +61162,19 @@
             "reverseHoloAvg30": 0
           },
           "cardmarket_url": "https://prices.pokemontcg.io/cardmarket/swsh12pt5gg-GG36",
-          "liga_prices": {},
-          "liga_details": {},
-          "liga_scraped_at": "2026-04-21 15:02"
+          "liga_prices": {
+            "0": {
+              "low": 149.99,
+              "mid": 0,
+              "high": 699
+            }
+          },
+          "liga_details": {
+            "set_code": "CZGG",
+            "stock_min": 149.99,
+            "stock_max": 699
+          },
+          "liga_scraped_at": "2026-08-05 13:20"
         },
         {
           "id": "swsh9-22",
@@ -61604,7 +61676,20 @@
           "image_small": "https://images.pokemontcg.io/ex10/113.png",
           "image_large": "https://images.pokemontcg.io/ex10/113_hires.png",
           "liga_pokemon_url": "https://www.ligapokemon.com.br/?view=cards/search&card=nome%3DEntei%20%E2%98%85",
-          "ed_code": "UF"
+          "ed_code": "UF",
+          "liga_prices": {
+            "0": {
+              "low": 2000,
+              "mid": 0,
+              "high": 10625
+            }
+          },
+          "liga_details": {
+            "set_code": "UF",
+            "stock_min": 2000,
+            "stock_max": 10625
+          },
+          "liga_scraped_at": "2026-08-05 13:20"
         },
         {
           "id": "ex7-97",
@@ -86174,7 +86259,20 @@
           "image_small": "https://images.pokemontcg.io/ex12/91.png",
           "image_large": "https://images.pokemontcg.io/ex12/91_hires.png",
           "liga_pokemon_url": "https://www.ligapokemon.com.br/?view=cards/search&card=nome%3DRegirock%20%E2%98%85",
-          "ed_code": "LM"
+          "ed_code": "LM",
+          "liga_prices": {
+            "0": {
+              "low": 3000,
+              "mid": 0,
+              "high": 4999.99
+            }
+          },
+          "liga_details": {
+            "set_code": "LM",
+            "stock_min": 3000,
+            "stock_max": 4999.99
+          },
+          "liga_scraped_at": "2026-08-05 13:20"
         },
         {
           "id": "ex9-99",
@@ -100826,9 +100924,19 @@
           "set_year": "2026",
           "set_total": 88,
           "ed_code": "POR",
-          "liga_prices": {},
-          "liga_details": {},
-          "liga_scraped_at": "2026-04-21 15:18"
+          "liga_prices": {
+            "0": {
+              "low": 7.99,
+              "mid": 0,
+              "high": 70
+            }
+          },
+          "liga_details": {
+            "set_code": "POR",
+            "stock_min": 7.99,
+            "stock_max": 70
+          },
+          "liga_scraped_at": "2026-08-05 13:20"
         },
         {
           "id": "swsh12pt5gg-GG49",
@@ -100877,9 +100985,19 @@
             "reverseHoloAvg30": 0
           },
           "cardmarket_url": "https://prices.pokemontcg.io/cardmarket/swsh12pt5gg-GG49",
-          "liga_prices": {},
-          "liga_details": {},
-          "liga_scraped_at": "2026-04-21 15:17"
+          "liga_prices": {
+            "0": {
+              "low": 59,
+              "mid": 0,
+              "high": 130
+            }
+          },
+          "liga_details": {
+            "set_code": "CZGG",
+            "stock_min": 59,
+            "stock_max": 130
+          },
+          "liga_scraped_at": "2026-08-05 13:20"
         },
         {
           "id": "swsh11-200",
@@ -100927,9 +101045,19 @@
             "reverseHoloAvg30": 0
           },
           "cardmarket_url": "https://prices.pokemontcg.io/cardmarket/swsh11-200",
-          "liga_prices": {},
-          "liga_details": {},
-          "liga_scraped_at": "2026-04-21 15:17"
+          "liga_prices": {
+            "0": {
+              "low": 26.9,
+              "mid": 0,
+              "high": 95.86
+            }
+          },
+          "liga_details": {
+            "set_code": "LOR",
+            "stock_min": 26.9,
+            "stock_max": 95.86
+          },
+          "liga_scraped_at": "2026-08-05 13:20"
         },
         {
           "id": "swsh11-182",
@@ -101016,7 +101144,20 @@
           "image_small": "https://images.pokemontcg.io/swsh11/119.png",
           "image_large": "https://images.pokemontcg.io/swsh11/119_hires.png",
           "liga_pokemon_url": "https://www.ligapokemon.com.br/?view=cards/search&card=nome%3DDrapion%20VSTAR",
-          "ed_code": "LOR"
+          "ed_code": "LOR",
+          "liga_prices": {
+            "0": {
+              "low": 5.95,
+              "mid": 0,
+              "high": 31.5
+            }
+          },
+          "liga_details": {
+            "set_code": "LOR",
+            "stock_min": 5.95,
+            "stock_max": 31.5
+          },
+          "liga_scraped_at": "2026-08-05 13:20"
         },
         {
           "id": "swsh11-118",
@@ -134581,7 +134722,20 @@
           "image_small": "https://images.pokemontcg.io/swsh12tg/TG09.png",
           "image_large": "https://images.pokemontcg.io/swsh12tg/TG09_hires.png",
           "liga_pokemon_url": "https://www.ligapokemon.com.br/?view=cards/search&card=nome%3DDruddigon",
-          "ed_code": "SIT"
+          "ed_code": "SIT",
+          "liga_prices": {
+            "0": {
+              "low": 20,
+              "mid": 0,
+              "high": 99.9
+            }
+          },
+          "liga_details": {
+            "set_code": "SITTG",
+            "stock_min": 20,
+            "stock_max": 99.9
+          },
+          "liga_scraped_at": "2026-08-05 13:20"
         }
       ]
     },
@@ -187090,7 +187244,20 @@
           "image_small": "https://images.pokemontcg.io/swsh45sv/SV030.png",
           "image_large": "https://images.pokemontcg.io/swsh45sv/SV030_hires.png",
           "liga_pokemon_url": "https://www.ligapokemon.com.br/?view=cards/search&card=nome%3DCramorant",
-          "ed_code": "SHF"
+          "ed_code": "SHF",
+          "liga_prices": {
+            "0": {
+              "low": 9.5,
+              "mid": 0,
+              "high": 40
+            }
+          },
+          "liga_details": {
+            "set_code": "SFS",
+            "stock_min": 9.5,
+            "stock_max": 40
+          },
+          "liga_scraped_at": "2026-08-05 13:20"
         },
         {
           "id": "swsh1-198",
@@ -194268,7 +194435,20 @@
           "image_small": "https://images.pokemontcg.io/swsh45sv/SV046.png",
           "image_large": "https://images.pokemontcg.io/swsh45sv/SV046_hires.png",
           "liga_pokemon_url": "https://www.ligapokemon.com.br/?view=cards/search&card=nome%3DArctozolt",
-          "ed_code": "SHF"
+          "ed_code": "SHF",
+          "liga_prices": {
+            "0": {
+              "low": 94.99,
+              "mid": 0,
+              "high": 99.99
+            }
+          },
+          "liga_details": {
+            "set_code": "SFS",
+            "stock_min": 94.99,
+            "stock_max": 99.99
+          },
+          "liga_scraped_at": "2026-08-05 13:20"
         }
       ]
     },
@@ -204534,9 +204714,19 @@
             "reverseHoloAvg30": 0
           },
           "cardmarket_url": "https://prices.pokemontcg.io/cardmarket/sv1-243",
-          "liga_prices": {},
-          "liga_details": {},
-          "liga_scraped_at": "2026-04-21 15:59"
+          "liga_prices": {
+            "0": {
+              "low": 24.9,
+              "mid": 0,
+              "high": 99.99
+            }
+          },
+          "liga_details": {
+            "set_code": "SV1",
+            "stock_min": 24.9,
+            "stock_max": 99.99
+          },
+          "liga_scraped_at": "2026-08-05 13:20"
         },
         {
           "id": "sv1-223",
@@ -204585,9 +204775,19 @@
             "reverseHoloAvg30": 0
           },
           "cardmarket_url": "https://prices.pokemontcg.io/cardmarket/sv1-223",
-          "liga_prices": {},
-          "liga_details": {},
-          "liga_scraped_at": "2026-04-21 15:59"
+          "liga_prices": {
+            "0": {
+              "low": 5.5,
+              "mid": 0,
+              "high": 21.99
+            }
+          },
+          "liga_details": {
+            "set_code": "SV1",
+            "stock_min": 5.5,
+            "stock_max": 21.99
+          },
+          "liga_scraped_at": "2026-08-05 13:20"
         },
         {
           "id": "sv1-19",
@@ -204636,9 +204836,19 @@
             "reverseHoloAvg30": 0
           },
           "cardmarket_url": "https://prices.pokemontcg.io/cardmarket/sv1-19",
-          "liga_prices": {},
-          "liga_details": {},
-          "liga_scraped_at": "2026-04-21 15:59"
+          "liga_prices": {
+            "0": {
+              "low": 4,
+              "mid": 0,
+              "high": 12.9
+            }
+          },
+          "liga_details": {
+            "set_code": "SV1",
+            "stock_min": 4,
+            "stock_max": 12.9
+          },
+          "liga_scraped_at": "2026-08-05 13:20"
         }
       ]
     },
@@ -212389,9 +212599,19 @@
             "reverseHoloAvg30": 0
           },
           "cardmarket_url": "https://prices.pokemontcg.io/cardmarket/sv1-214",
-          "liga_prices": {},
-          "liga_details": {},
-          "liga_scraped_at": "2026-04-21 16:01"
+          "liga_prices": {
+            "0": {
+              "low": 55.82,
+              "mid": 0,
+              "high": 250
+            }
+          },
+          "liga_details": {
+            "set_code": "SV1",
+            "stock_min": 55.82,
+            "stock_max": 250
+          },
+          "liga_scraped_at": "2026-08-05 13:20"
         }
       ]
     },
