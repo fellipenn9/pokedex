@@ -181,7 +181,7 @@ async function toggleSlot(sid, slot){
 }
 
 // ---------- data ----------
-async function loadSetsIndex(){ if(SETS.length) return; try{ SETS=await (await fetch('sets_index.json?v=1')).json(); }catch(e){ SETS=[]; } }
+async function loadSetsIndex(){ if(SETS.length) return; try{ let arr=await (await fetch('sets_index.json?v=2')).json(); const seen={}; SETS=arr.filter(s=>seen[s.id]?false:(seen[s.id]=1)); }catch(e){ SETS=[]; } }
 async function loadSetData(sid){ if(setDataCache[sid]) return setDataCache[sid]; const d=await (await fetch('data/'+sid+'.json?v=1')).json(); setDataCache[sid]=d; return d; }
 
 // ---------- render router ----------
@@ -206,7 +206,7 @@ function renderDash(){
       const pct=tot?Math.round(own/tot*100):0;
       return '<div class="setcard" data-sid="'+s.id+'">'
         +'<button class="star" data-fav="'+s.id+'" title="Remover dos favoritos">★</button>'
-        +'<div class="sc-top">'+(s.symbol?'<img class="sym" src="'+s.symbol+'" referrerpolicy="no-referrer">':'')+'<div><div class="sc-name">'+s.name+'</div><div class="sc-meta">'+(s.seriesName||'')+' · '+s.total+' cartas</div></div></div>'
+        +'<div class="sc-top">'+(s.sym64?'<img class="sym" src="'+s.sym64+'">':'<span class="sym"></span>')+'<div><div class="sc-name">'+s.name+'</div><div class="sc-meta">'+(s.seriesName||'')+' · '+s.total+' cartas</div></div></div>'
         +(s.hasData?('<div class="bar"><div class="fill" style="width:'+pct+'%"></div></div><div class="pctline"><span>'+own+(tot?'/'+tot:'')+' variações</span><b>'+pct+'%</b></div>'):'<div class="pctline" style="margin-top:12px"><span class="nodata-tag">dados ainda não gerados</span></div>')
         +'</div>';
     }).join('')+'</div>';
@@ -233,7 +233,7 @@ function renderBrowse(){
     list=list.slice(0,300);
     listEl.innerHTML=list.map(s=>{
       const on=favorites.has(s.id);
-      return '<div class="brow-item'+(s.hasData?'':' nodata')+'">'+(s.symbol?'<img class="sym" src="'+s.symbol+'" referrerpolicy="no-referrer">':'<span class="sym"></span>')
+      return '<div class="brow-item'+(s.hasData?'':' nodata')+'">'+(s.sym64?'<img class="sym" src="'+s.sym64+'">':'<span class="sym"></span>')
         +'<div class="bi-b"><div class="bi-name">'+s.name+'</div><div class="bi-meta">'+(s.seriesName||'')+' · '+s.total+' cartas '+(s.hasData?'':' <span class="nodata-tag">sem dados</span>')+'</div></div>'
         +'<button class="addbtn'+(on?' on':'')+'" data-fav="'+s.id+'" title="'+(on?'Nos favoritos':'Adicionar')+'">'+(on?'★':'+')+'</button></div>';
     }).join('');

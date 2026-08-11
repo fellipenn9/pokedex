@@ -12,7 +12,7 @@ const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/
 const VORDER = ['normal','holofoil','reverseHolofoil','energyPattern','pokeballPattern','duskballPattern','loveBallPattern','friendballPattern','quickballPattern','rocketPattern'];
 
 const idx = JSON.parse(fs.readFileSync(path.join(ROOT, 'sets_index.json'), 'utf8'));
-const TARGET_IDS = ['base1','base3','base2','cel25','dc1','me02','me01','MEP','me03','me02pt5','me04','me05',
+const TARGET_IDS = ['base1','base3','base2','cel25','cel25c','dc1','me02','me01','MEP','me03','me02pt5','me04','me05',
   'mcd24','mcd23','mcd22','mcd21','mcd19','mcd18','mcd17','mcd16','mcd15','mcd14','mcd12','mcd11'];
 const TARGETS = TARGET_IDS.map(id => idx.find(s => s.id === id)).filter(Boolean);
 
