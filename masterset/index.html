@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Master Sets — Rastreador</title>
+<style>
+:root{--bg-dark:#1a1a2e;--bg-card:#16213e;--bg-card2:#1c2b4d;--accent:#e94560;--gold:#ffd700;--green:#00c853;--blue:#448aff;--gray:#3a4a66;--text:#eee;--text-dim:#9fb0c9;--radius:10px}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg-dark);color:var(--text);min-height:100vh;-webkit-tap-highlight-color:transparent}
+a{color:inherit}
+.topbar{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:10px;padding:12px 16px;background:rgba(26,26,46,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--gray)}
+.topbar .brand{font-weight:800;font-size:1.05rem;letter-spacing:.2px}.topbar .brand span{color:var(--gold)}
+.topbar .sp{flex:1}
+.btn{border:1px solid var(--gray);background:var(--bg-card);color:var(--text);border-radius:var(--radius);padding:8px 14px;font-size:.85rem;font-weight:700;cursor:pointer;transition:all .12s}
+.btn:hover{border-color:var(--text-dim)}
+.btn.primary{background:linear-gradient(90deg,var(--accent),#ff6b81);border-color:transparent;color:#fff}
+.btn.ghost{background:transparent}
+.avatar{width:32px;height:32px;border-radius:50%;border:1px solid var(--gray)}
+.wrap{max-width:1320px;margin:0 auto;padding:16px 16px 80px}
+.hidden{display:none!important}
+
+/* login */
+.login{min-height:70vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:14px;padding:20px}
+.login h1{font-size:1.8rem;margin:0}.login p{color:var(--text-dim);max-width:420px}
+
+/* dashboard */
+.sec-title{display:flex;align-items:center;gap:10px;margin:6px 2px 14px;font-size:1.15rem;font-weight:800}
+.sec-title .sp{flex:1}
+.dash-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.setcard{background:var(--bg-card);border:1px solid var(--gray);border-radius:14px;padding:14px;cursor:pointer;transition:transform .12s,border-color .12s;position:relative}
+.setcard:hover{transform:translateY(-2px);border-color:var(--text-dim)}
+.setcard .sc-top{display:flex;align-items:center;gap:10px}
+.setcard .sym{width:26px;height:26px;object-fit:contain;flex:none}
+.setcard .sc-name{font-weight:800;font-size:.98rem;line-height:1.15}
+.setcard .sc-meta{color:var(--text-dim);font-size:.74rem;margin-top:1px}
+.setcard .star{position:absolute;top:10px;right:12px;font-size:1.1rem;cursor:pointer;color:var(--gold);background:none;border:none}
+.setcard .bar{height:9px;background:rgba(255,255,255,.1);border-radius:8px;overflow:hidden;margin-top:12px}
+.setcard .fill{height:100%;background:linear-gradient(90deg,var(--green),var(--gold));transition:width .4s}
+.setcard .pctline{display:flex;justify-content:space-between;font-size:.75rem;margin-top:6px;color:var(--text-dim)}
+.setcard .pctline b{color:var(--green)}
+.empty{color:var(--text-dim);text-align:center;padding:40px 16px;line-height:1.5}
+
+/* browser */
+.search{width:100%;padding:11px 14px;border:1px solid var(--gray);border-radius:var(--radius);background:var(--bg-card);color:var(--text);font-size:.9rem;margin-bottom:12px}
+.brow-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+.brow-item{display:flex;align-items:center;gap:10px;background:var(--bg-card);border:1px solid var(--gray);border-radius:12px;padding:10px 12px}
+.brow-item .sym{width:24px;height:24px;object-fit:contain;flex:none}
+.brow-item .bi-b{flex:1;min-width:0}
+.brow-item .bi-name{font-weight:700;font-size:.86rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brow-item .bi-meta{color:var(--text-dim);font-size:.72rem}
+.brow-item .addbtn{border:1px solid var(--gray);background:var(--bg-card2);color:var(--text);border-radius:8px;width:34px;height:34px;font-size:1.1rem;cursor:pointer;flex:none}
+.brow-item .addbtn.on{background:var(--gold);color:#3a2e00;border-color:var(--gold)}
+.brow-item.nodata{opacity:.55}
+.nodata-tag{font-size:.62rem;color:var(--text-dim);border:1px solid var(--gray);border-radius:99px;padding:1px 6px}
+
+/* tracker */
+.hero{background:linear-gradient(135deg,rgba(233,69,96,.12),rgba(255,215,0,.08)),var(--bg-card);border:1px solid rgba(255,215,0,.25);border-radius:16px;padding:15px 16px;margin-bottom:12px}
+.hero-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.hero-count{font-size:1.6rem;font-weight:800}.hero-count small{font-size:.76rem;color:var(--text-dim);font-weight:500}
+.hero-pct{font-size:1.35rem;font-weight:800;color:var(--green)}
+.bar{height:11px;background:rgba(255,255,255,.1);border-radius:10px;overflow:hidden;margin-top:9px}.fill{height:100%;background:linear-gradient(90deg,var(--green),var(--gold));transition:width .4s}
+.vsum{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.vsum .vc{font-size:.68rem;padding:3px 9px;border-radius:99px;background:rgba(255,255,255,.05);border:1px solid var(--gray);color:var(--text-dim)}.vsum .vc b{color:var(--text)}
+.tfilters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
+.tfilters input,.tfilters select{padding:9px 12px;border:1px solid var(--gray);border-radius:var(--radius);background:var(--bg-card);color:var(--text);font-size:.85rem}
+.tfilters input{flex:1;min-width:140px}
+.count-line{color:var(--text-dim);font-size:.78rem;margin:0 2px 12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+.c{background:var(--bg-card);border:1px solid var(--gray);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+.c.done{border-color:var(--green);box-shadow:0 0 0 2px rgba(0,200,83,.4)}
+.c-img{position:relative;aspect-ratio:.72;background:#0f1830 center/contain no-repeat;display:flex;align-items:center;justify-content:center}
+.c-img img{width:100%;height:100%;object-fit:contain}.c-img .na{color:var(--text-dim);font-size:.72rem}
+.pg{position:absolute;top:6px;left:6px;background:rgba(0,0,0,.62);color:#fff;font-size:.66rem;font-weight:700;padding:2px 8px;border-radius:99px}
+.cprog{position:absolute;top:6px;right:6px;background:rgba(0,0,0,.62);color:#fff;font-size:.66rem;font-weight:800;padding:2px 8px;border-radius:99px}
+.c.done .cprog{background:var(--green);color:#08240f}
+.donebadge{display:none;position:absolute;bottom:6px;right:6px;background:var(--green);color:#08240f;font-size:.64rem;font-weight:800;padding:3px 9px;border-radius:99px}
+.c.done .donebadge{display:block}
+.c-b{padding:10px 11px 12px;display:flex;flex-direction:column;gap:6px}
+.c-name{font-weight:700;font-size:.88rem;line-height:1.15}.c-meta{color:var(--text-dim);font-size:.72rem}
+.vlist{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.v{font-size:.72rem;font-weight:700;padding:7px 11px;border-radius:10px;cursor:pointer;border:1.5px solid var(--gray);background:rgba(255,255,255,.04);color:var(--text-dim);user-select:none;transition:all .1s;min-height:34px;display:inline-flex;align-items:center;gap:4px}
+.v:active{transform:scale(.94)}
+.v::before{content:'+';font-weight:800;opacity:.55}.v.on::before{content:'✓';opacity:1}
+.v.on{color:#0c1a10;border-color:transparent}
+.v.on.v-normal{background:#b9c6da}.v.on.v-holo{background:var(--gold)}.v.on.v-rev{background:#7fd0ff}.v.on.v-ball{background:#ff9ec4}
+.backbtn{display:inline-flex;align-items:center;gap:6px;background:none;border:none;color:var(--text-dim);font-size:.9rem;font-weight:700;cursor:pointer;padding:4px 0;margin-bottom:4px}
+.loading{text-align:center;color:var(--text-dim);padding:50px}
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:#0f3460;border:1px solid var(--gray);color:#fff;padding:9px 16px;border-radius:99px;font-size:.82rem;z-index:50;opacity:0;transition:opacity .25s;pointer-events:none}
+.toast.on{opacity:1}
+@media(max-width:600px){
+  .wrap{padding:12px 12px 80px}
+  .dash-grid,.brow-list{grid-template-columns:1fr}
+  .grid{grid-template-columns:1fr 1fr;gap:10px}
+  .v{font-size:.75rem;padding:8px 10px;min-height:38px}
+  .hero{position:static}
+}
+@media(max-width:380px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="brand">Master<span>Sets</span></div>
+  <div class="sp"></div>
+  <div id="userbox"></div>
+</div>
+<div class="wrap"><div id="app"><div class="loading">Carregando…</div></div></div>
+<div class="toast" id="toast"></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+<script>
+const firebaseConfig = { apiKey:'AIzaSyCofvOU_VGgvYuNMVMdGXFnrZPuBsUBd7k', authDomain:'pokedex-82ba8.firebaseapp.com', projectId:'pokedex-82ba8', storageBucket:'pokedex-82ba8.firebasestorage.app', messagingSenderId:'783841506180', appId:'1:783841506180:web:36a300cf04811ba93be3d1' };
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+try { db.enablePersistence({ synchronizeTabs: true }); } catch (e) {}
+const googleProvider = new firebase.auth.GoogleAuthProvider();
+
+const VAR = {
+  normal:{lbl:'Normal',short:'Normal',cls:'v-normal',grp:'normal'},
+  holofoil:{lbl:'Holo',short:'Holo',cls:'v-holo',grp:'holofoil'},
+  reverseHolofoil:{lbl:'Reverse Holo',short:'Reverse',cls:'v-rev',grp:'reverseHolofoil'},
+  energyPattern:{lbl:'Reverse · Energia',short:'Energia',cls:'v-rev',grp:'energyPattern'},
+  pokeballPattern:{lbl:'Poké Ball',short:'Poké Ball',cls:'v-ball',grp:'ball'},
+  duskballPattern:{lbl:'Dusk Ball',short:'Dusk',cls:'v-ball',grp:'ball'},
+  loveBallPattern:{lbl:'Love Ball',short:'Love',cls:'v-ball',grp:'ball'},
+  friendballPattern:{lbl:'Friend Ball',short:'Friend',cls:'v-ball',grp:'ball'},
+  quickballPattern:{lbl:'Quick Ball',short:'Quick',cls:'v-ball',grp:'ball'},
+  rocketPattern:{lbl:'Rocket',short:'Rocket',cls:'v-ball',grp:'ball'}
+};
+
+let user=null, SETS=[], favorites=new Set(), owned={}, view={name:'dash'}, setDataCache={};
+const app=document.getElementById('app');
+const toastEl=document.getElementById('toast');
+function toast(m){ toastEl.textContent=m; toastEl.classList.add('on'); clearTimeout(toast._t); toast._t=setTimeout(()=>toastEl.classList.remove('on'),1800); }
+const lsKey=()=> 'ms_'+(user?user.uid:'anon');
+function cacheLocal(){ try{ localStorage.setItem(lsKey(), JSON.stringify({fav:[...favorites], owned:Object.fromEntries(Object.entries(owned).map(([k,v])=>[k,[...v]]))})); }catch(e){} }
+function loadLocal(){ try{ const d=JSON.parse(localStorage.getItem(lsKey())); if(d){ favorites=new Set(d.fav||[]); owned={}; for(const k in (d.owned||{})) owned[k]=new Set(d.owned[k]); } }catch(e){} }
+
+// ---------- auth ----------
+auth.onAuthStateChanged(async (u)=>{
+  user=u; renderUserbox();
+  if(!u){ renderLogin(); return; }
+  loadLocal(); render();
+  // garante doc + escuta sync
+  const ref=db.collection('users').doc(u.uid);
+  try{ await ref.set({ updatedAt: firebase.firestore.FieldValue.serverTimestamp() },{merge:true}); }catch(e){}
+  ref.onSnapshot(snap=>{
+    const d=snap.data()||{};
+    favorites=new Set(d.masterFavorites||[]);
+    owned={}; const ms=d.masterSets||{}; for(const sid in ms) owned[sid]=new Set(ms[sid]||[]);
+    cacheLocal(); render();
+  }, err=>console.error('snapshot', err));
+});
+function renderUserbox(){
+  const b=document.getElementById('userbox');
+  if(user){ b.innerHTML='<img class="avatar" src="'+(user.photoURL||'')+'" referrerpolicy="no-referrer" title="'+(user.email||'')+'"> <button class="btn ghost" id="logout">Sair</button>';
+    document.getElementById('logout').onclick=()=>auth.signOut(); }
+  else b.innerHTML='';
+}
+function renderLogin(){ app.innerHTML='<div class="login"><h1>🗂️ Master Sets</h1><p>Controle suas coleções e variações (Normal, Holo, Reverse, Poké Ball…), sincronizado entre PC e celular.</p><button class="btn primary" id="login">Entrar com Google</button></div>';
+  document.getElementById('login').onclick=async()=>{ try{ await auth.signInWithPopup(googleProvider); }catch(e){ toast('Falha no login'); } }; }
+
+// ---------- Firestore writes ----------
+function ref(){ return db.collection('users').doc(user.uid); }
+async function toggleFavorite(sid){
+  const on=favorites.has(sid); if(on)favorites.delete(sid); else favorites.add(sid);
+  cacheLocal();
+  try{ await ref().update({ masterFavorites: on?firebase.firestore.FieldValue.arrayRemove(sid):firebase.firestore.FieldValue.arrayUnion(sid) }); }
+  catch(e){ try{ await ref().set({ masterFavorites:[...favorites] },{merge:true}); }catch(_){} }
+}
+async function toggleSlot(sid, slot){
+  if(!owned[sid])owned[sid]=new Set();
+  const on=owned[sid].has(slot); if(on)owned[sid].delete(slot); else owned[sid].add(slot);
+  cacheLocal();
+  const fp='masterSets.'+sid;
+  try{ await ref().update({ [fp]: on?firebase.firestore.FieldValue.arrayRemove(slot):firebase.firestore.FieldValue.arrayUnion(slot) }); }
+  catch(e){ try{ await ref().set({ masterSets:{ [sid]:[...owned[sid]] } },{merge:true}); }catch(_){} }
+}
+
+// ---------- data ----------
+async function loadSetsIndex(){ if(SETS.length) return; try{ SETS=await (await fetch('sets_index.json?v=1')).json(); }catch(e){ SETS=[]; } }
+async function loadSetData(sid){ if(setDataCache[sid]) return setDataCache[sid]; const d=await (await fetch('data/'+sid+'.json?v=1')).json(); setDataCache[sid]=d; return d; }
+
+// ---------- render router ----------
+async function render(){
+  await loadSetsIndex();
+  if(!user){ renderLogin(); return; }
+  if(view.name==='dash') renderDash();
+  else if(view.name==='browse') renderBrowse();
+  else if(view.name==='set') renderSet(view.sid);
+}
+function go(v){ view=v; render(); window.scrollTo(0,0); }
+
+// ---------- dashboard ----------
+function renderDash(){
+  const favs=SETS.filter(s=>favorites.has(s.id));
+  let html='<div class="sec-title">⭐ Minhas coleções<div class="sp"></div><button class="btn primary" id="add">+ Adicionar coleção</button></div>';
+  if(!favs.length){ html+='<div class="empty">Você ainda não adicionou coleções.<br>Toque em <b>+ Adicionar coleção</b> para escolher os master sets que quer controlar.</div>'; }
+  else{
+    html+='<div class="dash-grid">'+favs.map(s=>{
+      const own=(owned[s.id]||new Set()).size;
+      const tot=s.totalSlots||0;
+      const pct=tot?Math.round(own/tot*100):0;
+      return '<div class="setcard" data-sid="'+s.id+'">'
+        +'<button class="star" data-fav="'+s.id+'" title="Remover dos favoritos">★</button>'
+        +'<div class="sc-top">'+(s.symbol?'<img class="sym" src="'+s.symbol+'" referrerpolicy="no-referrer">':'')+'<div><div class="sc-name">'+s.name+'</div><div class="sc-meta">'+(s.seriesName||'')+' · '+s.total+' cartas</div></div></div>'
+        +(s.hasData?('<div class="bar"><div class="fill" style="width:'+pct+'%"></div></div><div class="pctline"><span>'+own+(tot?'/'+tot:'')+' variações</span><b>'+pct+'%</b></div>'):'<div class="pctline" style="margin-top:12px"><span class="nodata-tag">dados ainda não gerados</span></div>')
+        +'</div>';
+    }).join('')+'</div>';
+  }
+  app.innerHTML=html;
+  document.getElementById('add').onclick=()=>go({name:'browse'});
+  app.querySelectorAll('.setcard').forEach(el=>el.onclick=(e)=>{ if(e.target.closest('.star'))return; const s=SETS.find(x=>x.id===el.dataset.sid); if(!s.hasData){toast('Dados desta coleção ainda não foram gerados');return;} go({name:'set',sid:el.dataset.sid}); });
+  app.querySelectorAll('.star').forEach(el=>el.onclick=(e)=>{ e.stopPropagation(); toggleFavorite(el.dataset.fav); });
+}
+
+// ---------- browser ----------
+function renderBrowse(){
+  let html='<button class="backbtn" id="back">← Voltar</button><div class="sec-title">Adicionar coleção</div>';
+  html+='<input class="search" id="q" placeholder="Buscar coleção (ex.: Ascended, Base, McDonald)…">';
+  html+='<div class="brow-list" id="blist"></div>';
+  app.innerHTML=html;
+  document.getElementById('back').onclick=()=>go({name:'dash'});
+  const listEl=document.getElementById('blist');
+  function paint(){
+    const q=(document.getElementById('q').value||'').toLowerCase().trim();
+    let list=SETS.filter(s=>!q||s.name.toLowerCase().includes(q)||(s.seriesName||'').toLowerCase().includes(q));
+    // com dados primeiro, depois por data desc
+    list.sort((a,b)=>(b.hasData?1:0)-(a.hasData?1:0) || String(b.releaseDate).localeCompare(String(a.releaseDate)));
+    list=list.slice(0,300);
+    listEl.innerHTML=list.map(s=>{
+      const on=favorites.has(s.id);
+      return '<div class="brow-item'+(s.hasData?'':' nodata')+'">'+(s.symbol?'<img class="sym" src="'+s.symbol+'" referrerpolicy="no-referrer">':'<span class="sym"></span>')
+        +'<div class="bi-b"><div class="bi-name">'+s.name+'</div><div class="bi-meta">'+(s.seriesName||'')+' · '+s.total+' cartas '+(s.hasData?'':' <span class="nodata-tag">sem dados</span>')+'</div></div>'
+        +'<button class="addbtn'+(on?' on':'')+'" data-fav="'+s.id+'" title="'+(on?'Nos favoritos':'Adicionar')+'">'+(on?'★':'+')+'</button></div>';
+    }).join('');
+    listEl.querySelectorAll('.addbtn').forEach(el=>el.onclick=()=>{ toggleFavorite(el.dataset.fav); el.classList.toggle('on'); el.textContent=el.classList.contains('on')?'★':'+'; });
+  }
+  document.getElementById('q').addEventListener('input',paint); paint();
+}
+
+// ---------- tracker ----------
+const BALL=Object.keys(VAR).filter(k=>VAR[k].grp==='ball');
+async function renderSet(sid){
+  app.innerHTML='<button class="backbtn" id="back">← Voltar</button><div class="loading">Carregando coleção…</div>';
+  document.getElementById('back').onclick=()=>go({name:'dash'});
+  let data; try{ data=await loadSetData(sid); }catch(e){ app.innerHTML='<button class="backbtn" id="b2">← Voltar</button><div class="empty">Não foi possível carregar os dados desta coleção.</div>'; document.getElementById('b2').onclick=()=>go({name:'dash'}); return; }
+  const oset=()=> owned[sid]||new Set();
+  const sk=(id,v)=>id+'|'+v;
+  const F={q:'',rar:'',vf:'',st:''};
+  const cardDone=r=>r.variants.every(v=>oset().has(sk(r.id,v)));
+  const cardN=r=>r.variants.filter(v=>oset().has(sk(r.id,v))).length;
+
+  const rars=[...new Set(data.rows.map(r=>r.rarity))].filter(Boolean).sort();
+  app.innerHTML='<button class="backbtn" id="back">← Minhas coleções</button>'
+    +'<div class="sec-title" style="margin-bottom:8px">'+data.setName+' <div class="sp"></div><button class="star" data-fav="'+sid+'" style="position:static;font-size:1.3rem">'+(favorites.has(sid)?'★':'☆')+'</button></div>'
+    +'<div class="hero"><div class="hero-top"><div class="hero-count"><span id="own">0</span> <small>/ '+data.totalSlots+' variações</small></div><div class="hero-pct" id="pct">0%</div></div><div class="bar"><div class="fill" id="fill" style="width:0"></div></div><div class="vsum" id="vsum"></div></div>'
+    +'<div class="tfilters"><input type="search" id="q" placeholder="Buscar carta ou número…">'
+    +'<select id="rar"><option value="">Todas raridades</option>'+rars.map(r=>'<option>'+r+'</option>').join('')+'</select>'
+    +'<select id="vf"><option value="">Todas variações</option><option value="normal">Normal</option><option value="holofoil">Holo</option><option value="reverseHolofoil">Reverse Holo</option><option value="energyPattern">Reverse · Energia</option><option value="__ball">Poké Ball (todas)</option></select>'
+    +'<select id="st"><option value="">Todas</option><option value="miss">Incompletas</option><option value="done">Completas</option></select></div>'
+    +'<div class="count-line" id="cl"></div><div class="grid" id="grid"></div>';
+  document.getElementById('back').onclick=()=>go({name:'dash'});
+  app.querySelector('.star').onclick=(e)=>{ toggleFavorite(sid); e.target.textContent=favorites.has(sid)?'★':'☆'; };
+  const bind=(id,k)=>document.getElementById(id).addEventListener(id==='q'?'input':'change',e=>{F[k]=e.target.value;paint();});
+  bind('q','q');bind('rar','rar');bind('vf','vf');bind('st','st');
+
+  function updateHero(){
+    const own=oset().size, p=data.totalSlots?Math.round(own/data.totalSlots*100):0;
+    document.getElementById('own').textContent=own; document.getElementById('pct').textContent=p+'%'; document.getElementById('fill').style.width=p+'%';
+    const buckets=[['normal','Normal'],['holofoil','Holo'],['reverseHolofoil','Reverse'],['energyPattern','Reverse·Energia'],['ball','Poké Ball (todas)']];
+    const tot={},ow={};
+    data.rows.forEach(r=>r.variants.forEach(v=>{const g=VAR[v].grp;tot[g]=(tot[g]||0)+1; if(oset().has(sk(r.id,v)))ow[g]=(ow[g]||0)+1;}));
+    document.getElementById('vsum').innerHTML=buckets.filter(b=>tot[b[0]]).map(b=>'<span class="vc">'+b[1]+': <b>'+(ow[b[0]]||0)+'</b>/'+tot[b[0]]+'</span>').join('');
+  }
+  function paint(){
+    const g=document.getElementById('grid');
+    let list=data.rows.filter(r=>{
+      if(F.rar&&r.rarity!==F.rar)return false;
+      if(F.vf){ if(F.vf==='__ball'){ if(!r.variants.some(v=>VAR[v].grp==='ball'))return false; } else if(!r.variants.includes(F.vf))return false; }
+      if(F.st==='done'&&!cardDone(r))return false;
+      if(F.st==='miss'&&cardDone(r))return false;
+      if(F.q){const h=(r.name+' '+r.number).toLowerCase(); if(!h.includes(F.q.toLowerCase()))return false;}
+      return true;
+    });
+    document.getElementById('cl').textContent=list.length+' de '+data.rows.length+' cartas';
+    if(!list.length){ g.innerHTML='<div class="empty">Nada com esses filtros.</div>'; updateHero(); return; }
+    g.innerHTML=list.map(r=>{
+      const img=r.img?'<img loading="lazy" src="'+r.img+'" alt="">':'<div class="na">sem imagem</div>';
+      const vs=r.variants.map(v=>{const on=oset().has(sk(r.id,v));const m=VAR[v];return '<span class="v '+m.cls+(on?' on':'')+'" data-id="'+r.id+'" data-v="'+v+'" title="'+m.lbl+'">'+m.short+'</span>';}).join('');
+      return '<div class="c'+(cardDone(r)?' done':'')+'" data-id="'+r.id+'"><div class="c-img"><span class="pg">'+r.number+'</span><span class="cprog">'+cardN(r)+'/'+r.variants.length+'</span><span class="donebadge">✓ Completa</span>'+img+'</div><div class="c-b"><div class="c-name">'+r.name+'</div><div class="c-meta">'+r.rarity+(r.artist?' · '+r.artist:'')+'</div><div class="vlist">'+vs+'</div></div></div>';
+    }).join('');
+    g.querySelectorAll('.v').forEach(el=>el.addEventListener('click',ev=>{
+      ev.stopPropagation();
+      const id=el.dataset.id, v=el.dataset.v;
+      toggleSlot(sid, sk(id,v));
+      el.classList.toggle('on');
+      const card=el.closest('.c'); const r=data.rows.find(x=>x.id===id);
+      card.classList.toggle('done',cardDone(r)); card.querySelector('.cprog').textContent=cardN(r)+'/'+r.variants.length;
+      updateHero(); if(F.st)paint();
+    }));
+  }
+  updateHero(); paint();
+}
+</script>
+</body>
+</html>

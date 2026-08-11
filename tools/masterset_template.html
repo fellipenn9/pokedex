@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Master Set — __POKENAME__</title>
+<style>
+  :root{
+    --bg-dark:#1a1a2e; --bg-card:#16213e; --bg-modal:#0f3460;
+    --accent:#e94560; --gold:#ffd700; --green:#00c853; --blue:#448aff; --gray:#555;
+    --text:#eee; --text-dim:#aaa; --radius:8px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg-dark);color:var(--text);min-height:100vh}
+  .wrap{max-width:1280px;margin:0 auto;padding:0 24px 60px}
+
+  header{padding:26px 24px 4px;text-align:center}
+  .eyebrow{font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:800}
+  h1{margin:.3rem 0 .15rem;font-size:2.1rem;font-weight:800;display:flex;gap:10px;justify-content:center;align-items:center}
+  .dex{font-size:.95rem;color:var(--text-dim);font-weight:700;background:rgba(255,255,255,.06);border:1px solid var(--gray);padding:2px 10px;border-radius:99px}
+  .sub{color:var(--text-dim);font-size:.9rem;margin-top:5px}
+
+  /* hero (padrão do app) */
+  .pokedex-hero{background:linear-gradient(135deg, rgba(233,69,96,.12), rgba(255,215,0,.08)), var(--bg-card);
+    border:1px solid rgba(255,215,0,.25);border-radius:16px;padding:16px 18px;margin:20px 0 16px}
+  .ph-goal{font-size:.8rem;color:var(--gold);font-weight:700;letter-spacing:.3px;margin-bottom:8px}
+  .ph-top{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+  .ph-count{font-size:2rem;font-weight:800;line-height:1;color:var(--text)}
+  .ph-count small{font-size:.85rem;font-weight:500;color:var(--text-dim)}
+  .ph-pct{font-size:1.2rem;font-weight:800;color:var(--green)}
+  .progress-bar{height:14px;background:rgba(255,255,255,.1);border-radius:10px;overflow:hidden;margin:10px 0 0}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--gold));border-radius:10px;transition:width .5s}
+
+  /* filtros (padrão do app) */
+  .pokedex-filters{display:flex;gap:10px;margin-bottom:8px;flex-wrap:wrap;align-items:center}
+  .pokedex-filters input,.pokedex-filters select{padding:8px 12px;border:1px solid var(--gray);border-radius:var(--radius);
+    background:var(--bg-card);color:var(--text);font-size:.85rem}
+  .pokedex-filters input{width:240px}
+  .pokedex-filters select{min-width:140px;max-width:220px;cursor:pointer}
+  .btn-clear-filters{padding:8px 14px;background:rgba(255,255,255,.1);color:#f66;border:1px solid rgba(255,100,100,.4);
+    border-radius:var(--radius);font-size:.8rem;font-weight:600;cursor:pointer;white-space:nowrap}
+  .btn-clear-filters:hover{background:rgba(255,100,100,.15);border-color:#f66}
+  .filter-legend{display:flex;gap:14px;margin-left:auto;font-size:.74rem;color:var(--text-dim);flex-wrap:wrap}
+  .legend-item{display:flex;align-items:center;gap:5px}
+  .legend-dot{width:12px;height:12px;border-radius:3px;display:inline-block}
+  .count-line{color:var(--text-dim);font-size:.8rem;margin:8px 2px 16px}
+
+  .group-h{grid-column:1/-1;display:flex;align-items:center;gap:10px;margin:16px 2px 2px;color:var(--gold);font-weight:800;font-size:.95rem}
+  .group-h .gcount{color:var(--text-dim);font-weight:600;font-size:.8rem}
+  .group-h::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.1)}
+
+  /* grid de cartas */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(184px,1fr));gap:14px}
+  .ms-card{background:var(--bg-card);border:1px solid #2a3a55;border-radius:12px;overflow:hidden;display:flex;flex-direction:column;
+    transition:transform .12s,box-shadow .12s,border-color .12s;position:relative;cursor:pointer}
+  .ms-card:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(0,0,0,.45);border-color:var(--text-dim)}
+  .ms-card.owned{border-color:var(--gold);box-shadow:0 0 0 1px rgba(255,215,0,.35)}
+  .ms-card.owned .ms-img::after{content:'✓';position:absolute;top:8px;right:8px;width:26px;height:26px;border-radius:50%;
+    background:var(--gold);color:#3a2e00;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:.95rem;box-shadow:0 2px 8px rgba(0,0,0,.5)}
+  .ms-card:not(.owned) .ms-img img{filter:grayscale(.55) brightness(.78)}
+  .ms-img{aspect-ratio:.72;background:#0f1830 center/contain no-repeat;display:flex;align-items:center;justify-content:center;position:relative}
+  .ms-img img{width:100%;height:100%;object-fit:contain;display:block}
+  .ms-img .na{display:flex;flex-direction:column;gap:6px;align-items:center;justify-content:center;color:var(--text-dim);font-size:.72rem;text-align:center;padding:14px;height:100%}
+  .ms-img .na .na-ico{font-size:1.7rem;opacity:.45}
+  .pagebadge{position:absolute;top:8px;left:8px;background:rgba(0,0,0,.6);color:#fff;font-size:.7rem;font-weight:700;padding:2px 8px;border-radius:99px;z-index:1}
+  .ms-body{padding:10px 11px 11px;display:flex;flex-direction:column;gap:6px;flex:1}
+  .ms-name{font-weight:700;font-size:.9rem;line-height:1.2}
+  .ms-set{color:var(--text-dim);font-size:.77rem;line-height:1.25}
+  .chips{display:flex;flex-wrap:wrap;gap:4px;margin-top:2px}
+  .chip{font-size:.65rem;padding:2px 7px;border-radius:99px;background:rgba(255,255,255,.06);border:1px solid var(--gray);color:var(--text-dim);white-space:nowrap;font-weight:600}
+  .chip.lang.en{color:#9ec3ff;border-color:#33507f} .chip.lang.ja{color:#ff9aae;border-color:#7f3344} .chip.lang.pt{color:#7fe0a0;border-color:#2e7f4f}
+  .chip.lang.liga{color:#ffd27a;border-color:#7f6a2e}
+  .chip.var{color:#c9b0ff;border-color:#5a4a7f}
+  .chip.ed{color:var(--gold);border-color:rgba(255,215,0,.4);background:rgba(255,215,0,.08)}
+  .chip.price{color:var(--green);border-color:rgba(0,200,83,.4);background:rgba(0,200,83,.08)}
+  .ms-foot{margin-top:auto;padding-top:3px}
+  .own-btn{width:100%;border:1px solid var(--gray);background:rgba(255,255,255,.06);color:var(--text-dim);border-radius:8px;padding:8px 4px;font-size:.77rem;font-weight:700;cursor:pointer;transition:all .12s}
+  .ms-card:hover .own-btn{border-color:var(--gold);color:var(--gold)}
+  .own-btn.on{background:linear-gradient(90deg,var(--green),var(--gold));border-color:transparent;color:#10240f}
+  .empty{grid-column:1/-1;text-align:center;color:var(--text-dim);padding:50px 20px}
+
+  @media(max-width:560px){
+    .wrap{padding:0 14px 60px}
+    h1{font-size:1.7rem}
+    .grid{grid-template-columns:repeat(auto-fill,minmax(146px,1fr));gap:11px}
+    .pokedex-filters input{width:100%}
+    .pokedex-filters select{flex:1 1 44%;min-width:0}
+    .filter-legend{margin-left:0;width:100%}
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="eyebrow">Master Set · Protótipo</div>
+  <h1><span>__EMOJI__ __POKENAME__</span> <span class="dex">__DEX__</span></h1>
+  <div class="sub">Toda impressão distinta — por set, idioma, variação e edição</div>
+</header>
+
+<div class="wrap">
+  <div class="pokedex-hero">
+    <div class="ph-goal">🎯 Objetivo: completar o master set de __POKENAME__</div>
+    <div class="ph-top">
+      <div class="ph-count"><span id="reg-cnt-n">0</span> <small>/ <span id="reg-cnt-t">0</span> variantes</small></div>
+      <div class="ph-pct" id="reg-pct">0%</div>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="reg-fill" style="width:0%"></div></div>
+  </div>
+
+  <div class="pokedex-filters">
+    <input type="search" id="f-q" placeholder="Buscar por nome ou número...">
+    <select id="f-lang"><option value="">Todos idiomas</option></select>
+    <select id="f-set"><option value="">Todos sets</option></select>
+    <select id="f-var"><option value="">Todas variações</option></select>
+    <select id="f-ed"><option value="">Todas edições</option></select>
+    <select id="f-status"><option value="">Todos status</option><option value="reg">Registradas</option><option value="miss">Não registradas</option></select>
+    <select id="f-sort"><option value="date">Ordem: lançamento</option><option value="set">Ordem: set (A→Z)</option><option value="lang">Ordem: idioma</option><option value="name">Ordem: nome</option></select>
+    <select id="f-group"><option value="">Sem agrupar</option><option value="set">Agrupar por set</option></select>
+    <button class="btn-clear-filters" id="f-clear" style="display:none">Limpar filtros</button>
+    <div class="filter-legend">
+      <span class="legend-item"><span class="legend-dot" style="background:#0f1830;border:1px solid #2a3a55"></span> Não registrada</span>
+      <span class="legend-item"><span class="legend-dot" style="background:#4a3a0a;border:1px solid var(--gold)"></span> Registrada</span>
+    </div>
+  </div>
+  <div class="count-line" id="count-line"></div>
+
+  <div class="grid" id="grid"></div>
+</div>
+
+<script>
+const MASTER = __DATA__;
+const LS_KEY = '__LSKEY__';
+
+let owned = new Set();
+try { const a = JSON.parse(localStorage.getItem(LS_KEY)); if (Array.isArray(a)) owned = new Set(a); } catch(e){}
+function save(){ try { localStorage.setItem(LS_KEY, JSON.stringify([...owned])); } catch(e){} }
+
+function sig(r){ return [r.language, r.set, r.card, r.variation, r.edition].join('|'); }
+function langClass(l){ return l==='English'?'en':l.startsWith('Japanese')?'ja':l.startsWith('Portuguese')?'pt':'liga'; }
+function langShort(l){ return l==='English'?'EN':l.startsWith('Japanese')?'JA':l.startsWith('Portuguese')?'PT-BR':'LIGA'; }
+function flag(l){ return l==='English'?'🇺🇸':l.startsWith('Japanese')?'🇯🇵':l.startsWith('Portuguese')?'🇧🇷':'🌐'; }
+
+const VAR_PT = {'Normal (Non-Holo)':'Normal (sem holo)','Holo':'Holo','Reverse Holo':'Holo Reverso','Reverse Holo (energy)':'Holo Reverso (energia)','Reverse Holo (ball)':'Holo Reverso (ball)','Mirror (Deck Holo)':'Espelhada (Deck Holo)'};
+const ED_PT  = {'N/A':'—','1st Edition':'1ª Edição','Unlimited':'Ilimitada'};
+const LANG_PT = {'English':'Inglês','Japanese':'Japonês','Portuguese (Brazil)':'Português (BR)','Outro (Liga)':'Outro (Liga)'};
+function varPT(v){ return VAR_PT[v]||v; }
+function edPT(e){ return ED_PT[e]||e; }
+function langPT(l){ return LANG_PT[l]||l; }
+function priceTxt(r){ if(!(r.priceHigh>0)) return ''; const f=n=>n.toFixed(2).replace('.',','); return r.priceLow===r.priceHigh?('R$ '+f(r.priceHigh)):('R$ '+f(r.priceLow)+'–'+f(r.priceHigh)); }
+
+function dkey(d){
+  if(!d) return '99999999';
+  let m = String(d).match(/^(\d{4})[\/-](\d{2})[\/-](\d{2})/); if(m) return m[1]+m[2]+m[3];
+  m = String(d).match(/^(\d{2})\/(\d{2})\/(\d{4})/); if(m) return m[3]+m[2]+m[1];
+  return '99999999';
+}
+function yr(d){ const k=dkey(d); return k==='99999999'?'':k.slice(0,4); }
+
+MASTER.slice().sort((a,b)=> dkey(a.date).localeCompare(dkey(b.date)) || a.set.localeCompare(b.set))
+  .forEach((r,i)=> r.page = i+1);
+
+function fillSelect(id, vals, lab){
+  const el = document.getElementById(id);
+  [...new Set(vals)].sort((a,b)=>(lab?lab(a):a).localeCompare(lab?lab(b):b)).forEach(v=>{ const o=document.createElement('option'); o.value=v; o.textContent=lab?lab(v):v; el.appendChild(o); });
+}
+fillSelect('f-lang', MASTER.map(r=>r.language), langPT);
+fillSelect('f-set', MASTER.map(r=>r.set));
+fillSelect('f-var', MASTER.map(r=>r.variation), varPT);
+fillSelect('f-ed', MASTER.map(r=>r.edition), edPT);
+
+const F = { q:'', lang:'', set:'', var:'', ed:'', status:'', sort:'date', group:'' };
+function syncClear(){ const any=F.q||F.lang||F.set||F.var||F.ed||F.status||F.group||F.sort!=='date'; document.getElementById('f-clear').style.display=any?'':'none'; }
+const bind=(id,key,prop)=>{ document.getElementById(id).addEventListener(prop==='value'?'input':'change', e=>{ F[key]=e.target[prop]; syncClear(); render(); }); };
+bind('f-q','q','value'); bind('f-lang','lang','value'); bind('f-set','set','value');
+bind('f-var','var','value'); bind('f-ed','ed','value'); bind('f-status','status','value');
+bind('f-sort','sort','value'); bind('f-group','group','value');
+document.getElementById('f-clear').addEventListener('click', ()=>{
+  Object.assign(F,{q:'',lang:'',set:'',var:'',ed:'',status:'',sort:'date',group:''});
+  ['f-q','f-lang','f-set','f-var','f-ed','f-status','f-group'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('f-sort').value='date'; syncClear(); render();
+});
+
+function has(r){ return owned.has(sig(r)); }
+function toggle(r){
+  const s=sig(r); if(owned.has(s)) owned.delete(s); else owned.add(s);
+  save(); updateProgress();
+  const el=document.querySelector('[data-sig="'+CSS.escape(s)+'"]'); if(el) paint(el,r);
+  if(F.status) render();
+}
+function paint(el,r){
+  const on=has(r); el.classList.toggle('owned',on);
+  const b=el.querySelector('.own-btn'); b.classList.toggle('on',on);
+  b.textContent = on ? '✓ Registrada' : 'Registrar';
+}
+function updateProgress(){
+  const total=MASTER.length; let n=0; MASTER.forEach(r=>{ if(has(r)) n++; });
+  const p= total? Math.round(n/total*100):0;
+  document.getElementById('reg-pct').textContent=p+'%';
+  document.getElementById('reg-fill').style.width=p+'%';
+  document.getElementById('reg-cnt-n').textContent=n;
+  document.getElementById('reg-cnt-t').textContent=total;
+}
+
+const SORTERS = {
+  date: (a,b)=> dkey(a.date).localeCompare(dkey(b.date)) || a.set.localeCompare(b.set),
+  set:  (a,b)=> a.set.localeCompare(b.set) || dkey(a.date).localeCompare(dkey(b.date)),
+  lang: (a,b)=> a.language.localeCompare(b.language) || dkey(a.date).localeCompare(dkey(b.date)),
+  name: (a,b)=> a.card.localeCompare(b.card)
+};
+
+function cardHTML(r){
+  const y=yr(r.date);
+  const img = r.img ? '<img loading="lazy" src="'+r.img+'" alt="">' : '<div class="na"><span class="na-ico">🃏</span>sem imagem<br>nesta língua</div>';
+  const edChip=(r.edition&&r.edition!=='N/A')?'<span class="chip ed">'+edPT(r.edition)+'</span>':'';
+  const yChip=y?'<span class="chip">'+y+'</span>':'';
+  const pr=priceTxt(r); const prChip=pr?'<span class="chip price">'+pr+'</span>':'';
+  const on=has(r);
+  return '<div class="ms-card'+(on?' owned':'')+'" data-sig="'+sig(r).replace(/"/g,'&quot;')+'">'
+    + '<div class="ms-img"><span class="pagebadge">#'+r.page+'</span>'+img+'</div>'
+    + '<div class="ms-body">'
+    +   '<div class="ms-name">'+r.card+'</div>'
+    +   '<div class="ms-set">'+r.set+'</div>'
+    +   '<div class="chips">'
+    +     '<span class="chip lang '+langClass(r.language)+'">'+flag(r.language)+' '+langShort(r.language)+'</span>'
+    +     '<span class="chip var">'+varPT(r.variation)+'</span>'+edChip+yChip+prChip
+    +   '</div>'
+    +   '<div class="ms-foot"><button class="own-btn'+(on?' on':'')+'">'+(on?'✓ Registrada':'Registrar')+'</button></div>'
+    + '</div></div>';
+}
+
+function render(){
+  const grid=document.getElementById('grid');
+  let list=MASTER.filter(r=>{
+    if(F.lang && r.language!==F.lang) return false;
+    if(F.set && r.set!==F.set) return false;
+    if(F.var && r.variation!==F.var) return false;
+    if(F.ed && r.edition!==F.ed) return false;
+    if(F.status==='reg' && !has(r)) return false;
+    if(F.status==='miss' && has(r)) return false;
+    if(F.q){ const hay=(r.card+' '+r.set+' '+r.language).toLowerCase(); if(!hay.includes(F.q.toLowerCase())) return false; }
+    return true;
+  });
+  list.sort(SORTERS[F.sort]||SORTERS.date);
+  const active = F.q||F.lang||F.set||F.var||F.ed||F.status;
+  document.getElementById('count-line').textContent = list.length+' de '+MASTER.length+' variantes'+(active?' (filtrado)':'');
+  if(!list.length){ grid.innerHTML='<div class="empty">Nenhuma variante com esses filtros.</div>'; return; }
+
+  let html='';
+  if(F.group==='set'){
+    const groups={};
+    list.forEach(r=>{ (groups[r.set]=groups[r.set]||[]).push(r); });
+    Object.keys(groups).sort().forEach(set=>{
+      const g=groups[set]; const reg=g.filter(has).length;
+      html+='<div class="group-h">'+set+' <span class="gcount">('+reg+'/'+g.length+')</span></div>';
+      html+=g.map(cardHTML).join('');
+    });
+  } else { html=list.map(cardHTML).join(''); }
+  grid.innerHTML=html;
+  grid.querySelectorAll('.ms-card').forEach(el=>{
+    const s=el.getAttribute('data-sig').replace(/&quot;/g,'"');
+    const r=MASTER.find(x=>sig(x)===s);
+    el.addEventListener('click', ()=> toggle(r));
+  });
+}
+
+updateProgress();
+render();
+</script>
+</body>
+</html>

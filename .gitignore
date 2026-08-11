@@ -16,3 +16,5 @@ planilhas/
 .DS_Store
 .vscode/
 *.swp
+
+tools/node_modules/
