@@ -126,6 +126,13 @@ button{font-family:inherit}
 .vtoggle button{padding:8px 13px;border:0;background:transparent;color:var(--dim);font-weight:700;font-size:.82rem;border-radius:9px;cursor:pointer}
 .vtoggle button[aria-pressed="true"]{color:#fff;background:color-mix(in srgb,var(--accent) 24%,transparent)}
 .count-line{color:var(--dim);font-size:.78rem;margin:0 2px 12px}
+.exp-wrap{position:relative}
+.expb{border:1px solid var(--line2);background:var(--surface);color:var(--text);border-radius:11px;padding:10px 14px;font-size:.85rem;font-weight:700;cursor:pointer}
+.expb:hover{border-color:var(--dim)}
+.exp-menu{position:absolute;top:calc(100% + 6px);right:0;min-width:200px;background:var(--surface2);border:1px solid var(--line2);border-radius:12px;box-shadow:var(--shadow);padding:6px;display:none;z-index:25}
+.exp-menu.open{display:block}
+.exp-menu button{display:block;width:100%;text-align:left;background:none;border:none;color:var(--text);font-size:.85rem;font-weight:600;padding:10px 11px;border-radius:8px;cursor:pointer}
+.exp-menu button:hover{background:rgba(255,255,255,.07)}
 
 /* ---- grid ---- */
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:15px}
@@ -414,7 +421,8 @@ async function renderSet(sid){
     +'<div class="selwrap"><select id="rar"><option value="">Todas raridades</option>'+rars.map(r=>'<option>'+esc(r)+'</option>').join('')+'</select></div>'
     +'<div class="selwrap"><select id="vf"><option value="">Todas variações</option>'+vfOpts+'</select></div>'
     +'<div class="selwrap"><select id="st"><option value="">Todas</option><option value="miss">Incompletas</option><option value="done">Completas</option></select></div>'
-    +'<div class="vtoggle" id="vt"><button data-view="grid">Grid</button><button data-view="table">Tabela</button><button data-view="binder">Binder</button></div></div>'
+    +'<div class="vtoggle" id="vt"><button data-view="grid">Grid</button><button data-view="table">Tabela</button><button data-view="binder">Binder</button></div>'
+    +'<div class="exp-wrap"><button class="expb" id="expb">⬇ Exportar</button><div class="exp-menu" id="expm"><button data-sc="missing">Só as que faltam</button><button data-sc="all">Todas (filtradas)</button><button data-sc="have">Só as que tenho</button></div></div></div>'
     +'<div class="count-line" id="cl"></div><div id="area"></div>';
   document.getElementById('back').onclick=()=>go({name:'dash'});
   app.querySelector('.star').onclick=e=>{ toggleFavorite(sid); e.target.textContent=favorites.has(sid)?'★':'☆'; };
@@ -423,6 +431,20 @@ async function renderSet(sid){
   document.getElementById('vt').querySelectorAll('button').forEach(b=>b.onclick=()=>{ cardView=b.dataset.view; localStorage.setItem('ms_view',cardView); binderPage=0; syncToggle(); paint(); });
   function syncToggle(){ document.getElementById('vt').querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.view===cardView)); }
   syncToggle();
+  // exportar (respeita filtros): nível variação — Número, Nome, Raridade, Variação, Tenho, Preço
+  function exportCSV(scope){
+    const list=filtered(); const rows=[['Número','Nome','Raridade','Variação','Tenho','Preço (USD)']];
+    list.forEach(r=>r.variants.forEach(v=>{ const on=oset().has(sk(r.id,v)); if(scope==='missing'&&on)return; if(scope==='have'&&!on)return; const pr=r.p&&r.p[v]; rows.push([r.number,r.name,r.rarity||'',VAR[v].lbl,on?'Sim':'Não',pr!=null?pr.toFixed(2):'']); }));
+    if(rows.length<=1){ toast('Nada para exportar com esse filtro'); return; }
+    const csv='﻿'+rows.map(row=>row.map(c=>{ c=String(c); return /[";\n]/.test(c)?'"'+c.replace(/"/g,'""')+'"':c; }).join(';')).join('\r\n');
+    const blob=new Blob([csv],{type:'text/csv;charset=utf-8'}); const url=URL.createObjectURL(blob);
+    const a=document.createElement('a'); a.href=url; a.download='masterset_'+sid+'_'+scope+'.csv'; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(url),1500);
+    toast((rows.length-1)+' linha(s) exportada(s)');
+  }
+  const expb=document.getElementById('expb'), expm=document.getElementById('expm');
+  function closeExp(){ expm.classList.remove('open'); }
+  expb.onclick=(e)=>{ e.stopPropagation(); const open=expm.classList.toggle('open'); if(open)setTimeout(()=>document.addEventListener('click',closeExp,{once:true}),0); };
+  expm.querySelectorAll('button').forEach(b=>b.onclick=()=>{ exportCSV(b.dataset.sc); closeExp(); });
 
   function updateHero(prevPct){
     const own=oset().size,tot=data.totalSlots||0,p=tot?Math.round(own/tot*100):0;
