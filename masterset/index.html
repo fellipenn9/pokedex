@@ -242,7 +242,7 @@ async function toggleSlot(sid, slot){
 }
 
 // ---------- data ----------
-async function loadSetsIndex(){ if(SETS.length) return; try{ let arr=await (await fetch('sets_index.json?v=3')).json(); const seen={}; SETS=arr.filter(s=>seen[s.id]?false:(seen[s.id]=1)); byId={}; SETS.forEach(s=>byId[s.id]=s); }catch(e){ SETS=[]; } }
+async function loadSetsIndex(){ if(SETS.length) return; try{ let arr=await (await fetch('sets_index.json?v=4')).json(); const seen={}; SETS=arr.filter(s=>seen[s.id]?false:(seen[s.id]=1)); byId={}; SETS.forEach(s=>byId[s.id]=s); }catch(e){ SETS=[]; } }
 async function loadSetData(sid){ if(setDataCache[sid]) return setDataCache[sid]; const d=await (await fetch('data/'+sid+'.json?v=1')).json(); setDataCache[sid]=d; return d; }
 
 // ---------- render router ----------

@@ -17,7 +17,7 @@ const PT = {
   base1:'Coleção Base', base2:'Selva', base3:'Fóssil', cel25:'Celebrações',
   cel25c:'Celebrações: Coleção Clássica', dc1:'Crise Dupla', me01:'Mega Evolução',
   me02:'Chamas Fantasmagóricas', me02pt5:'Heróis Excelsos', me03:'Ordem Perfeita',
-  me04:'Ascensão do Caos', me05:'Pitch Black', MEP:'Promos Estrela Negra (ME)'
+  me04:'Caos Ascendente', me05:'Escuridão Absoluta', MEP:'Promos Estrela Negra (ME)'
 };
 
 (async () => {
