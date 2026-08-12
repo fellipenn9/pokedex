@@ -183,7 +183,9 @@ button{font-family:inherit}
 @keyframes fall{to{transform:translate(var(--x),62vh) rotate(var(--r));opacity:0}}
 @media(max-width:600px){.wrap{padding:16px 13px 90px}.dash-grid,.brow-list{grid-template-columns:1fr}.grid{grid-template-columns:1fr 1fr;gap:11px}.v{font-size:.76rem;padding:9px 11px;min-height:40px}.sethead h1{font-size:1.12rem}}
 @media(max-width:380px){.grid{grid-template-columns:1fr}}
-#bgfx{position:fixed;inset:0;z-index:-1;pointer-events:none;transition:background .6s ease}
+#bgfx{position:fixed;inset:0;z-index:-2;pointer-events:none;transition:background .6s ease}
+#bgart{position:fixed;inset:0;z-index:-1;pointer-events:none;background-position:center 22%;background-repeat:no-repeat;background-size:min(680px,84%);opacity:0;transition:opacity .5s}
+#bgart.on{opacity:.10}
 .cmodal{position:fixed;inset:0;z-index:70;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(6,9,18,.72);backdrop-filter:blur(6px)}
 .cmodal.on{display:flex}
 .cm-box{width:100%;max-width:740px;max-height:92vh;overflow:auto;display:flex;background:var(--surface);border:1px solid var(--line2);border-radius:18px;box-shadow:var(--shadow)}
@@ -210,6 +212,7 @@ button{font-family:inherit}
 </head>
 <body>
 <div id="bgfx"></div>
+<div id="bgart"></div>
 <div class="topbar"><div class="brand"><span class="logo">🗂️</span> Master<b>Sets</b></div><div class="sp"></div><div id="userbox"></div></div>
 <div class="wrap"><div id="app"><div class="loading">Carregando…</div></div></div>
 <div class="toast" id="toast"></div>
@@ -250,8 +253,10 @@ function money(n){ n=n||0; return n>=1000?'$'+(n/1000).toFixed(2)+'k':'$'+n.toFi
 function fdate(iso){ const m=String(iso||'').match(/^(\d{4})-(\d{2})/); return m?MES[+m[2]-1]+'/'+m[1]:''; }
 function hexA(h,a){ h=h||'#4d6bff'; if(h[0]!=='#'||h.length<7)return 'rgba(77,107,255,'+a+')'; const n=parseInt(h.slice(1,7),16); return 'rgba('+((n>>16)&255)+','+((n>>8)&255)+','+(n&255)+','+a+')'; }
 function setBg(css){ const b=document.getElementById('bgfx'); if(b)b.style.background=css; }
-const BG_DASH='radial-gradient(900px 560px at 12% -8%, rgba(55,130,224,.18), transparent 60%),radial-gradient(760px 620px at 100% 12%, rgba(150,90,255,.12), transparent 55%),linear-gradient(180deg,#0b1020,#070b16 78%)';
-const BG_BROWSE='radial-gradient(1100px 520px at 50% -14%, rgba(140,160,205,.09), transparent 55%),linear-gradient(180deg,#0b1020,#070b16)';
+function setArt(url){ const b=document.getElementById('bgart'); if(!b)return; if(url){ b.style.backgroundImage='url("'+url+'")'; b.classList.add('on'); } else { b.style.backgroundImage='none'; b.classList.remove('on'); } }
+const POKEBALL=`url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='168'%20height='168'%3E%3Cg%20fill='none'%20stroke='%23ffffff'%20stroke-opacity='0.06'%20stroke-width='2.4'%3E%3Ccircle%20cx='84'%20cy='84'%20r='30'/%3E%3Cline%20x1='54'%20y1='84'%20x2='114'%20y2='84'/%3E%3Ccircle%20cx='84'%20cy='84'%20r='8'%20fill='%23ffffff'%20fill-opacity='0.05'/%3E%3C/g%3E%3C/svg%3E") 0 0/168px repeat`;
+const BG_DASH=POKEBALL+',radial-gradient(900px 560px at 12% -8%, rgba(55,130,224,.20), transparent 60%),radial-gradient(760px 620px at 100% 12%, rgba(150,90,255,.15), transparent 55%),linear-gradient(180deg,#0b1020,#070b16 78%)';
+const BG_BROWSE=POKEBALL+',radial-gradient(1100px 520px at 50% -14%, rgba(140,160,205,.10), transparent 55%),linear-gradient(180deg,#0b1020,#070b16)';
 function bgSet(col){ col=col||'#4d6bff'; return 'radial-gradient(1050px 720px at 50% -12%,'+hexA(col,.45)+', transparent 60%),radial-gradient(780px 640px at 94% 26%,'+hexA(col,.28)+', transparent 56%),radial-gradient(900px 560px at 6% 116%,'+hexA(col,.20)+', transparent 55%),linear-gradient(180deg,#0b1020,#05070e)'; }
 function symMini(s){ return '<div class="symtile">'+(s&&s.sym64?'<img src="'+s.sym64+'">':'<span class="ph">'+esc((nameOf(s)||'?')[0])+'</span>')+'</div>'; }
 const lsKey=()=>'ms_'+(user?user.uid:'anon');
@@ -304,7 +309,7 @@ function go(v){ view=v; render(); window.scrollTo(0,0); }
 
 // ---------- dashboard ----------
 function renderDash(){
-  setBg(BG_DASH);
+  setBg(BG_DASH); setArt('');
   const favs=SETS.filter(s=>favorites.has(s.id));
   let grand=0,vars=0,done=0;
   favs.forEach(s=>{ grand+=(values[s.id]||0); const t=s.totalSlots||0,o=(owned[s.id]||new Set()).size; vars+=o; if(t&&o>=t)done++; });
@@ -333,7 +338,7 @@ function renderDash(){
 
 // ---------- browser ----------
 function renderBrowse(){
-  setBg(BG_BROWSE);
+  setBg(BG_BROWSE); setArt('');
   const seriesList=[...new Set(SETS.map(s=>s.seriesName).filter(Boolean))];
   app.innerHTML='<button class="backbtn" id="back">← Minhas coleções</button>'
     +'<div class="sec-title"><div><h2>Adicionar coleção</h2><div class="sub">'+SETS.length+' coleções disponíveis</div></div></div>'
@@ -373,7 +378,7 @@ function confetti(){ if(matchMedia('(prefers-reduced-motion:reduce)').matches)re
 
 async function renderSet(sid){
   const meta=byId[sid]||{};
-  setBg(bgSet(meta.color));
+  setBg(bgSet(meta.color)); setArt(meta.logo64||'');
   app.innerHTML='<button class="backbtn" id="back">← Minhas coleções</button><div class="loading">Carregando '+esc(nameOf(meta)||'coleção')+'…</div>';
   document.getElementById('back').onclick=()=>go({name:'dash'});
   let data; try{ data=await loadSetData(sid); }catch(e){ app.innerHTML='<button class="backbtn" id="b2">← Minhas coleções</button><div class="empty">Não foi possível carregar os dados desta coleção.</div>'; document.getElementById('b2').onclick=()=>go({name:'dash'}); return; }
