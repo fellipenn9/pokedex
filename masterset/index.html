@@ -186,6 +186,8 @@ button{font-family:inherit}
 #bgfx{position:fixed;inset:0;z-index:-2;pointer-events:none;transition:background .6s ease}
 #bgart{position:fixed;inset:0;z-index:-1;pointer-events:none;background-position:center 22%;background-repeat:no-repeat;background-size:min(680px,84%);opacity:0;transition:opacity .5s}
 #bgart.on{opacity:.10}
+#bgart.hero{background-size:cover;background-position:center 20%;filter:blur(34px) saturate(1.35) brightness(.9);transform:scale(1.25)}
+#bgart.hero.on{opacity:.26}
 .cmodal{position:fixed;inset:0;z-index:70;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(6,9,18,.72);backdrop-filter:blur(6px)}
 .cmodal.on{display:flex}
 .cm-box{width:100%;max-width:740px;max-height:92vh;overflow:auto;display:flex;background:var(--surface);border:1px solid var(--line2);border-radius:18px;box-shadow:var(--shadow)}
@@ -253,7 +255,7 @@ function money(n){ n=n||0; return n>=1000?'$'+(n/1000).toFixed(2)+'k':'$'+n.toFi
 function fdate(iso){ const m=String(iso||'').match(/^(\d{4})-(\d{2})/); return m?MES[+m[2]-1]+'/'+m[1]:''; }
 function hexA(h,a){ h=h||'#4d6bff'; if(h[0]!=='#'||h.length<7)return 'rgba(77,107,255,'+a+')'; const n=parseInt(h.slice(1,7),16); return 'rgba('+((n>>16)&255)+','+((n>>8)&255)+','+(n&255)+','+a+')'; }
 function setBg(css){ const b=document.getElementById('bgfx'); if(b)b.style.background=css; }
-function setArt(url){ const b=document.getElementById('bgart'); if(!b)return; if(url){ b.style.backgroundImage='url("'+url+'")'; b.classList.add('on'); } else { b.style.backgroundImage='none'; b.classList.remove('on'); } }
+function setArt(url,hero){ const b=document.getElementById('bgart'); if(!b)return; b.classList.toggle('hero',!!hero); if(url){ b.style.backgroundImage='url("'+url+'")'; b.classList.add('on'); } else { b.style.backgroundImage='none'; b.classList.remove('on'); } }
 const POKEBALL=`url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='168'%20height='168'%3E%3Cg%20fill='none'%20stroke='%23ffffff'%20stroke-opacity='0.06'%20stroke-width='2.4'%3E%3Ccircle%20cx='84'%20cy='84'%20r='30'/%3E%3Cline%20x1='54'%20y1='84'%20x2='114'%20y2='84'/%3E%3Ccircle%20cx='84'%20cy='84'%20r='8'%20fill='%23ffffff'%20fill-opacity='0.05'/%3E%3C/g%3E%3C/svg%3E") 0 0/168px repeat`;
 const BG_DASH=POKEBALL+',radial-gradient(900px 560px at 12% -8%, rgba(55,130,224,.20), transparent 60%),radial-gradient(760px 620px at 100% 12%, rgba(150,90,255,.15), transparent 55%),linear-gradient(180deg,#0b1020,#070b16 78%)';
 const BG_BROWSE=POKEBALL+',radial-gradient(1100px 520px at 50% -14%, rgba(140,160,205,.10), transparent 55%),linear-gradient(180deg,#0b1020,#070b16)';
@@ -301,7 +303,7 @@ async function toggleSlot(sid,slot){
 let valTimer;
 function syncValue(sid,v){ values[sid]=Math.round(v*100)/100; clearTimeout(valTimer); valTimer=setTimeout(()=>{ try{ ref().set({masterValues:{[sid]:values[sid]}},{merge:true}); }catch(e){} },700); }
 
-async function loadSetsIndex(){ if(SETS.length)return; try{ let a=await(await fetch('sets_index.json?v=6')).json(); const seen={}; SETS=a.filter(s=>seen[s.id]?false:(seen[s.id]=1)); byId={}; SETS.forEach(s=>byId[s.id]=s); }catch(e){ SETS=[]; } }
+async function loadSetsIndex(){ if(SETS.length)return; try{ let a=await(await fetch('sets_index.json?v=7')).json(); const seen={}; SETS=a.filter(s=>seen[s.id]?false:(seen[s.id]=1)); byId={}; SETS.forEach(s=>byId[s.id]=s); }catch(e){ SETS=[]; } }
 async function loadSetData(sid){ if(setDataCache[sid])return setDataCache[sid]; const d=await(await fetch('data/'+sid+'.json?v=2')).json(); setDataCache[sid]=d; return d; }
 
 async function render(){ await loadSetsIndex(); if(!user){ renderLogin(); return; } if(view.name==='dash')renderDash(); else if(view.name==='browse')renderBrowse(); else if(view.name==='set')renderSet(view.sid); }
@@ -378,7 +380,7 @@ function confetti(){ if(matchMedia('(prefers-reduced-motion:reduce)').matches)re
 
 async function renderSet(sid){
   const meta=byId[sid]||{};
-  setBg(bgSet(meta.color)); setArt(meta.logo64||'');
+  setBg(bgSet(meta.color)); setArt('');
   app.innerHTML='<button class="backbtn" id="back">← Minhas coleções</button><div class="loading">Carregando '+esc(nameOf(meta)||'coleção')+'…</div>';
   document.getElementById('back').onclick=()=>go({name:'dash'});
   let data; try{ data=await loadSetData(sid); }catch(e){ app.innerHTML='<button class="backbtn" id="b2">← Minhas coleções</button><div class="empty">Não foi possível carregar os dados desta coleção.</div>'; document.getElementById('b2').onclick=()=>go({name:'dash'}); return; }
@@ -391,6 +393,9 @@ async function renderSet(sid){
   const cardFullValue=r=>r.variants.reduce((a,v)=>a+((r.p&&r.p[v])||0),0);
   function ownedValue(){ let v=0; data.rows.forEach(r=>r.variants.forEach(x=>{ if(oset().has(sk(r.id,x)))v+=(r.p&&r.p[x])||0; })); return v; }
   let binderPage=0;
+  // fundo cênico: arte da carta-destaque (maior valor) do set, desfocada
+  const _hero=data.rows.filter(r=>r.img).sort((a,b)=>cardFullValue(b)-cardFullValue(a))[0];
+  setArt(_hero?_hero.img:'', true);
 
   const present=new Set(); data.rows.forEach(r=>r.variants.forEach(v=>present.add(v)));
   const hasBall=BALL.some(v=>present.has(v));
