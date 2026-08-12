@@ -5,102 +5,156 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <title>Master Sets — Rastreador</title>
 <style>
-:root{--bg-dark:#1a1a2e;--bg-card:#16213e;--bg-card2:#1c2b4d;--accent:#e94560;--gold:#ffd700;--green:#00c853;--blue:#448aff;--gray:#3a4a66;--text:#eee;--text-dim:#9fb0c9;--radius:10px}
+:root{
+  --bg:#0f1424; --bg2:#151d33; --surface:#1a2440; --surface2:#212d4d;
+  --line:#2b3a5e; --line2:#3a4d75; --text:#eaf0fb; --dim:#93a4c4;
+  --accent:#ff4d6d; --accent2:#ff85a1; --gold:#ffce45; --green:#28d08a;
+  --radius:14px; --shadow:0 8px 24px rgba(0,0,0,.35);
+}
 *{box-sizing:border-box}
-body{margin:0;font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg-dark);color:var(--text);min-height:100vh;-webkit-tap-highlight-color:transparent}
-a{color:inherit}
-.topbar{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:10px;padding:12px 16px;background:rgba(26,26,46,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--gray)}
-.topbar .brand{font-weight:800;font-size:1.05rem;letter-spacing:.2px}.topbar .brand span{color:var(--gold)}
-.topbar .sp{flex:1}
-.btn{border:1px solid var(--gray);background:var(--bg-card);color:var(--text);border-radius:var(--radius);padding:8px 14px;font-size:.85rem;font-weight:700;cursor:pointer;transition:all .12s}
-.btn:hover{border-color:var(--text-dim)}
-.btn.primary{background:linear-gradient(90deg,var(--accent),#ff6b81);border-color:transparent;color:#fff}
-.btn.ghost{background:transparent}
-.avatar{width:32px;height:32px;border-radius:50%;border:1px solid var(--gray)}
-.wrap{max-width:1320px;margin:0 auto;padding:16px 16px 80px}
+body{margin:0;font-family:'Segoe UI',system-ui,-apple-system,sans-serif;color:var(--text);min-height:100vh;-webkit-tap-highlight-color:transparent;
+  background:radial-gradient(1100px 460px at 50% -220px, rgba(255,77,109,.10), transparent 70%), linear-gradient(180deg,#0f1424,#0c1120);}
+button{font-family:inherit}
+.tnum{font-variant-numeric:tabular-nums}
+
+/* top bar */
+.topbar{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:12px;padding:11px 18px;
+  background:rgba(15,20,36,.82);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:9px;font-weight:800;font-size:1.06rem;letter-spacing:.2px}
+.brand .logo{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--accent),var(--gold));display:flex;align-items:center;justify-content:center;font-size:1rem;box-shadow:var(--shadow)}
+.brand b{color:var(--gold);font-weight:800}
+.sp{flex:1}
+.acct{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:99px;padding:4px 6px 4px 10px}
+.acct .nm{font-size:.82rem;font-weight:600;color:var(--dim);max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.acct .avatar{width:30px;height:30px;border-radius:50%;border:1px solid var(--line2);object-fit:cover}
+.acct .out{border:none;background:var(--surface2);color:var(--dim);width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:.95rem;display:flex;align-items:center;justify-content:center}
+.acct .out:hover{background:var(--accent);color:#fff}
+@media(max-width:560px){.acct .nm{display:none}}
+
+.btn{border:1px solid var(--line2);background:var(--surface);color:var(--text);border-radius:11px;padding:9px 15px;font-size:.86rem;font-weight:700;cursor:pointer;transition:all .12s}
+.btn:hover{border-color:var(--dim)}
+.btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));border-color:transparent;color:#fff;box-shadow:0 4px 14px rgba(255,77,109,.32)}
+.btn.primary:hover{filter:brightness(1.05)}
+.wrap{max-width:1320px;margin:0 auto;padding:20px 18px 90px}
 .hidden{display:none!important}
 
+/* back button (pill) */
+.backbtn{display:inline-flex;align-items:center;gap:7px;background:var(--surface);border:1px solid var(--line);color:var(--dim);
+  font-size:.84rem;font-weight:700;cursor:pointer;padding:8px 14px 8px 11px;border-radius:99px;margin-bottom:16px;transition:all .12s}
+.backbtn:hover{border-color:var(--line2);color:var(--text);transform:translateX(-2px)}
+.backbtn .arw{font-size:1rem;line-height:1}
+
 /* login */
-.login{min-height:70vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:14px;padding:20px}
-.login h1{font-size:1.8rem;margin:0}.login p{color:var(--text-dim);max-width:420px}
+.login{min-height:70vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:16px;padding:20px}
+.login .big{width:72px;height:72px;border-radius:20px;background:linear-gradient(135deg,var(--accent),var(--gold));display:flex;align-items:center;justify-content:center;font-size:2.2rem;box-shadow:var(--shadow)}
+.login h1{font-size:2rem;margin:0;letter-spacing:-.01em}.login p{color:var(--dim);max-width:440px;line-height:1.5;margin:0}
+
+/* section title */
+.sec-title{display:flex;align-items:center;gap:12px;margin:2px 2px 18px}
+.sec-title h2{font-size:1.4rem;font-weight:800;margin:0;letter-spacing:-.01em}
+.sec-title .sub{color:var(--dim);font-size:.82rem;font-weight:600}
+
+/* set identity tile */
+.symtile{width:44px;height:44px;border-radius:12px;background:var(--surface2);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;flex:none;overflow:hidden}
+.symtile img{width:32px;height:32px;object-fit:contain}
+.symtile .ph{font-size:1.1rem;color:var(--dim);font-weight:800}
+.symtile.sm{width:36px;height:36px;border-radius:10px}.symtile.sm img{width:26px;height:26px}
 
 /* dashboard */
-.sec-title{display:flex;align-items:center;gap:10px;margin:6px 2px 14px;font-size:1.15rem;font-weight:800}
-.sec-title .sp{flex:1}
-.dash-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
-.setcard{background:var(--bg-card);border:1px solid var(--gray);border-radius:14px;padding:14px;cursor:pointer;transition:transform .12s,border-color .12s;position:relative}
-.setcard:hover{transform:translateY(-2px);border-color:var(--text-dim)}
-.setcard .sc-top{display:flex;align-items:center;gap:10px}
-.setcard .sym{width:26px;height:26px;object-fit:contain;flex:none}
-.setcard .sc-name{font-weight:800;font-size:.98rem;line-height:1.15}
-.setcard .sc-meta{color:var(--text-dim);font-size:.74rem;margin-top:1px}
-.setcard .star{position:absolute;top:10px;right:12px;font-size:1.1rem;cursor:pointer;color:var(--gold);background:none;border:none}
-.setcard .bar{height:9px;background:rgba(255,255,255,.1);border-radius:8px;overflow:hidden;margin-top:12px}
-.setcard .fill{height:100%;background:linear-gradient(90deg,var(--green),var(--gold));transition:width .4s}
-.setcard .pctline{display:flex;justify-content:space-between;font-size:.75rem;margin-top:6px;color:var(--text-dim)}
-.setcard .pctline b{color:var(--green)}
-.empty{color:var(--text-dim);text-align:center;padding:40px 16px;line-height:1.5}
+.dash-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.setcard{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;cursor:pointer;transition:transform .12s,border-color .12s,box-shadow .12s;position:relative;box-shadow:var(--shadow)}
+.setcard:hover{transform:translateY(-3px);border-color:var(--line2)}
+.setcard.done{border-color:rgba(255,206,69,.5);box-shadow:0 0 0 1px rgba(255,206,69,.25),var(--shadow)}
+.setcard .sc-top{display:flex;align-items:center;gap:12px;padding-right:28px}
+.sc-name{font-weight:800;font-size:1rem;line-height:1.2;letter-spacing:-.01em}
+.sc-meta{color:var(--dim);font-size:.75rem;margin-top:2px}
+.setcard .star{position:absolute;top:14px;right:14px;font-size:1.15rem;cursor:pointer;color:var(--gold);background:none;border:none;line-height:1;padding:0}
+.bar{height:9px;background:rgba(255,255,255,.08);border-radius:8px;overflow:hidden}
+.fill{height:100%;background:linear-gradient(90deg,var(--green),var(--gold));border-radius:8px;transition:width .45s}
+.setcard .prog{margin-top:14px}
+.pctline{display:flex;justify-content:space-between;align-items:baseline;font-size:.76rem;margin-top:7px;color:var(--dim)}
+.pctline b{color:var(--green);font-size:.95rem;font-weight:800}
+.setcard.done .pctline b{color:var(--gold)}
+.nodata-tag{font-size:.66rem;color:var(--dim);border:1px solid var(--line);border-radius:99px;padding:2px 9px;display:inline-block}
+.empty{color:var(--dim);text-align:center;padding:50px 16px;line-height:1.6;background:var(--surface);border:1px dashed var(--line2);border-radius:16px}
 
 /* browser */
-.search{width:100%;padding:11px 14px;border:1px solid var(--gray);border-radius:var(--radius);background:var(--bg-card);color:var(--text);font-size:.9rem;margin-bottom:12px}
-.brow-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
-.brow-item{display:flex;align-items:center;gap:10px;background:var(--bg-card);border:1px solid var(--gray);border-radius:12px;padding:10px 12px}
-.brow-item .sym{width:24px;height:24px;object-fit:contain;flex:none}
+.search{width:100%;padding:12px 15px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--text);font-size:.92rem;margin-bottom:10px}
+.search:focus{outline:none;border-color:var(--accent)}
+.filterbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+.selwrap{position:relative}
+.filterbar select{appearance:none;padding:8px 30px 8px 13px;border:1px solid var(--line);border-radius:99px;background:var(--surface);color:var(--text);font-size:.82rem;font-weight:600;cursor:pointer}
+.selwrap::after{content:'▾';position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--dim);pointer-events:none;font-size:.7rem}
+.chip{padding:8px 14px;border:1px solid var(--line);border-radius:99px;background:var(--surface);color:var(--dim);font-size:.82rem;font-weight:700;cursor:pointer;user-select:none;transition:all .12s}
+.chip:hover{border-color:var(--line2)}
+.chip.on{background:rgba(255,77,109,.16);border-color:var(--accent);color:var(--accent2)}
+.brow-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px}
+.brow-item{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:13px;padding:11px 13px}
 .brow-item .bi-b{flex:1;min-width:0}
-.brow-item .bi-name{font-weight:700;font-size:.86rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.brow-item .bi-meta{color:var(--text-dim);font-size:.72rem}
-.brow-item .addbtn{border:1px solid var(--gray);background:var(--bg-card2);color:var(--text);border-radius:8px;width:34px;height:34px;font-size:1.1rem;cursor:pointer;flex:none}
-.brow-item .addbtn.on{background:var(--gold);color:#3a2e00;border-color:var(--gold)}
-.brow-item.nodata{opacity:.55}
-.nodata-tag{font-size:.62rem;color:var(--text-dim);border:1px solid var(--gray);border-radius:99px;padding:1px 6px}
+.bi-name{font-weight:700;font-size:.9rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bi-meta{color:var(--dim);font-size:.73rem;margin-top:1px}
+.addbtn{border:1px solid var(--line2);background:var(--surface2);color:var(--text);border-radius:10px;width:38px;height:38px;font-size:1.15rem;cursor:pointer;flex:none;transition:all .12s}
+.addbtn:hover{border-color:var(--dim)}
+.addbtn.on{background:var(--gold);color:#3a2e00;border-color:var(--gold)}
+.brow-item.nodata{opacity:.6}
 
-/* tracker */
-.hero{background:linear-gradient(135deg,rgba(233,69,96,.12),rgba(255,215,0,.08)),var(--bg-card);border:1px solid rgba(255,215,0,.25);border-radius:16px;padding:15px 16px;margin-bottom:12px}
-.hero-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
-.hero-count{font-size:1.6rem;font-weight:800}.hero-count small{font-size:.76rem;color:var(--text-dim);font-weight:500}
-.hero-pct{font-size:1.35rem;font-weight:800;color:var(--green)}
-.bar{height:11px;background:rgba(255,255,255,.1);border-radius:10px;overflow:hidden;margin-top:9px}.fill{height:100%;background:linear-gradient(90deg,var(--green),var(--gold));transition:width .4s}
-.vsum{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
-.vsum .vc{font-size:.68rem;padding:3px 9px;border-radius:99px;background:rgba(255,255,255,.05);border:1px solid var(--gray);color:var(--text-dim)}.vsum .vc b{color:var(--text)}
-.tfilters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
-.tfilters input,.tfilters select{padding:9px 12px;border:1px solid var(--gray);border-radius:var(--radius);background:var(--bg-card);color:var(--text);font-size:.85rem}
-.tfilters input{flex:1;min-width:140px}
-.count-line{color:var(--text-dim);font-size:.78rem;margin:0 2px 12px}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
-.c{background:var(--bg-card);border:1px solid var(--gray);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
-.c.done{border-color:var(--green);box-shadow:0 0 0 2px rgba(0,200,83,.4)}
-.c-img{position:relative;aspect-ratio:.72;background:#0f1830 center/contain no-repeat;display:flex;align-items:center;justify-content:center}
-.c-img img{width:100%;height:100%;object-fit:contain}.c-img .na{color:var(--text-dim);font-size:.72rem}
-.pg{position:absolute;top:6px;left:6px;background:rgba(0,0,0,.62);color:#fff;font-size:.66rem;font-weight:700;padding:2px 8px;border-radius:99px}
-.cprog{position:absolute;top:6px;right:6px;background:rgba(0,0,0,.62);color:#fff;font-size:.66rem;font-weight:800;padding:2px 8px;border-radius:99px}
-.c.done .cprog{background:var(--green);color:#08240f}
-.donebadge{display:none;position:absolute;bottom:6px;right:6px;background:var(--green);color:#08240f;font-size:.64rem;font-weight:800;padding:3px 9px;border-radius:99px}
+/* tracker header */
+.sethead{display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,rgba(255,77,109,.10),rgba(255,206,69,.06)),var(--surface);
+  border:1px solid var(--line2);border-radius:18px;padding:16px 18px;margin-bottom:14px}
+.sethead .symtile{width:56px;height:56px;border-radius:14px}.sethead .symtile img{width:42px;height:42px}
+.sethead h1{margin:0;font-size:1.45rem;font-weight:800;letter-spacing:-.01em;line-height:1.15}
+.sethead .sh-meta{color:var(--dim);font-size:.8rem;margin-top:3px}
+.sethead .star{margin-left:auto;font-size:1.5rem;cursor:pointer;color:var(--gold);background:none;border:none;align-self:flex-start;line-height:1}
+.hero{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:15px 17px;margin-bottom:14px}
+.hero-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.hero-count{font-size:1.5rem;font-weight:800}.hero-count small{font-size:.76rem;color:var(--dim);font-weight:500}
+.hero-pct{font-size:1.5rem;font-weight:800;color:var(--green)}
+.hero .bar{height:11px;margin-top:11px}
+.vsum{display:flex;flex-wrap:wrap;gap:7px;margin-top:13px}
+.vsum .vc{font-size:.68rem;padding:4px 10px;border-radius:99px;background:var(--surface2);border:1px solid var(--line);color:var(--dim);font-weight:600}
+.vsum .vc b{color:var(--text);font-weight:800}
+.tfilters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.tfilters input,.tfilters select{padding:10px 13px;border:1px solid var(--line);border-radius:11px;background:var(--surface);color:var(--text);font-size:.85rem}
+.tfilters input{flex:1;min-width:150px}.tfilters input:focus,.tfilters select:focus{outline:none;border-color:var(--accent)}
+.count-line{color:var(--dim);font-size:.78rem;margin:0 2px 14px}
+
+/* card grid */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:15px}
+.c{background:var(--surface);border:1px solid var(--line);border-radius:15px;overflow:hidden;display:flex;flex-direction:column;transition:border-color .12s}
+.c.done{border-color:var(--gold);box-shadow:0 0 0 1px rgba(255,206,69,.35)}
+.c-img{position:relative;aspect-ratio:.72;background:#0c1120 center/contain no-repeat;display:flex;align-items:center;justify-content:center}
+.c-img img{width:100%;height:100%;object-fit:contain}.c-img .na{color:var(--dim);font-size:.72rem}
+.pg{position:absolute;top:7px;left:7px;background:rgba(0,0,0,.66);color:#fff;font-size:.67rem;font-weight:800;padding:2px 8px;border-radius:99px}
+.cprog{position:absolute;top:7px;right:7px;background:rgba(0,0,0,.66);color:#fff;font-size:.67rem;font-weight:800;padding:2px 8px;border-radius:99px}
+.c.done .cprog{background:var(--gold);color:#3a2e00}
+.donebadge{display:none;position:absolute;bottom:7px;left:7px;background:var(--gold);color:#3a2e00;font-size:.66rem;font-weight:800;padding:3px 10px;border-radius:99px;box-shadow:0 2px 8px rgba(0,0,0,.5)}
 .c.done .donebadge{display:block}
-.c-b{padding:10px 11px 12px;display:flex;flex-direction:column;gap:6px}
-.c-name{font-weight:700;font-size:.88rem;line-height:1.15}.c-meta{color:var(--text-dim);font-size:.72rem}
-.vlist{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
-.v{font-size:.72rem;font-weight:700;padding:7px 11px;border-radius:10px;cursor:pointer;border:1.5px solid var(--gray);background:rgba(255,255,255,.04);color:var(--text-dim);user-select:none;transition:all .1s;min-height:34px;display:inline-flex;align-items:center;gap:4px}
-.v:active{transform:scale(.94)}
-.v::before{content:'+';font-weight:800;opacity:.55}.v.on::before{content:'✓';opacity:1}
-.v.on{color:#0c1a10;border-color:transparent}
-.v.on.v-normal{background:#b9c6da}.v.on.v-holo{background:var(--gold)}.v.on.v-rev{background:#7fd0ff}.v.on.v-ball{background:#ff9ec4}
-.backbtn{display:inline-flex;align-items:center;gap:6px;background:none;border:none;color:var(--text-dim);font-size:.9rem;font-weight:700;cursor:pointer;padding:4px 0;margin-bottom:4px}
-.loading{text-align:center;color:var(--text-dim);padding:50px}
-.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:#0f3460;border:1px solid var(--gray);color:#fff;padding:9px 16px;border-radius:99px;font-size:.82rem;z-index:50;opacity:0;transition:opacity .25s;pointer-events:none}
-.toast.on{opacity:1}
+.c-b{padding:11px 12px 13px;display:flex;flex-direction:column;gap:7px}
+.c-name{font-weight:700;font-size:.9rem;line-height:1.18}.c-meta{color:var(--dim);font-size:.72rem}
+.vlist{display:flex;flex-wrap:wrap;gap:7px;margin-top:5px}
+.v{font-size:.74rem;font-weight:700;padding:8px 12px;border-radius:11px;cursor:pointer;border:1.5px solid var(--line2);background:var(--surface2);color:var(--dim);user-select:none;transition:all .1s;min-height:36px;display:inline-flex;align-items:center;gap:5px}
+.v:hover{border-color:var(--dim)}.v:active{transform:scale(.93)}
+.v .dot{width:8px;height:8px;border-radius:50%;border:1.5px solid currentColor;flex:none}
+.v.on{color:#0c1a10;border-color:transparent;font-weight:800}
+.v.on .dot{background:rgba(0,0,0,.5);border-color:transparent}
+.v.on.v-normal{background:#c3d0e6}.v.on.v-holo{background:var(--gold)}.v.on.v-rev{background:#7fd0ff}.v.on.v-ball{background:#ff9ec4}
+.loading{text-align:center;color:var(--dim);padding:60px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(10px);background:var(--surface2);border:1px solid var(--line2);color:#fff;padding:10px 18px;border-radius:99px;font-size:.84rem;font-weight:600;z-index:50;opacity:0;transition:all .25s;pointer-events:none;box-shadow:var(--shadow)}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
 @media(max-width:600px){
-  .wrap{padding:12px 12px 80px}
+  .wrap{padding:16px 13px 90px}
   .dash-grid,.brow-list{grid-template-columns:1fr}
-  .grid{grid-template-columns:1fr 1fr;gap:10px}
-  .v{font-size:.75rem;padding:8px 10px;min-height:38px}
-  .hero{position:static}
+  .grid{grid-template-columns:1fr 1fr;gap:11px}
+  .v{font-size:.76rem;padding:9px 11px;min-height:40px}
+  .sethead h1{font-size:1.2rem}
 }
 @media(max-width:380px){.grid{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
 <body>
 <div class="topbar">
-  <div class="brand">Master<span>Sets</span></div>
+  <div class="brand"><span class="logo">🗂️</span> Master<b>Sets</b></div>
   <div class="sp"></div>
   <div id="userbox"></div>
 </div>
@@ -130,11 +184,16 @@ const VAR = {
   quickballPattern:{lbl:'Quick Ball',short:'Quick',cls:'v-ball',grp:'ball'},
   rocketPattern:{lbl:'Rocket',short:'Rocket',cls:'v-ball',grp:'ball'}
 };
+const BALL=Object.keys(VAR).filter(k=>VAR[k].grp==='ball');
+const VF_ORDER=[['normal','Normal'],['holofoil','Holo'],['reverseHolofoil','Reverse Holo'],['energyPattern','Reverse · Energia']];
 
-let user=null, SETS=[], favorites=new Set(), owned={}, view={name:'dash'}, setDataCache={};
+let user=null, SETS=[], byId={}, favorites=new Set(), owned={}, view={name:'dash'}, setDataCache={};
 const app=document.getElementById('app');
 const toastEl=document.getElementById('toast');
 function toast(m){ toastEl.textContent=m; toastEl.classList.add('on'); clearTimeout(toast._t); toast._t=setTimeout(()=>toastEl.classList.remove('on'),1800); }
+function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function nameOf(s){ return s? (s.namePt||s.name) : ''; }
+function symHtml(s,cls){ return '<div class="symtile'+(cls?' '+cls:'')+'">'+(s&&s.sym64?'<img src="'+s.sym64+'">':'<span class="ph">'+esc((nameOf(s)||'?')[0]||'?')+'</span>')+'</div>'; }
 const lsKey=()=> 'ms_'+(user?user.uid:'anon');
 function cacheLocal(){ try{ localStorage.setItem(lsKey(), JSON.stringify({fav:[...favorites], owned:Object.fromEntries(Object.entries(owned).map(([k,v])=>[k,[...v]]))})); }catch(e){} }
 function loadLocal(){ try{ const d=JSON.parse(localStorage.getItem(lsKey())); if(d){ favorites=new Set(d.fav||[]); owned={}; for(const k in (d.owned||{})) owned[k]=new Set(d.owned[k]); } }catch(e){} }
@@ -144,10 +203,9 @@ auth.onAuthStateChanged(async (u)=>{
   user=u; renderUserbox();
   if(!u){ renderLogin(); return; }
   loadLocal(); render();
-  // garante doc + escuta sync
-  const ref=db.collection('users').doc(u.uid);
-  try{ await ref.set({ updatedAt: firebase.firestore.FieldValue.serverTimestamp() },{merge:true}); }catch(e){}
-  ref.onSnapshot(snap=>{
+  const r=db.collection('users').doc(u.uid);
+  try{ await r.set({ updatedAt: firebase.firestore.FieldValue.serverTimestamp() },{merge:true}); }catch(e){}
+  r.onSnapshot(snap=>{
     const d=snap.data()||{};
     favorites=new Set(d.masterFavorites||[]);
     owned={}; const ms=d.masterSets||{}; for(const sid in ms) owned[sid]=new Set(ms[sid]||[]);
@@ -156,11 +214,14 @@ auth.onAuthStateChanged(async (u)=>{
 });
 function renderUserbox(){
   const b=document.getElementById('userbox');
-  if(user){ b.innerHTML='<img class="avatar" src="'+(user.photoURL||'')+'" referrerpolicy="no-referrer" title="'+(user.email||'')+'"> <button class="btn ghost" id="logout">Sair</button>';
-    document.getElementById('logout').onclick=()=>auth.signOut(); }
-  else b.innerHTML='';
+  if(user){
+    b.innerHTML='<div class="acct"><span class="nm">'+esc((user.displayName||user.email||'').split(' ')[0])+'</span>'
+      +'<img class="avatar" src="'+esc(user.photoURL||'')+'" referrerpolicy="no-referrer" alt="" onerror="this.style.display=\'none\'">'
+      +'<button class="out" id="logout" title="Sair">⎋</button></div>';
+    document.getElementById('logout').onclick=()=>auth.signOut();
+  } else b.innerHTML='';
 }
-function renderLogin(){ app.innerHTML='<div class="login"><h1>🗂️ Master Sets</h1><p>Controle suas coleções e variações (Normal, Holo, Reverse, Poké Ball…), sincronizado entre PC e celular.</p><button class="btn primary" id="login">Entrar com Google</button></div>';
+function renderLogin(){ app.innerHTML='<div class="login"><div class="big">🗂️</div><h1>Master Sets</h1><p>Controle suas coleções e variações (Normal, Holo, Reverse, Poké Ball…), sincronizado entre PC e celular.</p><button class="btn primary" id="login">Entrar com Google</button></div>';
   document.getElementById('login').onclick=async()=>{ try{ await auth.signInWithPopup(googleProvider); }catch(e){ toast('Falha no login'); } }; }
 
 // ---------- Firestore writes ----------
@@ -181,7 +242,7 @@ async function toggleSlot(sid, slot){
 }
 
 // ---------- data ----------
-async function loadSetsIndex(){ if(SETS.length) return; try{ let arr=await (await fetch('sets_index.json?v=2')).json(); const seen={}; SETS=arr.filter(s=>seen[s.id]?false:(seen[s.id]=1)); }catch(e){ SETS=[]; } }
+async function loadSetsIndex(){ if(SETS.length) return; try{ let arr=await (await fetch('sets_index.json?v=3')).json(); const seen={}; SETS=arr.filter(s=>seen[s.id]?false:(seen[s.id]=1)); byId={}; SETS.forEach(s=>byId[s.id]=s); }catch(e){ SETS=[]; } }
 async function loadSetData(sid){ if(setDataCache[sid]) return setDataCache[sid]; const d=await (await fetch('data/'+sid+'.json?v=1')).json(); setDataCache[sid]=d; return d; }
 
 // ---------- render router ----------
@@ -197,70 +258,93 @@ function go(v){ view=v; render(); window.scrollTo(0,0); }
 // ---------- dashboard ----------
 function renderDash(){
   const favs=SETS.filter(s=>favorites.has(s.id));
-  let html='<div class="sec-title">⭐ Minhas coleções<div class="sp"></div><button class="btn primary" id="add">+ Adicionar coleção</button></div>';
-  if(!favs.length){ html+='<div class="empty">Você ainda não adicionou coleções.<br>Toque em <b>+ Adicionar coleção</b> para escolher os master sets que quer controlar.</div>'; }
+  const doneCount=favs.filter(s=>{const t=s.totalSlots||0;return t&&(owned[s.id]||new Set()).size>=t;}).length;
+  let html='<div class="sec-title"><div><h2>Minhas coleções</h2><div class="sub">'+favs.length+' coleção(ões)'+(doneCount?' · '+doneCount+' completa(s)':'')+'</div></div><div class="sp"></div><button class="btn primary" id="add">+ Adicionar</button></div>';
+  if(!favs.length){ html+='<div class="empty">Você ainda não adicionou coleções.<br>Toque em <b>+ Adicionar</b> para escolher os master sets que quer controlar.</div>'; }
   else{
     html+='<div class="dash-grid">'+favs.map(s=>{
-      const own=(owned[s.id]||new Set()).size;
-      const tot=s.totalSlots||0;
-      const pct=tot?Math.round(own/tot*100):0;
-      return '<div class="setcard" data-sid="'+s.id+'">'
+      const own=(owned[s.id]||new Set()).size, tot=s.totalSlots||0, pct=tot?Math.round(own/tot*100):0, done=tot&&own>=tot;
+      return '<div class="setcard'+(done?' done':'')+'" data-sid="'+s.id+'">'
         +'<button class="star" data-fav="'+s.id+'" title="Remover dos favoritos">★</button>'
-        +'<div class="sc-top">'+(s.sym64?'<img class="sym" src="'+s.sym64+'">':'<span class="sym"></span>')+'<div><div class="sc-name">'+s.name+'</div><div class="sc-meta">'+(s.seriesName||'')+' · '+s.total+' cartas</div></div></div>'
-        +(s.hasData?('<div class="bar"><div class="fill" style="width:'+pct+'%"></div></div><div class="pctline"><span>'+own+(tot?'/'+tot:'')+' variações</span><b>'+pct+'%</b></div>'):'<div class="pctline" style="margin-top:12px"><span class="nodata-tag">dados ainda não gerados</span></div>')
+        +'<div class="sc-top">'+symHtml(s)+'<div><div class="sc-name">'+esc(nameOf(s))+'</div><div class="sc-meta">'+esc(s.seriesName||'')+' · '+s.total+' cartas</div></div></div>'
+        +(s.hasData?('<div class="prog"><div class="bar"><div class="fill" style="width:'+pct+'%"></div></div><div class="pctline"><span class="tnum">'+own+(tot?' / '+tot:'')+' variações</span><b class="tnum">'+pct+'%</b></div></div>'):'<div class="prog"><span class="nodata-tag">dados ainda não gerados</span></div>')
         +'</div>';
     }).join('')+'</div>';
   }
   app.innerHTML=html;
   document.getElementById('add').onclick=()=>go({name:'browse'});
-  app.querySelectorAll('.setcard').forEach(el=>el.onclick=(e)=>{ if(e.target.closest('.star'))return; const s=SETS.find(x=>x.id===el.dataset.sid); if(!s.hasData){toast('Dados desta coleção ainda não foram gerados');return;} go({name:'set',sid:el.dataset.sid}); });
+  app.querySelectorAll('.setcard').forEach(el=>el.onclick=(e)=>{ if(e.target.closest('.star'))return; const s=byId[el.dataset.sid]; if(!s.hasData){toast('Dados desta coleção ainda não foram gerados');return;} go({name:'set',sid:el.dataset.sid}); });
   app.querySelectorAll('.star').forEach(el=>el.onclick=(e)=>{ e.stopPropagation(); toggleFavorite(el.dataset.fav); });
 }
 
 // ---------- browser ----------
 function renderBrowse(){
-  let html='<button class="backbtn" id="back">← Voltar</button><div class="sec-title">Adicionar coleção</div>';
-  html+='<input class="search" id="q" placeholder="Buscar coleção (ex.: Ascended, Base, McDonald)…">';
-  html+='<div class="brow-list" id="blist"></div>';
+  const seriesList=[...new Set(SETS.map(s=>s.seriesName).filter(Boolean))];
+  let html='<button class="backbtn" id="back"><span class="arw">←</span> Minhas coleções</button>'
+    +'<div class="sec-title"><div><h2>Adicionar coleção</h2><div class="sub">'+SETS.length+' coleções disponíveis</div></div></div>'
+    +'<input class="search" id="q" placeholder="Buscar coleção (ex.: Ascended, Base, McDonald)…">'
+    +'<div class="filterbar">'
+    +'<div class="selwrap"><select id="fserie"><option value="">Todas as séries</option>'+seriesList.map(x=>'<option>'+esc(x)+'</option>').join('')+'</select></div>'
+    +'<div class="selwrap"><select id="flang"><option value="">EN + JP</option><option value="EN">Só inglês</option><option value="JP">Só japonês</option></select></div>'
+    +'<span class="chip" id="fdata">Com dados</span>'
+    +'<span class="chip" id="ffav">★ Favoritos</span>'
+    +'</div><div class="brow-list" id="blist"></div>';
   app.innerHTML=html;
   document.getElementById('back').onclick=()=>go({name:'dash'});
+  const F={q:'',serie:'',lang:'',data:false,fav:false};
   const listEl=document.getElementById('blist');
   function paint(){
-    const q=(document.getElementById('q').value||'').toLowerCase().trim();
-    let list=SETS.filter(s=>!q||s.name.toLowerCase().includes(q)||(s.seriesName||'').toLowerCase().includes(q));
-    // com dados primeiro, depois por data desc
+    let list=SETS.filter(s=>{
+      if(F.q){const h=(nameOf(s)+' '+s.name+' '+(s.seriesName||'')).toLowerCase(); if(!h.includes(F.q))return false;}
+      if(F.serie&&s.seriesName!==F.serie)return false;
+      if(F.lang&&s.category!==F.lang)return false;
+      if(F.data&&!s.hasData)return false;
+      if(F.fav&&!favorites.has(s.id))return false;
+      return true;
+    });
     list.sort((a,b)=>(b.hasData?1:0)-(a.hasData?1:0) || String(b.releaseDate).localeCompare(String(a.releaseDate)));
-    list=list.slice(0,300);
-    listEl.innerHTML=list.map(s=>{
+    const shown=list.slice(0,300);
+    listEl.innerHTML=shown.length?shown.map(s=>{
       const on=favorites.has(s.id);
-      return '<div class="brow-item'+(s.hasData?'':' nodata')+'">'+(s.sym64?'<img class="sym" src="'+s.sym64+'">':'<span class="sym"></span>')
-        +'<div class="bi-b"><div class="bi-name">'+s.name+'</div><div class="bi-meta">'+(s.seriesName||'')+' · '+s.total+' cartas '+(s.hasData?'':' <span class="nodata-tag">sem dados</span>')+'</div></div>'
+      return '<div class="brow-item'+(s.hasData?'':' nodata')+'">'+symHtml(s,'sm')
+        +'<div class="bi-b"><div class="bi-name">'+esc(nameOf(s))+'</div><div class="bi-meta">'+esc(s.seriesName||'')+' · '+s.total+' cartas'+(s.hasData?'':' · <span class="nodata-tag">sem dados</span>')+'</div></div>'
         +'<button class="addbtn'+(on?' on':'')+'" data-fav="'+s.id+'" title="'+(on?'Nos favoritos':'Adicionar')+'">'+(on?'★':'+')+'</button></div>';
-    }).join('');
-    listEl.querySelectorAll('.addbtn').forEach(el=>el.onclick=()=>{ toggleFavorite(el.dataset.fav); el.classList.toggle('on'); el.textContent=el.classList.contains('on')?'★':'+'; });
+    }).join(''):'<div class="empty">Nenhuma coleção com esses filtros.</div>';
+    listEl.querySelectorAll('.addbtn').forEach(el=>el.onclick=()=>{ toggleFavorite(el.dataset.fav); el.classList.toggle('on'); el.textContent=el.classList.contains('on')?'★':'+'; el.title=el.classList.contains('on')?'Nos favoritos':'Adicionar'; });
   }
-  document.getElementById('q').addEventListener('input',paint); paint();
+  document.getElementById('q').addEventListener('input',e=>{F.q=e.target.value.toLowerCase().trim();paint();});
+  document.getElementById('fserie').addEventListener('change',e=>{F.serie=e.target.value;paint();});
+  document.getElementById('flang').addEventListener('change',e=>{F.lang=e.target.value;paint();});
+  document.getElementById('fdata').onclick=e=>{F.data=!F.data;e.target.classList.toggle('on',F.data);paint();};
+  document.getElementById('ffav').onclick=e=>{F.fav=!F.fav;e.target.classList.toggle('on',F.fav);paint();};
+  paint();
 }
 
 // ---------- tracker ----------
-const BALL=Object.keys(VAR).filter(k=>VAR[k].grp==='ball');
 async function renderSet(sid){
-  app.innerHTML='<button class="backbtn" id="back">← Voltar</button><div class="loading">Carregando coleção…</div>';
+  const meta=byId[sid]||{};
+  app.innerHTML='<button class="backbtn" id="back"><span class="arw">←</span> Minhas coleções</button><div class="loading">Carregando '+esc(nameOf(meta)||'coleção')+'…</div>';
   document.getElementById('back').onclick=()=>go({name:'dash'});
-  let data; try{ data=await loadSetData(sid); }catch(e){ app.innerHTML='<button class="backbtn" id="b2">← Voltar</button><div class="empty">Não foi possível carregar os dados desta coleção.</div>'; document.getElementById('b2').onclick=()=>go({name:'dash'}); return; }
+  let data; try{ data=await loadSetData(sid); }catch(e){ app.innerHTML='<button class="backbtn" id="b2"><span class="arw">←</span> Minhas coleções</button><div class="empty">Não foi possível carregar os dados desta coleção.</div>'; document.getElementById('b2').onclick=()=>go({name:'dash'}); return; }
   const oset=()=> owned[sid]||new Set();
   const sk=(id,v)=>id+'|'+v;
   const F={q:'',rar:'',vf:'',st:''};
   const cardDone=r=>r.variants.every(v=>oset().has(sk(r.id,v)));
   const cardN=r=>r.variants.filter(v=>oset().has(sk(r.id,v))).length;
 
+  // variações realmente presentes neste set (filtro dinâmico)
+  const present=new Set(); data.rows.forEach(r=>r.variants.forEach(v=>present.add(v)));
+  const hasBall=BALL.some(v=>present.has(v));
+  const vfOpts=VF_ORDER.filter(([k])=>present.has(k)).map(([k,l])=>'<option value="'+k+'">'+l+'</option>').join('')+(hasBall?'<option value="__ball">Poké Ball (todas)</option>':'');
+
   const rars=[...new Set(data.rows.map(r=>r.rarity))].filter(Boolean).sort();
-  app.innerHTML='<button class="backbtn" id="back">← Minhas coleções</button>'
-    +'<div class="sec-title" style="margin-bottom:8px">'+data.setName+' <div class="sp"></div><button class="star" data-fav="'+sid+'" style="position:static;font-size:1.3rem">'+(favorites.has(sid)?'★':'☆')+'</button></div>'
-    +'<div class="hero"><div class="hero-top"><div class="hero-count"><span id="own">0</span> <small>/ '+data.totalSlots+' variações</small></div><div class="hero-pct" id="pct">0%</div></div><div class="bar"><div class="fill" id="fill" style="width:0"></div></div><div class="vsum" id="vsum"></div></div>'
+  app.innerHTML='<button class="backbtn" id="back"><span class="arw">←</span> Minhas coleções</button>'
+    +'<div class="sethead">'+symHtml(meta)+'<div><h1>'+esc(nameOf(meta)||data.setName)+'</h1><div class="sh-meta">'+esc(meta.seriesName||'')+(meta.printedTotal?' · '+meta.printedTotal+' numeradas':'')+' · '+(meta.total||data.rows.length)+' cartas</div></div>'
+    +'<button class="star" data-fav="'+sid+'" title="Favoritar">'+(favorites.has(sid)?'★':'☆')+'</button></div>'
+    +'<div class="hero"><div class="hero-top"><div class="hero-count"><span class="tnum" id="own">0</span> <small>/ '+data.totalSlots+' variações</small></div><div class="hero-pct tnum" id="pct">0%</div></div><div class="bar"><div class="fill" id="fill" style="width:0"></div></div><div class="vsum" id="vsum"></div></div>'
     +'<div class="tfilters"><input type="search" id="q" placeholder="Buscar carta ou número…">'
-    +'<select id="rar"><option value="">Todas raridades</option>'+rars.map(r=>'<option>'+r+'</option>').join('')+'</select>'
-    +'<select id="vf"><option value="">Todas variações</option><option value="normal">Normal</option><option value="holofoil">Holo</option><option value="reverseHolofoil">Reverse Holo</option><option value="energyPattern">Reverse · Energia</option><option value="__ball">Poké Ball (todas)</option></select>'
+    +'<select id="rar"><option value="">Todas raridades</option>'+rars.map(r=>'<option>'+esc(r)+'</option>').join('')+'</select>'
+    +'<select id="vf"><option value="">Todas variações</option>'+vfOpts+'</select>'
     +'<select id="st"><option value="">Todas</option><option value="miss">Incompletas</option><option value="done">Completas</option></select></div>'
     +'<div class="count-line" id="cl"></div><div class="grid" id="grid"></div>';
   document.getElementById('back').onclick=()=>go({name:'dash'});
@@ -274,7 +358,7 @@ async function renderSet(sid){
     const buckets=[['normal','Normal'],['holofoil','Holo'],['reverseHolofoil','Reverse'],['energyPattern','Reverse·Energia'],['ball','Poké Ball (todas)']];
     const tot={},ow={};
     data.rows.forEach(r=>r.variants.forEach(v=>{const g=VAR[v].grp;tot[g]=(tot[g]||0)+1; if(oset().has(sk(r.id,v)))ow[g]=(ow[g]||0)+1;}));
-    document.getElementById('vsum').innerHTML=buckets.filter(b=>tot[b[0]]).map(b=>'<span class="vc">'+b[1]+': <b>'+(ow[b[0]]||0)+'</b>/'+tot[b[0]]+'</span>').join('');
+    document.getElementById('vsum').innerHTML=buckets.filter(b=>tot[b[0]]).map(b=>'<span class="vc">'+b[1]+': <b class="tnum">'+(ow[b[0]]||0)+'</b>/'+tot[b[0]]+'</span>').join('');
   }
   function paint(){
     const g=document.getElementById('grid');
@@ -290,8 +374,8 @@ async function renderSet(sid){
     if(!list.length){ g.innerHTML='<div class="empty">Nada com esses filtros.</div>'; updateHero(); return; }
     g.innerHTML=list.map(r=>{
       const img=r.img?'<img loading="lazy" src="'+r.img+'" alt="">':'<div class="na">sem imagem</div>';
-      const vs=r.variants.map(v=>{const on=oset().has(sk(r.id,v));const m=VAR[v];return '<span class="v '+m.cls+(on?' on':'')+'" data-id="'+r.id+'" data-v="'+v+'" title="'+m.lbl+'">'+m.short+'</span>';}).join('');
-      return '<div class="c'+(cardDone(r)?' done':'')+'" data-id="'+r.id+'"><div class="c-img"><span class="pg">'+r.number+'</span><span class="cprog">'+cardN(r)+'/'+r.variants.length+'</span><span class="donebadge">✓ Completa</span>'+img+'</div><div class="c-b"><div class="c-name">'+r.name+'</div><div class="c-meta">'+r.rarity+(r.artist?' · '+r.artist:'')+'</div><div class="vlist">'+vs+'</div></div></div>';
+      const vs=r.variants.map(v=>{const on=oset().has(sk(r.id,v));const m=VAR[v];return '<span class="v '+m.cls+(on?' on':'')+'" data-id="'+esc(r.id)+'" data-v="'+v+'" title="'+m.lbl+'"><span class="dot"></span>'+m.short+'</span>';}).join('');
+      return '<div class="c'+(cardDone(r)?' done':'')+'" data-id="'+esc(r.id)+'"><div class="c-img"><span class="pg">'+esc(r.number)+'</span><span class="cprog tnum">'+cardN(r)+'/'+r.variants.length+'</span><span class="donebadge">✓ Completa</span>'+img+'</div><div class="c-b"><div class="c-name">'+esc(r.name)+'</div><div class="c-meta">'+esc(r.rarity)+(r.artist?' · '+esc(r.artist):'')+'</div><div class="vlist">'+vs+'</div></div></div>';
     }).join('');
     g.querySelectorAll('.v').forEach(el=>el.addEventListener('click',ev=>{
       ev.stopPropagation();
