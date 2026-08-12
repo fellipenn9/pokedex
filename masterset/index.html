@@ -382,7 +382,7 @@ function confetti(){ if(matchMedia('(prefers-reduced-motion:reduce)').matches)re
 
 async function renderSet(sid){
   const meta=byId[sid]||{};
-  setBg(bgSet(meta.color)); setArt('');
+  setBg(bgSet(meta.color)); setArt(meta.logo64||'');
   app.innerHTML='<button class="backbtn" id="back">← Minhas coleções</button><div class="loading">Carregando '+esc(nameOf(meta)||'coleção')+'…</div>';
   document.getElementById('back').onclick=()=>go({name:'dash'});
   let data; try{ data=await loadSetData(sid); }catch(e){ app.innerHTML='<button class="backbtn" id="b2">← Minhas coleções</button><div class="empty">Não foi possível carregar os dados desta coleção.</div>'; document.getElementById('b2').onclick=()=>go({name:'dash'}); return; }
@@ -395,9 +395,7 @@ async function renderSet(sid){
   const cardFullValue=r=>r.variants.reduce((a,v)=>a+((r.p&&r.p[v])||0),0);
   function ownedValue(){ let v=0; data.rows.forEach(r=>r.variants.forEach(x=>{ if(oset().has(sk(r.id,x)))v+=(r.p&&r.p[x])||0; })); return v; }
   let binderPage=0;
-  // fundo cênico: arte oficial da SÉRIE (pkmn.gg); senão, arte da carta-destaque desfocada
-  if(SERIES_BG[meta.series]) setArt(SERIES_BG[meta.series],'scene');
-  else { const _hero=data.rows.filter(r=>r.img).sort((a,b)=>cardFullValue(b)-cardFullValue(a))[0]; setArt(_hero?_hero.img:'','hero'); }
+  // fundo = estampa/logo da edição (marca d'água), já definido no topo
 
   const present=new Set(); data.rows.forEach(r=>r.variants.forEach(v=>present.add(v)));
   const hasBall=BALL.some(v=>present.has(v));
