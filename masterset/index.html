@@ -252,7 +252,7 @@ function hexA(h,a){ h=h||'#4d6bff'; if(h[0]!=='#'||h.length<7)return 'rgba(77,10
 function setBg(css){ const b=document.getElementById('bgfx'); if(b)b.style.background=css; }
 const BG_DASH='radial-gradient(900px 560px at 12% -8%, rgba(55,130,224,.18), transparent 60%),radial-gradient(760px 620px at 100% 12%, rgba(150,90,255,.12), transparent 55%),linear-gradient(180deg,#0b1020,#070b16 78%)';
 const BG_BROWSE='radial-gradient(1100px 520px at 50% -14%, rgba(140,160,205,.09), transparent 55%),linear-gradient(180deg,#0b1020,#070b16)';
-function bgSet(col){ col=col||'#4d6bff'; return 'radial-gradient(820px 560px at 85% -10%,'+hexA(col,.26)+', transparent 60%),radial-gradient(680px 620px at -8% 8%,'+hexA(col,.15)+', transparent 55%),radial-gradient(620px 600px at 45% 122%, rgba(41,90,160,.15), transparent 55%),linear-gradient(180deg,#0b1020,#070b16 78%)'; }
+function bgSet(col){ col=col||'#4d6bff'; return 'radial-gradient(1050px 720px at 50% -12%,'+hexA(col,.45)+', transparent 60%),radial-gradient(780px 640px at 94% 26%,'+hexA(col,.28)+', transparent 56%),radial-gradient(900px 560px at 6% 116%,'+hexA(col,.20)+', transparent 55%),linear-gradient(180deg,#0b1020,#05070e)'; }
 function symMini(s){ return '<div class="symtile">'+(s&&s.sym64?'<img src="'+s.sym64+'">':'<span class="ph">'+esc((nameOf(s)||'?')[0])+'</span>')+'</div>'; }
 const lsKey=()=>'ms_'+(user?user.uid:'anon');
 function cacheLocal(){ try{ localStorage.setItem(lsKey(),JSON.stringify({fav:[...favorites],owned:Object.fromEntries(Object.entries(owned).map(([k,v])=>[k,[...v]])),values})); }catch(e){} }
@@ -317,7 +317,7 @@ function renderDash(){
       const o=(owned[s.id]||new Set()).size,t=s.totalSlots||0,pct=t?Math.round(o/t*100):0,cmp=t&&o>=t;
       const meta=[s.seriesName,fdate(s.releaseDate),s.total+' cartas'].filter(Boolean).join(' · ');
       return '<div class="setcard" data-sid="'+s.id+'" data-complete="'+cmp+'">'
-        +'<div class="art" style="background-image:url('+(s.sym64||'')+')"></div><div class="scrim"></div>'
+        +'<div class="art" style="background-image:url('+(s.sym64||'')+')"></div><div class="scrim" style="background:linear-gradient(150deg,'+hexA(s.color||'#4d6bff',.42)+',rgba(15,20,36,.62) 50%,rgba(10,14,26,.96))"></div>'
         +(s.logo64?'<img class="logo" src="'+s.logo64+'">':'')
         +'<button class="star" data-fav="'+s.id+'" title="Remover">★</button>'
         +'<div class="sc-c"><div class="sc-name">'+esc(nameOf(s))+'</div><div class="sc-meta tnum">'+esc(meta)+'</div>'
@@ -393,7 +393,7 @@ async function renderSet(sid){
   const rars=[...new Set(data.rows.map(r=>r.rarity))].filter(Boolean).sort();
 
   app.innerHTML='<button class="backbtn" id="back">← Minhas coleções</button>'
-    +'<div class="sethead"><div class="art" style="background-image:url('+(meta.sym64||'')+')"></div><div class="scrim"></div>'
+    +'<div class="sethead" style="border-color:'+hexA(meta.color||'#4d6bff',.5)+'"><div class="art" style="background-image:url('+(meta.sym64||'')+')"></div><div class="scrim" style="background:linear-gradient(90deg,rgba(11,16,32,.92) 0%,rgba(11,16,32,.5) 44%,'+hexA(meta.color||'#4d6bff',.6)+' 100%)"></div>'
     +'<div class="sh-main">'+(meta.logo64?'<img class="logo" src="'+meta.logo64+'">':'<h1>'+esc(nameOf(meta)||data.setName)+'</h1>')
     +'<div class="sh-meta tnum">'+esc(meta.seriesName||'')+' · '+(fdate(meta.releaseDate)||'')+' · '+(meta.total||data.rows.length)+' cartas · valor <b id="ov" style="color:var(--gold)">$0</b> / '+money(data.fullValue||0)+'</div>'
     +'<div class="bars"><div class="brow cpl"><span class="t">Completo</span><span class="bk"><i id="bcpl"></i></span><span id="pcpl">0%</span></div>'
