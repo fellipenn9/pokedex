@@ -183,13 +183,37 @@ button{font-family:inherit}
 @keyframes fall{to{transform:translate(var(--x),62vh) rotate(var(--r));opacity:0}}
 @media(max-width:600px){.wrap{padding:16px 13px 90px}.dash-grid,.brow-list{grid-template-columns:1fr}.grid{grid-template-columns:1fr 1fr;gap:11px}.v{font-size:.76rem;padding:9px 11px;min-height:40px}.sethead h1{font-size:1.12rem}}
 @media(max-width:380px){.grid{grid-template-columns:1fr}}
+#bgfx{position:fixed;inset:0;z-index:-1;pointer-events:none;transition:background .6s ease}
+.cmodal{position:fixed;inset:0;z-index:70;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(6,9,18,.72);backdrop-filter:blur(6px)}
+.cmodal.on{display:flex}
+.cm-box{width:100%;max-width:740px;max-height:92vh;overflow:auto;display:flex;background:var(--surface);border:1px solid var(--line2);border-radius:18px;box-shadow:var(--shadow)}
+.cm-img{flex:0 0 42%;background:#0c1120;display:flex;align-items:center;justify-content:center;padding:18px}
+.cm-img img{width:100%;border-radius:10px}
+.cm-info{flex:1;min-width:0;padding:20px;position:relative}
+.cm-x{position:absolute;top:14px;right:14px;background:var(--surface2);border:1px solid var(--line2);color:var(--dim);width:32px;height:32px;border-radius:50%;cursor:pointer}
+.cm-info h3{margin:0 36px 2px 0;font-size:1.3rem;font-weight:800}
+.cm-meta{color:var(--dim);font-size:.82rem}
+.cm-tags{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.cm-tags span{background:var(--surface2);border:1px solid var(--line);border-radius:99px;padding:4px 11px;font-size:.75rem;font-weight:600}
+.cm-vt{font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:var(--dim);font-weight:700;margin-top:8px}
+.cm-vlist{display:flex;flex-direction:column;gap:7px;margin-top:8px}
+.cmv{display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:1.5px solid var(--line2);background:var(--surface2);color:var(--text);border-radius:11px;padding:11px 13px;cursor:pointer;font-weight:600}
+.cmv .dot{width:12px;height:12px;border-radius:50%;border:2px solid var(--dim);flex:none}
+.cmv .cmv-l{flex:1}.cmv .cmv-p{color:var(--gold);font-weight:700;font-size:.82rem}
+.cmv.on{border-color:transparent;color:#0c1a10}.cmv.on .dot{background:rgba(0,0,0,.5);border-color:transparent}.cmv.on .cmv-p{color:#0c1a10}
+.cmv.on.v-normal{background:#c3d0e6}.cmv.on.v-holo{background:var(--gold)}.cmv.on.v-rev{background:#7fd0ff}.cmv.on.v-ball{background:#ff9ec4}
+.cm-val{margin-top:14px;color:var(--dim);font-size:.85rem}.cm-val b{color:var(--gold);font-size:1.05rem}
+.c-img,.c-name,.pk-img,.trow .tnm{cursor:pointer}
+@media(max-width:600px){.cm-box{flex-direction:column;max-height:94vh}.cm-img{flex:none;max-height:44vh}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
 <body>
+<div id="bgfx"></div>
 <div class="topbar"><div class="brand"><span class="logo">🗂️</span> Master<b>Sets</b></div><div class="sp"></div><div id="userbox"></div></div>
 <div class="wrap"><div id="app"><div class="loading">Carregando…</div></div></div>
 <div class="toast" id="toast"></div>
+<div class="cmodal" id="cardmodal"><div class="cm-box"></div></div>
 
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
@@ -224,6 +248,11 @@ function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,
 function nameOf(s){ return s?(s.namePt||s.name):''; }
 function money(n){ n=n||0; return n>=1000?'$'+(n/1000).toFixed(2)+'k':'$'+n.toFixed(2); }
 function fdate(iso){ const m=String(iso||'').match(/^(\d{4})-(\d{2})/); return m?MES[+m[2]-1]+'/'+m[1]:''; }
+function hexA(h,a){ h=h||'#4d6bff'; if(h[0]!=='#'||h.length<7)return 'rgba(77,107,255,'+a+')'; const n=parseInt(h.slice(1,7),16); return 'rgba('+((n>>16)&255)+','+((n>>8)&255)+','+(n&255)+','+a+')'; }
+function setBg(css){ const b=document.getElementById('bgfx'); if(b)b.style.background=css; }
+const BG_DASH='radial-gradient(900px 560px at 12% -8%, rgba(55,130,224,.18), transparent 60%),radial-gradient(760px 620px at 100% 12%, rgba(150,90,255,.12), transparent 55%),linear-gradient(180deg,#0b1020,#070b16 78%)';
+const BG_BROWSE='radial-gradient(1100px 520px at 50% -14%, rgba(140,160,205,.09), transparent 55%),linear-gradient(180deg,#0b1020,#070b16)';
+function bgSet(col){ col=col||'#4d6bff'; return 'radial-gradient(820px 560px at 85% -10%,'+hexA(col,.26)+', transparent 60%),radial-gradient(680px 620px at -8% 8%,'+hexA(col,.15)+', transparent 55%),radial-gradient(620px 600px at 45% 122%, rgba(41,90,160,.15), transparent 55%),linear-gradient(180deg,#0b1020,#070b16 78%)'; }
 function symMini(s){ return '<div class="symtile">'+(s&&s.sym64?'<img src="'+s.sym64+'">':'<span class="ph">'+esc((nameOf(s)||'?')[0])+'</span>')+'</div>'; }
 const lsKey=()=>'ms_'+(user?user.uid:'anon');
 function cacheLocal(){ try{ localStorage.setItem(lsKey(),JSON.stringify({fav:[...favorites],owned:Object.fromEntries(Object.entries(owned).map(([k,v])=>[k,[...v]])),values})); }catch(e){} }
@@ -267,7 +296,7 @@ async function toggleSlot(sid,slot){
 let valTimer;
 function syncValue(sid,v){ values[sid]=Math.round(v*100)/100; clearTimeout(valTimer); valTimer=setTimeout(()=>{ try{ ref().set({masterValues:{[sid]:values[sid]}},{merge:true}); }catch(e){} },700); }
 
-async function loadSetsIndex(){ if(SETS.length)return; try{ let a=await(await fetch('sets_index.json?v=5')).json(); const seen={}; SETS=a.filter(s=>seen[s.id]?false:(seen[s.id]=1)); byId={}; SETS.forEach(s=>byId[s.id]=s); }catch(e){ SETS=[]; } }
+async function loadSetsIndex(){ if(SETS.length)return; try{ let a=await(await fetch('sets_index.json?v=6')).json(); const seen={}; SETS=a.filter(s=>seen[s.id]?false:(seen[s.id]=1)); byId={}; SETS.forEach(s=>byId[s.id]=s); }catch(e){ SETS=[]; } }
 async function loadSetData(sid){ if(setDataCache[sid])return setDataCache[sid]; const d=await(await fetch('data/'+sid+'.json?v=2')).json(); setDataCache[sid]=d; return d; }
 
 async function render(){ await loadSetsIndex(); if(!user){ renderLogin(); return; } if(view.name==='dash')renderDash(); else if(view.name==='browse')renderBrowse(); else if(view.name==='set')renderSet(view.sid); }
@@ -275,6 +304,7 @@ function go(v){ view=v; render(); window.scrollTo(0,0); }
 
 // ---------- dashboard ----------
 function renderDash(){
+  setBg(BG_DASH);
   const favs=SETS.filter(s=>favorites.has(s.id));
   let grand=0,vars=0,done=0;
   favs.forEach(s=>{ grand+=(values[s.id]||0); const t=s.totalSlots||0,o=(owned[s.id]||new Set()).size; vars+=o; if(t&&o>=t)done++; });
@@ -303,6 +333,7 @@ function renderDash(){
 
 // ---------- browser ----------
 function renderBrowse(){
+  setBg(BG_BROWSE);
   const seriesList=[...new Set(SETS.map(s=>s.seriesName).filter(Boolean))];
   app.innerHTML='<button class="backbtn" id="back">← Minhas coleções</button>'
     +'<div class="sec-title"><div><h2>Adicionar coleção</h2><div class="sub">'+SETS.length+' coleções disponíveis</div></div></div>'
@@ -342,6 +373,7 @@ function confetti(){ if(matchMedia('(prefers-reduced-motion:reduce)').matches)re
 
 async function renderSet(sid){
   const meta=byId[sid]||{};
+  setBg(bgSet(meta.color));
   app.innerHTML='<button class="backbtn" id="back">← Minhas coleções</button><div class="loading">Carregando '+esc(nameOf(meta)||'coleção')+'…</div>';
   document.getElementById('back').onclick=()=>go({name:'dash'});
   let data; try{ data=await loadSetData(sid); }catch(e){ app.innerHTML='<button class="backbtn" id="b2">← Minhas coleções</button><div class="empty">Não foi possível carregar os dados desta coleção.</div>'; document.getElementById('b2').onclick=()=>go({name:'dash'}); return; }
@@ -416,16 +448,31 @@ async function renderSet(sid){
     area.innerHTML= cardView==='table'?tableHTML(list) : cardView==='binder'?binderHTML(list) : gridHTML(list);
     updateHero();
   }
+  function openCardModal(r){
+    const m=document.getElementById('cardmodal'); let dirty=false;
+    function esckey(e){ if(e.key==='Escape')close(); }
+    function close(){ m.classList.remove('on'); m.onclick=null; document.removeEventListener('keydown',esckey); if(dirty)paint(); }
+    const vhtml=()=>r.variants.map(v=>{const on=oset().has(sk(r.id,v));const mm=VAR[v];const pr=r.p&&r.p[v];return '<button class="cmv '+mm.cls+(on?' on':'')+'" data-v="'+v+'"><span class="dot"></span><span class="cmv-l">'+mm.lbl+'</span><span class="cmv-p">'+(pr!=null?money(pr):'')+'</span></button>';}).join('');
+    m.querySelector('.cm-box').innerHTML='<div class="cm-img">'+(r.img?'<img src="'+r.img+'" alt="">':'<span style="color:var(--dim)">sem imagem</span>')+'</div>'
+      +'<div class="cm-info"><button class="cm-x" id="cmx">✕</button><h3>'+esc(r.name)+'</h3>'
+      +'<div class="cm-meta">'+esc(nameOf(meta)||data.setName)+' · Nº '+esc(r.number)+'</div>'
+      +'<div class="cm-tags"><span>'+esc(r.rarity||'—')+'</span>'+(r.artist?'<span>🎨 '+esc(r.artist)+'</span>':'')+'</div>'
+      +'<div class="cm-vt" id="cmvt">Variações — '+cardN(r)+'/'+r.variants.length+'</div><div class="cm-vlist">'+vhtml()+'</div>'
+      +'<div class="cm-val">Valor do card: <b>'+money(cardFullValue(r))+'</b></div></div>';
+    m.querySelector('#cmx').onclick=close;
+    m.querySelectorAll('.cmv').forEach(b=>b.onclick=()=>{ const v=b.dataset.v; const prev=data.totalSlots?Math.round(oset().size/data.totalSlots*100):0; toggleSlot(sid,sk(r.id,v)); b.classList.toggle('on'); m.querySelector('#cmvt').textContent='Variações — '+cardN(r)+'/'+r.variants.length; updateHero(prev); dirty=true; });
+    m.classList.add('on'); m.onclick=e=>{ if(e.target===m)close(); }; document.addEventListener('keydown',esckey);
+  }
   document.getElementById('area').addEventListener('click',ev=>{
     const bp=ev.target.closest('[data-bp]'); if(bp){ binderPage+=(+bp.dataset.bp); paint(); return; }
-    const el=ev.target.closest('.v'); if(!el)return; ev.stopPropagation();
-    const id=el.dataset.id,v=el.dataset.v,prev=data.totalSlots?Math.round(oset().size/data.totalSlots*100):0;
-    toggleSlot(sid,sk(id,v)); el.classList.toggle('on');
-    const r=data.rows.find(x=>x.id===id);
-    // atualiza estados do container-pai (card/row/pocket)
-    const cont=el.closest('.c,.trow,.pocket');
-    if(cont){ cont.classList.toggle('done',cardDone(r)); if(cont.classList.contains('c'))cont.classList.toggle('none',!cardHasAny(r)); if(cont.classList.contains('pocket'))cont.classList.toggle('none',!cardHasAny(r)); const cp=cont.querySelector('.cprog'); if(cp)cp.textContent=cardN(r)+'/'+r.variants.length; }
-    updateHero(prev); if(F.st)paint();
+    const el=ev.target.closest('.v');
+    if(el){ ev.stopPropagation();
+      const id=el.dataset.id,v=el.dataset.v,prev=data.totalSlots?Math.round(oset().size/data.totalSlots*100):0;
+      toggleSlot(sid,sk(id,v)); el.classList.toggle('on');
+      const r=data.rows.find(x=>x.id===id); const cont=el.closest('.c,.trow,.pocket');
+      if(cont){ cont.classList.toggle('done',cardDone(r)); if(cont.classList.contains('c')||cont.classList.contains('pocket'))cont.classList.toggle('none',!cardHasAny(r)); const cp=cont.querySelector('.cprog'); if(cp)cp.textContent=cardN(r)+'/'+r.variants.length; }
+      updateHero(prev); if(F.st)paint(); return; }
+    const host=ev.target.closest('[data-id]'); if(host){ const r=data.rows.find(x=>x.id===host.dataset.id); if(r)openCardModal(r); }
   });
   paint();
 }
