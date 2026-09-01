@@ -285,7 +285,10 @@ auth.onAuthStateChanged(async(u)=>{
     favorites=new Set(d.masterFavorites||[]);
     owned={}; const ms=d.masterSets||{}; for(const sid in ms)owned[sid]=new Set(ms[sid]||[]);
     values=d.masterValues||{};
-    cacheLocal(); render();
+    cacheLocal();
+    // dentro de uma coleção NÃO re-renderiza (o clique já atualizou a UI e
+    // preserva o filtro aplicado); só re-renderiza dashboard/navegador.
+    if(view.name!=='set') render();
   },err=>console.error('snapshot',err));
 });
 function renderUserbox(){
