@@ -122,7 +122,7 @@ const LANGS=[{v:'',l:'—'},{v:'br',l:'🇧🇷 BR'},{v:'en',l:'🇺🇸 EN'},{v
 const LANGLBL={'':'—',br:'Português (BR)',en:'Inglês',jp:'Japonês'};
 function normSt(s){ return s==='estoque'?'pago':(STLBL[s]?s:'pago'); }
 function kindOf(it){ return it.kind||(/^\s*sleeve\b/i.test(it.card||'')?'sleeve':'carta'); }
-let user=null, items=[], F={q:'',status:'',dup:false}, tab='carta', skipNextSnap=false, pasteStatus='pago';
+let user=null, items=[], F={q:'',status:'',dup:false}, tab='carta', skipNextSnap=false, pasteStatus='pago', authReady=false;
 const app=document.getElementById('app'), toastEl=document.getElementById('toast'), modal=document.getElementById('modal'), mbox=document.getElementById('mbox');
 function toast(m){ toastEl.textContent=m; toastEl.classList.add('on'); clearTimeout(toast._t); toast._t=setTimeout(()=>toastEl.classList.remove('on'),1900); }
 function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
@@ -148,8 +148,9 @@ function normalizeItems(){ let changed=false;
   return changed; }
 
 auth.onAuthStateChanged(async(u)=>{
-  user=u; renderUserbox();
+  authReady=true; user=u; renderUserbox();
   if(!u){ renderLogin(); return; }
+  try{ localStorage.setItem('compras_lastuid',u.uid); }catch(e){}
   loadLocal(); normalizeItems(); render();
   const r=db.collection('users').doc(u.uid);
   try{ await r.set({updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true}); }catch(e){}
@@ -160,7 +161,7 @@ function renderUserbox(){ const b=document.getElementById('userbox');
 function renderLogin(){ app.innerHTML='<div class="login"><div class="big">🧾</div><h1>Controle de Compras</h1><p>Acompanhe suas compras de leilão: valor pago, o que já recebeu, o que está em estoque e a valorização vs. o preço atual.</p><button class="btn primary" id="login">Entrar com Google</button></div>'; document.getElementById('login').onclick=async()=>{ try{ await auth.signInWithPopup(googleProvider); }catch(e){ toast('Falha no login'); } }; }
 
 function ref(){ return db.collection('users').doc(user.uid); }
-async function persist(silent){ cacheLocal(); if(silent)skipNextSnap=true; try{ await ref().set({purchases:items},{merge:true}); }catch(e){ skipNextSnap=false; toast('Erro ao salvar'); } }
+async function persist(silent){ cacheLocal(); if(!user)return; if(silent)skipNextSnap=true; try{ await ref().set({purchases:items},{merge:true}); }catch(e){ skipNextSnap=false; toast('Erro ao salvar'); } }
 
 // ---------- render ----------
 function totals(list){ let inv=0,cur=0; const st={aberto:0,pago:0,envio:0,recebido:0};
@@ -199,7 +200,7 @@ function tableHTML(){
   return '<div class="tblwrap"><table><thead><tr><th class="chkc"><input type="checkbox" class="chkall" title="Selecionar todos"></th><th class="numc">Nº</th><th>'+(tab==='sleeve'?'Sleeve':'Carta')+'</th><th>Edição</th><th>Idioma</th><th>Cond.</th><th class="num">Qtd</th><th class="num">Pago (un)</th><th class="num">Atual (un)</th><th class="num">Δ%</th><th>Status</th><th></th></tr></thead><tbody>'+rows+'</tbody></table></div>';
 }
 function render(){
-  if(!user){ renderLogin(); return; }
+  if(!user){ if(authReady){ renderLogin(); return; } if(!items.length) return; }
   app.innerHTML='<div id="top">'+topHTML()+'</div>'
     +'<div class="toolbar"><input class="search" id="q" placeholder="Buscar…" value="'+esc(F.q)+'">'
     +'<select id="fst"><option value="">Todos status</option>'+STATUS.map(s=>'<option value="'+s.v+'">'+s.l+'</option>').join('')+'</select>'
@@ -390,6 +391,11 @@ function exportCSV(){
   const a=document.createElement('a'); a.href=url; a.download='compras.csv'; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(url),1500);
   toast('Exportado');
 }
+
+// boot otimista: mostra a lista do cache antes do login confirmar (evita ficar em "Carregando…").
+(function boot(){ try{ const lu=localStorage.getItem('compras_lastuid'); if(!lu)return;
+  const d=JSON.parse(localStorage.getItem('compras_'+lu)); if(Array.isArray(d)&&d.length){ items=d; normalizeItems(); render(); }
+}catch(e){} })();
 </script>
 </body>
 </html>
