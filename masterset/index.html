@@ -133,6 +133,18 @@ button{font-family:inherit}
 .exp-menu.open{display:block}
 .exp-menu button{display:block;width:100%;text-align:left;background:none;border:none;color:var(--text);font-size:.85rem;font-weight:600;padding:10px 11px;border-radius:8px;cursor:pointer}
 .exp-menu button:hover{background:rgba(255,255,255,.07)}
+.msel{position:relative}
+.msel-btn{border:1px solid var(--line);background:var(--surface);color:var(--text);border-radius:11px;padding:10px 13px;font-size:.85rem;font-weight:700;cursor:pointer}
+.msel-btn:hover{border-color:var(--dim)}
+.msel-btn.active{border-color:var(--accent);color:var(--accent2);background:rgba(255,77,109,.12)}
+.msel-menu{position:absolute;top:calc(100% + 6px);left:0;min-width:210px;max-height:320px;overflow:auto;background:var(--surface2);border:1px solid var(--line2);border-radius:12px;box-shadow:var(--shadow);padding:6px;display:none;z-index:26}
+.msel-menu.open{display:block}
+.msel-menu label{display:flex;align-items:center;gap:9px;padding:9px 11px;border-radius:8px;cursor:pointer;font-size:.85rem;font-weight:600}
+.msel-menu label:hover{background:rgba(255,255,255,.07)}
+.msel-menu input{accent-color:var(--accent);width:16px;height:16px;flex:none}
+.clrb{border:1px solid var(--line);background:transparent;color:var(--dim);border-radius:11px;padding:10px 14px;font-size:.85rem;font-weight:700;cursor:pointer;transition:all .12s}
+.clrb:hover{border-color:var(--dim);color:var(--text)}
+.clrb.active{border-color:#ff6b81;color:#ff8a9c;background:rgba(255,77,109,.14)}
 
 /* ---- grid ---- */
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:15px}
@@ -398,7 +410,7 @@ async function renderSet(sid){
   let data; try{ data=await loadSetData(sid); }catch(e){ app.innerHTML='<button class="backbtn" id="b2">← Minhas coleções</button><div class="empty">Não foi possível carregar os dados desta coleção.</div>'; document.getElementById('b2').onclick=()=>go({name:'dash'}); return; }
   const oset=()=>owned[sid]||new Set();
   const sk=(id,v)=>id+'|'+v;
-  const F={q:'',rar:'',vf:'',st:''};
+  const F={q:'',rar:new Set(),vf:new Set(),st:''};
   const cardDone=r=>r.variants.every(v=>oset().has(sk(r.id,v)));
   const cardN=r=>r.variants.filter(v=>oset().has(sk(r.id,v))).length;
   const cardHasAny=r=>r.variants.some(v=>oset().has(sk(r.id,v)));
@@ -409,8 +421,9 @@ async function renderSet(sid){
 
   const present=new Set(); data.rows.forEach(r=>r.variants.forEach(v=>present.add(v)));
   const hasBall=BALL.some(v=>present.has(v));
-  const vfOpts=VF_ORDER.filter(([k])=>present.has(k)).map(([k,l])=>'<option value="'+k+'">'+l+'</option>').join('')+(hasBall?'<option value="__ball">Poké Ball (todas)</option>':'');
   const rars=[...new Set(data.rows.map(r=>r.rarity))].filter(Boolean).sort();
+  const rarMenu=rars.map(r=>'<label><input type="checkbox" value="'+esc(r)+'">'+esc(r)+'</label>').join('');
+  const vfMenu=VF_ORDER.filter(([k])=>present.has(k)).map(([k,l])=>'<label><input type="checkbox" value="'+k+'">'+esc(l)+'</label>').join('')+(hasBall?'<label><input type="checkbox" value="__ball">Poké Ball (todas)</label>':'');
 
   app.innerHTML='<button class="backbtn" id="back">← Minhas coleções</button>'
     +'<div class="sethead" style="border-color:'+hexA(meta.color||'#4d6bff',.5)+'"><div class="art" style="background-image:url('+(meta.sym64||'')+')"></div><div class="scrim" style="background:linear-gradient(90deg,rgba(11,16,32,.92) 0%,rgba(11,16,32,.5) 44%,'+hexA(meta.color||'#4d6bff',.6)+' 100%)"></div>'
@@ -421,16 +434,36 @@ async function renderSet(sid){
     +'<div class="ring" id="ring"><b id="pct">0%</b></div>'
     +'<button class="star" data-fav="'+sid+'">'+(favorites.has(sid)?'★':'☆')+'</button></div>'
     +'<div class="toolbar"><input type="search" id="q" placeholder="Buscar carta…">'
-    +'<div class="selwrap"><select id="rar"><option value="">Todas raridades</option>'+rars.map(r=>'<option>'+esc(r)+'</option>').join('')+'</select></div>'
-    +'<div class="selwrap"><select id="vf"><option value="">Todas variações</option>'+vfOpts+'</select></div>'
+    +'<div class="msel" id="mrar"><button class="msel-btn" type="button" id="mrarb">Raridade</button><div class="msel-menu" id="mrarm">'+rarMenu+'</div></div>'
+    +'<div class="msel" id="mvf"><button class="msel-btn" type="button" id="mvfb">Variação</button><div class="msel-menu" id="mvfm">'+vfMenu+'</div></div>'
     +'<div class="selwrap"><select id="st"><option value="">Todas</option><option value="miss">Incompletas</option><option value="done">Completas</option></select></div>'
+    +'<button class="clrb" id="clrb">✕ Limpar</button>'
     +'<div class="vtoggle" id="vt"><button data-view="grid">Grid</button><button data-view="table">Tabela</button><button data-view="binder">Binder</button></div>'
     +'<div class="exp-wrap"><button class="expb" id="expb">⬇ Exportar</button><div class="exp-menu" id="expm"><button data-sc="missing">Só as que faltam</button><button data-sc="all">Todas (filtradas)</button><button data-sc="have">Só as que tenho</button></div></div></div>'
     +'<div class="count-line" id="cl"></div><div id="area"></div>';
   document.getElementById('back').onclick=()=>go({name:'dash'});
   app.querySelector('.star').onclick=e=>{ toggleFavorite(sid); e.target.textContent=favorites.has(sid)?'★':'☆'; };
-  const bind=(id,k)=>document.getElementById(id).addEventListener(id==='q'?'input':'change',e=>{F[k]=e.target.value;binderPage=0;paint();});
-  bind('q','q');bind('rar','rar');bind('vf','vf');bind('st','st');
+  const bind=(id,k)=>document.getElementById(id).addEventListener(id==='q'?'input':'change',e=>{F[k]=e.target.value;binderPage=0;updateClear();paint();});
+  bind('q','q'); bind('st','st');
+  function wireMulti(btnId,menuId,set,lbl){
+    const btn=document.getElementById(btnId), menu=document.getElementById(menuId);
+    function upd(){ btn.textContent=set.size?lbl+' ('+set.size+')':lbl; btn.classList.toggle('active',set.size>0); }
+    btn._upd=upd;
+    btn.onclick=e=>{ e.stopPropagation(); document.querySelectorAll('.msel-menu.open,.exp-menu.open').forEach(m=>{if(m!==menu)m.classList.remove('open');}); const open=menu.classList.toggle('open'); if(open)setTimeout(()=>document.addEventListener('click',()=>menu.classList.remove('open'),{once:true}),0); };
+    menu.onclick=e=>e.stopPropagation();
+    menu.querySelectorAll('input').forEach(c=>c.onchange=()=>{ if(c.checked)set.add(c.value); else set.delete(c.value); upd(); updateClear(); binderPage=0; paint(); });
+    upd();
+  }
+  wireMulti('mrarb','mrarm',F.rar,'Raridade');
+  wireMulti('mvfb','mvfm',F.vf,'Variação');
+  const clrb=document.getElementById('clrb');
+  function updateClear(){ clrb.classList.toggle('active',!!(F.q||F.rar.size||F.vf.size||F.st)); }
+  function clearFilters(){ F.q='';F.rar.clear();F.vf.clear();F.st='';
+    document.getElementById('q').value=''; document.getElementById('st').value='';
+    document.querySelectorAll('.msel-menu input').forEach(c=>c.checked=false);
+    document.getElementById('mrarb')._upd(); document.getElementById('mvfb')._upd();
+    updateClear(); binderPage=0; paint(); }
+  clrb.onclick=clearFilters; updateClear();
   document.getElementById('vt').querySelectorAll('button').forEach(b=>b.onclick=()=>{ cardView=b.dataset.view; localStorage.setItem('ms_view',cardView); binderPage=0; syncToggle(); paint(); });
   function syncToggle(){ document.getElementById('vt').querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.view===cardView)); }
   syncToggle();
@@ -461,8 +494,8 @@ async function renderSet(sid){
   }
   function filtered(){
     return data.rows.filter(r=>{
-      if(F.rar&&r.rarity!==F.rar)return false;
-      if(F.vf){ if(F.vf==='__ball'){ if(!r.variants.some(v=>VAR[v].grp==='ball'))return false; } else if(!r.variants.includes(F.vf))return false; }
+      if(F.rar.size && !F.rar.has(r.rarity))return false;
+      if(F.vf.size){ const ok=[...F.vf].some(sel=> sel==='__ball' ? r.variants.some(v=>VAR[v].grp==='ball') : r.variants.includes(sel)); if(!ok)return false; }
       if(F.st==='done'&&!cardDone(r))return false; if(F.st==='miss'&&cardDone(r))return false;
       if(F.q){const h=(r.name+' '+r.number).toLowerCase(); if(!h.includes(F.q.toLowerCase()))return false;} return true;
     });
