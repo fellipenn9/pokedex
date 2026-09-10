@@ -115,7 +115,7 @@ const auth=firebase.auth(); const db=firebase.firestore();
 try{ db.enablePersistence({synchronizeTabs:true}); }catch(e){}
 const googleProvider=new firebase.auth.GoogleAuthProvider();
 
-const CONDS=['NM','M','SP','MP','MP+','HP','D','D+','PL','—'];
+const CONDS=['NM','M','SP','SP+','MP','MP+','HP','HP+','D','D+','PL','—'];
 const STATUS=[{v:'aberto',l:'Em aberto'},{v:'pago',l:'Em estoque (pago)'},{v:'envio',l:'Solicitado envio'},{v:'recebido',l:'Recebido'}];
 const STLBL={aberto:'Em aberto',pago:'Em estoque (pago)',envio:'Solicitado envio',recebido:'Recebido'};
 const LANGS=[{v:'',l:'—'},{v:'br',l:'🇧🇷 BR'},{v:'en',l:'🇺🇸 EN'},{v:'jp',l:'🇯🇵 JP'}];
