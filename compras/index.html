@@ -62,6 +62,9 @@ th.chkc,td.chkc{width:34px;text-align:center;padding-left:10px;padding-right:0}
 .bulkbar .bkn{font-weight:800;color:var(--gold)}
 .bulkbar select{padding:7px 10px;border:1px solid var(--line2);border-radius:8px;background:var(--surface2);color:var(--text);font-size:.8rem;font-weight:700}
 tr.sel{background:rgba(255,206,69,.06)}
+.dupflag{display:inline-block;margin-left:7px;padding:0 6px;border-radius:6px;background:var(--surface2);border:1px solid var(--line2);color:var(--dim);font-size:.66rem;font-weight:800;vertical-align:1px;cursor:help}
+.btn.tgl.on{border-color:var(--gold);color:var(--gold);background:rgba(255,206,69,.10)}
+.btn.clr{color:#ff9a9a;border-color:rgba(255,120,120,.35)}
 select.st-aberto{color:#c3d0e6;border-color:#4a5b7d}
 select.st-pago{color:var(--gold);border-color:rgba(255,206,69,.5);background-color:rgba(255,206,69,.10)}
 select.st-envio{color:#7fb4ff;border-color:rgba(127,180,255,.5);background-color:rgba(127,180,255,.10)}
@@ -117,7 +120,7 @@ const STATUS=[{v:'aberto',l:'Em aberto'},{v:'pago',l:'Em estoque (pago)'},{v:'en
 const STLBL={aberto:'Em aberto',pago:'Em estoque (pago)',envio:'Solicitado envio',recebido:'Recebido'};
 function normSt(s){ return s==='estoque'?'pago':(STLBL[s]?s:'pago'); }
 function kindOf(it){ return it.kind||(/^\s*sleeve\b/i.test(it.card||'')?'sleeve':'carta'); }
-let user=null, items=[], F={q:'',status:''}, tab='carta', skipNextSnap=false, pasteStatus='pago';
+let user=null, items=[], F={q:'',status:'',dup:false}, tab='carta', skipNextSnap=false, pasteStatus='pago';
 const app=document.getElementById('app'), toastEl=document.getElementById('toast'), modal=document.getElementById('modal'), mbox=document.getElementById('mbox');
 function toast(m){ toastEl.textContent=m; toastEl.classList.add('on'); clearTimeout(toast._t); toast._t=setTimeout(()=>toastEl.classList.remove('on'),1900); }
 function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
@@ -161,6 +164,8 @@ function totals(list){ let inv=0,cur=0; const st={aberto:0,pago:0,envio:0,recebi
   list.forEach(it=>{ const q=+it.qty||1; inv+=(+it.paid||0)*q; cur+=(+it.cur||0)*q; st[normSt(it.status)]++; });
   return {inv,cur,st,lucro:cur-inv,pct:inv?((cur-inv)/inv*100):0}; }
 function curList(){ return items.filter(it=>kindOf(it)===tab); }
+function dupInfo(list){ const map={}; list.forEach(it=>{ const k=(it.card||'').toLowerCase().trim()+'|'+(it.num||'').toLowerCase()+'|'+(it.cond||''); (map[k]=map[k]||[]).push(it.id); });
+  const set=new Set(), cnt={}; Object.values(map).forEach(arr=>{ if(arr.length>1) arr.forEach(id=>{ set.add(id); cnt[id]=arr.length; }); }); return {set,cnt}; }
 function topHTML(){
   const nc=items.filter(it=>kindOf(it)==='carta').length, ns=items.filter(it=>kindOf(it)==='sleeve').length;
   const cur=curList(), t=totals(cur), dlt=t.lucro>=0?'pos':'neg', sign=t.lucro>=0?'+':'';
@@ -174,10 +179,12 @@ function topHTML(){
 function tableHTML(){
   const cur=curList();
   if(!cur.length) return '<div class="empty">Nenhum item nesta aba.<br>Use <b>+ Adicionar</b> ou <b>Colar / Importar</b>.</div>';
+  const dp=dupInfo(cur);
   const rows=cur.map(it=>{ const paid=+it.paid||0,c=+it.cur||0,d=paid?((c-paid)/paid*100):0,dc=d>=0?'pos':'neg',stv=normSt(it.status);
+    const dup=dp.set.has(it.id)?'<span class="dupflag" title="Duplicada ('+dp.cnt[it.id]+' iguais)">'+dp.cnt[it.id]+'×</span>':'';
     return '<tr data-id="'+it.id+'"><td class="chkc"><input type="checkbox" class="rowchk" data-chk="'+it.id+'"></td>'
       +'<td class="numc"><input class="cellinp" data-num="'+it.id+'" value="'+esc(it.num||'')+'" placeholder="—"></td>'
-      +'<td>'+esc(it.card||'')+'</td>'
+      +'<td>'+esc(it.card||'')+dup+'</td>'
       +'<td class="editc"><input class="cellinp" data-set="'+it.id+'" value="'+esc(it.set||'')+'" placeholder="—"></td>'
       +'<td><select class="cellsel" data-cond="'+it.id+'">'+CONDS.map(x=>'<option'+((it.cond||'—')===x?' selected':'')+'>'+x+'</option>').join('')+'</select></td>'
       +'<td class="num">'+(+it.qty||1)+'</td><td class="num">'+brl(paid)+'</td><td class="num">'+(c?brl(c):'—')+'</td>'
@@ -192,6 +199,8 @@ function render(){
   app.innerHTML='<div id="top">'+topHTML()+'</div>'
     +'<div class="toolbar"><input class="search" id="q" placeholder="Buscar…" value="'+esc(F.q)+'">'
     +'<select id="fst"><option value="">Todos status</option>'+STATUS.map(s=>'<option value="'+s.v+'">'+s.l+'</option>').join('')+'</select>'
+    +'<button class="btn tgl'+(F.dup?' on':'')+'" id="fdup" title="Mostrar só cartas duplicadas">⧉ Duplicados</button>'
+    +'<button class="btn clr" id="clr" hidden>✕ Limpar</button>'
     +'<button class="btn primary" id="add">+ Adicionar</button><button class="btn" id="paste">Colar / Importar</button><button class="btn" id="exp">⬇ Exportar</button></div>'
     +'<div id="bulk" class="bulkbar" hidden><span class="bkn" id="bkcount">0</span> selecionado(s) — aplicar status: '
     +'<select id="bkstatus">'+STATUS.map(s=>'<option value="'+s.v+'">'+s.l+'</option>').join('')+'</select>'
@@ -202,14 +211,20 @@ function render(){
 }
 function wireTop(){ app.querySelectorAll('.tabb').forEach(b=>b.onclick=()=>{ tab=b.dataset.tab; render(); }); }
 function refreshTop(){ const el=document.getElementById('top'); if(el){ el.innerHTML=topHTML(); wireTop(); } }
+function updateClear(){ const b=document.getElementById('clr'); if(b)b.hidden=!(F.q||F.status||F.dup); }
+function clearFilters(){ F.q=''; F.status=''; F.dup=false; render(); }
 function wireToolbar(){
-  document.getElementById('q').addEventListener('input',e=>{F.q=e.target.value; applyFilter();});
-  document.getElementById('fst').addEventListener('change',e=>{F.status=e.target.value; applyFilter();});
+  document.getElementById('q').addEventListener('input',e=>{F.q=e.target.value; applyFilter(); updateClear();});
+  document.getElementById('fst').addEventListener('change',e=>{F.status=e.target.value; applyFilter(); updateClear();});
+  document.getElementById('fdup').onclick=e=>{ F.dup=!F.dup; e.currentTarget.classList.toggle('on',F.dup); applyFilter(); updateClear(); };
+  document.getElementById('clr').onclick=clearFilters;
+  updateClear();
   document.getElementById('add').onclick=()=>openEdit(null);
   document.getElementById('paste').onclick=openPaste;
   document.getElementById('exp').onclick=exportCSV;
 }
-function applyFilter(){ const q=(F.q||'').toLowerCase(); app.querySelectorAll('#tbl tbody tr').forEach(tr=>{ const it=items.find(x=>x.id===tr.dataset.id); let show=!!it; if(it){ if(F.status&&normSt(it.status)!==F.status)show=false; if(q&&!(it.card||'').toLowerCase().includes(q))show=false; } tr.style.display=show?'':'none'; }); updateBulk(); }
+function applyFilter(){ const q=(F.q||'').toLowerCase(); const dset=F.dup?dupInfo(curList()).set:null;
+  app.querySelectorAll('#tbl tbody tr').forEach(tr=>{ const it=items.find(x=>x.id===tr.dataset.id); let show=!!it; if(it){ if(F.status&&normSt(it.status)!==F.status)show=false; if(q&&!(it.card||'').toLowerCase().includes(q))show=false; if(dset&&!dset.has(it.id))show=false; } tr.style.display=show?'':'none'; }); updateBulk(); }
 function wireRows(){
   app.querySelectorAll('[data-num]').forEach(inp=>inp.onchange=()=>{ const it=items.find(x=>x.id===inp.dataset.num); if(it){ it.num=inp.value.trim(); persist(true); } });
   app.querySelectorAll('[data-set]').forEach(inp=>inp.onchange=()=>{ const it=items.find(x=>x.id===inp.dataset.set); if(it){ it.set=inp.value.trim(); persist(true); } });
