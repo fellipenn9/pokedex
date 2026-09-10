@@ -56,6 +56,12 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
 th.numc{text-align:center}
 td.numc .cellinp{text-align:center;min-width:64px;font-variant-numeric:tabular-nums}
 td.editc .cellinp{min-width:110px}
+th.chkc,td.chkc{width:34px;text-align:center;padding-left:10px;padding-right:0}
+.rowchk,.chkall{width:16px;height:16px;accent-color:var(--gold);cursor:pointer}
+.bulkbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 12px;padding:10px 14px;border:1px solid rgba(255,206,69,.45);background:rgba(255,206,69,.08);border-radius:12px}
+.bulkbar .bkn{font-weight:800;color:var(--gold)}
+.bulkbar select{padding:7px 10px;border:1px solid var(--line2);border-radius:8px;background:var(--surface2);color:var(--text);font-size:.8rem;font-weight:700}
+tr.sel{background:rgba(255,206,69,.06)}
 select.st-aberto{color:#c3d0e6;border-color:#4a5b7d}
 select.st-pago{color:var(--gold);border-color:rgba(255,206,69,.5);background-color:rgba(255,206,69,.10)}
 select.st-envio{color:#7fb4ff;border-color:rgba(127,180,255,.5);background-color:rgba(127,180,255,.10)}
@@ -111,7 +117,7 @@ const STATUS=[{v:'aberto',l:'Em aberto'},{v:'pago',l:'Em estoque (pago)'},{v:'en
 const STLBL={aberto:'Em aberto',pago:'Em estoque (pago)',envio:'Solicitado envio',recebido:'Recebido'};
 function normSt(s){ return s==='estoque'?'pago':(STLBL[s]?s:'pago'); }
 function kindOf(it){ return it.kind||(/^\s*sleeve\b/i.test(it.card||'')?'sleeve':'carta'); }
-let user=null, items=[], F={q:'',status:''}, tab='carta', skipNextSnap=false;
+let user=null, items=[], F={q:'',status:''}, tab='carta', skipNextSnap=false, pasteStatus='pago';
 const app=document.getElementById('app'), toastEl=document.getElementById('toast'), modal=document.getElementById('modal'), mbox=document.getElementById('mbox');
 function toast(m){ toastEl.textContent=m; toastEl.classList.add('on'); clearTimeout(toast._t); toast._t=setTimeout(()=>toastEl.classList.remove('on'),1900); }
 function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
@@ -122,14 +128,26 @@ function today(){ const d=new Date(); return d.getFullYear()+'-'+String(d.getMon
 const lsKey=()=>'compras_'+(user?user.uid:'anon');
 function cacheLocal(){ try{ localStorage.setItem(lsKey(),JSON.stringify(items)); }catch(e){} }
 function loadLocal(){ try{ const d=JSON.parse(localStorage.getItem(lsKey())); if(Array.isArray(d))items=d; }catch(e){} }
+// migração/limpeza idempotente: tira o Nº de dentro do nome → coluna, extrai condição colada no nome.
+function extractNum(name){ const nm=name.match(/(\d{1,3}\s*\/\s*[A-Za-z]?\d{1,3})/) || name.match(/#\s*([A-Za-z]{0,4}\d{1,4})/);
+  if(!nm) return null; const num=nm[1].replace(/\s+/g,'').toUpperCase();
+  const rest=(name.slice(0,nm.index)+' '+name.slice(nm.index+nm[0].length)).replace(/\(\s*\)/g,'').replace(/[(#]\s*$/,'').replace(/\s+/g,' ').trim();
+  return {num,rest}; }
+function normalizeItems(){ let changed=false;
+  items.forEach(it=>{ let card=String(it.card||'');
+    if(!it.num){ const e=extractNum(card); if(e){ it.num=e.num; card=e.rest; changed=true; } }
+    if(!it.cond || it.cond==='—'){ const cm=card.match(/\s(NM|MP\+?|SP\+?|HP\+?|D\+?|PL|M)\s*$/i); if(cm){ it.cond=cm[1].toUpperCase(); card=card.slice(0,cm.index).replace(/\s+/g,' ').trim(); changed=true; } }
+    if(card!==it.card){ it.card=card; changed=true; }
+  });
+  return changed; }
 
 auth.onAuthStateChanged(async(u)=>{
   user=u; renderUserbox();
   if(!u){ renderLogin(); return; }
-  loadLocal(); render();
+  loadLocal(); normalizeItems(); render();
   const r=db.collection('users').doc(u.uid);
   try{ await r.set({updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true}); }catch(e){}
-  r.onSnapshot(snap=>{ const d=snap.data()||{}; if(Array.isArray(d.purchases))items=d.purchases; cacheLocal(); if(skipNextSnap){ skipNextSnap=false; return; } if(!modal.classList.contains('on'))render(); },err=>console.error('snap',err));
+  r.onSnapshot(snap=>{ const d=snap.data()||{}; if(Array.isArray(d.purchases))items=d.purchases; if(skipNextSnap){ skipNextSnap=false; return; } const chg=normalizeItems(); cacheLocal(); if(chg){ persist(true); } if(!modal.classList.contains('on'))render(); },err=>console.error('snap',err));
 });
 function renderUserbox(){ const b=document.getElementById('userbox');
   if(user){ b.innerHTML='<div class="acct"><span class="nm">'+esc((user.displayName||user.email||'').split(' ')[0])+'</span><img class="avatar" src="'+esc(user.photoURL||'')+'" referrerpolicy="no-referrer" alt="" onerror="this.style.display=\'none\'"><button class="out" id="logout" title="Sair">⎋</button></div>'; document.getElementById('logout').onclick=()=>auth.signOut(); } else b.innerHTML=''; }
@@ -157,7 +175,8 @@ function tableHTML(){
   const cur=curList();
   if(!cur.length) return '<div class="empty">Nenhum item nesta aba.<br>Use <b>+ Adicionar</b> ou <b>Colar / Importar</b>.</div>';
   const rows=cur.map(it=>{ const paid=+it.paid||0,c=+it.cur||0,d=paid?((c-paid)/paid*100):0,dc=d>=0?'pos':'neg',stv=normSt(it.status);
-    return '<tr data-id="'+it.id+'"><td class="numc"><input class="cellinp" data-num="'+it.id+'" value="'+esc(it.num||'')+'" placeholder="—"></td>'
+    return '<tr data-id="'+it.id+'"><td class="chkc"><input type="checkbox" class="rowchk" data-chk="'+it.id+'"></td>'
+      +'<td class="numc"><input class="cellinp" data-num="'+it.id+'" value="'+esc(it.num||'')+'" placeholder="—"></td>'
       +'<td>'+esc(it.card||'')+'</td>'
       +'<td class="editc"><input class="cellinp" data-set="'+it.id+'" value="'+esc(it.set||'')+'" placeholder="—"></td>'
       +'<td><select class="cellsel" data-cond="'+it.id+'">'+CONDS.map(x=>'<option'+((it.cond||'—')===x?' selected':'')+'>'+x+'</option>').join('')+'</select></td>'
@@ -166,7 +185,7 @@ function tableHTML(){
       +'<td><select class="cellsel st-'+stv+'" data-st="'+it.id+'">'+STATUS.map(s=>'<option value="'+s.v+'"'+(stv===s.v?' selected':'')+'>'+s.l+'</option>').join('')+'</select></td>'
       +'<td style="text-align:right"><button class="rowbtn" data-edit="'+it.id+'" title="Editar">✎</button><button class="rowbtn" data-del="'+it.id+'" title="Excluir">🗑</button></td></tr>';
   }).join('');
-  return '<div class="tblwrap"><table><thead><tr><th class="numc">Nº</th><th>'+(tab==='sleeve'?'Sleeve':'Carta')+'</th><th>Edição</th><th>Cond.</th><th class="num">Qtd</th><th class="num">Pago (un)</th><th class="num">Atual (un)</th><th class="num">Δ%</th><th>Status</th><th></th></tr></thead><tbody>'+rows+'</tbody></table></div>';
+  return '<div class="tblwrap"><table><thead><tr><th class="chkc"><input type="checkbox" class="chkall" title="Selecionar todos"></th><th class="numc">Nº</th><th>'+(tab==='sleeve'?'Sleeve':'Carta')+'</th><th>Edição</th><th>Cond.</th><th class="num">Qtd</th><th class="num">Pago (un)</th><th class="num">Atual (un)</th><th class="num">Δ%</th><th>Status</th><th></th></tr></thead><tbody>'+rows+'</tbody></table></div>';
 }
 function render(){
   if(!user){ renderLogin(); return; }
@@ -174,9 +193,12 @@ function render(){
     +'<div class="toolbar"><input class="search" id="q" placeholder="Buscar…" value="'+esc(F.q)+'">'
     +'<select id="fst"><option value="">Todos status</option>'+STATUS.map(s=>'<option value="'+s.v+'">'+s.l+'</option>').join('')+'</select>'
     +'<button class="btn primary" id="add">+ Adicionar</button><button class="btn" id="paste">Colar / Importar</button><button class="btn" id="exp">⬇ Exportar</button></div>'
+    +'<div id="bulk" class="bulkbar" hidden><span class="bkn" id="bkcount">0</span> selecionado(s) — aplicar status: '
+    +'<select id="bkstatus">'+STATUS.map(s=>'<option value="'+s.v+'">'+s.l+'</option>').join('')+'</select>'
+    +'<button class="btn primary" id="bkapply">Aplicar</button><button class="btn" id="bkclear">Limpar seleção</button></div>'
     +'<div id="tbl">'+tableHTML()+'</div>';
   document.getElementById('fst').value=F.status;
-  wireTop(); wireToolbar(); wireRows(); applyFilter();
+  wireTop(); wireToolbar(); wireRows(); wireBulk(); applyFilter();
 }
 function wireTop(){ app.querySelectorAll('.tabb').forEach(b=>b.onclick=()=>{ tab=b.dataset.tab; render(); }); }
 function refreshTop(){ const el=document.getElementById('top'); if(el){ el.innerHTML=topHTML(); wireTop(); } }
@@ -187,7 +209,7 @@ function wireToolbar(){
   document.getElementById('paste').onclick=openPaste;
   document.getElementById('exp').onclick=exportCSV;
 }
-function applyFilter(){ const q=(F.q||'').toLowerCase(); app.querySelectorAll('#tbl tbody tr').forEach(tr=>{ const it=items.find(x=>x.id===tr.dataset.id); let show=!!it; if(it){ if(F.status&&normSt(it.status)!==F.status)show=false; if(q&&!(it.card||'').toLowerCase().includes(q))show=false; } tr.style.display=show?'':'none'; }); }
+function applyFilter(){ const q=(F.q||'').toLowerCase(); app.querySelectorAll('#tbl tbody tr').forEach(tr=>{ const it=items.find(x=>x.id===tr.dataset.id); let show=!!it; if(it){ if(F.status&&normSt(it.status)!==F.status)show=false; if(q&&!(it.card||'').toLowerCase().includes(q))show=false; } tr.style.display=show?'':'none'; }); updateBulk(); }
 function wireRows(){
   app.querySelectorAll('[data-num]').forEach(inp=>inp.onchange=()=>{ const it=items.find(x=>x.id===inp.dataset.num); if(it){ it.num=inp.value.trim(); persist(true); } });
   app.querySelectorAll('[data-set]').forEach(inp=>inp.onchange=()=>{ const it=items.find(x=>x.id===inp.dataset.set); if(it){ it.set=inp.value.trim(); persist(true); } });
@@ -195,6 +217,16 @@ function wireRows(){
   app.querySelectorAll('[data-st]').forEach(sel=>sel.onchange=()=>{ const it=items.find(x=>x.id===sel.dataset.st); if(!it)return; it.status=sel.value; persist(true); sel.className='cellsel st-'+sel.value; refreshTop(); applyFilter(); });
   app.querySelectorAll('[data-edit]').forEach(el=>el.onclick=()=>openEdit(el.dataset.edit));
   app.querySelectorAll('[data-del]').forEach(el=>el.onclick=()=>{ const it=items.find(x=>x.id===el.dataset.del); if(it&&confirm('Excluir "'+(it.card||'')+'"?')){ items=items.filter(x=>x.id!==el.dataset.del); persist(true); render(); } });
+  app.querySelectorAll('.rowchk').forEach(ch=>ch.onchange=()=>{ ch.closest('tr').classList.toggle('sel',ch.checked); updateBulk(); });
+}
+function visibleChecks(){ return [...app.querySelectorAll('#tbl tbody tr')].filter(tr=>tr.style.display!=='none').map(tr=>tr.querySelector('.rowchk')).filter(Boolean); }
+function checkedIds(){ return [...app.querySelectorAll('.rowchk:checked')].map(ch=>ch.dataset.chk); }
+function updateBulk(){ const n=checkedIds().length, bar=document.getElementById('bulk'); if(!bar)return; bar.hidden=n===0; const c=document.getElementById('bkcount'); if(c)c.textContent=n;
+  const all=document.querySelector('.chkall'); if(all){ const vis=visibleChecks(); all.checked=vis.length>0&&vis.every(ch=>ch.checked); all.indeterminate=vis.some(ch=>ch.checked)&&!all.checked; } }
+function wireBulk(){
+  const all=document.querySelector('.chkall'); if(all)all.onchange=()=>{ visibleChecks().forEach(ch=>{ ch.checked=all.checked; ch.closest('tr').classList.toggle('sel',all.checked); }); updateBulk(); };
+  const ap=document.getElementById('bkapply'); if(ap)ap.onclick=()=>{ const ids=checkedIds(); if(!ids.length)return; const v=document.getElementById('bkstatus').value; items.forEach(it=>{ if(ids.includes(it.id))it.status=v; }); persist(true); render(); toast(ids.length+' item(ns) → '+STLBL[v]); };
+  const cl=document.getElementById('bkclear'); if(cl)cl.onclick=()=>{ app.querySelectorAll('.rowchk').forEach(ch=>{ ch.checked=false; ch.closest('tr').classList.remove('sel'); }); updateBulk(); };
 }
 function closeModal(){ modal.classList.remove('on'); }
 modal.onclick=e=>{ if(e.target===modal)closeModal(); };
@@ -235,11 +267,13 @@ function openPaste(){
   mbox.className='mbox wide';
   mbox.innerHTML='<h3>Colar / Importar compras</h3>'
     +'<div class="hint">Cole a lista (uma carta por linha). Se copiar de uma tabela, as colunas separadas por TAB são detectadas. Cada linha vira uma compra editável abaixo — ajuste e confirme.</div>'
+    +'<div class="fld"><label>Status desta leva (aplicado a todas)</label><select id="p-status">'+STATUS.map(s=>'<option value="'+s.v+'"'+(pasteStatus===s.v?' selected':'')+'>'+s.l+'</option>').join('')+'</select></div>'
     +'<div class="fld"><textarea id="p-text" placeholder="Ex.:\nCharizard ex (223/197)\tNM\t250,00\nPikachu (58/102)\tSP\t40,00"></textarea></div>'
     +'<div class="mact"><button class="btn" id="p-parse">Pré-visualizar</button></div>'
     +'<div id="p-prev"></div>';
   modal.classList.add('on');
-  mbox.querySelector('#p-parse').onclick=()=>{ pasteRows=parsePaste(mbox.querySelector('#p-text').value); drawPreview(); };
+  mbox.querySelector('#p-status').onchange=e=>{ pasteStatus=e.target.value; pasteRows.forEach(r=>r.status=pasteStatus); drawPreview(); };
+  mbox.querySelector('#p-parse').onclick=()=>{ pasteStatus=mbox.querySelector('#p-status').value; pasteRows=parsePaste(mbox.querySelector('#p-text').value); drawPreview(); };
 }
 function fixEnc(s){ return String(s||'')
   .replace(/edi�+o/gi,'edição').replace(/celebra�+es/gi,'celebrações')
@@ -256,9 +290,8 @@ function parsePaste(text){
     let cond='—'; const cm=card.match(/\s(NM|MP\+?|SP\+?|HP\+?|D\+?|PL|M)\s*$/i);
     if(cm){ cond=cm[1].toUpperCase(); card=card.slice(0,cm.index).trim(); }
     // número do card: "223/197" ou "#25/#SWSH123" quando presente no texto colado.
-    let num=''; const nmatch=card.match(/(\d{1,3}\s*\/\s*[A-Za-z]?\d{1,3})/) || card.match(/#\s*([A-Za-z]{0,4}\d{1,4})/);
-    if(nmatch){ num=nmatch[1].replace(/\s+/g,'').toUpperCase(); card=(card.slice(0,nmatch.index)+' '+card.slice(nmatch.index+nmatch[0].length)).replace(/\(\s*\)/g,'').replace(/[(#]\s*$/,'').replace(/\s+/g,' ').trim(); }
-    rows.push({card,num,cond,qty:1,paid,status:'pago'});
+    let num=''; const e=extractNum(card); if(e){ num=e.num; card=e.rest; }
+    rows.push({card,num,cond,qty:1,paid,status:pasteStatus});
   }
   return rows;
 }
