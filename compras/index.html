@@ -43,12 +43,19 @@ button{font-family:inherit}
 .toolbar input:focus,.toolbar select:focus{outline:none;border-color:var(--accent)}
 /* table */
 .tblwrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px}
-table{border-collapse:collapse;width:100%;min-width:820px;font-size:.85rem}
+table{border-collapse:collapse;width:100%;min-width:960px;font-size:.85rem}
 th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
 th{background:var(--surface2);color:var(--dim);font-size:.72rem;text-transform:uppercase;letter-spacing:.04em;position:sticky;top:0}
 tbody tr:hover{background:rgba(255,255,255,.03)}
 td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
 .cellsel{padding:5px 26px 5px 9px;border:1px solid var(--line2);border-radius:8px;background:var(--surface2);color:var(--text);font-size:.76rem;font-weight:700;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%2393a4c4'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 9px center}
+.cellinp{width:100%;min-width:56px;padding:5px 8px;border:1px solid transparent;border-radius:8px;background:transparent;color:var(--text);font-size:.8rem;font-family:inherit}
+.cellinp:hover{border-color:var(--line2)}
+.cellinp:focus{outline:none;border-color:var(--gold);background:var(--surface2)}
+.cellinp::placeholder{color:var(--dim);opacity:.6}
+th.numc{text-align:center}
+td.numc .cellinp{text-align:center;min-width:64px;font-variant-numeric:tabular-nums}
+td.editc .cellinp{min-width:110px}
 select.st-aberto{color:#c3d0e6;border-color:#4a5b7d}
 select.st-pago{color:var(--gold);border-color:rgba(255,206,69,.5);background-color:rgba(255,206,69,.10)}
 select.st-envio{color:#7fb4ff;border-color:rgba(127,180,255,.5);background-color:rgba(127,180,255,.10)}
@@ -150,14 +157,16 @@ function tableHTML(){
   const cur=curList();
   if(!cur.length) return '<div class="empty">Nenhum item nesta aba.<br>Use <b>+ Adicionar</b> ou <b>Colar / Importar</b>.</div>';
   const rows=cur.map(it=>{ const paid=+it.paid||0,c=+it.cur||0,d=paid?((c-paid)/paid*100):0,dc=d>=0?'pos':'neg',stv=normSt(it.status);
-    return '<tr data-id="'+it.id+'"><td>'+esc(it.card||'')+'</td>'
+    return '<tr data-id="'+it.id+'"><td class="numc"><input class="cellinp" data-num="'+it.id+'" value="'+esc(it.num||'')+'" placeholder="—"></td>'
+      +'<td>'+esc(it.card||'')+'</td>'
+      +'<td class="editc"><input class="cellinp" data-set="'+it.id+'" value="'+esc(it.set||'')+'" placeholder="—"></td>'
       +'<td><select class="cellsel" data-cond="'+it.id+'">'+CONDS.map(x=>'<option'+((it.cond||'—')===x?' selected':'')+'>'+x+'</option>').join('')+'</select></td>'
       +'<td class="num">'+(+it.qty||1)+'</td><td class="num">'+brl(paid)+'</td><td class="num">'+(c?brl(c):'—')+'</td>'
       +'<td class="num '+(c?dc:'')+'">'+(c?(d>=0?'+':'')+d.toFixed(0)+'%':'—')+'</td>'
       +'<td><select class="cellsel st-'+stv+'" data-st="'+it.id+'">'+STATUS.map(s=>'<option value="'+s.v+'"'+(stv===s.v?' selected':'')+'>'+s.l+'</option>').join('')+'</select></td>'
       +'<td style="text-align:right"><button class="rowbtn" data-edit="'+it.id+'" title="Editar">✎</button><button class="rowbtn" data-del="'+it.id+'" title="Excluir">🗑</button></td></tr>';
   }).join('');
-  return '<div class="tblwrap"><table><thead><tr><th>'+(tab==='sleeve'?'Sleeve':'Carta')+'</th><th>Cond.</th><th class="num">Qtd</th><th class="num">Pago (un)</th><th class="num">Atual (un)</th><th class="num">Δ%</th><th>Status</th><th></th></tr></thead><tbody>'+rows+'</tbody></table></div>';
+  return '<div class="tblwrap"><table><thead><tr><th class="numc">Nº</th><th>'+(tab==='sleeve'?'Sleeve':'Carta')+'</th><th>Edição</th><th>Cond.</th><th class="num">Qtd</th><th class="num">Pago (un)</th><th class="num">Atual (un)</th><th class="num">Δ%</th><th>Status</th><th></th></tr></thead><tbody>'+rows+'</tbody></table></div>';
 }
 function render(){
   if(!user){ renderLogin(); return; }
@@ -180,6 +189,8 @@ function wireToolbar(){
 }
 function applyFilter(){ const q=(F.q||'').toLowerCase(); app.querySelectorAll('#tbl tbody tr').forEach(tr=>{ const it=items.find(x=>x.id===tr.dataset.id); let show=!!it; if(it){ if(F.status&&normSt(it.status)!==F.status)show=false; if(q&&!(it.card||'').toLowerCase().includes(q))show=false; } tr.style.display=show?'':'none'; }); }
 function wireRows(){
+  app.querySelectorAll('[data-num]').forEach(inp=>inp.onchange=()=>{ const it=items.find(x=>x.id===inp.dataset.num); if(it){ it.num=inp.value.trim(); persist(true); } });
+  app.querySelectorAll('[data-set]').forEach(inp=>inp.onchange=()=>{ const it=items.find(x=>x.id===inp.dataset.set); if(it){ it.set=inp.value.trim(); persist(true); } });
   app.querySelectorAll('[data-cond]').forEach(sel=>sel.onchange=()=>{ const it=items.find(x=>x.id===sel.dataset.cond); if(it){ it.cond=sel.value; persist(true); } });
   app.querySelectorAll('[data-st]').forEach(sel=>sel.onchange=()=>{ const it=items.find(x=>x.id===sel.dataset.st); if(!it)return; it.status=sel.value; persist(true); sel.className='cellsel st-'+sel.value; refreshTop(); applyFilter(); });
   app.querySelectorAll('[data-edit]').forEach(el=>el.onclick=()=>openEdit(el.dataset.edit));
@@ -190,24 +201,25 @@ modal.onclick=e=>{ if(e.target===modal)closeModal(); };
 
 // ---------- add/edit ----------
 function openEdit(id){
-  const it=id?items.find(x=>x.id===id):{id:uid(),card:'',set:'',cond:'NM',qty:1,paid:0,cur:0,status:'pago',kind:tab,date:today(),hist:[]};
+  const it=id?items.find(x=>x.id===id):{id:uid(),card:'',num:'',set:'',cond:'NM',qty:1,paid:0,cur:0,status:'pago',kind:tab,date:today(),hist:[]};
   const isNew=!id;
   mbox.className='mbox';
   mbox.innerHTML='<h3>'+(isNew?'Adicionar compra':'Editar compra')+'</h3>'
     +'<div class="frow"><div class="fld"><label>Item</label><input id="e-card" value="'+esc(it.card)+'" placeholder="Ex.: Charizard ex (223/197)"></div>'
     +'<div class="fld"><label>Tipo</label><select id="e-kind"><option value="carta"'+(kindOf(it)==='carta'?' selected':'')+'>🃏 Carta</option><option value="sleeve"'+(kindOf(it)==='sleeve'?' selected':'')+'>🛡️ Sleeve</option></select></div></div>'
-    +'<div class="frow"><div class="fld"><label>Set / Edição</label><input id="e-set" value="'+esc(it.set||'')+'"></div>'
-    +'<div class="fld"><label>Condição</label><select id="e-cond">'+CONDS.map(c=>'<option'+(it.cond===c?' selected':'')+'>'+c+'</option>').join('')+'</select></div></div>'
-    +'<div class="frow"><div class="fld"><label>Qtd</label><input id="e-qty" type="number" min="1" value="'+(+it.qty||1)+'"></div>'
-    +'<div class="fld"><label>Valor pago (un)</label><input id="e-paid" inputmode="decimal" value="'+(it.paid||'')+'"></div></div>'
-    +'<div class="frow"><div class="fld"><label>Valor atual Liga (un)</label><input id="e-cur" inputmode="decimal" value="'+(it.cur||'')+'"></div>'
-    +'<div class="fld"><label>Status</label><select id="e-status">'+STATUS.map(s=>'<option value="'+s.v+'"'+(normSt(it.status)===s.v?' selected':'')+'>'+s.l+'</option>').join('')+'</select></div></div>'
+    +'<div class="frow"><div class="fld"><label>Nº do card</label><input id="e-num" value="'+esc(it.num||'')+'" placeholder="Ex.: 223/197"></div>'
+    +'<div class="fld"><label>Set / Edição</label><input id="e-set" value="'+esc(it.set||'')+'"></div></div>'
+    +'<div class="frow"><div class="fld"><label>Condição</label><select id="e-cond">'+CONDS.map(c=>'<option'+(it.cond===c?' selected':'')+'>'+c+'</option>').join('')+'</select></div>'
+    +'<div class="fld"><label>Qtd</label><input id="e-qty" type="number" min="1" value="'+(+it.qty||1)+'"></div></div>'
+    +'<div class="frow"><div class="fld"><label>Valor pago (un)</label><input id="e-paid" inputmode="decimal" value="'+(it.paid||'')+'"></div>'
+    +'<div class="fld"><label>Valor atual Liga (un)</label><input id="e-cur" inputmode="decimal" value="'+(it.cur||'')+'"></div></div>'
+    +'<div class="frow"><div class="fld"><label>Status</label><select id="e-status">'+STATUS.map(s=>'<option value="'+s.v+'"'+(normSt(it.status)===s.v?' selected':'')+'>'+s.l+'</option>').join('')+'</select></div></div>'
     +'<div class="mact"><button class="btn" id="e-cancel">Cancelar</button><button class="btn primary" id="e-save">Salvar</button></div>';
   modal.classList.add('on');
   mbox.querySelector('#e-cancel').onclick=closeModal;
   mbox.querySelector('#e-save').onclick=()=>{
     const g=id=>mbox.querySelector('#'+id);
-    const rec={id:it.id,card:g('e-card').value.trim(),set:g('e-set').value.trim(),cond:g('e-cond').value,kind:g('e-kind').value,
+    const rec={id:it.id,card:g('e-card').value.trim(),num:g('e-num').value.trim(),set:g('e-set').value.trim(),cond:g('e-cond').value,kind:g('e-kind').value,
       qty:+g('e-qty').value||1,paid:parseMoney(g('e-paid').value),cur:parseMoney(g('e-cur').value),
       status:g('e-status').value,date:it.date||today(),hist:it.hist||[]};
     if(!rec.card){ toast('Informe o item'); return; }
@@ -243,7 +255,10 @@ function parsePaste(text){
     const paid=parseMoney(m[2]);
     let cond='—'; const cm=card.match(/\s(NM|MP\+?|SP\+?|HP\+?|D\+?|PL|M)\s*$/i);
     if(cm){ cond=cm[1].toUpperCase(); card=card.slice(0,cm.index).trim(); }
-    rows.push({card,cond,qty:1,paid,status:'pago'});
+    // número do card: "223/197" ou "#25/#SWSH123" quando presente no texto colado.
+    let num=''; const nmatch=card.match(/(\d{1,3}\s*\/\s*[A-Za-z]?\d{1,3})/) || card.match(/#\s*([A-Za-z]{0,4}\d{1,4})/);
+    if(nmatch){ num=nmatch[1].replace(/\s+/g,'').toUpperCase(); card=(card.slice(0,nmatch.index)+' '+card.slice(nmatch.index+nmatch[0].length)).replace(/\(\s*\)/g,'').replace(/[(#]\s*$/,'').replace(/\s+/g,' ').trim(); }
+    rows.push({card,num,cond,qty:1,paid,status:'pago'});
   }
   return rows;
 }
@@ -251,9 +266,10 @@ function drawPreview(){
   const el=mbox.querySelector('#p-prev');
   if(!pasteRows.length){ el.innerHTML='<div class="hint">Nada reconhecido. Cole a lista e clique em Pré-visualizar.</div>'; return; }
   el.innerHTML='<div class="hint" style="margin-top:8px">'+pasteRows.length+' linha(s). Ajuste se precisar:</div>'
-    +'<div style="overflow:auto;max-height:320px"><table class="ptable"><thead><tr><th>Tipo</th><th>Carta</th><th>Cond.</th><th>Qtd</th><th>Pago</th><th>Status</th></tr></thead><tbody>'
+    +'<div style="overflow:auto;max-height:320px"><table class="ptable"><thead><tr><th>Tipo</th><th>Nº</th><th>Carta</th><th>Cond.</th><th>Qtd</th><th>Pago</th><th>Status</th></tr></thead><tbody>'
     +pasteRows.map((r,i)=>{ const k=r.kind||(/^\s*sleeve\b/i.test(r.card||'')?'sleeve':'carta'); const st=normSt(r.status);
       return '<tr><td><select data-i="'+i+'" data-f="kind"><option value="carta"'+(k==='carta'?' selected':'')+'>🃏 Carta</option><option value="sleeve"'+(k==='sleeve'?' selected':'')+'>🛡️ Sleeve</option></select></td>'
+      +'<td><input data-i="'+i+'" data-f="num" value="'+esc(r.num||'')+'" style="width:70px" placeholder="—"></td>'
       +'<td><input data-i="'+i+'" data-f="card" value="'+esc(r.card)+'"></td>'
       +'<td><select data-i="'+i+'" data-f="cond">'+CONDS.map(c=>'<option'+(r.cond===c?' selected':'')+'>'+c+'</option>').join('')+'</select></td>'
       +'<td><input data-i="'+i+'" data-f="qty" type="number" min="1" value="'+(r.qty||1)+'" style="width:60px"></td>'
@@ -263,7 +279,7 @@ function drawPreview(){
   el.querySelectorAll('input,select').forEach(inp=>inp.addEventListener('input',e=>{ const i=+e.target.dataset.i,f=e.target.dataset.f; pasteRows[i][f]=f==='paid'?e.target.value:(f==='qty'?+e.target.value:e.target.value); }));
   el.querySelector('#p-cancel').onclick=closeModal;
   el.querySelector('#p-confirm').onclick=()=>{
-    const add=pasteRows.filter(r=>(r.card||'').trim()).map(r=>({id:uid(),card:r.card.trim(),set:'',cond:r.cond||'—',kind:kindOf(r),qty:+r.qty||1,paid:parseMoney(r.paid),cur:0,status:normSt(r.status),date:today(),hist:[]}));
+    const add=pasteRows.filter(r=>(r.card||'').trim()).map(r=>({id:uid(),card:r.card.trim(),num:(r.num||'').trim(),set:'',cond:r.cond||'—',kind:kindOf(r),qty:+r.qty||1,paid:parseMoney(r.paid),cur:0,status:normSt(r.status),date:today(),hist:[]}));
     if(!add.length){ toast('Nada para importar'); return; }
     items=items.concat(add); persist(true); closeModal(); render(); toast(add.length+' compra(s) importada(s)');
   };
@@ -272,9 +288,9 @@ function drawPreview(){
 // ---------- export ----------
 function exportCSV(){
   if(!items.length){ toast('Nada para exportar'); return; }
-  const rows=[['Tipo','Carta','Set','Condição','Qtd','Valor pago (un)','Valor atual (un)','Δ%','Status','Data']];
+  const rows=[['Tipo','Nº','Carta','Edição','Condição','Qtd','Valor pago (un)','Valor atual (un)','Δ%','Status','Data']];
   items.forEach(it=>{ const paid=+it.paid||0,cur=+it.cur||0,d=paid?((cur-paid)/paid*100):0;
-    rows.push([kindOf(it)==='sleeve'?'Sleeve':'Carta',it.card||'',it.set||'',it.cond||'',(+it.qty||1),paid.toFixed(2),cur?cur.toFixed(2):'',cur?d.toFixed(0)+'%':'',STLBL[normSt(it.status)]||'',it.date||'']); });
+    rows.push([kindOf(it)==='sleeve'?'Sleeve':'Carta',it.num||'',it.card||'',it.set||'',it.cond||'',(+it.qty||1),paid.toFixed(2),cur?cur.toFixed(2):'',cur?d.toFixed(0)+'%':'',STLBL[normSt(it.status)]||'',it.date||'']); });
   const csv='﻿'+rows.map(r=>r.map(c=>{ c=String(c); return /[";\n]/.test(c)?'"'+c.replace(/"/g,'""')+'"':c; }).join(';')).join('\r\n');
   const blob=new Blob([csv],{type:'text/csv;charset=utf-8'}); const url=URL.createObjectURL(blob);
   const a=document.createElement('a'); a.href=url; a.download='compras.csv'; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(url),1500);
