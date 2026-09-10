@@ -210,19 +210,23 @@ function openPaste(){
   modal.classList.add('on');
   mbox.querySelector('#p-parse').onclick=()=>{ pasteRows=parsePaste(mbox.querySelector('#p-text').value); drawPreview(); };
 }
+function fixEnc(s){ return String(s||'')
+  .replace(/edi�+o/gi,'edição').replace(/celebra�+es/gi,'celebrações')
+  .replace(/f�mea/gi,'Fêmea').replace(/�+/g,''); }
 function parsePaste(text){
-  return String(text||'').split(/\r?\n/).map(l=>l.trim()).filter(Boolean).map(line=>{
-    const parts=line.split('\t').map(s=>s.trim());
-    let card='',cond='NM',paid=0;
-    if(parts.length>=2){ card=parts[0]; // procura condição e valor nas outras colunas
-      parts.slice(1).forEach(p=>{ const up=p.toUpperCase(); if(CONDS.includes(up)) cond=up; else if(/\d/.test(p)&&/[,.]/.test(p)||/^R\$/.test(p)||/^\d+$/.test(p)) { const v=parseMoney(p); if(v)paid=v; } });
-    } else {
-      // linha única: tenta extrair R$ valor no fim
-      const m=line.match(/R?\$?\s*[\d.]+,\d{2}\s*$/); if(m){ paid=parseMoney(m[0]); card=line.slice(0,m.index).trim(); } else card=line;
-      const cm=card.match(/\b(NM|MP|SP|HP|M|D)\b/i); if(cm){ cond=cm[1].toUpperCase(); }
-    }
-    return {card,cond,qty:1,paid,status:'estoque'};
-  });
+  // formato ManinTCG: "Carta<TAB>Valor" (cabeçalho repete; linhas às vezes grudam).
+  // Estratégia: quebrar pelos valores "R$ x,xx" (dotall pega mesmo sem \n).
+  let t=fixEnc(text).replace(/Carta\s*\t?\s*Valor/gi,'\n');
+  const rows=[]; const re=/([\s\S]*?)R\$\s*([\d.]+,\d{2})/g; let m;
+  while((m=re.exec(t))){
+    let card=m[1].replace(/\t/g,' ').replace(/\s+/g,' ').trim();
+    if(!card) continue;
+    const paid=parseMoney(m[2]);
+    let cond='—'; const cm=card.match(/\s(NM|MP\+?|SP\+?|HP\+?|D\+?|PL|M)\s*$/i);
+    if(cm){ cond=cm[1].toUpperCase(); card=card.slice(0,cm.index).trim(); }
+    rows.push({card,cond,qty:1,paid,status:'estoque'});
+  }
+  return rows;
 }
 function drawPreview(){
   const el=mbox.querySelector('#p-prev');
