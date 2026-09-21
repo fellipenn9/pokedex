@@ -4594,11 +4594,12 @@ async function confirmCardSelection() {
 
   let entryValue;
   if (modalSelectedCard) {
-    const entry = { cards: [modalSelectedCard] };
-    // If card is from API search, save its data so binder can render it
-    if (modalApiCards && modalApiCards[modalSelectedCard]) {
-      entry.cardData = modalApiCards[modalSelectedCard];
-    }
+    // modalSelectedCard é a chave única da carta na tela; o id REAL vem do cardData
+    // (mantém o formato salvo idêntico: { cards: [idReal], cardData }).
+    const cd = (modalApiCards && modalApiCards[modalSelectedCard]) || null;
+    const realId = cd ? cd.id : modalSelectedCard;
+    const entry = { cards: [realId] };
+    if (cd) entry.cardData = cd; // salva os dados p/ o fichário renderizar
     collection[key] = entry;
     entryValue = entry;
     ensurePokedexCaught(pokeNum); // registrou Full Art => marca na Pokédex
@@ -4719,8 +4720,12 @@ async function searchPokemonCards(pokeNum) {
     // Build card map for later saving
     modalApiCards = {};
     const existing = getSelectedCards(pokeNum);
-    modalSelectedCard = existing.length > 0 ? existing[0] : null;
-    const savedCardId = modalSelectedCard; // carta atualmente registrada na coleção
+    const savedCardId = existing.length > 0 ? existing[0] : null; // id real registrado
+    // chave ÚNICA por carta renderizada — evita colisão quando 2 cartas têm o mesmo id
+    // (acontece com cartas da Liga, ex.: Cyndaquil/Bronzong, marcando várias de uma vez).
+    const uidOf = (c, i) => (c.id || 'card') + '§' + i;
+    const selIdx = savedCardId ? apiCards.findIndex(c => c.id === savedCardId) : -1;
+    modalSelectedCard = selIdx >= 0 ? uidOf(apiCards[selIdx], selIdx) : null;
 
     let html = '';
     if (usedFallback) html += `<div style="text-align:center;margin:8px 0;padding:8px 12px;background:rgba(255,200,80,.12);border:1px solid rgba(255,200,80,.35);border-radius:10px;color:#ffd27a;font-size:.82rem">Fonte alternativa (TCGdex) \u2014 a pokemontcg.io parece bloqueada na sua rede. Imagens e nomes OK; dados de set/raridade podem faltar.</div>`;
@@ -4728,7 +4733,8 @@ async function searchPokemonCards(pokeNum) {
     html += `<div style="text-align:center;margin:16px 0 12px"><span class="results-count">${apiCards.length} carta${apiCards.length !== 1 ? 's' : ''} encontrada${apiCards.length !== 1 ? 's' : ''} \u2014 selecione uma</span></div>`;
     html += '<div class="cards-grid">';
 
-    for (const c of apiCards) {
+    apiCards.forEach((c, i) => {
+      const uid = uidOf(c, i);
       // Base card data from API
       const cardData = {
         id: c.id,
@@ -4761,9 +4767,9 @@ async function searchPokemonCards(pokeNum) {
         cardData.liga_prices = { '0': { low: c._priceLow, mid: 0, high: c._priceHigh } };
       }
 
-      modalApiCards[c.id] = cardData;
+      modalApiCards[uid] = cardData;
 
-      const isSelected = modalSelectedCard === c.id;
+      const isSelected = modalSelectedCard === uid;
       const isCurrentRegistered = c.id === savedCardId;
       const setLine = [cardData.set_name, cardData.ed_code, cardData.set_year].filter(Boolean).join(' - ');
       const artist = cardData.artist;
@@ -4772,7 +4778,7 @@ async function searchPokemonCards(pokeNum) {
       const pricesHtml = buildPricesHtml(cardData);
       const ligaUrl = cardData.liga_pokemon_url || buildLigaUrl(cardData);
 
-      html += `<div class="card-item ${isSelected ? 'selected' : ''}" data-card-id="${c.id}">
+      html += `<div class="card-item ${isSelected ? 'selected' : ''}" data-card-id="${escHtml(uid)}">
         <div class="card-select-overlay"></div>
         <div class="card-select-check ${isSelected ? 'checked' : ''}">\u2713</div>
         ${isCurrentRegistered ? '<div class="card-registered-badge">Registrada</div>' : ''}
@@ -4790,7 +4796,7 @@ async function searchPokemonCards(pokeNum) {
           <a href="${escHtml(ligaUrl)}" target="_blank" rel="noopener noreferrer" class="btn-liga">Ver na Liga Pok\u00e9mon</a>
         </div>
       </div>`;
-    }
+    });
 
     html += '</div>';
     html += `<div class="card-select-bar" id="card-select-bar">

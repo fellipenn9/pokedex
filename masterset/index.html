@@ -199,6 +199,11 @@ button{font-family:inherit}
 
 .loading{text-align:center;color:var(--dim);padding:60px}
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(10px);background:var(--surface2);border:1px solid var(--line2);color:#fff;padding:10px 18px;border-radius:99px;font-size:.84rem;font-weight:600;z-index:60;opacity:0;transition:all .25s;pointer-events:none;box-shadow:var(--shadow)}
+.scrollfab{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:8px;z-index:55;opacity:0;transform:translateY(8px);pointer-events:none;transition:opacity .25s,transform .25s}
+.scrollfab.on{opacity:1;transform:none;pointer-events:auto}
+.scrollfab button{width:46px;height:46px;border-radius:50%;border:1px solid var(--line2);background:var(--surface2);color:var(--text,#e8ecf7);font-size:1.05rem;line-height:1;cursor:pointer;box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;transition:background .15s,transform .1s}
+.scrollfab button:hover{background:var(--surface)}
+.scrollfab button:active{transform:scale(.92)}
 .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
 .confetti{position:fixed;width:9px;height:12px;border-radius:2px;z-index:100;animation:fall var(--d) cubic-bezier(.15,.6,.4,1) forwards;pointer-events:none}
 @keyframes fall{to{transform:translate(var(--x),62vh) rotate(var(--r));opacity:0}}
@@ -241,6 +246,10 @@ button{font-family:inherit}
 <div class="topbar"><div class="brand"><span class="logo">🗂️</span> Master<b>Sets</b></div><div class="sp"></div><div id="userbox"></div></div>
 <div class="wrap"><div id="app"><div class="loading">Carregando…</div></div></div>
 <div class="toast" id="toast"></div>
+<div class="scrollfab" id="scrollfab">
+  <button id="fab-top" title="Voltar ao topo" aria-label="Voltar ao topo">▲</button>
+  <button id="fab-bottom" title="Ir para o fim" aria-label="Ir para o fim">▼</button>
+</div>
 <div class="cmodal" id="cardmodal"><div class="cm-box"></div></div>
 
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
@@ -546,6 +555,27 @@ async function renderSet(sid){
   });
   paint();
 }
+</script>
+<script>
+/* FAB de rolagem: ▲ topo / ▼ fim — aparece quando há para onde rolar */
+(function(){
+  var fab=document.getElementById('scrollfab'); if(!fab) return;
+  var up=document.getElementById('fab-top'), dn=document.getElementById('fab-bottom');
+  var reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+  var beh=function(){ return reduce?'auto':'smooth'; };
+  up.onclick=function(){ window.scrollTo({top:0,behavior:beh()}); };
+  dn.onclick=function(){ window.scrollTo({top:document.documentElement.scrollHeight,behavior:beh()}); };
+  function upd(){
+    var y=window.scrollY||document.documentElement.scrollTop;
+    var h=document.documentElement.scrollHeight, vh=window.innerHeight;
+    var canUp=y>300, canDown=(h-vh-y)>300;
+    up.hidden=!canUp; dn.hidden=!canDown;
+    fab.classList.toggle('on', canUp||canDown);
+  }
+  window.addEventListener('scroll',upd,{passive:true});
+  window.addEventListener('resize',upd,{passive:true});
+  upd(); setTimeout(upd,600);
+})();
 </script>
 </body>
 </html>
