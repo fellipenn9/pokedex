@@ -147,6 +147,11 @@ button{font-family:inherit}
 .clrb{border:1px solid var(--line);background:transparent;color:var(--dim);border-radius:11px;padding:10px 14px;font-size:.85rem;font-weight:700;cursor:pointer;transition:all .12s}
 .clrb:hover{border-color:var(--dim);color:var(--text)}
 .clrb.active{border-color:#ff6b81;color:#ff8a9c;background:rgba(255,77,109,.14)}
+.markall{display:inline-flex;gap:6px}
+.mab{border:1px solid var(--line2);background:var(--surface);color:var(--text);border-radius:11px;padding:10px 13px;font-size:.85rem;font-weight:700;cursor:pointer;white-space:nowrap;transition:all .12s}
+.mab:hover{border-color:var(--gold);color:var(--gold)}
+.mab.clr{color:var(--dim);font-weight:600}
+.mab.clr:hover{border-color:var(--dim);color:var(--text)}
 
 /* ---- grid ---- */
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:15px}
@@ -335,6 +340,12 @@ async function toggleSlot(sid,slot){
   try{ await ref().update({[fp]:on?firebase.firestore.FieldValue.arrayRemove(slot):firebase.firestore.FieldValue.arrayUnion(slot)}); }
   catch(e){ try{ await ref().set({masterSets:{[sid]:[...owned[sid]]}},{merge:true}); }catch(_){}}
 }
+// grava o set inteiro de uma vez (marcar todas / limpar tudo) — 1 escrita só
+async function setOwnedAll(sid,slotsArr){
+  owned[sid]=new Set(slotsArr); cacheLocal();
+  try{ await ref().update({['masterSets.'+sid]:slotsArr}); }
+  catch(e){ try{ await ref().set({masterSets:{[sid]:slotsArr}},{merge:true}); }catch(_){}}
+}
 let valTimer;
 function syncValue(sid,v){ values[sid]=Math.round(v*100)/100; clearTimeout(valTimer); valTimer=setTimeout(()=>{ try{ ref().set({masterValues:{[sid]:values[sid]}},{merge:true}); }catch(e){} },700); }
 
@@ -450,6 +461,7 @@ async function renderSet(sid){
     +'<div class="selwrap"><select id="st"><option value="">Todas</option><option value="miss">Incompletas</option><option value="done">Completas</option></select></div>'
     +'<button class="clrb" id="clrb">✕ Limpar</button>'
     +'<div class="vtoggle" id="vt"><button data-view="grid">Grid</button><button data-view="table">Tabela</button><button data-view="binder">Binder</button></div>'
+    +'<div class="markall"><button class="mab" id="markAll" title="Marcar todas as cartas/variações desta coleção como que você tem (depois é só desmarcar o que faltar)">✓ Marcar todas</button><button class="mab clr" id="clearAll" title="Desmarcar todas desta coleção">○ Limpar tudo</button></div>'
     +'<div class="exp-wrap"><button class="expb" id="expb">⬇ Exportar</button><div class="exp-menu" id="expm"><button data-sc="missing">Só as que faltam</button><button data-sc="all">Todas (filtradas)</button><button data-sc="have">Só as que tenho</button></div></div></div>'
     +'<div class="count-line" id="cl"></div><div id="area"></div>';
   document.getElementById('back').onclick=()=>go({name:'dash'});
@@ -492,6 +504,21 @@ async function renderSet(sid){
   function closeExp(){ expm.classList.remove('open'); }
   expb.onclick=(e)=>{ e.stopPropagation(); const open=expm.classList.toggle('open'); if(open)setTimeout(()=>document.addEventListener('click',closeExp,{once:true}),0); };
   expm.querySelectorAll('button').forEach(b=>b.onclick=()=>{ exportCSV(b.dataset.sc); closeExp(); });
+
+  // marcar/limpar todas as variações da coleção de uma vez
+  const allSlots=()=>{ const a=[]; data.rows.forEach(r=>r.variants.forEach(v=>a.push(sk(r.id,v)))); return a; };
+  document.getElementById('markAll').onclick=async()=>{
+    const all=allSlots();
+    if(oset().size>=all.length){ toast('Todas já estão marcadas'); return; }
+    if(!confirm('Marcar TODAS as '+all.length+' variações de "'+(nameOf(meta)||data.setName)+'"? Depois é só desmarcar o que faltar.'))return;
+    const prev=data.totalSlots?Math.round(oset().size/data.totalSlots*100):0;
+    await setOwnedAll(sid,all); paint(); updateHero(prev); toast('Todas marcadas — agora desmarque o que você não tem');
+  };
+  document.getElementById('clearAll').onclick=async()=>{
+    if(!oset().size){ toast('Nada marcado nesta coleção'); return; }
+    if(!confirm('Desmarcar todas as cartas de "'+(nameOf(meta)||data.setName)+'"?'))return;
+    await setOwnedAll(sid,[]); paint();
+  };
 
   function updateHero(prevPct){
     const own=oset().size,tot=data.totalSlots||0,p=tot?Math.round(own/tot*100):0;
