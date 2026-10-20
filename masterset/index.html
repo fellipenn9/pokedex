@@ -338,8 +338,8 @@ async function toggleSlot(sid,slot){
 let valTimer;
 function syncValue(sid,v){ values[sid]=Math.round(v*100)/100; clearTimeout(valTimer); valTimer=setTimeout(()=>{ try{ ref().set({masterValues:{[sid]:values[sid]}},{merge:true}); }catch(e){} },700); }
 
-async function loadSetsIndex(){ if(SETS.length)return; try{ let a=await(await fetch('sets_index.json?v=7')).json(); const seen={}; SETS=a.filter(s=>seen[s.id]?false:(seen[s.id]=1)); byId={}; SETS.forEach(s=>byId[s.id]=s); }catch(e){ SETS=[]; } try{ SERIES_BG=await(await fetch('series_bg.json?v=1')).json(); }catch(e){} }
-async function loadSetData(sid){ if(setDataCache[sid])return setDataCache[sid]; const d=await(await fetch('data/'+sid+'.json?v=2')).json(); setDataCache[sid]=d; return d; }
+async function loadSetsIndex(){ if(SETS.length)return; try{ let a=await(await fetch('sets_index.json?v=8')).json(); const seen={}; SETS=a.filter(s=>seen[s.id]?false:(seen[s.id]=1)); byId={}; SETS.forEach(s=>byId[s.id]=s); }catch(e){ SETS=[]; } try{ SERIES_BG=await(await fetch('series_bg.json?v=1')).json(); }catch(e){} }
+async function loadSetData(sid){ if(setDataCache[sid])return setDataCache[sid]; const d=await(await fetch('data/'+sid+'.json?v=3')).json(); setDataCache[sid]=d; return d; }
 
 async function render(){ await loadSetsIndex(); if(!user){ renderLogin(); return; } if(view.name==='dash')renderDash(); else if(view.name==='browse')renderBrowse(); else if(view.name==='set')renderSet(view.sid); }
 function go(v){ view=v; render(); window.scrollTo(0,0); }

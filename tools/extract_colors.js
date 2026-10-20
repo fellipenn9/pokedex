@@ -25,7 +25,8 @@ function punch(r, g, b){
 const CUR = {
   base1:'#e6b422', base2:'#3fb56a', base3:'#c08a3e', cel25:'#c774e6', cel25c:'#d4af37',
   dc1:'#e0533a', me01:'#33b56a', me02:'#8a5cff', me02pt5:'#f0932b', me03:'#26b6c9',
-  me04:'#e0453f', me05:'#7a68ff', MEP:'#9aa7c7'
+  me04:'#e0453f', me05:'#7a68ff', MEP:'#9aa7c7',
+  cel30:'#e3a81e', cel30c:'#c79a3b'
 };
 (async () => {
   let n = 0;
