@@ -32,9 +32,14 @@ async function thumb(url) {
     let cards = [];
     try { cards = (await jget(`https://api.tcg.gg/pkmn/v1/series/${meta.series}/${meta.slug}/cards`)).value || []; }
     catch (e) { console.log('  FALHOU cards ' + meta.id + ': ' + e.message); continue; }
-    const rows = cards.map(c => ({ id: c.id, number: c.numberDisplay || c.number, name: c.name, rarity: c.rarity || '',
-      artist: c.artist || '', variants: VORDER.filter(k => c.variantMap && c.variantMap[k]),
-      imgUrl: c.thumbImageUrl || c.largeImageUrl || '', img: '' }));
+    const rows = cards.map(c => {
+      let variants = VORDER.filter(k => c.variantMap && c.variantMap[k]);
+      // fallback: carta cujos acabamentos estão todos fora do VORDER (ex.: só 1ª Ed/carimbo)
+      // ficaria sem nenhum slot marcável — devolve as chaves que a API lista.
+      if (!variants.length && c.variantMap) variants = Object.keys(c.variantMap);
+      return { id: c.id, number: c.numberDisplay || c.number, name: c.name, rarity: c.rarity || '',
+        artist: c.artist || '', variants, imgUrl: c.thumbImageUrl || c.largeImageUrl || '', img: '' };
+    });
     let ok = 0;
     for (let i = 0; i < rows.length; i += 6) {
       const b = rows.slice(i, i + 6);
