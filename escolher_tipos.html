@@ -1,0 +1,1063 @@
+<!doctype html><html lang="pt-BR"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Escolher insígnias — por TIPO</title>
+<style>
+  :root{--bg:#14141f;--bg2:#1c1c2b;--card:#212133;--line:#2e2e44;--txt:#e8e8f0;--dim:#9a9ab0;--accent:#e94560;--gold:#ffcc33;}
+  *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--txt);font-family:system-ui,Segoe UI,Roboto,sans-serif}
+  header{position:sticky;top:0;z-index:10;background:#15151f;border-bottom:1px solid var(--line);padding:12px 18px}
+  header h1{margin:0;font-size:1.1rem} header p{margin:3px 0 8px;color:var(--dim);font-size:.8rem}
+  .bar{height:8px;background:var(--bg2);border-radius:6px;overflow:hidden} .fill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--gold));transition:width .3s}
+  .barrow{display:flex;align-items:center;gap:10px} .prog{font-size:.8rem;color:var(--dim);white-space:nowrap}
+  .copy{background:var(--accent);border:0;color:#fff;padding:7px 14px;border-radius:8px;font-weight:600;cursor:pointer;font-size:.82rem}
+  main{max-width:860px;margin:0 auto;padding:16px 16px 80px}
+  .type-block{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:14px}
+  .type-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:6px}
+  .type-pill{color:#15151f;font-weight:800;padding:2px 10px;border-radius:20px;font-size:.85rem}
+  .ach{font-style:italic;color:var(--gold);font-size:.85rem} .tot{color:var(--dim);font-size:.75rem}
+  .chosen-tag{font-size:.75rem;color:#7CFC9B}
+  .opts{display:flex;gap:10px;flex-wrap:wrap} .more-opts{display:none;margin-top:10px} .more-opts.open{display:flex}
+  .opt{display:flex;align-items:center;gap:8px;background:var(--bg2);border:2px solid var(--line);border-radius:10px;padding:8px 10px;cursor:pointer;min-width:200px;position:relative;transition:border-color .15s,background .15s}
+  .opt:hover{border-color:#4a4a66} .opt input{position:absolute;opacity:0}
+  .opt.sel{border-color:var(--gold);background:#2a2620;box-shadow:0 0 0 1px var(--gold) inset}
+  .opt.dup{opacity:.45} .opt.dup::after{content:'já usada';position:absolute;top:2px;right:6px;font-size:.55rem;color:var(--accent)}
+  .opt-badge img{width:44px;height:44px;object-fit:contain} .fb{width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:#15151f;border:1px dashed var(--line);border-radius:8px}
+  .opt-name{font-size:.82rem;font-weight:600} .opt-meta{font-size:.66rem;color:var(--dim)}
+  .rectag{font-size:.58rem;color:var(--gold);position:absolute;bottom:3px;right:8px}
+  .more{margin-top:10px;background:none;border:0;color:var(--accent);cursor:pointer;font-size:.8rem;padding:0} .more.open{color:var(--dim)}
+  textarea{width:100%;height:160px;background:#0e0e16;color:#bfe;border:1px solid var(--line);border-radius:8px;padding:10px;font-family:monospace;font-size:.78rem;margin-top:10px;display:none}
+  textarea.show{display:block}
+  .type-Água{background:#4aa3ff}.type-Normal{background:#a8a878}.type-Grama{background:#5fbf60}.type-Voador{background:#8fa9ff}.type-Psíquico{background:#f85888}.type-Inseto{background:#a8b820}.type-Veneno{background:#a45bc0}.type-Fogo{background:#f0832f}.type-Terra{background:#cfa54f}.type-Pedra{background:#b8a038}.type-Lutador{background:#c03028}.type-Dragão{background:#7038f8}.type-Elétrico{background:#f8d030}.type-Sombrio{background:#5a5366}.type-Fantasma{background:#705898}.type-Aço{background:#9aa0ad}.type-Fada{background:#ee99ac}.type-Gelo{background:#7fd6e0}
+</style></head><body>
+<header>
+  <h1>🏅 Escolha a insígnia de cada TIPO</h1>
+  <p>A #1 recomendada já vem marcada — só troque o que quiser. Clique numa opção pra escolher; "ver todas" mostra o resto. Sem repetir insígnia entre tipos.</p>
+  <div class="barrow">
+    <div class="bar" style="flex:1"><div class="fill" id="fill"></div></div>
+    <span class="prog" id="prog">0/18</span>
+    <button class="copy" onclick="copyChoices()">copiar escolhas</button>
+  </div>
+  <textarea id="out" readonly></textarea>
+</header>
+<main><div class="type-block" data-type="Água">
+    <div class="type-head">
+      <div><span class="type-pill type-Água">Água</span>
+      <span class="ach">«Insígnia Cascata»</span> <span class="tot">154 Pokémon</span></div>
+      <span class="chosen-tag" id="tag-Água"></span>
+    </div>
+    <div class="opts rec-opts"><label class="opt rec" data-type="Água" data-key="Cascade Badge__Kanto" data-name="Insígnia Cascata">
+    <input type="radio" name="type-Água" value="Cascade Badge__Kanto">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/9/9c/Cascade_Badge.png/revision/latest?cb=20241015140805" alt="Cascade Badge" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia Cascata</div>
+      <div class="opt-meta">Kanto · ginásio</div>
+    </div>
+    <span class="rectag">★ recomendada</span>
+  </label><label class="opt rec" data-type="Água" data-key="Rain Badge__Hoenn" data-name="Insígnia Chuva">
+    <input type="radio" name="type-Água" value="Rain Badge__Hoenn">
+    <div class="opt-badge"><div class="fb" title="Insígnia azul em forma de gota d&#39;água ou respingo estilizado.">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia Chuva</div>
+      <div class="opt-meta">Hoenn · ginasio</div>
+    </div>
+    <span class="rectag">★ recomendada</span>
+  </label></div>
+    <button class="more" onclick="this.nextElementSibling.classList.toggle('open');this.classList.toggle('open')">▸ ver todas as opções (7)</button>
+      <div class="opts more-opts"><label class="opt" data-type="Água" data-key="Fen Badge__Sinnoh" data-name="Insígnia Pântano">
+    <input type="radio" name="type-Água" value="Fen Badge__Sinnoh">
+    <div class="opt-badge"><div class="fb" title="Insígnia azul em forma de gota d&#39;água ou respingo de pântano estilizado.">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia Pântano</div>
+      <div class="opt-meta">Sinnoh · ginasio</div>
+    </div>
+    
+  </label><label class="opt" data-type="Água" data-key="Trio Badge__Unova" data-name="Insígnia Trio">
+    <input type="radio" name="type-Água" value="Trio Badge__Unova">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/7/74/Trio_Badge.png/revision/latest?cb=20101019231550" alt="Trio Badge" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia Trio</div>
+      <div class="opt-meta">Unova · ginásio</div>
+    </div>
+    
+  </label><label class="opt" data-type="Água" data-key="Wave Badge__Unova" data-name="Insígnia Wave">
+    <input type="radio" name="type-Água" value="Wave Badge__Unova">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/0/00/Wave_Badge.png/revision/latest?cb=20120623053139" alt="Wave Badge" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia Wave</div>
+      <div class="opt-meta">Unova · ginásio</div>
+    </div>
+    
+  </label><label class="opt" data-type="Água" data-key="Water Badge__Galar" data-name="Insígnia de Água">
+    <input type="radio" name="type-Água" value="Water Badge__Galar">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/7/7a/Water_Badge.png" alt="Water Badge" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia de Água</div>
+      <div class="opt-meta">Galar · ginásio</div>
+    </div>
+    
+  </label><label class="opt" data-type="Água" data-key="Water Badge (Paldea)__Paldea" data-name="Insígnia de Água">
+    <input type="radio" name="type-Água" value="Water Badge (Paldea)__Paldea">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/6/63/Water_Badge_SV.png" alt="Water Badge (Paldea)" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia de Água</div>
+      <div class="opt-meta">Paldea · ginásio</div>
+    </div>
+    
+  </label><label class="opt" data-type="Água" data-key="Waterium Z__Alola" data-name="Waterium Z">
+    <input type="radio" name="type-Água" value="Waterium Z__Alola">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/b/bc/Waterium_Z_Dream.png" alt="Waterium Z" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Waterium Z</div>
+      <div class="opt-meta">Alola · z-crystal</div>
+    </div>
+    
+  </label><label class="opt" data-type="Água" data-key="False Dragon Titan - Dondozo &amp; Tatsugiri__Paldea" data-name="Titã do Falso Dragão">
+    <input type="radio" name="type-Água" value="False Dragon Titan - Dondozo &amp; Tatsugiri__Paldea">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/b/b8/0977Dondozo.png" alt="False Dragon Titan - Dondozo &amp; Tatsugiri" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Titã do Falso Dragão</div>
+      <div class="opt-meta">Paldea · paldea-titan</div>
+    </div>
+    
+  </label></div>
+  </div><div class="type-block" data-type="Normal">
+    <div class="type-head">
+      <div><span class="type-pill type-Normal">Normal</span>
+      <span class="ach">«Insígnia Equilíbrio»</span> <span class="tot">131 Pokémon</span></div>
+      <span class="chosen-tag" id="tag-Normal"></span>
+    </div>
+    <div class="opts rec-opts"><label class="opt rec" data-type="Normal" data-key="Plain Badge__Johto" data-name="Insígnia Planície">
+    <input type="radio" name="type-Normal" value="Plain Badge__Johto">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/a/a7/Plain_Badge.png/revision/latest?cb=20081229171221" alt="Plain Badge" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia Planície</div>
+      <div class="opt-meta">Johto · ginásio</div>
+    </div>
+    <span class="rectag">★ recomendada</span>
+  </label><label class="opt rec" data-type="Normal" data-key="Balance Badge__Hoenn" data-name="Insígnia Equilíbrio">
+    <input type="radio" name="type-Normal" value="Balance Badge__Hoenn">
+    <div class="opt-badge"><div class="fb" title="Insígnia verde em forma de balança/pratos de equilíbrio estilizada.">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia Equilíbrio</div>
+      <div class="opt-meta">Hoenn · ginasio</div>
+    </div>
+    <span class="rectag">★ recomendada</span>
+  </label></div>
+    <button class="more" onclick="this.nextElementSibling.classList.toggle('open');this.classList.toggle('open')">▸ ver todas as opções (3)</button>
+      <div class="opts more-opts"><label class="opt" data-type="Normal" data-key="Basic Badge__Unova" data-name="Insígnia Basic">
+    <input type="radio" name="type-Normal" value="Basic Badge__Unova">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/8/85/Basic_Badge.png/revision/latest?cb=20101019231708" alt="Basic Badge" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia Basic</div>
+      <div class="opt-meta">Unova · ginásio</div>
+    </div>
+    
+  </label><label class="opt" data-type="Normal" data-key="Normal Badge (Paldea)__Paldea" data-name="Insígnia Normal">
+    <input type="radio" name="type-Normal" value="Normal Badge (Paldea)__Paldea">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/a/ad/Normal_Badge_SV.png" alt="Normal Badge (Paldea)" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia Normal</div>
+      <div class="opt-meta">Paldea · ginásio</div>
+    </div>
+    
+  </label><label class="opt" data-type="Normal" data-key="Normalium Z__Alola" data-name="Normalium Z">
+    <input type="radio" name="type-Normal" value="Normalium Z__Alola">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/4/4b/Normalium_Z_Dream.png" alt="Normalium Z" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Normalium Z</div>
+      <div class="opt-meta">Alola · z-crystal</div>
+    </div>
+    
+  </label></div>
+  </div><div class="type-block" data-type="Grama">
+    <div class="type-head">
+      <div><span class="type-pill type-Grama">Grama</span>
+      <span class="ach">«Insígnia Bosque»</span> <span class="tot">127 Pokémon</span></div>
+      <span class="chosen-tag" id="tag-Grama"></span>
+    </div>
+    <div class="opts rec-opts"><label class="opt rec" data-type="Grama" data-key="Rainbow Badge__Kanto" data-name="Insígnia Arco-íris">
+    <input type="radio" name="type-Grama" value="Rainbow Badge__Kanto">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/b/b5/Rainbow_Badge.png/revision/latest?cb=20241015141116" alt="Rainbow Badge" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia Arco-íris</div>
+      <div class="opt-meta">Kanto · ginásio</div>
+    </div>
+    <span class="rectag">★ recomendada</span>
+  </label><label class="opt rec" data-type="Grama" data-key="Forest Badge__Sinnoh" data-name="Insígnia Floresta">
+    <input type="radio" name="type-Grama" value="Forest Badge__Sinnoh">
+    <div class="opt-badge"><div class="fb" title="Insígnia verde em forma de folha ou conjunto de folhas estilizadas.">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia Floresta</div>
+      <div class="opt-meta">Sinnoh · ginasio</div>
+    </div>
+    <span class="rectag">★ recomendada</span>
+  </label></div>
+    <button class="more" onclick="this.nextElementSibling.classList.toggle('open');this.classList.toggle('open')">▸ ver todas as opções (5)</button>
+      <div class="opts more-opts"><label class="opt" data-type="Grama" data-key="Trio Badge__Unova" data-name="Insígnia Trio">
+    <input type="radio" name="type-Grama" value="Trio Badge__Unova">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/7/74/Trio_Badge.png/revision/latest?cb=20101019231550" alt="Trio Badge" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia Trio</div>
+      <div class="opt-meta">Unova · ginásio</div>
+    </div>
+    
+  </label><label class="opt" data-type="Grama" data-key="Plant Badge__Kalos" data-name="Insígnia Plant">
+    <input type="radio" name="type-Grama" value="Plant Badge__Kalos">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/7/7d/Plant_Badge.png/revision/latest?cb=20240323090933" alt="Plant Badge" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia Plant</div>
+      <div class="opt-meta">Kalos · ginásio</div>
+    </div>
+    
+  </label><label class="opt" data-type="Grama" data-key="Grass Badge__Galar" data-name="Insígnia de Planta">
+    <input type="radio" name="type-Grama" value="Grass Badge__Galar">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/0/00/Grass_Badge.png" alt="Grass Badge" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia de Planta</div>
+      <div class="opt-meta">Galar · ginásio</div>
+    </div>
+    
+  </label><label class="opt" data-type="Grama" data-key="Grass Badge (Paldea)__Paldea" data-name="Insígnia de Planta">
+    <input type="radio" name="type-Grama" value="Grass Badge (Paldea)__Paldea">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/d/d3/Grass_Badge_SV.png" alt="Grass Badge (Paldea)" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia de Planta</div>
+      <div class="opt-meta">Paldea · ginásio</div>
+    </div>
+    
+  </label><label class="opt" data-type="Grama" data-key="Grassium Z__Alola" data-name="Grassium Z">
+    <input type="radio" name="type-Grama" value="Grassium Z__Alola">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/0/05/Grassium_Z_Dream.png" alt="Grassium Z" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Grassium Z</div>
+      <div class="opt-meta">Alola · z-crystal</div>
+    </div>
+    
+  </label></div>
+  </div><div class="type-block" data-type="Voador">
+    <div class="type-head">
+      <div><span class="type-pill type-Voador">Voador</span>
+      <span class="ach">«Insígnia Brisa»</span> <span class="tot">109 Pokémon</span></div>
+      <span class="chosen-tag" id="tag-Voador"></span>
+    </div>
+    <div class="opts rec-opts"><label class="opt rec" data-type="Voador" data-key="Zephyr Badge__Johto" data-name="Insígnia Zéfiro">
+    <input type="radio" name="type-Voador" value="Zephyr Badge__Johto">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/4/4a/Zephyr_Badge.png/revision/latest?cb=20081229171509" alt="Zephyr Badge" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia Zéfiro</div>
+      <div class="opt-meta">Johto · ginásio</div>
+    </div>
+    <span class="rectag">★ recomendada</span>
+  </label><label class="opt rec" data-type="Voador" data-key="Feather Badge__Hoenn" data-name="Insígnia Pena">
+    <input type="radio" name="type-Voador" value="Feather Badge__Hoenn">
+    <div class="opt-badge"><div class="fb" title="Insígnia rosa/magenta em forma de asa ou pena de pássaro estilizada.">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia Pena</div>
+      <div class="opt-meta">Hoenn · ginasio</div>
+    </div>
+    <span class="rectag">★ recomendada</span>
+  </label></div>
+    <button class="more" onclick="this.nextElementSibling.classList.toggle('open');this.classList.toggle('open')">▸ ver todas as opções (3)</button>
+      <div class="opts more-opts"><label class="opt" data-type="Voador" data-key="Jet Badge__Unova" data-name="Insígnia Jet">
+    <input type="radio" name="type-Voador" value="Jet Badge__Unova">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/9/9c/Jet_Badge.png/revision/latest?cb=20110211044713" alt="Jet Badge" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia Jet</div>
+      <div class="opt-meta">Unova · ginásio</div>
+    </div>
+    
+  </label><label class="opt" data-type="Voador" data-key="Flyinium Z__Alola" data-name="Flyinium Z">
+    <input type="radio" name="type-Voador" value="Flyinium Z__Alola">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/3/35/Flyinium_Z_Dream.png" alt="Flyinium Z" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Flyinium Z</div>
+      <div class="opt-meta">Alola · z-crystal</div>
+    </div>
+    
+  </label><label class="opt" data-type="Voador" data-key="Open Sky Titan - Bombirdier__Paldea" data-name="Titã do Céu Aberto">
+    <input type="radio" name="type-Voador" value="Open Sky Titan - Bombirdier__Paldea">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/1/11/0965Bombirdier.png" alt="Open Sky Titan - Bombirdier" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Titã do Céu Aberto</div>
+      <div class="opt-meta">Paldea · paldea-titan</div>
+    </div>
+    
+  </label></div>
+  </div><div class="type-block" data-type="Psíquico">
+    <div class="type-head">
+      <div><span class="type-pill type-Psíquico">Psíquico</span>
+      <span class="ach">«Insígnia Mente»</span> <span class="tot">102 Pokémon</span></div>
+      <span class="chosen-tag" id="tag-Psíquico"></span>
+    </div>
+    <div class="opts rec-opts"><label class="opt rec" data-type="Psíquico" data-key="Marsh Badge__Kanto" data-name="Insígnia Pântano">
+    <input type="radio" name="type-Psíquico" value="Marsh Badge__Kanto">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/6/6b/Marsh_Badge.png/revision/latest?cb=20241015141132" alt="Marsh Badge" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia Pântano</div>
+      <div class="opt-meta">Kanto · ginásio</div>
+    </div>
+    <span class="rectag">★ recomendada</span>
+  </label><label class="opt rec" data-type="Psíquico" data-key="Mind Badge__Hoenn" data-name="Insígnia Mente">
+    <input type="radio" name="type-Psíquico" value="Mind Badge__Hoenn">
+    <div class="opt-badge"><div class="fb" title="Insígnia azul/roxa dupla (dois círculos unidos), refletindo os líderes gêmeos e a temática psíquica.">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia Mente</div>
+      <div class="opt-meta">Hoenn · ginasio</div>
+    </div>
+    <span class="rectag">★ recomendada</span>
+  </label></div>
+    <button class="more" onclick="this.nextElementSibling.classList.toggle('open');this.classList.toggle('open')">▸ ver todas as opções (3)</button>
+      <div class="opts more-opts"><label class="opt" data-type="Psíquico" data-key="Psychic Badge__Kalos" data-name="Insígnia Psychic">
+    <input type="radio" name="type-Psíquico" value="Psychic Badge__Kalos">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/1/13/Psychic_Badge.png/revision/latest?cb=20240323091150" alt="Psychic Badge" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia Psychic</div>
+      <div class="opt-meta">Kalos · ginásio</div>
+    </div>
+    
+  </label><label class="opt" data-type="Psíquico" data-key="Psychic Badge (Paldea)__Paldea" data-name="Insígnia Psíquica">
+    <input type="radio" name="type-Psíquico" value="Psychic Badge (Paldea)__Paldea">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/3/36/Psychic_Badge_SV.png" alt="Psychic Badge (Paldea)" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia Psíquica</div>
+      <div class="opt-meta">Paldea · ginásio</div>
+    </div>
+    
+  </label><label class="opt" data-type="Psíquico" data-key="Psychium Z__Alola" data-name="Psychium Z">
+    <input type="radio" name="type-Psíquico" value="Psychium Z__Alola">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/7/75/Psychium_Z_Dream.png" alt="Psychium Z" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Psychium Z</div>
+      <div class="opt-meta">Alola · z-crystal</div>
+    </div>
+    
+  </label></div>
+  </div><div class="type-block" data-type="Inseto">
+    <div class="type-head">
+      <div><span class="type-pill type-Inseto">Inseto</span>
+      <span class="ach">«Insígnia Casulo»</span> <span class="tot">92 Pokémon</span></div>
+      <span class="chosen-tag" id="tag-Inseto"></span>
+    </div>
+    <div class="opts rec-opts"><label class="opt rec" data-type="Inseto" data-key="Hive Badge__Johto" data-name="Insígnia Colmeia">
+    <input type="radio" name="type-Inseto" value="Hive Badge__Johto">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/0/08/Hive_Badge.png/revision/latest?cb=20081229171030" alt="Hive Badge" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia Colmeia</div>
+      <div class="opt-meta">Johto · ginásio</div>
+    </div>
+    <span class="rectag">★ recomendada</span>
+  </label><label class="opt rec" data-type="Inseto" data-key="Insect Badge__Unova" data-name="Insígnia Insect">
+    <input type="radio" name="type-Inseto" value="Insect Badge__Unova">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/8/8a/Insect_Badge.png/revision/latest?cb=20101019231914" alt="Insect Badge" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia Insect</div>
+      <div class="opt-meta">Unova · ginásio</div>
+    </div>
+    <span class="rectag">★ recomendada</span>
+  </label></div>
+    <button class="more" onclick="this.nextElementSibling.classList.toggle('open');this.classList.toggle('open')">▸ ver todas as opções (3)</button>
+      <div class="opts more-opts"><label class="opt" data-type="Inseto" data-key="Bug Badge__Kalos" data-name="Insígnia Bug">
+    <input type="radio" name="type-Inseto" value="Bug Badge__Kalos">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/3/3c/Bug_Badge_Viola.png/revision/latest?cb=20131020201253" alt="Bug Badge" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia Bug</div>
+      <div class="opt-meta">Kalos · ginásio</div>
+    </div>
+    
+  </label><label class="opt" data-type="Inseto" data-key="Bug Badge (Paldea)__Paldea" data-name="Insígnia de Inseto">
+    <input type="radio" name="type-Inseto" value="Bug Badge (Paldea)__Paldea">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/0/01/Bug_Badge_SV.png" alt="Bug Badge (Paldea)" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia de Inseto</div>
+      <div class="opt-meta">Paldea · ginásio</div>
+    </div>
+    
+  </label><label class="opt" data-type="Inseto" data-key="Buginium Z__Alola" data-name="Buginium Z">
+    <input type="radio" name="type-Inseto" value="Buginium Z__Alola">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/4/47/Buginium_Z_Dream.png" alt="Buginium Z" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Buginium Z</div>
+      <div class="opt-meta">Alola · z-crystal</div>
+    </div>
+    
+  </label></div>
+  </div><div class="type-block" data-type="Veneno">
+    <div class="type-head">
+      <div><span class="type-pill type-Veneno">Veneno</span>
+      <span class="ach">«Insígnia Toxina»</span> <span class="tot">83 Pokémon</span></div>
+      <span class="chosen-tag" id="tag-Veneno"></span>
+    </div>
+    <div class="opts rec-opts"><label class="opt rec" data-type="Veneno" data-key="Soul Badge__Kanto" data-name="Insígnia Alma">
+    <input type="radio" name="type-Veneno" value="Soul Badge__Kanto">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/7/7d/Soul_Badge.png/revision/latest?cb=20241015141124" alt="Soul Badge" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia Alma</div>
+      <div class="opt-meta">Kanto · ginásio</div>
+    </div>
+    <span class="rectag">★ recomendada</span>
+  </label><label class="opt rec" data-type="Veneno" data-key="Toxic Badge__Unova" data-name="Insígnia Toxic">
+    <input type="radio" name="type-Veneno" value="Toxic Badge__Unova">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/3/3e/Toxic_Badge.png/revision/latest?cb=20120622180634" alt="Toxic Badge" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia Toxic</div>
+      <div class="opt-meta">Unova · ginásio</div>
+    </div>
+    <span class="rectag">★ recomendada</span>
+  </label></div>
+    <button class="more" onclick="this.nextElementSibling.classList.toggle('open');this.classList.toggle('open')">▸ ver todas as opções (2)</button>
+      <div class="opts more-opts"><label class="opt" data-type="Veneno" data-key="Poisonium Z__Alola" data-name="Poisonium Z">
+    <input type="radio" name="type-Veneno" value="Poisonium Z__Alola">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/2/28/Poisonium_Z_Dream.png" alt="Poisonium Z" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Poisonium Z</div>
+      <div class="opt-meta">Alola · z-crystal</div>
+    </div>
+    
+  </label><label class="opt" data-type="Veneno" data-key="Navi Squad - Atticus (Poison Crew)__Paldea" data-name="Esquadrão Navi - Atticus">
+    <input type="radio" name="type-Veneno" value="Navi Squad - Atticus (Poison Crew)__Paldea">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/9/90/Atticus.png" alt="Navi Squad - Atticus (Poison Crew)" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Esquadrão Navi - Atticus</div>
+      <div class="opt-meta">Paldea · team-star</div>
+    </div>
+    
+  </label></div>
+  </div><div class="type-block" data-type="Fogo">
+    <div class="type-head">
+      <div><span class="type-pill type-Fogo">Fogo</span>
+      <span class="ach">«Insígnia Brasa»</span> <span class="tot">81 Pokémon</span></div>
+      <span class="chosen-tag" id="tag-Fogo"></span>
+    </div>
+    <div class="opts rec-opts"><label class="opt rec" data-type="Fogo" data-key="Volcano Badge__Kanto" data-name="Insígnia Vulcão">
+    <input type="radio" name="type-Fogo" value="Volcano Badge__Kanto">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/1/12/Volcano_Badge.png/revision/latest?cb=20241015141139" alt="Volcano Badge" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia Vulcão</div>
+      <div class="opt-meta">Kanto · ginásio</div>
+    </div>
+    <span class="rectag">★ recomendada</span>
+  </label><label class="opt rec" data-type="Fogo" data-key="Heat Badge__Hoenn" data-name="Insígnia Calor">
+    <input type="radio" name="type-Fogo" value="Heat Badge__Hoenn">
+    <div class="opt-badge"><div class="fb" title="Insígnia vermelha/laranja em forma de chama ou explosão de calor estilizada.">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia Calor</div>
+      <div class="opt-meta">Hoenn · ginasio</div>
+    </div>
+    <span class="rectag">★ recomendada</span>
+  </label></div>
+    <button class="more" onclick="this.nextElementSibling.classList.toggle('open');this.classList.toggle('open')">▸ ver todas as opções (4)</button>
+      <div class="opts more-opts"><label class="opt" data-type="Fogo" data-key="Trio Badge__Unova" data-name="Insígnia Trio">
+    <input type="radio" name="type-Fogo" value="Trio Badge__Unova">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/7/74/Trio_Badge.png/revision/latest?cb=20101019231550" alt="Trio Badge" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia Trio</div>
+      <div class="opt-meta">Unova · ginásio</div>
+    </div>
+    
+  </label><label class="opt" data-type="Fogo" data-key="Fire Badge__Galar" data-name="Insígnia de Fogo">
+    <input type="radio" name="type-Fogo" value="Fire Badge__Galar">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/c/cc/Fire_Badge.png" alt="Fire Badge" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia de Fogo</div>
+      <div class="opt-meta">Galar · ginásio</div>
+    </div>
+    
+  </label><label class="opt" data-type="Fogo" data-key="Firium Z__Alola" data-name="Firium Z">
+    <input type="radio" name="type-Fogo" value="Firium Z__Alola">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/3/3f/Firium_Z_Dream.png" alt="Firium Z" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Firium Z</div>
+      <div class="opt-meta">Alola · z-crystal</div>
+    </div>
+    
+  </label><label class="opt" data-type="Fogo" data-key="Schedar Squad - Mela (Fire Crew)__Paldea" data-name="Esquadrão Schedar - Mela">
+    <input type="radio" name="type-Fogo" value="Schedar Squad - Mela (Fire Crew)__Paldea">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/0/0d/Mela.png" alt="Schedar Squad - Mela (Fire Crew)" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Esquadrão Schedar - Mela</div>
+      <div class="opt-meta">Paldea · team-star</div>
+    </div>
+    
+  </label></div>
+  </div><div class="type-block" data-type="Terra">
+    <div class="type-head">
+      <div><span class="type-pill type-Terra">Terra</span>
+      <span class="ach">«Insígnia Terremoto»</span> <span class="tot">75 Pokémon</span></div>
+      <span class="chosen-tag" id="tag-Terra"></span>
+    </div>
+    <div class="opts rec-opts"><label class="opt rec" data-type="Terra" data-key="Earth Badge__Kanto" data-name="Insígnia Terra">
+    <input type="radio" name="type-Terra" value="Earth Badge__Kanto">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/7/78/Earth_Badge.png/revision/latest?cb=20241015141830" alt="Earth Badge" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia Terra</div>
+      <div class="opt-meta">Kanto · ginásio</div>
+    </div>
+    <span class="rectag">★ recomendada</span>
+  </label><label class="opt rec" data-type="Terra" data-key="Quake Badge__Unova" data-name="Insígnia Quake">
+    <input type="radio" name="type-Terra" value="Quake Badge__Unova">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/2/29/Quake_Badge.png/revision/latest?cb=20110211044640" alt="Quake Badge" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia Quake</div>
+      <div class="opt-meta">Unova · ginásio</div>
+    </div>
+    <span class="rectag">★ recomendada</span>
+  </label></div>
+    <button class="more" onclick="this.nextElementSibling.classList.toggle('open');this.classList.toggle('open')">▸ ver todas as opções (3)</button>
+      <div class="opts more-opts"><label class="opt" data-type="Terra" data-key="Groundium Z__Alola" data-name="Groundium Z">
+    <input type="radio" name="type-Terra" value="Groundium Z__Alola">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/7/7b/Groundium_Z_Dream.png" alt="Groundium Z" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Groundium Z</div>
+      <div class="opt-meta">Alola · z-crystal</div>
+    </div>
+    
+  </label><label class="opt" data-type="Terra" data-key="Quaking Earth Titan - Great Tusk (Scarlet)__Paldea" data-name="Titã da Terra Tremida (Great Tusk)">
+    <input type="radio" name="type-Terra" value="Quaking Earth Titan - Great Tusk (Scarlet)__Paldea">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/0/08/0984Great_Tusk.png" alt="Quaking Earth Titan - Great Tusk (Scarlet)" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Titã da Terra Tremida (Great Tusk)</div>
+      <div class="opt-meta">Paldea · paldea-titan</div>
+    </div>
+    
+  </label><label class="opt" data-type="Terra" data-key="Quaking Earth Titan - Iron Treads (Violet)__Paldea" data-name="Titã da Terra Tremida (Iron Treads)">
+    <input type="radio" name="type-Terra" value="Quaking Earth Titan - Iron Treads (Violet)__Paldea">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/5/5e/0990IronTreads.png" alt="Quaking Earth Titan - Iron Treads (Violet)" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Titã da Terra Tremida (Iron Treads)</div>
+      <div class="opt-meta">Paldea · paldea-titan</div>
+    </div>
+    
+  </label></div>
+  </div><div class="type-block" data-type="Pedra">
+    <div class="type-head">
+      <div><span class="type-pill type-Pedra">Pedra</span>
+      <span class="ach">«Insígnia Penhasco»</span> <span class="tot">74 Pokémon</span></div>
+      <span class="chosen-tag" id="tag-Pedra"></span>
+    </div>
+    <div class="opts rec-opts"><label class="opt rec" data-type="Pedra" data-key="Boulder Badge__Kanto" data-name="Insígnia Pedra">
+    <input type="radio" name="type-Pedra" value="Boulder Badge__Kanto">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/d/dd/Boulder_Badge.png/revision/latest?cb=20241015140145" alt="Boulder Badge" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia Pedra</div>
+      <div class="opt-meta">Kanto · ginásio</div>
+    </div>
+    <span class="rectag">★ recomendada</span>
+  </label><label class="opt rec" data-type="Pedra" data-key="Stone Badge__Hoenn" data-name="Insígnia Pedra">
+    <input type="radio" name="type-Pedra" value="Stone Badge__Hoenn">
+    <div class="opt-badge"><div class="fb" title="Pequeno losango cinza/marrom em forma de pedra bruta facetada, lembrando um cristal mineral.">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia Pedra</div>
+      <div class="opt-meta">Hoenn · ginasio</div>
+    </div>
+    <span class="rectag">★ recomendada</span>
+  </label></div>
+    <button class="more" onclick="this.nextElementSibling.classList.toggle('open');this.classList.toggle('open')">▸ ver todas as opções (5)</button>
+      <div class="opts more-opts"><label class="opt" data-type="Pedra" data-key="Coal Badge__Sinnoh" data-name="Insígnia Carvão">
+    <input type="radio" name="type-Pedra" value="Coal Badge__Sinnoh">
+    <div class="opt-badge"><div class="fb" title="Insígnia cinza-escura em forma de pedaço de carvão/rocha bruta facetada.">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia Carvão</div>
+      <div class="opt-meta">Sinnoh · ginasio</div>
+    </div>
+    
+  </label><label class="opt" data-type="Pedra" data-key="Cliff Badge__Kalos" data-name="Insígnia Cliff">
+    <input type="radio" name="type-Pedra" value="Cliff Badge__Kalos">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/3/39/Cliff_Badge.png/revision/latest?cb=20131029043723" alt="Cliff Badge" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia Cliff</div>
+      <div class="opt-meta">Kalos · ginásio</div>
+    </div>
+    
+  </label><label class="opt" data-type="Pedra" data-key="Rock Badge__Galar" data-name="Insígnia de Pedra">
+    <input type="radio" name="type-Pedra" value="Rock Badge__Galar">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/3/3e/Rock_Badge.png" alt="Rock Badge" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia de Pedra</div>
+      <div class="opt-meta">Galar · ginásio</div>
+    </div>
+    
+  </label><label class="opt" data-type="Pedra" data-key="Rockium Z__Alola" data-name="Rockium Z">
+    <input type="radio" name="type-Pedra" value="Rockium Z__Alola">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/4/42/Rockium_Z_Dream.png" alt="Rockium Z" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Rockium Z</div>
+      <div class="opt-meta">Alola · z-crystal</div>
+    </div>
+    
+  </label><label class="opt" data-type="Pedra" data-key="Stony Cliff Titan - Klawf__Paldea" data-name="Titã do Penhasco Rochoso">
+    <input type="radio" name="type-Pedra" value="Stony Cliff Titan - Klawf__Paldea">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/5/5a/0950Klawf.png" alt="Stony Cliff Titan - Klawf" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Titã do Penhasco Rochoso</div>
+      <div class="opt-meta">Paldea · paldea-titan</div>
+    </div>
+    
+  </label></div>
+  </div><div class="type-block" data-type="Lutador">
+    <div class="type-head">
+      <div><span class="type-pill type-Lutador">Lutador</span>
+      <span class="ach">«Insígnia Punho»</span> <span class="tot">73 Pokémon</span></div>
+      <span class="chosen-tag" id="tag-Lutador"></span>
+    </div>
+    <div class="opts rec-opts"><label class="opt rec" data-type="Lutador" data-key="Storm Badge__Johto" data-name="Insígnia Tempestade">
+    <input type="radio" name="type-Lutador" value="Storm Badge__Johto">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/b/b9/Storm_Badge.png/revision/latest?cb=20081229171417" alt="Storm Badge" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia Tempestade</div>
+      <div class="opt-meta">Johto · ginásio</div>
+    </div>
+    <span class="rectag">★ recomendada</span>
+  </label><label class="opt rec" data-type="Lutador" data-key="Knuckle Badge__Hoenn" data-name="Insígnia Punho">
+    <input type="radio" name="type-Lutador" value="Knuckle Badge__Hoenn">
+    <div class="opt-badge"><div class="fb" title="Insígnia laranja/dourada em forma de soco-inglês (knuckle) estilizado, com aberturas para os dedos.">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia Punho</div>
+      <div class="opt-meta">Hoenn · ginasio</div>
+    </div>
+    <span class="rectag">★ recomendada</span>
+  </label></div>
+    <button class="more" onclick="this.nextElementSibling.classList.toggle('open');this.classList.toggle('open')">▸ ver todas as opções (6)</button>
+      <div class="opts more-opts"><label class="opt" data-type="Lutador" data-key="Cobble Badge__Sinnoh" data-name="Insígnia Paralelepípedo">
+    <input type="radio" name="type-Lutador" value="Cobble Badge__Sinnoh">
+    <div class="opt-badge"><div class="fb" title="Insígnia cinza/azulada em forma de pedra de calçamento (cobblestone) angular.">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia Paralelepípedo</div>
+      <div class="opt-meta">Sinnoh · ginasio</div>
+    </div>
+    
+  </label><label class="opt" data-type="Lutador" data-key="Rumble Badge__Kalos" data-name="Insígnia Rumble">
+    <input type="radio" name="type-Lutador" value="Rumble Badge__Kalos">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/d/d4/Rumble_Badge.png/revision/latest?cb=20171006161933" alt="Rumble Badge" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia Rumble</div>
+      <div class="opt-meta">Kalos · ginásio</div>
+    </div>
+    
+  </label><label class="opt" data-type="Lutador" data-key="Fighting Badge__Galar" data-name="Insígnia de Lutador">
+    <input type="radio" name="type-Lutador" value="Fighting Badge__Galar">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/2/20/Fighting_Badge.png" alt="Fighting Badge" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia de Lutador</div>
+      <div class="opt-meta">Galar · ginásio</div>
+    </div>
+    
+  </label><label class="opt" data-type="Lutador" data-key="Fightinium Z__Alola" data-name="Fightinium Z">
+    <input type="radio" name="type-Lutador" value="Fightinium Z__Alola">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/f/fd/Fightinium_Z_Dream.png" alt="Fightinium Z" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Fightinium Z</div>
+      <div class="opt-meta">Alola · z-crystal</div>
+    </div>
+    
+  </label><label class="opt" data-type="Lutador" data-key="Quaking Earth Titan - Great Tusk (Scarlet)__Paldea" data-name="Titã da Terra Tremida (Great Tusk)">
+    <input type="radio" name="type-Lutador" value="Quaking Earth Titan - Great Tusk (Scarlet)__Paldea">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/0/08/0984Great_Tusk.png" alt="Quaking Earth Titan - Great Tusk (Scarlet)" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Titã da Terra Tremida (Great Tusk)</div>
+      <div class="opt-meta">Paldea · paldea-titan</div>
+    </div>
+    
+  </label><label class="opt" data-type="Lutador" data-key="Caph Squad - Eri (Fighting Crew)__Paldea" data-name="Esquadrão Caph - Eri">
+    <input type="radio" name="type-Lutador" value="Caph Squad - Eri (Fighting Crew)__Paldea">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/d/da/Eri.png" alt="Caph Squad - Eri (Fighting Crew)" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Esquadrão Caph - Eri</div>
+      <div class="opt-meta">Paldea · team-star</div>
+    </div>
+    
+  </label></div>
+  </div><div class="type-block" data-type="Dragão">
+    <div class="type-head">
+      <div><span class="type-pill type-Dragão">Dragão</span>
+      <span class="ach">«Insígnia Ascensão»</span> <span class="tot">70 Pokémon</span></div>
+      <span class="chosen-tag" id="tag-Dragão"></span>
+    </div>
+    <div class="opts rec-opts"><label class="opt rec" data-type="Dragão" data-key="Rising Badge__Johto" data-name="Insígnia Ascendente">
+    <input type="radio" name="type-Dragão" value="Rising Badge__Johto">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/5/58/Rising_Badge.png/revision/latest?cb=20081229171321" alt="Rising Badge" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia Ascendente</div>
+      <div class="opt-meta">Johto · ginásio</div>
+    </div>
+    <span class="rectag">★ recomendada</span>
+  </label><label class="opt rec" data-type="Dragão" data-key="Legend Badge__Unova" data-name="Insígnia Legend">
+    <input type="radio" name="type-Dragão" value="Legend Badge__Unova">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/c/c0/Legend_Badge.png/revision/latest?cb=20110211044929" alt="Legend Badge" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia Legend</div>
+      <div class="opt-meta">Unova · ginásio</div>
+    </div>
+    <span class="rectag">★ recomendada</span>
+  </label></div>
+    <button class="more" onclick="this.nextElementSibling.classList.toggle('open');this.classList.toggle('open')">▸ ver todas as opções (3)</button>
+      <div class="opts more-opts"><label class="opt" data-type="Dragão" data-key="Dragon Badge__Galar" data-name="Insígnia de Dragão">
+    <input type="radio" name="type-Dragão" value="Dragon Badge__Galar">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/2/27/Dragon_Badge.png" alt="Dragon Badge" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia de Dragão</div>
+      <div class="opt-meta">Galar · ginásio</div>
+    </div>
+    
+  </label><label class="opt" data-type="Dragão" data-key="Dragonium Z__Alola" data-name="Dragonium Z">
+    <input type="radio" name="type-Dragão" value="Dragonium Z__Alola">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/b/b9/Dragonium_Z_Dream.png" alt="Dragonium Z" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Dragonium Z</div>
+      <div class="opt-meta">Alola · z-crystal</div>
+    </div>
+    
+  </label><label class="opt" data-type="Dragão" data-key="False Dragon Titan - Dondozo &amp; Tatsugiri__Paldea" data-name="Titã do Falso Dragão">
+    <input type="radio" name="type-Dragão" value="False Dragon Titan - Dondozo &amp; Tatsugiri__Paldea">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/b/b8/0977Dondozo.png" alt="False Dragon Titan - Dondozo &amp; Tatsugiri" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Titã do Falso Dragão</div>
+      <div class="opt-meta">Paldea · paldea-titan</div>
+    </div>
+    
+  </label></div>
+  </div><div class="type-block" data-type="Elétrico">
+    <div class="type-head">
+      <div><span class="type-pill type-Elétrico">Elétrico</span>
+      <span class="ach">«Insígnia Trovão»</span> <span class="tot">69 Pokémon</span></div>
+      <span class="chosen-tag" id="tag-Elétrico"></span>
+    </div>
+    <div class="opts rec-opts"><label class="opt rec" data-type="Elétrico" data-key="Thunder Badge__Kanto" data-name="Insígnia Trovão">
+    <input type="radio" name="type-Elétrico" value="Thunder Badge__Kanto">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/a/a6/Thunder_Badge.png/revision/latest?cb=20241015141106" alt="Thunder Badge" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia Trovão</div>
+      <div class="opt-meta">Kanto · ginásio</div>
+    </div>
+    <span class="rectag">★ recomendada</span>
+  </label><label class="opt rec" data-type="Elétrico" data-key="Dynamo Badge__Hoenn" data-name="Insígnia Dínamo">
+    <input type="radio" name="type-Elétrico" value="Dynamo Badge__Hoenn">
+    <div class="opt-badge"><div class="fb" title="Insígnia amarela em forma de losango/engrenagem com aparência de gerador elétrico (dínamo).">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia Dínamo</div>
+      <div class="opt-meta">Hoenn · ginasio</div>
+    </div>
+    <span class="rectag">★ recomendada</span>
+  </label></div>
+    <button class="more" onclick="this.nextElementSibling.classList.toggle('open');this.classList.toggle('open')">▸ ver todas as opções (5)</button>
+      <div class="opts more-opts"><label class="opt" data-type="Elétrico" data-key="Beacon Badge__Sinnoh" data-name="Insígnia Farol">
+    <input type="radio" name="type-Elétrico" value="Beacon Badge__Sinnoh">
+    <div class="opt-badge"><div class="fb" title="Insígnia amarela em forma de estrela/explosão de luz, evocando um farol elétrico.">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia Farol</div>
+      <div class="opt-meta">Sinnoh · ginasio</div>
+    </div>
+    
+  </label><label class="opt" data-type="Elétrico" data-key="Bolt Badge__Unova" data-name="Insígnia Bolt">
+    <input type="radio" name="type-Elétrico" value="Bolt Badge__Unova">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/5/5b/Bolt_Badge.png/revision/latest?cb=20110211044603" alt="Bolt Badge" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia Bolt</div>
+      <div class="opt-meta">Unova · ginásio</div>
+    </div>
+    
+  </label><label class="opt" data-type="Elétrico" data-key="Voltage Badge__Kalos" data-name="Insígnia Voltage">
+    <input type="radio" name="type-Elétrico" value="Voltage Badge__Kalos">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/f/fc/Voltage_Badge.png/revision/latest?cb=20240323091031" alt="Voltage Badge" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia Voltage</div>
+      <div class="opt-meta">Kalos · ginásio</div>
+    </div>
+    
+  </label><label class="opt" data-type="Elétrico" data-key="Electric Badge (Paldea)__Paldea" data-name="Insígnia Elétrica">
+    <input type="radio" name="type-Elétrico" value="Electric Badge (Paldea)__Paldea">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/a/a1/Electric_Badge_SV.png" alt="Electric Badge (Paldea)" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia Elétrica</div>
+      <div class="opt-meta">Paldea · ginásio</div>
+    </div>
+    
+  </label><label class="opt" data-type="Elétrico" data-key="Electrium Z__Alola" data-name="Electrium Z">
+    <input type="radio" name="type-Elétrico" value="Electrium Z__Alola">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/7/70/Electrium_Z_Dream.png" alt="Electrium Z" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Electrium Z</div>
+      <div class="opt-meta">Alola · z-crystal</div>
+    </div>
+    
+  </label></div>
+  </div><div class="type-block" data-type="Sombrio">
+    <div class="type-head">
+      <div><span class="type-pill type-Sombrio">Sombrio</span>
+      <span class="ach">«Insígnia Eclipse»</span> <span class="tot">69 Pokémon</span></div>
+      <span class="chosen-tag" id="tag-Sombrio"></span>
+    </div>
+    <div class="opts rec-opts"><label class="opt rec" data-type="Sombrio" data-key="Dark Badge__Galar" data-name="Insígnia de Sombrio">
+    <input type="radio" name="type-Sombrio" value="Dark Badge__Galar">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/4/4d/Dark_Badge.png" alt="Dark Badge" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia de Sombrio</div>
+      <div class="opt-meta">Galar · ginásio</div>
+    </div>
+    <span class="rectag">★ recomendada</span>
+  </label><label class="opt rec" data-type="Sombrio" data-key="Darkinium Z__Alola" data-name="Darkinium Z">
+    <input type="radio" name="type-Sombrio" value="Darkinium Z__Alola">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/1/1b/Darkinium_Z_Dream.png" alt="Darkinium Z" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Darkinium Z</div>
+      <div class="opt-meta">Alola · z-crystal</div>
+    </div>
+    <span class="rectag">★ recomendada</span>
+  </label></div>
+    <button class="more" onclick="this.nextElementSibling.classList.toggle('open');this.classList.toggle('open')">▸ ver todas as opções (2)</button>
+      <div class="opts more-opts"><label class="opt" data-type="Sombrio" data-key="Open Sky Titan - Bombirdier__Paldea" data-name="Titã do Céu Aberto">
+    <input type="radio" name="type-Sombrio" value="Open Sky Titan - Bombirdier__Paldea">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/1/11/0965Bombirdier.png" alt="Open Sky Titan - Bombirdier" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Titã do Céu Aberto</div>
+      <div class="opt-meta">Paldea · paldea-titan</div>
+    </div>
+    
+  </label><label class="opt" data-type="Sombrio" data-key="Segin Squad - Giacomo (Dark Crew)__Paldea" data-name="Esquadrão Segin - Giacomo">
+    <input type="radio" name="type-Sombrio" value="Segin Squad - Giacomo (Dark Crew)__Paldea">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/f/fc/Giacomo.png" alt="Segin Squad - Giacomo (Dark Crew)" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Esquadrão Segin - Giacomo</div>
+      <div class="opt-meta">Paldea · team-star</div>
+    </div>
+    
+  </label></div>
+  </div><div class="type-block" data-type="Fantasma">
+    <div class="type-head">
+      <div><span class="type-pill type-Fantasma">Fantasma</span>
+      <span class="ach">«Insígnia Assombração»</span> <span class="tot">65 Pokémon</span></div>
+      <span class="chosen-tag" id="tag-Fantasma"></span>
+    </div>
+    <div class="opts rec-opts"><label class="opt rec" data-type="Fantasma" data-key="Fog Badge__Johto" data-name="Insígnia Névoa">
+    <input type="radio" name="type-Fantasma" value="Fog Badge__Johto">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/4/48/Fog_Badge.png/revision/latest?cb=20081229170948" alt="Fog Badge" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia Névoa</div>
+      <div class="opt-meta">Johto · ginásio</div>
+    </div>
+    <span class="rectag">★ recomendada</span>
+  </label><label class="opt rec" data-type="Fantasma" data-key="Relic Badge__Sinnoh" data-name="Insígnia Relíquia">
+    <input type="radio" name="type-Fantasma" value="Relic Badge__Sinnoh">
+    <div class="opt-badge"><div class="fb" title="Insígnia roxa/violeta em forma de joia ornamentada ou relíquia antiga.">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia Relíquia</div>
+      <div class="opt-meta">Sinnoh · ginasio</div>
+    </div>
+    <span class="rectag">★ recomendada</span>
+  </label></div>
+    <button class="more" onclick="this.nextElementSibling.classList.toggle('open');this.classList.toggle('open')">▸ ver todas as opções (3)</button>
+      <div class="opts more-opts"><label class="opt" data-type="Fantasma" data-key="Ghost Badge__Galar" data-name="Insígnia de Fantasma">
+    <input type="radio" name="type-Fantasma" value="Ghost Badge__Galar">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/3/30/Ghost_Badge.png" alt="Ghost Badge" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia de Fantasma</div>
+      <div class="opt-meta">Galar · ginásio</div>
+    </div>
+    
+  </label><label class="opt" data-type="Fantasma" data-key="Ghost Badge (Paldea)__Paldea" data-name="Insígnia de Fantasma">
+    <input type="radio" name="type-Fantasma" value="Ghost Badge (Paldea)__Paldea">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/3/39/Ghost_Badge_SV.png" alt="Ghost Badge (Paldea)" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia de Fantasma</div>
+      <div class="opt-meta">Paldea · ginásio</div>
+    </div>
+    
+  </label><label class="opt" data-type="Fantasma" data-key="Ghostium Z__Alola" data-name="Ghostium Z">
+    <input type="radio" name="type-Fantasma" value="Ghostium Z__Alola">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/c/cd/Ghostium_Z_Dream.png" alt="Ghostium Z" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Ghostium Z</div>
+      <div class="opt-meta">Alola · z-crystal</div>
+    </div>
+    
+  </label></div>
+  </div><div class="type-block" data-type="Aço">
+    <div class="type-head">
+      <div><span class="type-pill type-Aço">Aço</span>
+      <span class="ach">«Insígnia Engrenagem»</span> <span class="tot">65 Pokémon</span></div>
+      <span class="chosen-tag" id="tag-Aço"></span>
+    </div>
+    <div class="opts rec-opts"><label class="opt rec" data-type="Aço" data-key="Mineral Badge__Johto" data-name="Insígnia Mineral">
+    <input type="radio" name="type-Aço" value="Mineral Badge__Johto">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/7/7b/Mineral_Badge.png/revision/latest?cb=20081229171159" alt="Mineral Badge" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia Mineral</div>
+      <div class="opt-meta">Johto · ginásio</div>
+    </div>
+    <span class="rectag">★ recomendada</span>
+  </label><label class="opt rec" data-type="Aço" data-key="Mine Badge__Sinnoh" data-name="Insígnia Mina">
+    <input type="radio" name="type-Aço" value="Mine Badge__Sinnoh">
+    <div class="opt-badge"><div class="fb" title="Insígnia metálica cinza em forma de engrenagem ou peça de aço industrial.">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia Mina</div>
+      <div class="opt-meta">Sinnoh · ginasio</div>
+    </div>
+    <span class="rectag">★ recomendada</span>
+  </label></div>
+    <button class="more" onclick="this.nextElementSibling.classList.toggle('open');this.classList.toggle('open')">▸ ver todas as opções (3)</button>
+      <div class="opts more-opts"><label class="opt" data-type="Aço" data-key="Steelium Z__Alola" data-name="Steelium Z">
+    <input type="radio" name="type-Aço" value="Steelium Z__Alola">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/4/42/Steelium_Z_Dream.png" alt="Steelium Z" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Steelium Z</div>
+      <div class="opt-meta">Alola · z-crystal</div>
+    </div>
+    
+  </label><label class="opt" data-type="Aço" data-key="Lurking Steel Titan - Orthworm__Paldea" data-name="Titã do Aço Oculto">
+    <input type="radio" name="type-Aço" value="Lurking Steel Titan - Orthworm__Paldea">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/f/f1/Orthworm.png" alt="Lurking Steel Titan - Orthworm" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Titã do Aço Oculto</div>
+      <div class="opt-meta">Paldea · paldea-titan</div>
+    </div>
+    
+  </label><label class="opt" data-type="Aço" data-key="Quaking Earth Titan - Iron Treads (Violet)__Paldea" data-name="Titã da Terra Tremida (Iron Treads)">
+    <input type="radio" name="type-Aço" value="Quaking Earth Titan - Iron Treads (Violet)__Paldea">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/5/5e/0990IronTreads.png" alt="Quaking Earth Titan - Iron Treads (Violet)" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Titã da Terra Tremida (Iron Treads)</div>
+      <div class="opt-meta">Paldea · paldea-titan</div>
+    </div>
+    
+  </label></div>
+  </div><div class="type-block" data-type="Fada">
+    <div class="type-head">
+      <div><span class="type-pill type-Fada">Fada</span>
+      <span class="ach">«Insígnia Encanto»</span> <span class="tot">64 Pokémon</span></div>
+      <span class="chosen-tag" id="tag-Fada"></span>
+    </div>
+    <div class="opts rec-opts"><label class="opt rec" data-type="Fada" data-key="Fairy Badge__Kalos" data-name="Insígnia Fairy">
+    <input type="radio" name="type-Fada" value="Fairy Badge__Kalos">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/d/d1/Fairy_Badge.png/revision/latest?cb=20191124174250" alt="Fairy Badge" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia Fairy</div>
+      <div class="opt-meta">Kalos · ginásio</div>
+    </div>
+    <span class="rectag">★ recomendada</span>
+  </label><label class="opt rec" data-type="Fada" data-key="Fairy Badge__Galar" data-name="Insígnia de Fada">
+    <input type="radio" name="type-Fada" value="Fairy Badge__Galar">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/d/d1/Fairy_Badge.png" alt="Fairy Badge" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia de Fada</div>
+      <div class="opt-meta">Galar · ginásio</div>
+    </div>
+    <span class="rectag">★ recomendada</span>
+  </label></div>
+    <button class="more" onclick="this.nextElementSibling.classList.toggle('open');this.classList.toggle('open')">▸ ver todas as opções (2)</button>
+      <div class="opts more-opts"><label class="opt" data-type="Fada" data-key="Fairium Z__Alola" data-name="Fairium Z">
+    <input type="radio" name="type-Fada" value="Fairium Z__Alola">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/b/ba/Fairium_Z_Dream.png" alt="Fairium Z" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Fairium Z</div>
+      <div class="opt-meta">Alola · z-crystal</div>
+    </div>
+    
+  </label><label class="opt" data-type="Fada" data-key="Ruchbah Squad - Ortega (Fairy Crew)__Paldea" data-name="Esquadrão Ruchbah - Ortega">
+    <input type="radio" name="type-Fada" value="Ruchbah Squad - Ortega (Fairy Crew)__Paldea">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/3/3b/Ortega.png" alt="Ruchbah Squad - Ortega (Fairy Crew)" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Esquadrão Ruchbah - Ortega</div>
+      <div class="opt-meta">Paldea · team-star</div>
+    </div>
+    
+  </label></div>
+  </div><div class="type-block" data-type="Gelo">
+    <div class="type-head">
+      <div><span class="type-pill type-Gelo">Gelo</span>
+      <span class="ach">«Insígnia Geleira»</span> <span class="tot">48 Pokémon</span></div>
+      <span class="chosen-tag" id="tag-Gelo"></span>
+    </div>
+    <div class="opts rec-opts"><label class="opt rec" data-type="Gelo" data-key="Glacier Badge__Johto" data-name="Insígnia Geleira">
+    <input type="radio" name="type-Gelo" value="Glacier Badge__Johto">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/e/e6/Glacier_Badge.png/revision/latest?cb=20081229170955" alt="Glacier Badge" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia Geleira</div>
+      <div class="opt-meta">Johto · ginásio</div>
+    </div>
+    <span class="rectag">★ recomendada</span>
+  </label><label class="opt rec" data-type="Gelo" data-key="Icicle Badge__Sinnoh" data-name="Insígnia Estalactite de Gelo">
+    <input type="radio" name="type-Gelo" value="Icicle Badge__Sinnoh">
+    <div class="opt-badge"><div class="fb" title="Insígnia azul-clara/branca em forma de estalactite de gelo ou cristal pontiagudo.">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia Estalactite de Gelo</div>
+      <div class="opt-meta">Sinnoh · ginasio</div>
+    </div>
+    <span class="rectag">★ recomendada</span>
+  </label></div>
+    <button class="more" onclick="this.nextElementSibling.classList.toggle('open');this.classList.toggle('open')">▸ ver todas as opções (5)</button>
+      <div class="opts more-opts"><label class="opt" data-type="Gelo" data-key="Freeze Badge__Unova" data-name="Insígnia Freeze">
+    <input type="radio" name="type-Gelo" value="Freeze Badge__Unova">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/a/ac/Freeze_Badge.png/revision/latest?cb=20110211044859" alt="Freeze Badge" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia Freeze</div>
+      <div class="opt-meta">Unova · ginásio</div>
+    </div>
+    
+  </label><label class="opt" data-type="Gelo" data-key="Iceberg Badge__Kalos" data-name="Insígnia Iceberg">
+    <input type="radio" name="type-Gelo" value="Iceberg Badge__Kalos">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/8/84/Iceberg_Badge.png/revision/latest?cb=20131105162357" alt="Iceberg Badge" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia Iceberg</div>
+      <div class="opt-meta">Kalos · ginásio</div>
+    </div>
+    
+  </label><label class="opt" data-type="Gelo" data-key="Ice Badge__Galar" data-name="Insígnia de Gelo">
+    <input type="radio" name="type-Gelo" value="Ice Badge__Galar">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/4/43/Ice_Badge.png" alt="Ice Badge" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia de Gelo</div>
+      <div class="opt-meta">Galar · ginásio</div>
+    </div>
+    
+  </label><label class="opt" data-type="Gelo" data-key="Ice Badge (Paldea)__Paldea" data-name="Insígnia de Gelo">
+    <input type="radio" name="type-Gelo" value="Ice Badge (Paldea)__Paldea">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/8/81/Ice_Badge_SV.png" alt="Ice Badge (Paldea)" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Insígnia de Gelo</div>
+      <div class="opt-meta">Paldea · ginásio</div>
+    </div>
+    
+  </label><label class="opt" data-type="Gelo" data-key="Icium Z__Alola" data-name="Icium Z">
+    <input type="radio" name="type-Gelo" value="Icium Z__Alola">
+    <div class="opt-badge"><img src="https://static.wikia.nocookie.net/pokemon/images/b/b1/Icium_Z_Dream.png" alt="Icium Z" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">🏅</div></div>
+    <div class="opt-info">
+      <div class="opt-name">Icium Z</div>
+      <div class="opt-meta">Alola · z-crystal</div>
+    </div>
+    
+  </label></div>
+  </div></main>
+<script>
+  const TYPES = ["Água","Normal","Grama","Voador","Psíquico","Inseto","Veneno","Fogo","Terra","Pedra","Lutador","Dragão","Elétrico","Sombrio","Fantasma","Aço","Fada","Gelo"];
+  function refresh(){
+    // marca selecionados, detecta duplicadas (mesma insígnia em tipos diferentes)
+    const chosen = {}; // key -> type
+    let n=0;
+    for(const t of TYPES){
+      const r=document.querySelector('input[name="type-'+t+'"]:checked');
+      const tag=document.getElementById('tag-'+t);
+      if(r){ n++; chosen[r.value]=t; tag.textContent='✓ '+(r.closest('.opt').dataset.name); }
+      else tag.textContent='';
+    }
+    document.querySelectorAll('.opt').forEach(o=>{
+      const inp=o.querySelector('input'); o.classList.toggle('sel',inp.checked);
+      const owner=chosen[o.dataset.key];
+      o.classList.toggle('dup', !!owner && owner!==o.dataset.type);
+    });
+    document.getElementById('fill').style.width=(n/18*100)+'%';
+    document.getElementById('prog').textContent=n+'/18';
+  }
+  document.addEventListener('change',e=>{ if(e.target.matches('input[type=radio]')) refresh(); });
+  // pré-seleciona a #1 recomendada de cada tipo
+  document.querySelectorAll('.rec-opts').forEach(box=>{ const first=box.querySelector('input'); if(first) first.checked=true; });
+  refresh();
+  function copyChoices(){
+    let lines=['ESCOLHAS DE INSÍGNIA POR TIPO:'];
+    for(const t of TYPES){
+      const r=document.querySelector('input[name="type-'+t+'"]:checked');
+      const o=r?r.closest('.opt'):null;
+      lines.push('- '+t+' → '+(o?o.dataset.name+' ('+o.querySelector('.opt-meta').textContent+')':'(não escolhido)'));
+    }
+    const txt=lines.join('\n');
+    const ta=document.getElementById('out'); ta.value=txt; ta.classList.add('show'); ta.select();
+    if(navigator.clipboard) navigator.clipboard.writeText(txt).catch(()=>{});
+  }
+</script></body></html>

@@ -1,0 +1,140 @@
+<!doctype html><html lang="pt-BR"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Troféus — render 3D (WebGL)</title>
+<style>
+  *{box-sizing:border-box} html,body{margin:0;height:100%}
+  body{background:radial-gradient(120% 90% at 50% 0%,#2a3358,#0c0d16 60%);color:#eef0f8;font-family:system-ui,Segoe UI,Roboto,sans-serif;overflow:hidden}
+  header{position:fixed;top:0;left:0;right:0;z-index:5;padding:12px 18px;background:linear-gradient(#0c0d16cc,transparent)}
+  h1{margin:0;font-size:1.1rem} p{margin:4px 0 0;color:#9aa0bb;font-size:.82rem;max-width:860px}
+  #legend{position:fixed;bottom:10px;left:0;right:0;z-index:5;display:flex;justify-content:center;gap:26px;color:#aab;font-size:.72rem;flex-wrap:wrap;padding:0 10px}
+  #legend b{color:#ffd56b}
+  #hint{position:fixed;top:14px;right:16px;z-index:6;color:#9aa0bb;font-size:.72rem;background:#1a1f33aa;padding:6px 10px;border-radius:8px}
+  canvas{display:block}
+  #loading{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;color:#9aa0bb;font-size:.9rem;z-index:4}
+</style>
+<script type="importmap">{"imports":{
+  "three":"https://unpkg.com/three@0.160.0/build/three.module.js",
+  "three/addons/":"https://unpkg.com/three@0.160.0/examples/jsm/"
+}}</script>
+</head><body>
+<header>
+  <h1>🏆 Troféus — render 3D em tempo real (WebGL/Three.js)</h1>
+  <p>Pedestal torneado, esfera com vidro/clearcoat, aro metálico e reflexos de ambiente PBR. <b>Arraste pra girar</b>, scroll pra zoom. Compare com a versão vetorial.</p>
+</header>
+<div id="hint">🖱️ arraste pra girar · scroll = zoom</div>
+<div id="loading">carregando render 3D…</div>
+<div id="legend"></div>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+
+const renderer = new THREE.WebGLRenderer({ antialias:true, alpha:true });
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.setSize(innerWidth, innerHeight);
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.05;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+document.body.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+
+const camera = new THREE.PerspectiveCamera(35, innerWidth/innerHeight, 0.1, 100);
+camera.position.set(0, 4.2, 19);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.target.set(0, 1.7, 0);
+controls.enableDamping = true; controls.dampingFactor = .08;
+controls.minDistance = 8; controls.maxDistance = 32;
+controls.maxPolarAngle = Math.PI*0.56;
+controls.autoRotate = true; controls.autoRotateSpeed = 0.9;
+
+// luzes
+const key = new THREE.DirectionalLight(0xffffff, 2.2);
+key.position.set(5, 11, 8); key.castShadow = true;
+key.shadow.mapSize.set(2048,2048);
+key.shadow.camera.near=1; key.shadow.camera.far=40;
+key.shadow.camera.left=-12; key.shadow.camera.right=12; key.shadow.camera.top=12; key.shadow.camera.bottom=-6;
+key.shadow.bias=-0.0004;
+scene.add(key);
+const rim = new THREE.DirectionalLight(0x88aaff, 0.8); rim.position.set(-8,6,-6); scene.add(rim);
+scene.add(new THREE.AmbientLight(0xffffff, 0.25));
+
+// chão (recebe sombra)
+const ground = new THREE.Mesh(new THREE.PlaneGeometry(80,80), new THREE.ShadowMaterial({opacity:.38}));
+ground.rotation.x = -Math.PI/2; ground.position.y = 0.001; ground.receiveShadow = true; scene.add(ground);
+
+// perfil do pedestal (x=raio, y=altura) -> torneado
+const P = [
+  [0.00,0.00],[1.55,0.00],[1.55,0.22],[1.30,0.30],[1.14,0.36],
+  [1.06,0.56],[1.06,1.16],[0.80,1.30],[0.44,1.58],[0.42,2.06],
+  [0.64,2.26],[0.56,2.38],[0.30,2.48],[0.00,2.48]
+].map(p=>new THREE.Vector2(p[0],p[1]));
+const pedGeo = new THREE.LatheGeometry(P, 96);
+pedGeo.computeVertexNormals();
+
+const TIER = {
+  bronze:{c:0xcd7f32,r:0.32}, silver:{c:0xd6dde8,r:0.20}, gold:{c:0xffcb45,r:0.22},
+  platinum:{c:0xe9f2ff,r:0.12}, diamond:{c:0xc6f4ff,r:0.05},
+};
+const ORB = {
+  water:0x2f86d8, fire:0xe8542a, grass:0x46b54a, psy:0xef5a8a, neutral:0x222a48, gold:0xd9a93a,
+};
+const ART = n=>`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${n}.png`;
+const B = s=>`https://static.wikia.nocookie.net/pokemon/images/${s}`;
+
+const texLoader = new THREE.TextureLoader(); texLoader.setCrossOrigin('anonymous');
+function tex(url){ const t=texLoader.load(url); t.colorSpace=THREE.SRGBColorSpace; t.anisotropy=8; return t; }
+
+function buildTrophy({tier, orb, symbol, big}){
+  const g = new THREE.Group();
+  const m = TIER[tier];
+  // pedestal metálico
+  const ped = new THREE.Mesh(pedGeo, new THREE.MeshStandardMaterial({
+    color:m.c, metalness:1.0, roughness:m.r, envMapIntensity:1.25 }));
+  ped.castShadow = true; ped.receiveShadow = true; g.add(ped);
+
+  // esfera (vidro/gema)
+  const orbR = 0.98, orbY = 3.15;
+  const sphere = new THREE.Mesh(new THREE.SphereGeometry(orbR, 64, 64),
+    new THREE.MeshPhysicalMaterial({ color:ORB[orb], metalness:0.0, roughness:0.06,
+      clearcoat:1.0, clearcoatRoughness:0.05, envMapIntensity:1.4,
+      iridescence: tier==='diamond'?0.7:0, iridescenceIOR:1.3 }));
+  sphere.position.y = orbY; sphere.castShadow = true; g.add(sphere);
+
+  // aro metálico ao redor da esfera (de frente p/ câmera)
+  const ring = new THREE.Mesh(new THREE.TorusGeometry(orbR*1.0, 0.11, 28, 80),
+    new THREE.MeshStandardMaterial({ color:m.c, metalness:1.0, roughness:m.r, envMapIntensity:1.3 }));
+  ring.position.y = orbY; ring.castShadow = true; g.add(ring);
+
+  // símbolo (decal de frente)
+  if(symbol){
+    const s = big? 1.55 : 1.2;
+    const plane = new THREE.Mesh(new THREE.PlaneGeometry(s, s),
+      new THREE.MeshBasicMaterial({ map:tex(symbol), transparent:true, depthWrite:false }));
+    plane.position.set(0, orbY, orbR*0.66); g.add(plane);
+  }
+  return g;
+}
+
+const ROW = [
+  {tier:'bronze',  orb:'water', symbol:B('9/9c/Cascade_Badge.png'), cap:'Bronze · Água'},
+  {tier:'silver',  orb:'fire',  symbol:B('1/12/Volcano_Badge.png'), cap:'Prata · Fogo'},
+  {tier:'gold',    orb:'grass', symbol:B('b/b5/Rainbow_Badge.png'), cap:'Ouro · Grama'},
+  {tier:'platinum',orb:'psy',   symbol:B('6/6b/Marsh_Badge.png'),   cap:'Platina · Psíquico'},
+  {tier:'diamond', orb:'neutral',symbol:ART(150), big:true,         cap:'Diamante · Lendário (Mewtwo)'},
+];
+const spacing = 3.0, x0 = -(ROW.length-1)*spacing/2;
+ROW.forEach((d,i)=>{ const t = buildTrophy(d); t.position.x = x0 + i*spacing; scene.add(t); });
+
+document.getElementById('legend').innerHTML = ROW.map(d=>`<span><b>${d.cap.split(' · ')[0]}</b> · ${d.cap.split(' · ')[1]}</span>`).join('');
+document.getElementById('loading').remove();
+
+addEventListener('resize', ()=>{ camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth,innerHeight); });
+(function loop(){ requestAnimationFrame(loop); controls.update(); renderer.render(scene,camera); })();
+</script>
+</body></html>

@@ -1,0 +1,368 @@
+<!doctype html><html lang="pt-BR"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Escolher ícones — por GERAÇÃO</title>
+<style>
+  :root{--bg:#14141f;--bg2:#1c1c2b;--card:#212133;--line:#2e2e44;--txt:#e8e8f0;--dim:#9a9ab0;--accent:#e94560;--gold:#ffcc33;}
+  *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--txt);font-family:system-ui,Segoe UI,Roboto,sans-serif}
+  header{position:sticky;top:0;z-index:10;background:#15151f;border-bottom:1px solid var(--line);padding:12px 18px}
+  header h1{margin:0;font-size:1.1rem} header p{margin:3px 0 8px;color:var(--dim);font-size:.8rem}
+  .bar{height:8px;background:var(--bg2);border-radius:6px;overflow:hidden} .fill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--gold));transition:width .3s}
+  .barrow{display:flex;align-items:center;gap:10px} .prog{font-size:.8rem;color:var(--dim);white-space:nowrap}
+  .copy{background:var(--accent);border:0;color:#fff;padding:7px 14px;border-radius:8px;font-weight:600;cursor:pointer;font-size:.82rem}
+  main{max-width:860px;margin:0 auto;padding:16px 16px 80px}
+  .type-block{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:14px}
+  .type-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:6px}
+  .type-pill{background:#3a4a8c;color:#fff;font-weight:800;padding:2px 10px;border-radius:20px;font-size:.8rem}
+  .type-pill.agg{background:#6a4a8c}
+  .ach{font-style:italic;color:var(--gold);font-size:.85rem} .tot{color:var(--dim);font-size:.75rem}
+  .chosen-tag{font-size:.75rem;color:#7CFC9B}
+  .opts{display:flex;gap:10px;flex-wrap:wrap} .more-opts{display:none;margin-top:10px} .more-opts.open{display:flex}
+  .opt{display:flex;align-items:center;gap:8px;background:var(--bg2);border:2px solid var(--line);border-radius:10px;padding:8px 10px;cursor:pointer;min-width:200px;position:relative}
+  .opt:hover{border-color:#4a4a66} .opt input{position:absolute;opacity:0}
+  .opt.sel{border-color:var(--gold);background:#2a2620;box-shadow:0 0 0 1px var(--gold) inset}
+  .opt.dup{opacity:.45} .opt.dup::after{content:'já usada';position:absolute;top:2px;right:6px;font-size:.55rem;color:var(--accent)}
+  .opt-badge img{width:48px;height:48px;object-fit:contain} .fb{width:48px;height:48px;display:flex;align-items:center;justify-content:center;background:#15151f;border:1px dashed var(--line);border-radius:8px;font-size:1.4rem}
+  .opt-name{font-size:.82rem;font-weight:600} .opt-meta{font-size:.66rem;color:var(--dim)}
+  .rectag{font-size:.58rem;color:var(--gold);position:absolute;bottom:3px;right:8px}
+  .more{margin-top:10px;background:none;border:0;color:var(--accent);cursor:pointer;font-size:.8rem;padding:0}
+  textarea{width:100%;height:200px;background:#0e0e16;color:#bfe;border:1px solid var(--line);border-radius:8px;padding:10px;font-family:monospace;font-size:.78rem;margin-top:10px;display:none} textarea.show{display:block}
+</style></head><body>
+<header>
+  <h1>🏆 Escolha o ícone de cada GERAÇÃO</h1>
+  <p>Como as insígnias de ginásio foram usadas nos tipos, aqui o sugerido é o <b>lendário-mascote</b> da era. A #1 já vem marcada — só troque o que quiser. "ver todas" tem outros lendários + troféu custom.</p>
+  <div class="barrow"><div class="bar" style="flex:1"><div class="fill" id="fill"></div></div><span class="prog" id="prog">0/12</span><button class="copy" onclick="copyChoices()">copiar escolhas</button></div>
+  <textarea id="out" readonly></textarea>
+</header>
+<main><div class="type-block" data-blk="kanto">
+    <div class="type-head"><div><span class="type-pill">Gen 1 · Kanto</span> <span class="ach">«Mestre de Kanto — A Origem»</span> <span class="tot">151 Pokémon</span></div><span class="chosen-tag" id="tag-kanto"></span></div>
+    <div class="opts"><label class="opt rec" data-blk="kanto" data-key="poke-150" data-name="Mewtwo">
+    <input type="radio" name="blk-kanto" value="poke-150">
+    <div class="opt-badge"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/150.png" alt="Mewtwo" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">❓</div></div>
+    <div class="opt-info"><div class="opt-name">Mewtwo</div><div class="opt-meta">Lendário · #150</div></div>
+    <span class="rectag">★ recomendada</span>
+  </label><label class="opt rec" data-blk="kanto" data-key="poke-6" data-name="Charizard">
+    <input type="radio" name="blk-kanto" value="poke-6">
+    <div class="opt-badge"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/6.png" alt="Charizard" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">❓</div></div>
+    <div class="opt-info"><div class="opt-name">Charizard</div><div class="opt-meta">Lendário · #6</div></div>
+    <span class="rectag">★ recomendada</span>
+  </label></div>
+    <button class="more" onclick="this.nextElementSibling.classList.toggle('open');this.classList.toggle('open')">▸ ver todas as opções (5)</button>
+      <div class="opts more-opts"><label class="opt" data-blk="kanto" data-key="poke-151" data-name="Mew">
+    <input type="radio" name="blk-kanto" value="poke-151">
+    <div class="opt-badge"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/151.png" alt="Mew" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">❓</div></div>
+    <div class="opt-info"><div class="opt-name">Mew</div><div class="opt-meta">Lendário · #151</div></div>
+    
+  </label><label class="opt" data-blk="kanto" data-key="poke-144" data-name="Articuno">
+    <input type="radio" name="blk-kanto" value="poke-144">
+    <div class="opt-badge"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/144.png" alt="Articuno" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">❓</div></div>
+    <div class="opt-info"><div class="opt-name">Articuno</div><div class="opt-meta">Lendário · #144</div></div>
+    
+  </label><label class="opt" data-blk="kanto" data-key="poke-145" data-name="Zapdos">
+    <input type="radio" name="blk-kanto" value="poke-145">
+    <div class="opt-badge"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/145.png" alt="Zapdos" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">❓</div></div>
+    <div class="opt-info"><div class="opt-name">Zapdos</div><div class="opt-meta">Lendário · #145</div></div>
+    
+  </label><label class="opt" data-blk="kanto" data-key="poke-146" data-name="Moltres">
+    <input type="radio" name="blk-kanto" value="poke-146">
+    <div class="opt-badge"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/146.png" alt="Moltres" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">❓</div></div>
+    <div class="opt-info"><div class="opt-name">Moltres</div><div class="opt-meta">Lendário · #146</div></div>
+    
+  </label><label class="opt" data-blk="kanto" data-key="custom-troféu-da-liga-índigo" data-name="Troféu da Liga Índigo">
+    <input type="radio" name="blk-kanto" value="custom-troféu-da-liga-índigo">
+    <div class="opt-badge"><div class="fb">🏆</div></div>
+    <div class="opt-info"><div class="opt-name">Troféu da Liga Índigo</div><div class="opt-meta">emblema custom</div></div>
+    
+  </label></div>
+  </div><div class="type-block" data-blk="johto">
+    <div class="type-head"><div><span class="type-pill">Gen 2 · Johto</span> <span class="ach">«Despertar de Johto»</span> <span class="tot">100 Pokémon</span></div><span class="chosen-tag" id="tag-johto"></span></div>
+    <div class="opts"><label class="opt rec" data-blk="johto" data-key="poke-250" data-name="Ho-Oh">
+    <input type="radio" name="blk-johto" value="poke-250">
+    <div class="opt-badge"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/250.png" alt="Ho-Oh" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">❓</div></div>
+    <div class="opt-info"><div class="opt-name">Ho-Oh</div><div class="opt-meta">Lendário · #250</div></div>
+    <span class="rectag">★ recomendada</span>
+  </label><label class="opt rec" data-blk="johto" data-key="poke-249" data-name="Lugia">
+    <input type="radio" name="blk-johto" value="poke-249">
+    <div class="opt-badge"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/249.png" alt="Lugia" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">❓</div></div>
+    <div class="opt-info"><div class="opt-name">Lugia</div><div class="opt-meta">Lendário · #249</div></div>
+    <span class="rectag">★ recomendada</span>
+  </label></div>
+    <button class="more" onclick="this.nextElementSibling.classList.toggle('open');this.classList.toggle('open')">▸ ver todas as opções (3)</button>
+      <div class="opts more-opts"><label class="opt" data-blk="johto" data-key="poke-251" data-name="Celebi">
+    <input type="radio" name="blk-johto" value="poke-251">
+    <div class="opt-badge"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/251.png" alt="Celebi" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">❓</div></div>
+    <div class="opt-info"><div class="opt-name">Celebi</div><div class="opt-meta">Lendário · #251</div></div>
+    
+  </label><label class="opt" data-blk="johto" data-key="poke-248" data-name="Tyranitar">
+    <input type="radio" name="blk-johto" value="poke-248">
+    <div class="opt-badge"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/248.png" alt="Tyranitar" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">❓</div></div>
+    <div class="opt-info"><div class="opt-name">Tyranitar</div><div class="opt-meta">Lendário · #248</div></div>
+    
+  </label><label class="opt" data-blk="johto" data-key="custom-troféu-da-liga-de-johto" data-name="Troféu da Liga de Johto">
+    <input type="radio" name="blk-johto" value="custom-troféu-da-liga-de-johto">
+    <div class="opt-badge"><div class="fb">🏆</div></div>
+    <div class="opt-info"><div class="opt-name">Troféu da Liga de Johto</div><div class="opt-meta">emblema custom</div></div>
+    
+  </label></div>
+  </div><div class="type-block" data-blk="hoenn">
+    <div class="type-head"><div><span class="type-pill">Gen 3 · Hoenn</span> <span class="ach">«Soberano de Hoenn»</span> <span class="tot">135 Pokémon</span></div><span class="chosen-tag" id="tag-hoenn"></span></div>
+    <div class="opts"><label class="opt rec" data-blk="hoenn" data-key="poke-384" data-name="Rayquaza">
+    <input type="radio" name="blk-hoenn" value="poke-384">
+    <div class="opt-badge"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/384.png" alt="Rayquaza" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">❓</div></div>
+    <div class="opt-info"><div class="opt-name">Rayquaza</div><div class="opt-meta">Lendário · #384</div></div>
+    <span class="rectag">★ recomendada</span>
+  </label><label class="opt rec" data-blk="hoenn" data-key="poke-383" data-name="Groudon">
+    <input type="radio" name="blk-hoenn" value="poke-383">
+    <div class="opt-badge"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/383.png" alt="Groudon" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">❓</div></div>
+    <div class="opt-info"><div class="opt-name">Groudon</div><div class="opt-meta">Lendário · #383</div></div>
+    <span class="rectag">★ recomendada</span>
+  </label></div>
+    <button class="more" onclick="this.nextElementSibling.classList.toggle('open');this.classList.toggle('open')">▸ ver todas as opções (3)</button>
+      <div class="opts more-opts"><label class="opt" data-blk="hoenn" data-key="poke-382" data-name="Kyogre">
+    <input type="radio" name="blk-hoenn" value="poke-382">
+    <div class="opt-badge"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/382.png" alt="Kyogre" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">❓</div></div>
+    <div class="opt-info"><div class="opt-name">Kyogre</div><div class="opt-meta">Lendário · #382</div></div>
+    
+  </label><label class="opt" data-blk="hoenn" data-key="poke-386" data-name="Deoxys">
+    <input type="radio" name="blk-hoenn" value="poke-386">
+    <div class="opt-badge"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/386.png" alt="Deoxys" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">❓</div></div>
+    <div class="opt-info"><div class="opt-name">Deoxys</div><div class="opt-meta">Lendário · #386</div></div>
+    
+  </label><label class="opt" data-blk="hoenn" data-key="custom-troféu-da-liga-de-hoenn" data-name="Troféu da Liga de Hoenn">
+    <input type="radio" name="blk-hoenn" value="custom-troféu-da-liga-de-hoenn">
+    <div class="opt-badge"><div class="fb">🏆</div></div>
+    <div class="opt-info"><div class="opt-name">Troféu da Liga de Hoenn</div><div class="opt-meta">emblema custom</div></div>
+    
+  </label></div>
+  </div><div class="type-block" data-blk="sinnoh">
+    <div class="type-head"><div><span class="type-pill">Gen 4 · Sinnoh</span> <span class="ach">«Guardião de Sinnoh»</span> <span class="tot">107 Pokémon</span></div><span class="chosen-tag" id="tag-sinnoh"></span></div>
+    <div class="opts"><label class="opt rec" data-blk="sinnoh" data-key="poke-483" data-name="Dialga">
+    <input type="radio" name="blk-sinnoh" value="poke-483">
+    <div class="opt-badge"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/483.png" alt="Dialga" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">❓</div></div>
+    <div class="opt-info"><div class="opt-name">Dialga</div><div class="opt-meta">Lendário · #483</div></div>
+    <span class="rectag">★ recomendada</span>
+  </label><label class="opt rec" data-blk="sinnoh" data-key="poke-484" data-name="Palkia">
+    <input type="radio" name="blk-sinnoh" value="poke-484">
+    <div class="opt-badge"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/484.png" alt="Palkia" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">❓</div></div>
+    <div class="opt-info"><div class="opt-name">Palkia</div><div class="opt-meta">Lendário · #484</div></div>
+    <span class="rectag">★ recomendada</span>
+  </label></div>
+    <button class="more" onclick="this.nextElementSibling.classList.toggle('open');this.classList.toggle('open')">▸ ver todas as opções (3)</button>
+      <div class="opts more-opts"><label class="opt" data-blk="sinnoh" data-key="poke-487" data-name="Giratina">
+    <input type="radio" name="blk-sinnoh" value="poke-487">
+    <div class="opt-badge"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/487.png" alt="Giratina" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">❓</div></div>
+    <div class="opt-info"><div class="opt-name">Giratina</div><div class="opt-meta">Lendário · #487</div></div>
+    
+  </label><label class="opt" data-blk="sinnoh" data-key="poke-493" data-name="Arceus">
+    <input type="radio" name="blk-sinnoh" value="poke-493">
+    <div class="opt-badge"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/493.png" alt="Arceus" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">❓</div></div>
+    <div class="opt-info"><div class="opt-name">Arceus</div><div class="opt-meta">Lendário · #493</div></div>
+    
+  </label><label class="opt" data-blk="sinnoh" data-key="custom-troféu-da-liga-de-sinnoh" data-name="Troféu da Liga de Sinnoh">
+    <input type="radio" name="blk-sinnoh" value="custom-troféu-da-liga-de-sinnoh">
+    <div class="opt-badge"><div class="fb">🏆</div></div>
+    <div class="opt-info"><div class="opt-name">Troféu da Liga de Sinnoh</div><div class="opt-meta">emblema custom</div></div>
+    
+  </label></div>
+  </div><div class="type-block" data-blk="unova">
+    <div class="type-head"><div><span class="type-pill">Gen 5 · Unova</span> <span class="ach">«Herói de Unova»</span> <span class="tot">156 Pokémon</span></div><span class="chosen-tag" id="tag-unova"></span></div>
+    <div class="opts"><label class="opt rec" data-blk="unova" data-key="poke-643" data-name="Reshiram">
+    <input type="radio" name="blk-unova" value="poke-643">
+    <div class="opt-badge"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/643.png" alt="Reshiram" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">❓</div></div>
+    <div class="opt-info"><div class="opt-name">Reshiram</div><div class="opt-meta">Lendário · #643</div></div>
+    <span class="rectag">★ recomendada</span>
+  </label><label class="opt rec" data-blk="unova" data-key="poke-644" data-name="Zekrom">
+    <input type="radio" name="blk-unova" value="poke-644">
+    <div class="opt-badge"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/644.png" alt="Zekrom" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">❓</div></div>
+    <div class="opt-info"><div class="opt-name">Zekrom</div><div class="opt-meta">Lendário · #644</div></div>
+    <span class="rectag">★ recomendada</span>
+  </label></div>
+    <button class="more" onclick="this.nextElementSibling.classList.toggle('open');this.classList.toggle('open')">▸ ver todas as opções (2)</button>
+      <div class="opts more-opts"><label class="opt" data-blk="unova" data-key="poke-646" data-name="Kyurem">
+    <input type="radio" name="blk-unova" value="poke-646">
+    <div class="opt-badge"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/646.png" alt="Kyurem" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">❓</div></div>
+    <div class="opt-info"><div class="opt-name">Kyurem</div><div class="opt-meta">Lendário · #646</div></div>
+    
+  </label><label class="opt" data-blk="unova" data-key="custom-troféu-da-liga-de-unova" data-name="Troféu da Liga de Unova">
+    <input type="radio" name="blk-unova" value="custom-troféu-da-liga-de-unova">
+    <div class="opt-badge"><div class="fb">🏆</div></div>
+    <div class="opt-info"><div class="opt-name">Troféu da Liga de Unova</div><div class="opt-meta">emblema custom</div></div>
+    
+  </label></div>
+  </div><div class="type-block" data-blk="kalos">
+    <div class="type-head"><div><span class="type-pill">Gen 6 · Kalos</span> <span class="ach">«Cavaleiro de Kalos»</span> <span class="tot">72 Pokémon</span></div><span class="chosen-tag" id="tag-kalos"></span></div>
+    <div class="opts"><label class="opt rec" data-blk="kalos" data-key="poke-716" data-name="Xerneas">
+    <input type="radio" name="blk-kalos" value="poke-716">
+    <div class="opt-badge"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/716.png" alt="Xerneas" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">❓</div></div>
+    <div class="opt-info"><div class="opt-name">Xerneas</div><div class="opt-meta">Lendário · #716</div></div>
+    <span class="rectag">★ recomendada</span>
+  </label><label class="opt rec" data-blk="kalos" data-key="poke-717" data-name="Yveltal">
+    <input type="radio" name="blk-kalos" value="poke-717">
+    <div class="opt-badge"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/717.png" alt="Yveltal" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">❓</div></div>
+    <div class="opt-info"><div class="opt-name">Yveltal</div><div class="opt-meta">Lendário · #717</div></div>
+    <span class="rectag">★ recomendada</span>
+  </label></div>
+    <button class="more" onclick="this.nextElementSibling.classList.toggle('open');this.classList.toggle('open')">▸ ver todas as opções (2)</button>
+      <div class="opts more-opts"><label class="opt" data-blk="kalos" data-key="poke-718" data-name="Zygarde">
+    <input type="radio" name="blk-kalos" value="poke-718">
+    <div class="opt-badge"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/718.png" alt="Zygarde" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">❓</div></div>
+    <div class="opt-info"><div class="opt-name">Zygarde</div><div class="opt-meta">Lendário · #718</div></div>
+    
+  </label><label class="opt" data-blk="kalos" data-key="custom-troféu-da-liga-de-kalos" data-name="Troféu da Liga de Kalos">
+    <input type="radio" name="blk-kalos" value="custom-troféu-da-liga-de-kalos">
+    <div class="opt-badge"><div class="fb">🏆</div></div>
+    <div class="opt-info"><div class="opt-name">Troféu da Liga de Kalos</div><div class="opt-meta">emblema custom</div></div>
+    
+  </label></div>
+  </div><div class="type-block" data-blk="alola">
+    <div class="type-head"><div><span class="type-pill">Gen 7 · Alola</span> <span class="ach">«Kahuna de Alola»</span> <span class="tot">88 Pokémon</span></div><span class="chosen-tag" id="tag-alola"></span></div>
+    <div class="opts"><label class="opt rec" data-blk="alola" data-key="poke-791" data-name="Solgaleo">
+    <input type="radio" name="blk-alola" value="poke-791">
+    <div class="opt-badge"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/791.png" alt="Solgaleo" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">❓</div></div>
+    <div class="opt-info"><div class="opt-name">Solgaleo</div><div class="opt-meta">Lendário · #791</div></div>
+    <span class="rectag">★ recomendada</span>
+  </label><label class="opt rec" data-blk="alola" data-key="poke-792" data-name="Lunala">
+    <input type="radio" name="blk-alola" value="poke-792">
+    <div class="opt-badge"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/792.png" alt="Lunala" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">❓</div></div>
+    <div class="opt-info"><div class="opt-name">Lunala</div><div class="opt-meta">Lendário · #792</div></div>
+    <span class="rectag">★ recomendada</span>
+  </label></div>
+    <button class="more" onclick="this.nextElementSibling.classList.toggle('open');this.classList.toggle('open')">▸ ver todas as opções (2)</button>
+      <div class="opts more-opts"><label class="opt" data-blk="alola" data-key="poke-800" data-name="Necrozma">
+    <input type="radio" name="blk-alola" value="poke-800">
+    <div class="opt-badge"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/800.png" alt="Necrozma" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">❓</div></div>
+    <div class="opt-info"><div class="opt-name">Necrozma</div><div class="opt-meta">Lendário · #800</div></div>
+    
+  </label><label class="opt" data-blk="alola" data-key="custom-z-ring-(pulseira-z)" data-name="Z-Ring (Pulseira Z)">
+    <input type="radio" name="blk-alola" value="custom-z-ring-(pulseira-z)">
+    <div class="opt-badge"><div class="fb">💍</div></div>
+    <div class="opt-info"><div class="opt-name">Z-Ring (Pulseira Z)</div><div class="opt-meta">emblema custom</div></div>
+    
+  </label></div>
+  </div><div class="type-block" data-blk="galar">
+    <div class="type-head"><div><span class="type-pill">Gen 8 · Galar</span> <span class="ach">«Campeão de Galar»</span> <span class="tot">96 Pokémon</span></div><span class="chosen-tag" id="tag-galar"></span></div>
+    <div class="opts"><label class="opt rec" data-blk="galar" data-key="poke-888" data-name="Zacian">
+    <input type="radio" name="blk-galar" value="poke-888">
+    <div class="opt-badge"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/888.png" alt="Zacian" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">❓</div></div>
+    <div class="opt-info"><div class="opt-name">Zacian</div><div class="opt-meta">Lendário · #888</div></div>
+    <span class="rectag">★ recomendada</span>
+  </label><label class="opt rec" data-blk="galar" data-key="poke-889" data-name="Zamazenta">
+    <input type="radio" name="blk-galar" value="poke-889">
+    <div class="opt-badge"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/889.png" alt="Zamazenta" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">❓</div></div>
+    <div class="opt-info"><div class="opt-name">Zamazenta</div><div class="opt-meta">Lendário · #889</div></div>
+    <span class="rectag">★ recomendada</span>
+  </label></div>
+    <button class="more" onclick="this.nextElementSibling.classList.toggle('open');this.classList.toggle('open')">▸ ver todas as opções (2)</button>
+      <div class="opts more-opts"><label class="opt" data-blk="galar" data-key="poke-890" data-name="Eternatus">
+    <input type="radio" name="blk-galar" value="poke-890">
+    <div class="opt-badge"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/890.png" alt="Eternatus" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">❓</div></div>
+    <div class="opt-info"><div class="opt-name">Eternatus</div><div class="opt-meta">Lendário · #890</div></div>
+    
+  </label><label class="opt" data-blk="galar" data-key="custom-troféu-da-copa-de-galar" data-name="Troféu da Copa de Galar">
+    <input type="radio" name="blk-galar" value="custom-troféu-da-copa-de-galar">
+    <div class="opt-badge"><div class="fb">🏆</div></div>
+    <div class="opt-info"><div class="opt-name">Troféu da Copa de Galar</div><div class="opt-meta">emblema custom</div></div>
+    
+  </label></div>
+  </div><div class="type-block" data-blk="paldea">
+    <div class="type-head"><div><span class="type-pill">Gen 9 · Paldea</span> <span class="ach">«Tesouro de Paldea»</span> <span class="tot">120 Pokémon</span></div><span class="chosen-tag" id="tag-paldea"></span></div>
+    <div class="opts"><label class="opt rec" data-blk="paldea" data-key="poke-1007" data-name="Koraidon">
+    <input type="radio" name="blk-paldea" value="poke-1007">
+    <div class="opt-badge"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1007.png" alt="Koraidon" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">❓</div></div>
+    <div class="opt-info"><div class="opt-name">Koraidon</div><div class="opt-meta">Lendário · #1007</div></div>
+    <span class="rectag">★ recomendada</span>
+  </label><label class="opt rec" data-blk="paldea" data-key="poke-1008" data-name="Miraidon">
+    <input type="radio" name="blk-paldea" value="poke-1008">
+    <div class="opt-badge"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1008.png" alt="Miraidon" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">❓</div></div>
+    <div class="opt-info"><div class="opt-name">Miraidon</div><div class="opt-meta">Lendário · #1008</div></div>
+    <span class="rectag">★ recomendada</span>
+  </label></div>
+    <button class="more" onclick="this.nextElementSibling.classList.toggle('open');this.classList.toggle('open')">▸ ver todas as opções (1)</button>
+      <div class="opts more-opts"><label class="opt" data-blk="paldea" data-key="custom-emblema-da-academia-(pal" data-name="Emblema da Academia (Paldea)">
+    <input type="radio" name="blk-paldea" value="custom-emblema-da-academia-(pal">
+    <div class="opt-badge"><div class="fb">🎓</div></div>
+    <div class="opt-info"><div class="opt-name">Emblema da Academia (Paldea)</div><div class="opt-meta">emblema custom</div></div>
+    
+  </label></div>
+  </div><div class="type-block" data-blk="primeiro">
+    <div class="type-head"><div><span class="type-pill agg">AGREGADORA</span> <span class="ach">«Primeiro Ginásio (completar 1 geração qualquer)»</span></div><span class="chosen-tag" id="tag-primeiro"></span></div>
+    <div class="opts"><label class="opt rec" data-blk="primeiro" data-key="custom-primeira-insígnia-brilha" data-name="Primeira insígnia brilhando no cinto">
+    <input type="radio" name="blk-primeiro" value="custom-primeira-insígnia-brilha">
+    <div class="opt-badge"><div class="fb">✨</div></div>
+    <div class="opt-info"><div class="opt-name">Primeira insígnia brilhando no cinto</div><div class="opt-meta">emblema custom</div></div>
+    <span class="rectag">★ recomendada</span>
+  </label><label class="opt rec" data-blk="primeiro" data-key="custom-pokébola-dourada" data-name="Pokébola dourada">
+    <input type="radio" name="blk-primeiro" value="custom-pokébola-dourada">
+    <div class="opt-badge"><div class="fb">🟡</div></div>
+    <div class="opt-info"><div class="opt-name">Pokébola dourada</div><div class="opt-meta">emblema custom</div></div>
+    <span class="rectag">★ recomendada</span>
+  </label></div>
+    <button class="more" onclick="this.nextElementSibling.classList.toggle('open');this.classList.toggle('open')">▸ ver todas as opções (1)</button>
+      <div class="opts more-opts"><label class="opt" data-blk="primeiro" data-key="poke-151" data-name="Mew">
+    <input type="radio" name="blk-primeiro" value="poke-151">
+    <div class="opt-badge"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/151.png" alt="Mew" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">❓</div></div>
+    <div class="opt-info"><div class="opt-name">Mew</div><div class="opt-meta">Lendário · #151</div></div>
+    
+  </label></div>
+  </div><div class="type-block" data-blk="equilibrista">
+    <div class="type-head"><div><span class="type-pill agg">AGREGADORA</span> <span class="ach">«Equilibrista das Eras (≥50% em todas as 9)»</span></div><span class="chosen-tag" id="tag-equilibrista"></span></div>
+    <div class="opts"><label class="opt rec" data-blk="equilibrista" data-key="custom-balança-com-9-gemas-equi" data-name="Balança com 9 gemas equilibradas">
+    <input type="radio" name="blk-equilibrista" value="custom-balança-com-9-gemas-equi">
+    <div class="opt-badge"><div class="fb">⚖️</div></div>
+    <div class="opt-info"><div class="opt-name">Balança com 9 gemas equilibradas</div><div class="opt-meta">emblema custom</div></div>
+    <span class="rectag">★ recomendada</span>
+  </label><label class="opt rec" data-blk="equilibrista" data-key="poke-493" data-name="Arceus">
+    <input type="radio" name="blk-equilibrista" value="poke-493">
+    <div class="opt-badge"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/493.png" alt="Arceus" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">❓</div></div>
+    <div class="opt-info"><div class="opt-name">Arceus</div><div class="opt-meta">Lendário · #493</div></div>
+    <span class="rectag">★ recomendada</span>
+  </label></div>
+    <button class="more" onclick="this.nextElementSibling.classList.toggle('open');this.classList.toggle('open')">▸ ver todas as opções (1)</button>
+      <div class="opts more-opts"><label class="opt" data-blk="equilibrista" data-key="custom-9-anéis-entrelaçados" data-name="9 anéis entrelaçados">
+    <input type="radio" name="blk-equilibrista" value="custom-9-anéis-entrelaçados">
+    <div class="opt-badge"><div class="fb">🔗</div></div>
+    <div class="opt-info"><div class="opt-name">9 anéis entrelaçados</div><div class="opt-meta">emblema custom</div></div>
+    
+  </label></div>
+  </div><div class="type-block" data-blk="lenda">
+    <div class="type-head"><div><span class="type-pill agg">AGREGADORA</span> <span class="ach">«Lenda Viva — Todas as Eras (1025)»</span></div><span class="chosen-tag" id="tag-lenda"></span></div>
+    <div class="opts"><label class="opt rec" data-blk="lenda" data-key="poke-493" data-name="Arceus">
+    <input type="radio" name="blk-lenda" value="poke-493">
+    <div class="opt-badge"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/493.png" alt="Arceus" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">❓</div></div>
+    <div class="opt-info"><div class="opt-name">Arceus</div><div class="opt-meta">Lendário · #493</div></div>
+    <span class="rectag">★ recomendada</span>
+  </label><label class="opt rec" data-blk="lenda" data-key="poke-151" data-name="Mew">
+    <input type="radio" name="blk-lenda" value="poke-151">
+    <div class="opt-badge"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/151.png" alt="Mew" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fb" style="display:none">❓</div></div>
+    <div class="opt-info"><div class="opt-name">Mew</div><div class="opt-meta">Lendário · #151</div></div>
+    <span class="rectag">★ recomendada</span>
+  </label></div>
+    <button class="more" onclick="this.nextElementSibling.classList.toggle('open');this.classList.toggle('open')">▸ ver todas as opções (1)</button>
+      <div class="opts more-opts"><label class="opt" data-blk="lenda" data-key="custom-coroa-de-9-gemas-(master" data-name="Coroa de 9 gemas (Master Ball central)">
+    <input type="radio" name="blk-lenda" value="custom-coroa-de-9-gemas-(master">
+    <div class="opt-badge"><div class="fb">👑</div></div>
+    <div class="opt-info"><div class="opt-name">Coroa de 9 gemas (Master Ball central)</div><div class="opt-meta">emblema custom</div></div>
+    
+  </label></div>
+  </div></main>
+<script>
+  const BLKS = [{"key":"kanto","label":"Gen 1 Kanto"},{"key":"johto","label":"Gen 2 Johto"},{"key":"hoenn","label":"Gen 3 Hoenn"},{"key":"sinnoh","label":"Gen 4 Sinnoh"},{"key":"unova","label":"Gen 5 Unova"},{"key":"kalos","label":"Gen 6 Kalos"},{"key":"alola","label":"Gen 7 Alola"},{"key":"galar","label":"Gen 8 Galar"},{"key":"paldea","label":"Gen 9 Paldea"},{"key":"primeiro","label":"Primeiro Ginásio (completar 1 geração qualquer)"},{"key":"equilibrista","label":"Equilibrista das Eras (≥50% em todas as 9)"},{"key":"lenda","label":"Lenda Viva — Todas as Eras (1025)"}];
+  const TOTAL = 12;
+  function refresh(){
+    const chosen={}; let n=0;
+    for(const b of BLKS){ const r=document.querySelector('input[name="blk-'+b.key+'"]:checked'); const tag=document.getElementById('tag-'+b.key);
+      if(r){ n++; chosen[r.value]=b.key; tag.textContent='✓ '+r.closest('.opt').dataset.name; } else tag.textContent=''; }
+    document.querySelectorAll('.opt').forEach(o=>{ const inp=o.querySelector('input'); o.classList.toggle('sel',inp.checked);
+      const owner=chosen[o.dataset.key]; o.classList.toggle('dup', !!owner && owner!==o.dataset.blk); });
+    document.getElementById('fill').style.width=(n/TOTAL*100)+'%'; document.getElementById('prog').textContent=n+'/'+TOTAL;
+  }
+  document.addEventListener('change',e=>{ if(e.target.matches('input[type=radio]')) refresh(); });
+  document.querySelectorAll('.type-block').forEach(blk=>{ const first=blk.querySelector('input'); if(first) first.checked=true; });
+  refresh();
+  function copyChoices(){
+    let lines=['ESCOLHAS DE ÍCONE POR GERAÇÃO:'];
+    for(const b of BLKS){ const r=document.querySelector('input[name="blk-'+b.key+'"]:checked'); const o=r?r.closest('.opt'):null;
+      lines.push('- '+b.label+' → '+(o?o.dataset.name+' ('+o.querySelector('.opt-meta').textContent+')':'(não escolhido)')); }
+    const txt=lines.join('\n'); const ta=document.getElementById('out'); ta.value=txt; ta.classList.add('show'); ta.select();
+    if(navigator.clipboard) navigator.clipboard.writeText(txt).catch(()=>{});
+  }
+</script></body></html>

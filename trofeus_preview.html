@@ -1,0 +1,235 @@
+<!doctype html><html lang="pt-BR"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Troféus — protótipo v2 (SVG)</title>
+<style>
+  :root{--bg:#0e0e18;--line:#2a2a40;--txt:#eef0f8;--dim:#9a9ab0;}
+  *{box-sizing:border-box}
+  body{margin:0;background:radial-gradient(120% 80% at 50% -10%,#222a4c,#0e0e18 60%);color:var(--txt);font-family:system-ui,Segoe UI,Roboto,sans-serif}
+  header{padding:18px 22px;border-bottom:1px solid var(--line)}
+  h1{margin:0;font-size:1.2rem} header p{margin:6px 0 0;color:var(--dim);font-size:.85rem;max-width:820px}
+  h2{font-size:1rem;color:#ffd56b;margin:26px 22px 4px;border-left:3px solid #ffd56b;padding-left:10px}
+  .note{color:var(--dim);font-size:.78rem;margin:0 22px 8px}
+  .shelf{display:flex;flex-wrap:wrap;gap:10px 6px;padding:10px 18px}
+  .cell{width:150px;text-align:center}
+  .cell svg{width:150px;height:210px;display:block;overflow:visible;transition:transform .18s}
+  .cell:hover svg{transform:translateY(-5px) scale(1.03)}
+  .cap{font-size:.74rem;font-weight:700;margin-top:2px;line-height:1.15}
+  .sub{font-size:.62rem;color:var(--dim)}
+  .float svg{animation:fl 4s ease-in-out infinite}
+  @keyframes fl{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+  .diamond svg{filter:drop-shadow(0 0 8px rgba(168,85,222,.6))}
+</style></head><body>
+<header>
+  <h1>🏆 Troféus — protótipo v2 (vetorial polido)</h1>
+  <p>Esfera de vidro com reflexo + aro metálico biselado + pedestal com profundidade + sombra de contato e tablete. Miolo troca por grupo (insígnia / lendário / taça). Cor da esfera = tema/tipo; metal do aro+pedestal = tier. Tudo SVG (leve). Passe o mouse pra ver o realce.</p>
+</header>
+
+<!-- ===== DEFS COMPARTILHADOS ===== -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <!-- metais (tier) -->
+  <linearGradient id="m-gold" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#fff6cf"/><stop offset=".28" stop-color="#ffd84d"/>
+    <stop offset=".55" stop-color="#e7a51f"/><stop offset=".8" stop-color="#b3760f"/><stop offset="1" stop-color="#7a4d08"/></linearGradient>
+  <linearGradient id="m-silver" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#ffffff"/><stop offset=".3" stop-color="#e3e9f2"/>
+    <stop offset=".6" stop-color="#aab3c2"/><stop offset="1" stop-color="#6f7889"/></linearGradient>
+  <linearGradient id="m-bronze" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#f4d3a0"/><stop offset=".3" stop-color="#d68f44"/>
+    <stop offset=".62" stop-color="#a5601f"/><stop offset="1" stop-color="#6b3a12"/></linearGradient>
+  <linearGradient id="m-platinum" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#ffffff"/><stop offset=".3" stop-color="#e2f0ff"/>
+    <stop offset=".62" stop-color="#aecadf"/><stop offset="1" stop-color="#7793aa"/></linearGradient>
+  <linearGradient id="m-diamond" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#f1d8ff"/><stop offset=".28" stop-color="#c186ee"/>
+    <stop offset=".58" stop-color="#8a3fc0"/><stop offset=".82" stop-color="#5e2393"/><stop offset="1" stop-color="#3a1060"/></linearGradient>
+
+  <!-- vidros da esfera (tema) -->
+  <radialGradient id="o-water" cx=".38" cy=".3" r=".85"><stop offset="0" stop-color="#dff0ff"/><stop offset=".45" stop-color="#3f8fde"/><stop offset="1" stop-color="#103f72"/></radialGradient>
+  <radialGradient id="o-fire" cx=".38" cy=".3" r=".85"><stop offset="0" stop-color="#ffe0c2"/><stop offset=".45" stop-color="#ef5a2a"/><stop offset="1" stop-color="#8f240e"/></radialGradient>
+  <radialGradient id="o-grass" cx=".38" cy=".3" r=".85"><stop offset="0" stop-color="#e0fbd6"/><stop offset=".45" stop-color="#46b54a"/><stop offset="1" stop-color="#1a5f27"/></radialGradient>
+  <radialGradient id="o-elec" cx=".38" cy=".3" r=".85"><stop offset="0" stop-color="#fff7c0"/><stop offset=".45" stop-color="#f1c500"/><stop offset="1" stop-color="#8f6e00"/></radialGradient>
+  <radialGradient id="o-rock" cx=".38" cy=".3" r=".85"><stop offset="0" stop-color="#efdcab"/><stop offset=".45" stop-color="#b08a3e"/><stop offset="1" stop-color="#5f441a"/></radialGradient>
+  <radialGradient id="o-psy" cx=".38" cy=".3" r=".85"><stop offset="0" stop-color="#ffd6e6"/><stop offset=".45" stop-color="#ef5a8a"/><stop offset="1" stop-color="#9c2a55"/></radialGradient>
+  <radialGradient id="o-neutral" cx=".4" cy=".28" r=".9"><stop offset="0" stop-color="#9fb0dd"/><stop offset=".5" stop-color="#33406e"/><stop offset="1" stop-color="#0c1430"/></radialGradient>
+  <radialGradient id="o-gold" cx=".4" cy=".3" r=".85"><stop offset="0" stop-color="#fff1c2"/><stop offset=".5" stop-color="#e6b53d"/><stop offset="1" stop-color="#8a6312"/></radialGradient>
+
+  <radialGradient id="spec" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff" stop-opacity=".9"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+  <radialGradient id="padg" cx=".5" cy=".35" r=".7"><stop offset="0" stop-color="#ffffff"/><stop offset=".6" stop-color="#dbe3ef"/><stop offset="1" stop-color="#9fa9bd"/></radialGradient>
+  <radialGradient id="innerShade" cx=".5" cy=".82" r=".6"><stop offset="0" stop-color="#000" stop-opacity=".38"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+  <!-- pedra/mármore do plinto -->
+  <linearGradient id="stone" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a4470"/><stop offset=".5" stop-color="#212949"/><stop offset="1" stop-color="#0e1324"/></linearGradient>
+  <linearGradient id="cylDark" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#000" stop-opacity=".45"/><stop offset=".5" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".5"/></linearGradient>
+  <linearGradient id="cylLight" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".42" stop-color="#fff" stop-opacity=".14"/><stop offset=".6" stop-color="#fff" stop-opacity="0"/></linearGradient>
+
+  <radialGradient id="coreGlow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff" stop-opacity=".22"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+  <radialGradient id="glow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#9fb6ff" stop-opacity=".18"/><stop offset="1" stop-color="#9fb6ff" stop-opacity="0"/></radialGradient>
+  <filter id="soft" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="2.2"/></filter>
+  <filter id="ds" x="-30%" y="-25%" width="160%" height="155%"><feDropShadow dx="0" dy="3" stdDeviation="3.2" flood-color="#000" flood-opacity=".5"/></filter>
+  <clipPath id="orbClip"><circle cx="75" cy="66" r="40"/></clipPath>
+</defs></svg>
+
+<div id="root"></div>
+
+<script>
+const ART = n => `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${n}.png`;
+
+// pedestal profissional: plinto de pedra escura + aro dourado + plaqueta + degrau + sombra de contato
+function stand(metal){return `
+  <!-- sombra de contato no chão -->
+  <ellipse cx="75" cy="194" rx="52" ry="7.5" fill="#000" opacity=".42" filter="url(#soft)"/>
+
+  <!-- degrau inferior (base larga, metálica) -->
+  <path d="M40,172 L110,172 L105,185 A33,7 0 0 1 45,185 Z" fill="${metal}"/>
+  <ellipse cx="75" cy="185" rx="32.5" ry="6.5" fill="#000" opacity=".22"/>
+  <ellipse cx="75" cy="172" rx="35" ry="8.5" fill="${metal}"/>
+  <ellipse cx="75" cy="172" rx="35" ry="8.5" fill="none" stroke="#fff" stroke-opacity=".3" stroke-width="1"/>
+  <ellipse cx="68" cy="170" rx="16" ry="3" fill="#fff" opacity=".35"/>
+
+  <!-- corpo do plinto (pedra) -->
+  <path d="M45,135 L105,135 L102,170 A30,8 0 0 1 48,170 Z" fill="url(#stone)"/>
+  <path d="M45,135 L105,135 L102,170 A30,8 0 0 1 48,170 Z" fill="url(#cylDark)"/>
+  <path d="M45,135 L105,135 L102,170 A30,8 0 0 1 48,170 Z" fill="url(#cylLight)"/>
+  <!-- canelado (fluting) -->
+  <g stroke-linecap="round">
+    <line x1="57" y1="139" x2="56" y2="167" stroke="#000" stroke-opacity=".26" stroke-width="1.6"/>
+    <line x1="59.5" y1="139" x2="58.5" y2="167" stroke="#fff" stroke-opacity=".1" stroke-width="1"/>
+    <line x1="93" y1="139" x2="94" y2="167" stroke="#000" stroke-opacity=".26" stroke-width="1.6"/>
+    <line x1="90.5" y1="139" x2="91.5" y2="167" stroke="#fff" stroke-opacity=".1" stroke-width="1"/>
+  </g>
+  <!-- aro dourado no topo do plinto -->
+  <ellipse cx="75" cy="135" rx="30" ry="7.5" fill="${metal}"/>
+  <ellipse cx="75" cy="135" rx="24" ry="5.4" fill="#0e1324"/>
+  <ellipse cx="71" cy="133.5" rx="13" ry="2.4" fill="#fff" opacity=".4"/>
+  <!-- plaqueta + gema -->
+  <rect x="53" y="147" width="44" height="15" rx="3" fill="#0b0f1c"/>
+  <rect x="53" y="147" width="44" height="15" rx="3" fill="none" stroke="${metal}" stroke-width="1.6"/>
+  <path d="M75,150.5 l4.6,3.3 -4.6,5 -4.6,-5 z" fill="${metal}"/>
+  <path d="M75,150.5 l4.6,3.3 -4.6,2 -4.6,-2 z" fill="#fff" opacity=".55"/>
+  <!-- haste/coluna torneada -->
+  <path d="M66,112 L84,112 C83,122 88,128 97,134 L53,134 C62,128 67,122 66,112 Z" fill="${metal}"/>
+  <rect x="73" y="113" width="3.6" height="20" fill="#fff" opacity=".28"/>
+  <!-- colar (3 anéis) sob a esfera -->
+  <ellipse cx="75" cy="110" rx="15" ry="4.6" fill="${metal}"/>
+  <ellipse cx="75" cy="113" rx="13" ry="3.8" fill="${metal}"/>
+  <ellipse cx="75" cy="116" rx="11" ry="3.2" fill="${metal}"/>
+  <ellipse cx="75" cy="109" rx="15" ry="4.6" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="1"/>`;
+}
+
+// esfera com miolo (img/badge ou nada)
+function orb(glass, metal, inner){
+  let core = '';
+  if(inner && inner.href){
+    const b = inner.kind==='art' ? {x:35,y:26,s:80} : {x:48,y:39,s:54};
+    core = `<image href="${inner.href}" x="${b.x}" y="${b.y}" width="${b.s}" height="${b.s}" clip-path="url(#orbClip)" preserveAspectRatio="xMidYMid meet"
+      onerror="this.remove()"/>`;
+  }
+  let studs='';
+  for(let i=0;i<10;i++){ const a=(i/10)*Math.PI*2 - Math.PI/2; const x=75+44*Math.cos(a), y=66+44*Math.sin(a);
+    studs += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="2.3" fill="${metal}"/><circle cx="${(x-0.5).toFixed(1)}" cy="${(y-0.6).toFixed(1)}" r=".85" fill="#fff" opacity=".75"/>`; }
+  return `
+  <circle cx="75" cy="66" r="44" fill="${glass}"/>
+  <ellipse cx="75" cy="70" rx="30" ry="27" fill="url(#coreGlow)"/>
+  ${core}
+  <ellipse cx="75" cy="93" rx="33" ry="19" fill="url(#innerShade)"/>
+  <path d="M41,80 A44,44 0 0 0 109,80" fill="none" stroke="#fff" stroke-opacity=".2" stroke-width="3.5"/>
+  <circle cx="75" cy="66" r="44" fill="none" stroke="${metal}" stroke-width="7.5"/>
+  <circle cx="75" cy="66" r="47.8" fill="none" stroke="#000" stroke-opacity=".3" stroke-width="1.2"/>
+  <circle cx="75" cy="66" r="40.2" fill="none" stroke="#000" stroke-opacity=".35" stroke-width="1.2"/>
+  <path d="M45,54 A44,44 0 0 1 84,29" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="2.4" stroke-linecap="round"/>
+  ${studs}
+  <ellipse cx="61" cy="47" rx="18" ry="12" fill="url(#spec)" transform="rotate(-25 61 47)"/>
+  <circle cx="55" cy="44" r="3.2" fill="#fff" opacity=".85"/>
+  <ellipse cx="90" cy="85" rx="8" ry="4.5" fill="#fff" opacity=".25"/>
+  ${sparkle(96,40,1)}${sparkle(58,86,.7)}`;
+}
+
+// taça desenhada (para marcos)
+function cup(metal){return `
+  <path d="M50,42 C30,42 30,74 54,72" fill="none" stroke="${metal}" stroke-width="6" stroke-linecap="round"/>
+  <path d="M100,42 C120,42 120,74 96,72" fill="none" stroke="${metal}" stroke-width="6" stroke-linecap="round"/>
+  <path d="M52,38 L98,38 C98,72 86,98 75,98 C64,98 52,72 52,38 Z" fill="${metal}"/>
+  <ellipse cx="75" cy="38" rx="23" ry="6" fill="#fff" opacity=".5"/>
+  <path d="M60,42 C60,66 66,86 75,90" fill="none" stroke="#fff" stroke-opacity=".4" stroke-width="3"/>
+  <path d="M70,100 L80,100 L82,120 L68,120 Z" fill="${metal}"/>`;
+}
+
+// brilho de fundo (spotlight)
+function glow(){ return `<ellipse cx="75" cy="64" rx="66" ry="76" fill="url(#glow)"/>`; }
+
+// estrela de brilho (4 pontas)
+function sparkle(x,y,s){ s=s||1; const a=4.2*s,b=1.2*s; return `<g transform="translate(${x} ${y})" opacity=".92">`+
+  `<path d="M0,${-a} L${b},0 L0,${a} L${-b},0 Z" fill="#fff"/><path d="M${-a},0 L0,${b} L${a},0 L0,${-b} Z" fill="#fff"/>`+
+  `<circle cx="0" cy="0" r="${0.9*s}" fill="#fff"/></g>`; }
+
+// coroa de louros ao redor do orbe
+function laurel(metal){
+  const cx=75, cy=66; let s='';
+  const branch=(a0,a1,n)=>{ for(let i=0;i<n;i++){ const t=i/(n-1); const a=(a0+(a1-a0)*t)*Math.PI/180;
+    const R=50, x=cx+R*Math.cos(a), y=cy+R*Math.sin(a), rot=a*180/Math.PI+90;
+    s+=`<ellipse cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" rx="7" ry="2.7" fill="${metal}" transform="rotate(${rot.toFixed(1)} ${x.toFixed(1)} ${y.toFixed(1)})"/>`+
+       `<ellipse cx="${x.toFixed(1)}" cy="${(y-0.6).toFixed(1)}" rx="3.4" ry="1" fill="#fff" opacity=".3" transform="rotate(${rot.toFixed(1)} ${x.toFixed(1)} ${y.toFixed(1)})"/>`; } };
+  branch(120, 250, 6);   // lado esquerdo
+  branch(60, -70, 6);    // lado direito
+  return s;
+}
+
+function trophy(o){
+  const metal = `url(#m-${o.tier})`;
+  const glass = `url(#o-${o.orb||'gold'})`;
+  const top = o.kind==='cup' ? cup(metal) : orb(glass, metal, o.inner);
+  const wreath = o.laurel===false ? '' : laurel(metal);
+  return `<div class="cell ${o.tier==='diamond'?'diamond':''} float">
+    <svg viewBox="0 0 150 210">${glow()}<g filter="url(#ds)">${stand(metal)}${wreath}${top}</g></svg>
+    <div class="cap">${o.cap||''}</div><div class="sub">${o.sub||''}</div>
+  </div>`;
+}
+
+const BADGE = {
+  cascade:'https://static.wikia.nocookie.net/pokemon/images/9/9c/Cascade_Badge.png/revision/latest?cb=20241015140805',
+  volcano:'https://static.wikia.nocookie.net/pokemon/images/1/12/Volcano_Badge.png/revision/latest?cb=20241015141139',
+  rainbow:'https://static.wikia.nocookie.net/pokemon/images/b/b5/Rainbow_Badge.png/revision/latest?cb=20241015141116',
+  thunder:'https://static.wikia.nocookie.net/pokemon/images/a/a6/Thunder_Badge.png/revision/latest?cb=20241015141106',
+  boulder:'https://static.wikia.nocookie.net/pokemon/images/d/dd/Boulder_Badge.png/revision/latest?cb=20241015140145',
+  marsh:'https://static.wikia.nocookie.net/pokemon/images/6/6b/Marsh_Badge.png/revision/latest?cb=20241015141132',
+};
+
+const sections = [
+  {title:'Comparação — com coroa de louros × sem', note:'A coroa é opcional (posso ligar só nos tiers altos, ou remover). Veja qual prefere.', items:[
+    {tier:'gold',orb:'water',inner:{kind:'badge',href:'https://static.wikia.nocookie.net/pokemon/images/9/9c/Cascade_Badge.png/revision/latest?cb=20241015140805'},cap:'COM louros',sub:'Água'},
+    {tier:'gold',orb:'water',laurel:false,inner:{kind:'badge',href:'https://static.wikia.nocookie.net/pokemon/images/9/9c/Cascade_Badge.png/revision/latest?cb=20241015140805'},cap:'SEM louros',sub:'Água'},
+  ]},
+  {title:'Tipos — insígnia real na esfera (cor = tipo)', note:'Suas escolhas de insígnia ganham corpo de troféu.', items:[
+    {tier:'gold',orb:'water',inner:{kind:'badge',href:BADGE.cascade},cap:'Insígnia Cascata',sub:'Água'},
+    {tier:'gold',orb:'fire',inner:{kind:'badge',href:BADGE.volcano},cap:'Insígnia Brasa',sub:'Fogo'},
+    {tier:'gold',orb:'grass',inner:{kind:'badge',href:BADGE.rainbow},cap:'Insígnia Bosque',sub:'Grama'},
+    {tier:'gold',orb:'elec',inner:{kind:'badge',href:BADGE.thunder},cap:'Insígnia Trovão',sub:'Elétrico'},
+    {tier:'gold',orb:'rock',inner:{kind:'badge',href:BADGE.boulder},cap:'Insígnia Penhasco',sub:'Pedra'},
+    {tier:'gold',orb:'psy',inner:{kind:'badge',href:BADGE.marsh},cap:'Insígnia Mente',sub:'Psíquico'},
+  ]},
+  {title:'Gerações — lendário-mascote na esfera', note:'Esfera neutra escura pra destacar a arte.', items:[
+    {tier:'gold',orb:'neutral',inner:{kind:'art',href:ART(150)},cap:'Mestre de Kanto',sub:'Mewtwo'},
+    {tier:'gold',orb:'neutral',inner:{kind:'art',href:ART(250)},cap:'Despertar de Johto',sub:'Ho-Oh'},
+    {tier:'gold',orb:'neutral',inner:{kind:'art',href:ART(384)},cap:'Soberano de Hoenn',sub:'Rayquaza'},
+    {tier:'gold',orb:'neutral',inner:{kind:'art',href:ART(483)},cap:'Guardião de Sinnoh',sub:'Dialga'},
+  ]},
+  {title:'Marcos & Lenda — taça e diamante', note:'', items:[
+    {tier:'bronze',kind:'cup',cap:'Saí de Pallet',sub:'1º · Bronze'},
+    {tier:'silver',kind:'cup',cap:'Centurião',sub:'100 · Prata'},
+    {tier:'gold',kind:'cup',cap:'Contagem Regressiva',sub:'1000 · Ouro'},
+    {tier:'diamond',kind:'cup',cap:'Lenda em Ascensão',sub:'roxo imponente'},
+    {tier:'diamond',orb:'neutral',inner:{kind:'art',href:ART(493)},cap:'Lenda Viva',sub:'Arceus · Diamante'},
+    {tier:'diamond',kind:'cup',cap:'Mestre Pokémon',sub:'1025 · Diamante'},
+  ]},
+  {title:'Escala de tiers (mesma esfera, metais diferentes)', note:'bronze → prata → ouro → diamante (roxo imponente).', items:[
+    {tier:'bronze',orb:'water',inner:{kind:'badge',href:BADGE.cascade},cap:'Bronze'},
+    {tier:'silver',orb:'water',inner:{kind:'badge',href:BADGE.cascade},cap:'Prata'},
+    {tier:'gold',orb:'water',inner:{kind:'badge',href:BADGE.cascade},cap:'Ouro'},
+    {tier:'diamond',orb:'water',inner:{kind:'badge',href:BADGE.cascade},cap:'Diamante'},
+  ]},
+];
+
+document.getElementById('root').innerHTML = sections.map(s =>
+  `<h2>${s.title}</h2>${s.note?`<div class="note">${s.note}</div>`:''}<div class="shelf">${s.items.map(trophy).join('')}</div>`
+).join('') + '<div style="height:50px"></div>';
+</script>
+</body></html>
