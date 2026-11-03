@@ -18,7 +18,8 @@ const PT = {
   cel25c:'Celebrações: Coleção Clássica', dc1:'Crise Dupla', me01:'Mega Evolução',
   me02:'Fogo Fantasmagórico', me02pt5:'Heróis Excelsos', me03:'Ordem Perfeita',
   me04:'Caos Ascendente', me05:'Escuridão Absoluta', MEP:'Promos Estrela Negra (ME)',
-  cel30:'Celebração de 30 Anos', cel30c:'30 Anos: Coleção Clássica', mee:'Mega Evolução: Energia'
+  cel30:'Celebração de 30 Anos', cel30c:'30 Anos: Coleção Clássica', mee:'Mega Evolução: Energia',
+  swsh8:'Fusão Impactante'
 };
 
 (async () => {
