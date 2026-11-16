@@ -34,8 +34,15 @@ function buildQ() {
 async function jget(url, tries = 5) { let last; for (let i = 0; i < tries; i++) { try { const r = await fetch(url, H); if (r.status >= 500) throw new Error('HTTP ' + r.status); return await r.json(); } catch (e) { last = e; await new Promise(s => setTimeout(s, 900 * (i + 1))); } } throw last; }
 async function thumb(url) { try { const r = await fetch(url, { headers: { 'User-Agent': UA } }); if (!r.ok) return ''; const b = Buffer.from(await r.arrayBuffer()); const o = await sharp(b).resize({ width: 150 }).webp({ quality: 72 }).toBuffer(); return 'data:image/webp;base64,' + o.toString('base64'); } catch (e) { return ''; } }
 
+// quando a fonte não tem preço/variação (set novíssimo): assume pela raridade —
+// regular (comum/incomum) = normal + reverse holo; rara/holo = holo.
+function fallbackByRarity(rarity) {
+  const r = String(rarity || '').toLowerCase();
+  if (!r || r.includes('common')) return ['normal', 'reverseHolofoil'];
+  return ['holofoil'];
+}
 // mapeia os "price buckets" do TCGplayer para os chips de variação do app
-function mapVariants(prices) {
+function mapVariants(prices, rarity) {
   const out = []; const add = k => { if (!out.includes(k)) out.push(k); };
   const k = prices || {};
   if (k.normal || k.unlimited) add('normal');
@@ -43,7 +50,7 @@ function mapVariants(prices) {
   if (k.reverseHolofoil) add('reverseHolofoil');
   if (k['1stEdition']) add('1stEdition');
   if (k['1stEditionHolofoil']) add('1stEditionHolofoil');
-  if (!out.length) add('normal');
+  if (!out.length) return fallbackByRarity(rarity);
   const ORD = ['normal', 'holofoil', 'reverseHolofoil', '1stEdition', '1stEditionHolofoil'];
   return out.sort((a, b) => (ORD.indexOf(a) < 0 ? 9 : ORD.indexOf(a)) - (ORD.indexOf(b) < 0 ? 9 : ORD.indexOf(b)));
 }
@@ -70,7 +77,7 @@ function priceOf(prices, v) {
 
   const rows = all.map(c => {
     const prices = c.tcgplayer && c.tcgplayer.prices;
-    const variants = mapVariants(prices);
+    const variants = mapVariants(prices, c.rarity);
     const p = {}; variants.forEach(v => { const pr = priceOf(prices, v); if (pr) p[v] = pr; });
     return { id: c.id, number: c.number, name: c.name, rarity: c.rarity || '', artist: c.artist || '',
       set: (c.set && c.set.name) || '', variants, p,

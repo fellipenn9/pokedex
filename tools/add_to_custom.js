@@ -20,10 +20,11 @@ if (!CID || !REFS.length) { console.error('uso: node add_to_custom.js <collectio
 
 async function get(u, t = 5) { let l; for (let i = 0; i < t; i++) { try { const r = await fetch(u, H); if (r.status >= 500) throw new Error('HTTP ' + r.status); return await r.json(); } catch (e) { l = e; await new Promise(s => setTimeout(s, 900 * (i + 1))); } } throw l; }
 async function thumb(url) { try { const r = await fetch(url, { headers: { 'User-Agent': UA } }); if (!r.ok) return ''; const b = Buffer.from(await r.arrayBuffer()); const o = await sharp(b).resize({ width: 150 }).webp({ quality: 72 }).toBuffer(); return 'data:image/webp;base64,' + o.toString('base64'); } catch (e) { return ''; } }
-function mapVariants(p) { const out = []; const add = k => { if (!out.includes(k)) out.push(k); }; p = p || {};
+function fallbackByRarity(rarity) { const r = String(rarity || '').toLowerCase(); if (!r || r.includes('common')) return ['normal', 'reverseHolofoil']; return ['holofoil']; }
+function mapVariants(p, rarity) { const out = []; const add = k => { if (!out.includes(k)) out.push(k); }; p = p || {};
   if (p.normal || p.unlimited) add('normal'); if (p.holofoil || p.unlimitedHolofoil) add('holofoil');
   if (p.reverseHolofoil) add('reverseHolofoil'); if (p['1stEdition']) add('1stEdition'); if (p['1stEditionHolofoil']) add('1stEditionHolofoil');
-  if (!out.length) add('normal'); const O = ['normal', 'holofoil', 'reverseHolofoil', '1stEdition', '1stEditionHolofoil'];
+  if (!out.length) return fallbackByRarity(rarity); const O = ['normal', 'holofoil', 'reverseHolofoil', '1stEdition', '1stEditionHolofoil'];
   return out.sort((a, b) => (O.indexOf(a) < 0 ? 9 : O.indexOf(a)) - (O.indexOf(b) < 0 ? 9 : O.indexOf(b))); }
 function priceOf(p, v) { p = p || {}; const k = o => o && (o.market ?? o.mid ?? o.low) || 0;
   if (v === 'normal') return k(p.normal) || k(p.unlimited); if (v === 'holofoil') return k(p.holofoil) || k(p.unlimitedHolofoil);
@@ -51,7 +52,7 @@ async function resolve(ref) {
     let c; try { c = await resolve(ref); } catch (e) { console.log('  FALHOU resolver "' + ref + '": ' + e.message); continue; }
     if (!c) { console.log('  não encontrado: "' + ref + '"'); continue; }
     if (have.has(c.id)) { console.log('  já existe: ' + c.id + ' (' + c.name + ')'); continue; }
-    const prices = c.tcgplayer && c.tcgplayer.prices; const variants = mapVariants(prices);
+    const prices = c.tcgplayer && c.tcgplayer.prices; const variants = mapVariants(prices, c.rarity);
     const p = {}; variants.forEach(v => { const pr = priceOf(prices, v); if (pr) p[v] = pr; });
     const img = await thumb((c.images && (c.images.small || c.images.large)) || '');
     data.rows.push({ id: c.id, number: c.number, name: c.name, rarity: c.rarity || '', artist: c.artist || data.query || '',
