@@ -76,6 +76,9 @@ button{font-family:inherit}
 .setcard .edge i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--green),var(--gold));transition:width .6s cubic-bezier(.2,.7,.2,1)}
 .setcard[data-complete="true"] .edge i{background:var(--gold)}
 .nodata-tag{font-size:.66rem;color:var(--dim);border:1px solid var(--line);border-radius:99px;padding:2px 9px;display:inline-block}
+.cbadge{font-size:.62rem;font-weight:800;letter-spacing:.3px;color:#0c1020;background:linear-gradient(90deg,#8ea2ff,#c89cff);border-radius:99px;padding:2px 8px;margin-left:7px;display:inline-block;vertical-align:middle;text-transform:uppercase}
+.brow-item.custom{border-left:3px solid #8ea2ff}
+.setcard[data-custom="true"]{outline:1.5px dashed rgba(150,165,255,.5);outline-offset:-4px}
 .empty{color:var(--dim);text-align:center;padding:48px 16px;line-height:1.6;background:var(--surface);border:1px dashed var(--line2);border-radius:16px}
 
 /* ---- browser ---- */
@@ -364,8 +367,8 @@ async function setOwnedAll(sid,slotsArr){
 let valTimer;
 function syncValue(sid,v){ values[sid]=Math.round(v*100)/100; clearTimeout(valTimer); valTimer=setTimeout(()=>{ try{ ref().set({masterValues:{[sid]:values[sid]}},{merge:true}); }catch(e){} },700); }
 
-async function loadSetsIndex(){ if(SETS.length)return; try{ let a=await(await fetch('sets_index.json?v=16')).json(); const seen={}; SETS=a.filter(s=>seen[s.id]?false:(seen[s.id]=1)); byId={}; SETS.forEach(s=>byId[s.id]=s); }catch(e){ SETS=[]; } try{ SERIES_BG=await(await fetch('series_bg.json?v=1')).json(); }catch(e){} }
-async function loadSetData(sid){ if(setDataCache[sid])return setDataCache[sid]; const d=await(await fetch('data/'+sid+'.json?v=8')).json(); setDataCache[sid]=d; return d; }
+async function loadSetsIndex(){ if(SETS.length)return; try{ let a=await(await fetch('sets_index.json?v=17')).json(); const seen={}; SETS=a.filter(s=>seen[s.id]?false:(seen[s.id]=1)); byId={}; SETS.forEach(s=>byId[s.id]=s); }catch(e){ SETS=[]; } try{ SERIES_BG=await(await fetch('series_bg.json?v=1')).json(); }catch(e){} }
+async function loadSetData(sid){ if(setDataCache[sid])return setDataCache[sid]; const d=await(await fetch('data/'+sid+'.json?v=9')).json(); setDataCache[sid]=d; return d; }
 
 async function render(){ await loadSetsIndex(); if(!user){ renderLogin(); return; } if(view.name==='dash')renderDash(); else if(view.name==='browse')renderBrowse(); else if(view.name==='set')renderSet(view.sid); }
 function go(v){ view=v; render(); window.scrollTo(0,0); }
@@ -384,11 +387,11 @@ function renderDash(){
     html+='<div class="dash-grid">'+favs.map(s=>{
       const o=(owned[s.id]||new Set()).size,t=s.totalSlots||0,pct=t?Math.round(o/t*100):0,cmp=t&&o>=t;
       const meta=[s.seriesName,fdate(s.releaseDate),s.total+' cartas'].filter(Boolean).join(' · ');
-      return '<div class="setcard" data-sid="'+s.id+'" data-complete="'+cmp+'">'
+      return '<div class="setcard" data-sid="'+s.id+'" data-complete="'+cmp+'" data-custom="'+(!!s.custom)+'">'
         +'<div class="art" style="background-image:url('+(s.sym64||'')+')"></div><div class="scrim" style="background:linear-gradient(150deg,'+hexA(s.color||'#4d6bff',.42)+',rgba(15,20,36,.62) 50%,rgba(10,14,26,.96))"></div>'
         +(s.logo64?'<img class="logo" src="'+s.logo64+'">':'')
         +'<button class="star" data-fav="'+s.id+'" title="Remover">★</button>'
-        +'<div class="sc-c"><div class="sc-name">'+esc(nameOf(s))+'</div><div class="sc-meta tnum">'+esc(meta)+'</div>'
+        +'<div class="sc-c"><div class="sc-name">'+esc(nameOf(s))+(s.custom?'<span class="cbadge" title="Coleção personalizada">✦</span>':'')+'</div><div class="sc-meta tnum">'+esc(meta)+'</div>'
         +(s.hasData?('<div class="sc-value tnum">'+money(values[s.id]||0)+' · '+pct+'%</div>'):'<span class="nodata-tag">sem dados</span>')+'</div>'
         +(s.hasData?'<div class="edge"><i style="width:'+pct+'%"></i></div>':'')+'</div>';
     }).join('')+'</div>';
@@ -408,21 +411,23 @@ function renderBrowse(){
     +'<input class="search" id="q" placeholder="Buscar coleção…">'
     +'<div class="filterbar"><div class="selwrap"><select id="fserie"><option value="">Todas as séries</option>'+seriesList.map(x=>'<option>'+esc(x)+'</option>').join('')+'</select></div>'
     +'<div class="selwrap"><select id="flang"><option value="">EN + JP</option><option value="EN">Só inglês</option><option value="JP">Só japonês</option></select></div>'
-    +'<span class="chip" id="fdata">Com dados</span><span class="chip" id="ffav">★ Favoritos</span></div><div class="brow-list" id="blist"></div>';
+    +'<span class="chip" id="fdata">Com dados</span><span class="chip" id="fcustom">✦ Personalizadas</span><span class="chip" id="ffav">★ Favoritos</span></div><div class="brow-list" id="blist"></div>';
   document.getElementById('back').onclick=()=>go({name:'dash'});
-  const F={q:'',serie:'',lang:'',data:false,fav:false},listEl=document.getElementById('blist');
+  const F={q:'',serie:'',lang:'',data:false,fav:false,custom:false},listEl=document.getElementById('blist');
   function paint(){
     let list=SETS.filter(s=>{
       if(F.q){const h=(nameOf(s)+' '+s.name+' '+(s.seriesName||'')).toLowerCase(); if(!h.includes(F.q))return false;}
       if(F.serie&&s.seriesName!==F.serie)return false;
       if(F.lang&&s.category!==F.lang)return false;
       if(F.data&&!s.hasData)return false;
+      if(F.custom&&!s.custom)return false;
       if(F.fav&&!favorites.has(s.id))return false; return true;
     });
     list.sort((a,b)=>(b.hasData?1:0)-(a.hasData?1:0)||String(b.releaseDate).localeCompare(String(a.releaseDate)));
     const shown=list.slice(0,300);
     listEl.innerHTML=shown.length?shown.map(s=>{const on=favorites.has(s.id);
-      return '<div class="brow-item'+(s.hasData?'':' nodata')+'">'+symMini(s)+'<div class="bi-b"><div class="bi-name">'+esc(nameOf(s))+'</div><div class="bi-meta">'+esc(s.seriesName||'')+' · '+(fdate(s.releaseDate)||'')+' · '+s.total+' cartas'+(s.hasData?'':' · <span class="nodata-tag">sem dados</span>')+'</div></div><button class="addbtn'+(on?' on':'')+'" data-fav="'+s.id+'">'+(on?'★':'+')+'</button></div>';
+      const meta=[s.seriesName,fdate(s.releaseDate),s.total+' cartas'].filter(Boolean).join(' · ');
+      return '<div class="brow-item'+(s.hasData?'':' nodata')+(s.custom?' custom':'')+'">'+symMini(s)+'<div class="bi-b"><div class="bi-name">'+esc(nameOf(s))+(s.custom?'<span class="cbadge">✦ Personalizada</span>':'')+'</div><div class="bi-meta">'+esc(meta)+(s.hasData?'':' · <span class="nodata-tag">sem dados</span>')+'</div></div><button class="addbtn'+(on?' on':'')+'" data-fav="'+s.id+'">'+(on?'★':'+')+'</button></div>';
     }).join(''):'<div class="empty">Nenhuma coleção com esses filtros.</div>';
     listEl.querySelectorAll('.addbtn').forEach(el=>el.onclick=()=>{ toggleFavorite(el.dataset.fav); el.classList.toggle('on'); el.textContent=el.classList.contains('on')?'★':'+'; });
   }
@@ -430,6 +435,7 @@ function renderBrowse(){
   document.getElementById('fserie').addEventListener('change',e=>{F.serie=e.target.value;paint();});
   document.getElementById('flang').addEventListener('change',e=>{F.lang=e.target.value;paint();});
   document.getElementById('fdata').onclick=e=>{F.data=!F.data;e.target.classList.toggle('on',F.data);paint();};
+  document.getElementById('fcustom').onclick=e=>{F.custom=!F.custom;e.target.classList.toggle('on',F.custom);paint();};
   document.getElementById('ffav').onclick=e=>{F.fav=!F.fav;e.target.classList.toggle('on',F.fav);paint();};
   paint();
 }
@@ -465,7 +471,7 @@ async function renderSet(sid){
   app.innerHTML='<button class="backbtn" id="back">← Minhas coleções</button>'
     +'<div class="sethead" style="border-color:'+hexA(meta.color||'#4d6bff',.5)+'"><div class="art" style="background-image:url('+(meta.sym64||'')+')"></div><div class="scrim" style="background:linear-gradient(90deg,rgba(11,16,32,.92) 0%,rgba(11,16,32,.5) 44%,'+hexA(meta.color||'#4d6bff',.6)+' 100%)"></div>'
     +'<div class="sh-main">'+(meta.logo64?'<img class="logo" src="'+meta.logo64+'">':'<h1>'+esc(nameOf(meta)||data.setName)+'</h1>')
-    +'<div class="sh-meta tnum">'+esc(meta.seriesName||'')+' · '+(fdate(meta.releaseDate)||'')+' · '+(meta.total||data.rows.length)+' cartas · valor <b id="ov" style="color:var(--gold)">$0</b> / '+money(data.fullValue||0)+'</div>'
+    +'<div class="sh-meta tnum">'+esc([meta.seriesName,fdate(meta.releaseDate),(meta.total||data.rows.length)+' cartas'].filter(Boolean).join(' · '))+' · valor <b id="ov" style="color:var(--gold)">$0</b> / '+money(data.fullValue||0)+'</div>'
     +'<div class="bars"><div class="brow cpl"><span class="t">Completo</span><span class="bk"><i id="bcpl"></i></span><span id="pcpl">0%</span></div>'
     +'<div class="brow mst"><span class="t">Master</span><span class="bk"><i id="bmst"></i></span><span id="pmst">0%</span></div></div></div>'
     +'<div class="ring" id="ring"><b id="pct">0%</b></div>'
@@ -555,9 +561,9 @@ async function renderSet(sid){
   }
   function chips(r){ return r.variants.map(v=>{const on=oset().has(sk(r.id,v));const m=VARDEF(v);return '<span class="v '+m.cls+(on?' on':'')+'" data-id="'+esc(r.id)+'" data-v="'+esc(v)+'" title="'+esc(m.lbl)+'"><span class="dot"></span>'+esc(m.short)+'</span>';}).join(''); }
   function gridHTML(list){ return '<div class="grid">'+list.map(r=>{const img=r.img?'<img loading="lazy" src="'+r.img+'">':'<div class="na">sem imagem</div>';const fv=cardFullValue(r);
-    return '<div class="c'+(cardDone(r)?' done':cardHasAny(r)?'':' none')+'" data-id="'+esc(r.id)+'"><div class="c-img"><span class="pg">'+esc(r.number)+'</span><span class="cprog tnum">'+cardN(r)+'/'+r.variants.length+'</span><span class="donebadge">✓ Completa</span>'+img+'</div><div class="c-b"><div class="c-name">'+esc(r.name)+'</div><div class="c-meta">'+esc(r.rarity)+(fv?' · <span class="mv">'+money(fv)+'</span>':'')+'</div><div class="vlist">'+chips(r)+'</div></div></div>';
+    return '<div class="c'+(cardDone(r)?' done':cardHasAny(r)?'':' none')+'" data-id="'+esc(r.id)+'"><div class="c-img"><span class="pg">'+esc(r.number)+'</span><span class="cprog tnum">'+cardN(r)+'/'+r.variants.length+'</span><span class="donebadge">✓ Completa</span>'+img+'</div><div class="c-b"><div class="c-name">'+esc(r.name)+'</div><div class="c-meta">'+esc([r.set,r.rarity].filter(Boolean).join(' · '))+(fv?' · <span class="mv">'+money(fv)+'</span>':'')+'</div><div class="vlist">'+chips(r)+'</div></div></div>';
   }).join('')+'</div>'; }
-  function tableHTML(list){ return '<div class="tbl">'+list.map(r=>'<div class="trow'+(cardDone(r)?' done':'')+'" data-id="'+esc(r.id)+'"><span class="tn tnum">'+esc(r.number)+'</span><span class="tnm">'+esc(r.name)+' <small>'+esc(r.rarity)+'</small></span><span class="tv tnum">'+money(cardFullValue(r))+'</span><div class="vlist">'+chips(r)+'</div></div>').join('')+'</div>'; }
+  function tableHTML(list){ return '<div class="tbl">'+list.map(r=>'<div class="trow'+(cardDone(r)?' done':'')+'" data-id="'+esc(r.id)+'"><span class="tn tnum">'+esc(r.number)+'</span><span class="tnm">'+esc(r.name)+' <small>'+esc([r.set,r.rarity].filter(Boolean).join(' · '))+'</small></span><span class="tv tnum">'+money(cardFullValue(r))+'</span><div class="vlist">'+chips(r)+'</div></div>').join('')+'</div>'; }
   function binderHTML(list){ const per=9,pages=Math.max(1,Math.ceil(list.length/per)); if(binderPage>=pages)binderPage=pages-1; const pg=list.slice(binderPage*per,binderPage*per+per);
     let h='<div class="binder"><div class="bpage">'+pg.map(r=>{const img=r.img?'<img src="'+r.img+'">':'';return '<div class="pocket'+(cardHasAny(r)?'':' none')+'" data-id="'+esc(r.id)+'"><div class="pk-img"><span class="pk-n">'+esc(r.number)+'</span>'+img+'</div><div class="vlist">'+chips(r)+'</div></div>';}).join('')+'</div>';
     h+='<div class="bpager"><button data-bp="-1"'+(binderPage<=0?' disabled':'')+'>‹</button><span class="pp">Página '+(binderPage+1)+' / '+pages+'</span><button data-bp="1"'+(binderPage>=pages-1?' disabled':'')+'>›</button></div></div>'; return h; }
@@ -576,7 +582,7 @@ async function renderSet(sid){
     const vhtml=()=>r.variants.map(v=>{const on=oset().has(sk(r.id,v));const mm=VARDEF(v);const pr=r.p&&r.p[v];return '<button class="cmv '+mm.cls+(on?' on':'')+'" data-v="'+esc(v)+'"><span class="dot"></span><span class="cmv-l">'+esc(mm.lbl)+'</span><span class="cmv-p">'+(pr!=null?money(pr):'')+'</span></button>';}).join('');
     m.querySelector('.cm-box').innerHTML='<div class="cm-img">'+(r.img?'<img src="'+r.img+'" alt="">':'<span style="color:var(--dim)">sem imagem</span>')+'</div>'
       +'<div class="cm-info"><button class="cm-x" id="cmx">✕</button><h3>'+esc(r.name)+'</h3>'
-      +'<div class="cm-meta">'+esc(nameOf(meta)||data.setName)+' · Nº '+esc(r.number)+'</div>'
+      +'<div class="cm-meta">'+esc(r.set||nameOf(meta)||data.setName)+' · Nº '+esc(r.number)+'</div>'
       +'<div class="cm-tags"><span>'+esc(r.rarity||'—')+'</span>'+(r.artist?'<span>🎨 '+esc(r.artist)+'</span>':'')+'</div>'
       +'<div class="cm-vt" id="cmvt">Variações — '+cardN(r)+'/'+r.variants.length+'</div><div class="cm-vlist">'+vhtml()+'</div>'
       +'<div class="cm-val">Valor do card: <b>'+money(cardFullValue(r))+'</b></div></div>';
