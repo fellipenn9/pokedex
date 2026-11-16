@@ -79,6 +79,13 @@ button{font-family:inherit}
 .cbadge{font-size:.62rem;font-weight:800;letter-spacing:.3px;color:#0c1020;background:linear-gradient(90deg,#8ea2ff,#c89cff);border-radius:99px;padding:2px 8px;margin-left:7px;display:inline-block;vertical-align:middle;text-transform:uppercase}
 .brow-item.custom{border-left:3px solid #8ea2ff}
 .setcard[data-custom="true"]{outline:1.5px dashed rgba(150,165,255,.5);outline-offset:-4px}
+.dtabs{display:flex;gap:4px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:4px;margin:14px 0 14px;width:fit-content;max-width:100%;overflow-x:auto}
+.dtab{appearance:none;border:0;background:transparent;color:var(--dim);font-weight:700;font-size:.82rem;padding:8px 15px;border-radius:9px;cursor:pointer;white-space:nowrap;display:inline-flex;align-items:center;gap:7px;transition:all .12s}
+.dtab:hover{color:var(--text)}
+.dtab .n{font-size:.7rem;background:var(--track);color:var(--dim);border-radius:99px;padding:1px 7px;font-weight:800}
+.dtab.on{background:var(--surface2);color:var(--text);box-shadow:inset 0 0 0 1px var(--line2)}
+.dtab.on .n{background:var(--gold);color:#0c1020}
+.dtab.custom.on{box-shadow:inset 0 0 0 1px #8ea2ff}.dtab.custom.on .n{background:linear-gradient(90deg,#8ea2ff,#c89cff)}
 .empty{color:var(--dim);text-align:center;padding:48px 16px;line-height:1.6;background:var(--surface);border:1px dashed var(--line2);border-radius:16px}
 
 /* ---- browser ---- */
@@ -368,24 +375,32 @@ async function setOwnedAll(sid,slotsArr){
 let valTimer;
 function syncValue(sid,v){ values[sid]=Math.round(v*100)/100; clearTimeout(valTimer); valTimer=setTimeout(()=>{ try{ ref().set({masterValues:{[sid]:values[sid]}},{merge:true}); }catch(e){} },700); }
 
-async function loadSetsIndex(){ if(SETS.length)return; try{ let a=await(await fetch('sets_index.json?v=20')).json(); const seen={}; SETS=a.filter(s=>seen[s.id]?false:(seen[s.id]=1)); byId={}; SETS.forEach(s=>byId[s.id]=s); }catch(e){ SETS=[]; } try{ SERIES_BG=await(await fetch('series_bg.json?v=1')).json(); }catch(e){} }
+async function loadSetsIndex(){ if(SETS.length)return; try{ let a=await(await fetch('sets_index.json?v=21')).json(); const seen={}; SETS=a.filter(s=>seen[s.id]?false:(seen[s.id]=1)); byId={}; SETS.forEach(s=>byId[s.id]=s); }catch(e){ SETS=[]; } try{ SERIES_BG=await(await fetch('series_bg.json?v=1')).json(); }catch(e){} }
 async function loadSetData(sid){ if(setDataCache[sid])return setDataCache[sid]; const d=await(await fetch('data/'+sid+'.json?v=11')).json(); setDataCache[sid]=d; return d; }
 
 async function render(){ await loadSetsIndex(); if(!user){ renderLogin(); return; } if(view.name==='dash')renderDash(); else if(view.name==='browse')renderBrowse(); else if(view.name==='set')renderSet(view.sid); }
 function go(v){ view=v; render(); window.scrollTo(0,0); }
 
 // ---------- dashboard ----------
+let dashTab='edicoes';
 function renderDash(){
   setBg(BG_DASH); setArt('');
   const favs=SETS.filter(s=>favorites.has(s.id));
+  const edFavs=favs.filter(s=>!s.custom), customFavs=favs.filter(s=>s.custom);
+  if(dashTab==='personalizadas'&&!customFavs.length)dashTab='edicoes';
   let grand=0,vars=0,done=0;
   favs.forEach(s=>{ grand+=(values[s.id]||0); const t=s.totalSlots||0,o=(owned[s.id]||new Set()).size; vars+=o; if(t&&o>=t)done++; });
   let html='<div class="vhero"><div class="lbl">Valor estimado da coleção</div><div class="val tnum">'+money(grand)+'<small>USD · mercado</small></div>'
     +'<div class="stats"><div class="stat"><b class="tnum">'+vars+'</b><span>variações</span></div><div class="stat"><b class="tnum">'+favs.length+'</b><span>coleções</span></div><div class="stat"><b class="tnum">'+done+'</b><span>completas</span></div></div></div>';
   html+='<div class="sec-title"><div><h2>Minhas coleções</h2></div><div class="sp"></div><button class="btn primary" id="add">+ Adicionar</button></div>';
-  if(!favs.length){ html+='<div class="empty">Você ainda não adicionou coleções.<br>Toque em <b>+ Adicionar</b> para escolher os master sets que quer controlar.</div>'; }
+  if(!favs.length){ html+='<div class="empty">Você ainda não adicionou coleções.<br>Toque em <b>+ Adicionar</b> para escolher os master sets que quer controlar.</div>'; app.innerHTML=html; document.getElementById('add').onclick=()=>go({name:'browse'}); return; }
+  // abas: Edições (padrão) × Personalizadas
+  html+='<div class="dtabs"><button class="dtab'+(dashTab==='edicoes'?' on':'')+'" data-tab="edicoes">Edições <span class="n">'+edFavs.length+'</span></button>'
+    +'<button class="dtab custom'+(dashTab==='personalizadas'?' on':'')+'" data-tab="personalizadas">✦ Personalizadas <span class="n">'+customFavs.length+'</span></button></div>';
+  const list=dashTab==='personalizadas'?customFavs:edFavs;
+  if(!list.length){ html+='<div class="empty">'+(dashTab==='personalizadas'?'Nenhuma coleção personalizada favoritada.<br>Toque em <b>+ Adicionar</b> e use o filtro <b>✦ Personalizadas</b>.':'Nenhuma coleção de edição favoritada ainda.')+'</div>'; }
   else{
-    html+='<div class="dash-grid">'+favs.map(s=>{
+    html+='<div class="dash-grid">'+list.map(s=>{
       const o=(owned[s.id]||new Set()).size,t=s.totalSlots||0,pct=t?Math.round(o/t*100):0,cmp=t&&o>=t;
       const meta=[s.seriesName,fdate(s.releaseDate),s.total+' cartas'].filter(Boolean).join(' · ');
       return '<div class="setcard" data-sid="'+s.id+'" data-complete="'+cmp+'" data-custom="'+(!!s.custom)+'">'
@@ -399,6 +414,7 @@ function renderDash(){
   }
   app.innerHTML=html;
   document.getElementById('add').onclick=()=>go({name:'browse'});
+  app.querySelectorAll('.dtab').forEach(el=>el.onclick=()=>{ dashTab=el.dataset.tab; renderDash(); });
   app.querySelectorAll('.setcard').forEach(el=>el.onclick=e=>{ if(e.target.closest('.star'))return; const s=byId[el.dataset.sid]; if(!s.hasData){toast('Dados desta coleção ainda não gerados');return;} go({name:'set',sid:el.dataset.sid}); });
   app.querySelectorAll('.star').forEach(el=>el.onclick=e=>{ e.stopPropagation(); toggleFavorite(el.dataset.fav); });
 }
