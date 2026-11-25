@@ -80,7 +80,7 @@ function priceOf(prices, v) {
     const variants = mapVariants(prices, c.rarity);
     const p = {}; variants.forEach(v => { const pr = priceOf(prices, v); if (pr) p[v] = pr; });
     return { id: c.id, number: c.number, name: c.name, rarity: c.rarity || '', artist: c.artist || '',
-      set: (c.set && c.set.name) || '', variants, p,
+      set: (c.set && c.set.name) || '', date: (c.set && c.set.releaseDate) || '', types: c.types || [], variants, p,
       imgUrl: (c.images && (c.images.small || c.images.large)) || '', img: '' };
   });
   let ok = 0;

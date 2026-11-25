@@ -86,6 +86,8 @@ button{font-family:inherit}
 .dtab.on{background:var(--surface2);color:var(--text);box-shadow:inset 0 0 0 1px var(--line2)}
 .dtab.on .n{background:var(--gold);color:#0c1020}
 .dtab.custom.on{box-shadow:inset 0 0 0 1px #8ea2ff}.dtab.custom.on .n{background:linear-gradient(90deg,#8ea2ff,#c89cff)}
+.grouphd{font-size:.82rem;font-weight:800;color:var(--text);margin:16px 0 9px;padding-bottom:6px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:8px}
+.grouphd:first-child{margin-top:4px}.grouphd span{font-size:.7rem;color:var(--dim);background:var(--track);border-radius:99px;padding:1px 8px}
 .empty{color:var(--dim);text-align:center;padding:48px 16px;line-height:1.6;background:var(--surface);border:1px dashed var(--line2);border-radius:16px}
 
 /* ---- browser ---- */
@@ -306,6 +308,9 @@ const VAR={
 function prettyVar(k){ return String(k).replace(/([a-z])([A-Z])/g,'$1 $2').replace(/^./,c=>c.toUpperCase()); }
 function VARDEF(k){ return VAR[k]||{lbl:prettyVar(k),short:prettyVar(k),cls:'v-other',grp:'other'}; }
 const BALL=Object.keys(VAR).filter(k=>VAR[k].grp==='ball');
+// tipos de Pokémon (para ordenar/agrupar nas coleções personalizadas)
+const TYPE_ORDER=['Grass','Fire','Water','Lightning','Psychic','Fighting','Darkness','Metal','Dragon','Fairy','Colorless'];
+const TYPEPT={Grass:'Planta',Fire:'Fogo',Water:'Água',Lightning:'Elétrico',Psychic:'Psíquico',Fighting:'Lutador',Darkness:'Sombrio',Metal:'Metálico',Dragon:'Dragão',Fairy:'Fada',Colorless:'Incolor'};
 const VF_ORDER=[['normal','Normal'],['holofoil','Holo'],['reverseHolofoil','Reverse Holo'],['energyPattern','Reverse · Energia']];
 const MES=['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
 
@@ -376,7 +381,7 @@ let valTimer;
 function syncValue(sid,v){ values[sid]=Math.round(v*100)/100; clearTimeout(valTimer); valTimer=setTimeout(()=>{ try{ ref().set({masterValues:{[sid]:values[sid]}},{merge:true}); }catch(e){} },700); }
 
 async function loadSetsIndex(){ if(SETS.length)return; try{ let a=await(await fetch('sets_index.json?v=23')).json(); const seen={}; SETS=a.filter(s=>seen[s.id]?false:(seen[s.id]=1)); byId={}; SETS.forEach(s=>byId[s.id]=s); }catch(e){ SETS=[]; } try{ SERIES_BG=await(await fetch('series_bg.json?v=1')).json(); }catch(e){} }
-async function loadSetData(sid){ if(setDataCache[sid])return setDataCache[sid]; const d=await(await fetch('data/'+sid+'.json?v=13')).json(); setDataCache[sid]=d; return d; }
+async function loadSetData(sid){ if(setDataCache[sid])return setDataCache[sid]; const d=await(await fetch('data/'+sid+'.json?v=14')).json(); setDataCache[sid]=d; return d; }
 
 async function render(){ await loadSetsIndex(); if(!user){ renderLogin(); return; } if(view.name==='dash')renderDash(); else if(view.name==='browse')renderBrowse(); else if(view.name==='set')renderSet(view.sid); }
 function go(v){ view=v; render(); window.scrollTo(0,0); }
@@ -470,7 +475,9 @@ async function renderSet(sid){
   let data; try{ data=await loadSetData(sid); }catch(e){ app.innerHTML='<button class="backbtn" id="b2">← Minhas coleções</button><div class="empty">Não foi possível carregar os dados desta coleção.</div>'; document.getElementById('b2').onclick=()=>go({name:'dash'}); return; }
   const oset=()=>owned[sid]||new Set();
   const sk=(id,v)=>id+'|'+v;
-  const F={q:'',rar:new Set(),vf:new Set(),st:''};
+  const F={q:'',rar:new Set(),vf:new Set(),st:'',sort:''};
+  const hasTypes=data.rows.some(r=>r.types&&r.types.length);
+  const hasDate=data.rows.some(r=>r.date);
   const cardDone=r=>r.variants.length>0&&r.variants.every(v=>oset().has(sk(r.id,v)));
   const cardN=r=>r.variants.filter(v=>oset().has(sk(r.id,v))).length;
   const cardHasAny=r=>r.variants.some(v=>oset().has(sk(r.id,v)));
@@ -497,6 +504,7 @@ async function renderSet(sid){
     +'<div class="msel" id="mrar"><button class="msel-btn" type="button" id="mrarb">Raridade</button><div class="msel-menu" id="mrarm">'+rarMenu+'</div></div>'
     +'<div class="msel" id="mvf"><button class="msel-btn" type="button" id="mvfb">Variação</button><div class="msel-menu" id="mvfm">'+vfMenu+'</div></div>'
     +'<div class="selwrap"><select id="st"><option value="">Todas</option><option value="have">Que eu tenho (≥1)</option><option value="miss">Incompletas</option><option value="done">Completas</option></select></div>'
+    +((hasTypes||hasDate)?'<div class="selwrap"><select id="sort"><option value="">Ordem padrão</option>'+(hasDate?'<option value="date">Data (antiga→nova)</option><option value="date_desc">Data (nova→antiga)</option>':'')+'<option value="name">Nome (A→Z)</option><option value="value">Valor (maior)</option>'+(hasTypes?'<option value="type">Agrupar por tipo</option>':'')+'</select></div>':'')
     +'<button class="clrb" id="clrb">✕ Limpar</button>'
     +'<div class="vtoggle" id="vt"><button data-view="grid">Grid</button><button data-view="table">Tabela</button><button data-view="binder">Binder</button></div>'
     +'<div class="markall"><button class="mab" id="markAll" title="Marcar todas as cartas/variações desta coleção como que você tem (depois é só desmarcar o que faltar)">✓ Marcar todas</button><button class="mab clr" id="clearAll" title="Desmarcar todas desta coleção">○ Limpar tudo</button></div>'
@@ -505,7 +513,7 @@ async function renderSet(sid){
   document.getElementById('back').onclick=()=>go({name:'dash'});
   app.querySelector('.star').onclick=e=>{ toggleFavorite(sid); e.target.textContent=favorites.has(sid)?'★':'☆'; };
   const bind=(id,k)=>document.getElementById(id).addEventListener(id==='q'?'input':'change',e=>{F[k]=e.target.value;binderPage=0;updateClear();paint();});
-  bind('q','q'); bind('st','st');
+  bind('q','q'); bind('st','st'); if(document.getElementById('sort'))bind('sort','sort');
   function wireMulti(btnId,menuId,set,lbl){
     const btn=document.getElementById(btnId), menu=document.getElementById(menuId);
     function upd(){ btn.textContent=set.size?lbl+' ('+set.size+')':lbl; btn.classList.toggle('active',set.size>0); }
@@ -579,6 +587,22 @@ async function renderSet(sid){
       if(F.q){const h=(r.name+' '+r.number).toLowerCase(); if(!h.includes(F.q.toLowerCase()))return false;} return true;
     });
   }
+  const numOf=r=>{ const m=String(r.number||'').match(/\d+/); return m?parseInt(m[0],10):0; };
+  const cmpDefault=(x,y)=>numOf(x)-numOf(y)||String(x.number).localeCompare(String(y.number));
+  const typeRank=r=>{ const t=(r.types&&r.types[0])||''; const i=TYPE_ORDER.indexOf(t); return i<0?99:i; };
+  function sortRows(list){ const a=[...list]; const d=r=>String(r.date||'');
+    if(F.sort==='date')a.sort((x,y)=>d(x).localeCompare(d(y))||cmpDefault(x,y));
+    else if(F.sort==='date_desc')a.sort((x,y)=>d(y).localeCompare(d(x))||cmpDefault(x,y));
+    else if(F.sort==='name')a.sort((x,y)=>x.name.localeCompare(y.name,'pt')||d(x).localeCompare(d(y)));
+    else if(F.sort==='value')a.sort((x,y)=>cardFullValue(y)-cardFullValue(x));
+    else if(F.sort==='type')a.sort((x,y)=>typeRank(x)-typeRank(y)||d(x).localeCompare(d(y))||cmpDefault(x,y));
+    return a;
+  }
+  function groupByType(list){ const g={};
+    list.forEach(r=>{ const t=(r.types&&r.types[0])||'__none'; (g[t]=g[t]||[]).push(r); });
+    const order=[...TYPE_ORDER.filter(t=>g[t]), ...Object.keys(g).filter(t=>t!=='__none'&&!TYPE_ORDER.includes(t)).sort(), ...(g.__none?['__none']:[])];
+    return order.map(t=>({ label:(t==='__none'?'Sem tipo / Treinador':(TYPEPT[t]||t)), rows:g[t] }));
+  }
   function chips(r){ return r.variants.map(v=>{const on=oset().has(sk(r.id,v));const m=VARDEF(v);return '<span class="v '+m.cls+(on?' on':'')+'" data-id="'+esc(r.id)+'" data-v="'+esc(v)+'" title="'+esc(m.lbl)+'"><span class="dot"></span>'+esc(m.short)+'</span>';}).join(''); }
   function gridHTML(list){ return '<div class="grid">'+list.map(r=>{const img=r.img?'<img loading="lazy" src="'+r.img+'">':'<div class="na">sem imagem</div>';const fv=cardFullValue(r);
     return '<div class="c'+(cardDone(r)?' done':cardHasAny(r)?'':' none')+'" data-id="'+esc(r.id)+'"><div class="c-img"><span class="pg">'+esc(r.number)+'</span><span class="cprog tnum">'+cardN(r)+'/'+r.variants.length+'</span><span class="donebadge">✓ Completa</span>'+img+'</div><div class="c-b"><div class="c-name">'+esc(r.name)+'</div><div class="c-meta">'+esc([r.set,r.rarity].filter(Boolean).join(' · '))+(fv?' · <span class="mv">'+money(fv)+'</span>':'')+'</div><div class="vlist">'+chips(r)+'</div></div></div>';
@@ -589,10 +613,14 @@ async function renderSet(sid){
     h+='<div class="bpager"><button data-bp="-1"'+(binderPage<=0?' disabled':'')+'>‹</button><span class="pp">Página '+(binderPage+1)+' / '+pages+'</span><button data-bp="1"'+(binderPage>=pages-1?' disabled':'')+'>›</button></div></div>'; return h; }
 
   function paint(){
-    const list=filtered(); document.getElementById('cl').textContent=list.length+' de '+data.rows.length+' cartas';
+    const list=sortRows(filtered()); document.getElementById('cl').textContent=list.length+' de '+data.rows.length+' cartas';
     const area=document.getElementById('area');
     if(!list.length){ area.innerHTML='<div class="empty">Nada com esses filtros.</div>'; updateHero(); return; }
-    area.innerHTML= cardView==='table'?tableHTML(list) : cardView==='binder'?binderHTML(list) : gridHTML(list);
+    if(F.sort==='type'&&cardView!=='binder'){
+      area.innerHTML=groupByType(list).map(g=>'<div class="grouphd">'+esc(g.label)+' <span>'+g.rows.length+'</span></div>'+(cardView==='table'?tableHTML(g.rows):gridHTML(g.rows))).join('');
+    } else {
+      area.innerHTML= cardView==='table'?tableHTML(list) : cardView==='binder'?binderHTML(list) : gridHTML(list);
+    }
     updateHero();
   }
   function openCardModal(r){

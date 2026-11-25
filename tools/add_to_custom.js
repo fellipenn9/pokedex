@@ -56,7 +56,7 @@ async function resolve(ref) {
     const p = {}; variants.forEach(v => { const pr = priceOf(prices, v); if (pr) p[v] = pr; });
     const img = await thumb((c.images && (c.images.small || c.images.large)) || '');
     data.rows.push({ id: c.id, number: c.number, name: c.name, rarity: c.rarity || '', artist: c.artist || data.query || '',
-      set: (c.set && c.set.name) || '', variants, p, img });
+      set: (c.set && c.set.name) || '', date: (c.set && c.set.releaseDate) || '', types: c.types || [], variants, p, img });
     have.add(c.id); added++;
     console.log('  + ' + c.id + ' ' + c.name + ' (' + c.set.name + ' ' + c.number + ') -> ' + variants.join(',') + (img ? '' : ' [sem img]'));
   }
